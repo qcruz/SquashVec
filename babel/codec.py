@@ -67,19 +67,19 @@ def compress(text: str) -> tuple[int, int, str]:
     """
     Compress text → (depth, original_length, compressed_string).
 
-    depth:             0-indexed position of the highest character in CHARSET.
-                       base_in = depth + 1.
-    original_length:   original string length (restores leading CHARSET[0] chars).
+    depth:           0-indexed position of the highest character used in CHARSET.
+                     Encodes which base was used: base_in = depth + 1.
+    original_length: length of the original string (recovers leading spaces).
     compressed_string: the input integer re-encoded in BASE_OUT (CHARSET).
 
-    base_in ≤ BASE_OUT always → output length ≤ input length.
+    base_in ≤ BASE_OUT always → output is always ≤ input length.
     """
     _validate_input(text)
     indices = [_CHAR_TO_IDX[c] for c in text]
-    depth = max(indices)
+    depth = max(indices)          # 0-based, range 0–(BASE_OUT-1)
     base_in = depth + 1
 
-    # Encode to big integer (Horner's method)
+    # Encode as big integer (Horner's method)
     N = 0
     for idx in indices:
         N = N * base_in + idx
