@@ -1,109 +1,110 @@
 #!/usr/bin/env python3
 """
-Compression comparison benchmark.
+Babel Compression — honest byte-level benchmark.
+
+All sizes are in BYTES. Babel output is measured as a compact 10-bit packed
+binary (8-byte header + ceil(n_symbols * 10 / 8) bytes), not as a UTF-8
+Unicode string. This is the fair apples-to-apples comparison.
 
 Compares:
-  1. Babel (ASCII-ordered charset)
-  2. Babel (frequency-ordered charset)
-  3. zlib  (deflate)
-  4. bz2
-  5. lzma  (xz)
+  Babel       — ASCII-ordered CHARSET, 10-bit packed
+  Babel-FREQ  — frequency-ordered CHARSET, 10-bit packed
+  zlib-9      — deflate, max compression
+  bz2-9       — bzip2, max compression
+  lzma        — LZMA/xz
+
+Roundtrip: every Babel result is decoded back and verified against the original.
 """
 
 import zlib, bz2, lzma, math
-from babel.codec import compress, decompress, CHARSET, BASE_OUT, _CHAR_TO_IDX
-from babel.codec_freq import compress_freq, decompress_freq, FREQ_CHARSET, FREQ_BASE_OUT, _FREQ_CHAR_TO_IDX
-from babel.charset_freq import freq_charset_info
-from babel.generator import generate
+from babel.codec      import compress,      decompress,      BASE_OUT,      _CHAR_TO_IDX
+from babel.codec_freq import compress_freq, decompress_freq, FREQ_BASE_OUT, _FREQ_CHAR_TO_IDX
+from babel.packing    import (encode_packed, decode_packed,
+                               BITS_PER_SYMBOL, HEADER_BYTES, total_packed_size)
+from babel.generator  import generate
 
-LENGTHS = [100, 500, 1000]
-MODES   = ["full", "alphanumeric", "lowercase", "digits"]
-SEED    = 42
-
-
-def pct(compressed_len: int, original_len: int) -> str:
-    saved = (1 - compressed_len / original_len) * 100
-    return f"{saved:+.1f}%"
+SEED = 42
 
 
-def babel_depth_label(text: str, char_to_idx: dict) -> str:
-    depth = max(char_to_idx[c] for c in text)
-    return f"depth={depth} base_in={depth+1}"
+def pct(comp: int, orig: int) -> str:
+    return f"{(1 - comp / orig) * 100:>+6.1f}%"
 
 
-def run_benchmark() -> None:
-    print("=" * 100)
-    print("CHARSET INFO")
-    print(f"  ASCII-ordered : {BASE_OUT} symbols  (space=0, e=69, t=84, z=90, ~=94, …Greek…)")
-    print(f"  Freq-ordered  : {freq_charset_info()}")
-    print("=" * 100)
+def run(n: int, text: str, label: str) -> None:
+    # Filter to valid CHARSET chars and truncate
+    text = "".join(c for c in text if c in _CHAR_TO_IDX)[:n]
+    n    = len(text)
+    raw  = text.encode("utf-8")       # original bytes (ASCII = 1 byte/char)
 
-    for mode in MODES:
-        print(f"\n{'━'*100}")
-        print(f"  MODE: {mode.upper()}")
-        print(f"{'━'*100}")
-        header = (
-            f"  {'Length':>6}  "
-            f"{'Babel-ASCII':>22}  "
-            f"{'Babel-FREQ':>22}  "
-            f"{'zlib':>10}  "
-            f"{'bz2':>10}  "
-            f"{'lzma':>10}  "
-            f"  Accuracy"
-        )
-        print(header)
-        print("  " + "-" * 96)
+    # ── Babel ASCII-ordered ───────────────────────────────────────────────────
+    depth_a, length_a, comp_str_a = compress(text)
+    packed_a   = encode_packed(depth_a, length_a, comp_str_a)
+    d2_a, l2_a, cs2_a = decode_packed(packed_a)
+    ok_a = "✓" if decompress(d2_a, l2_a, cs2_a) == text else "✗"
 
-        for length in LENGTHS:
-            text = generate(length, mode=mode, seed=SEED)
-            raw = text.encode("utf-8")
+    # ── Babel FREQ-ordered ────────────────────────────────────────────────────
+    text_f = "".join(c for c in text if c in _FREQ_CHAR_TO_IDX)
+    depth_f, length_f, comp_str_f = compress_freq(text_f)
+    # Use same packing (BASE_OUT == FREQ_BASE_OUT == 948)
+    packed_f   = encode_packed(depth_f, length_f, comp_str_f)
+    d2_f, l2_f, cs2_f = decode_packed(packed_f)
+    ok_f = "✓" if decompress_freq(d2_f, l2_f, cs2_f) == text_f else "✗"
 
-            # ── Babel ASCII-ordered ───────────────────────────────────────────
-            depth_a, orig_len, comp_a = compress(text)
-            rev_a = decompress(depth_a, orig_len, comp_a)
-            base_in_a = depth_a + 1
+    # ── Standard compressors ──────────────────────────────────────────────────
+    zl = len(zlib.compress(raw, level=9))
+    bz = len(bz2.compress(raw, compresslevel=9))
+    lz = len(lzma.compress(raw))
 
-            # ── Babel freq-ordered ────────────────────────────────────────────
-            depth_f, _, comp_f = compress_freq(text)
-            rev_f = decompress_freq(depth_f, orig_len, comp_f)
-            base_in_f = depth_f + 1
+    pa = len(packed_a)
+    pf = len(packed_f)
 
-            # ── Standard compressors (byte length of compressed output) ───────
-            zlib_len  = len(zlib.compress(raw, level=9))
-            bz2_len   = len(bz2.compress(raw, compresslevel=9))
-            lzma_len  = len(lzma.compress(raw))
-
-            ok_a = "✓" if rev_a == text else "✗"
-            ok_f = "✓" if rev_f == text else "✗"
-
-            babel_a = f"{len(comp_a):4d}ch {pct(len(comp_a), length):>7} (b{base_in_a})"
-            babel_f = f"{len(comp_f):4d}ch {pct(len(comp_f), length):>7} (b{base_in_f})"
-            z_col   = f"{zlib_len:4d}B {pct(zlib_len, length):>6}"
-            bz_col  = f"{bz2_len:4d}B {pct(bz2_len, length):>6}"
-            lz_col  = f"{lzma_len:4d}B {pct(lzma_len, length):>6}"
-
-            print(
-                f"  {length:>6}  "
-                f"{babel_a:>22}  "
-                f"{babel_f:>22}  "
-                f"{z_col:>10}  "
-                f"{bz_col:>10}  "
-                f"{lz_col:>10}  "
-                f"  {ok_a}/{ok_f}"
-            )
-
-        # Show the freq-ordered depth advantage for a sample word
-        sample = generate(50, mode=mode, seed=SEED)
-        d_ascii = max(_CHAR_TO_IDX[c] for c in sample if c in _CHAR_TO_IDX)
-        d_freq  = max(_FREQ_CHAR_TO_IDX[c] for c in sample if c in _FREQ_CHAR_TO_IDX)
-        print(
-            f"\n  Sample (50 chars): ASCII depth={d_ascii} base_in={d_ascii+1}  |  "
-            f"FREQ depth={d_freq} base_in={d_freq+1}  |  "
-            f"theoretical FREQ gain: "
-            f"{(1 - math.log(d_freq+1)/math.log(FREQ_BASE_OUT))*100:.1f}% vs "
-            f"{(1 - math.log(d_ascii+1)/math.log(BASE_OUT))*100:.1f}% ASCII"
-        )
+    print(
+        f"  {n:>8,}  "
+        f"{pa:>6}B {pct(pa,n)}  {ok_a}  "
+        f"{pf:>6}B {pct(pf,n)}  {ok_f}  "
+        f"{zl:>6}B {pct(zl,n)}  "
+        f"{bz:>6}B {pct(bz,n)}  "
+        f"{lz:>6}B {pct(lz,n)}  "
+        f"d={depth_a+1:<4} {len(set(text))}dist"
+    )
 
 
-if __name__ == "__main__":
-    run_benchmark()
+HDR = (
+    f"  {'Chars':>8}  "
+    f"{'Babel (packed)':>16}      "
+    f"{'Babel-FREQ (packed)':>20}    "
+    f"{'zlib-9':>14}  "
+    f"{'bz2-9':>14}  "
+    f"{'lzma':>14}"
+)
+SEP = "  " + "─" * 112
+
+LENGTHS = [1_000, 2_500, 5_000, 10_000]
+
+print(f"\nSymbol library : {BASE_OUT} symbols, {BITS_PER_SYMBOL} bits/symbol, {HEADER_BYTES}-byte header")
+print(f"Packed size    : 8 + ceil(n_symbols × {BITS_PER_SYMBOL} / 8) bytes\n")
+
+print("=" * 116)
+print("RANDOM FULL ASCII  (95 printable chars, uniformly random — no statistical patterns)")
+print("=" * 116)
+print(HDR); print(SEP)
+for n in LENGTHS:
+    run(n, generate(n, mode="full", seed=SEED), "random")
+
+pp = open("/tmp/pride_prejudice.txt", encoding="utf-8", errors="ignore").read()
+print()
+print("=" * 116)
+print("PRIDE & PREJUDICE — Jane Austen  (Project Gutenberg — structured English prose)")
+print("=" * 116)
+print(HDR); print(SEP)
+for n in LENGTHS:
+    run(n, pp, "pp")
+
+md = open("/tmp/moby_dick.txt", encoding="utf-8", errors="ignore").read()
+print()
+print("=" * 116)
+print("MOBY DICK — Herman Melville  (Project Gutenberg — structured English prose)")
+print("=" * 116)
+print(HDR); print(SEP)
+for n in LENGTHS:
+    run(n, md, "md")

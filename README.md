@@ -8,75 +8,110 @@ A repository for compression and sorting algorithm research.
 
 ### 1. Babel Compression (`babel/`)
 
-**Status: Active research — core algorithm working, frequency-charset variant in progress.**
+**Status: Active research — core algorithm working, honest byte-level benchmarking complete.**
 
 #### Concept
 
-Babel Compression is a lossless text compressor based on large-number base conversion — inspired by the Library of Babel (the idea that any text can be represented as a position in an arbitrarily large indexed library).
+Babel Compression is a lossless text compressor based on large-number base conversion — inspired by the Library of Babel (any text can be represented as a position in an arbitrarily large indexed library).
 
 The algorithm:
-1. Take the input string and find its **depth** — the highest index of any character in the shared symbol library (CHARSET).
+1. Find the input **depth** — the highest index of any character in the shared symbol library (CHARSET).
 2. Treat the input string as a **big integer** where each character is a digit in `base_in = depth + 1`.
-3. Re-encode that integer in `base_out = len(CHARSET)` — a much larger base using an extended Unicode symbol set.
-4. Because `base_in ≤ base_out` always, the output string is always shorter than or equal to the input.
+3. Re-encode that integer in `base_out = len(CHARSET)` — a much larger base.
+4. Because `base_in ≤ base_out` always, the output has fewer *symbols* than the input.
 
-The compression key is just two small integers: `(depth, original_length)`.
+The compression key is two small integers: `(depth, original_length)`.
 
 #### Symbol Library
 
-The current CHARSET is all printable Unicode characters from Basic Latin through the Greek block — **948 symbols** total (`U+0020` → `U+03FF`). This is the shared "library" that both encoder and decoder must agree on. Adding more symbols to the library increases `base_out` and improves compression for all existing inputs — hence "Babel".
+The CHARSET is all printable Unicode characters from Basic Latin through the Greek block — **948 symbols** (`U+0020` → `U+03FF`). This is the shared "library" both encoder and decoder must agree on. Adding more symbols increases `base_out` and improves compression for all inputs — hence "Babel".
 
-#### Compression Results (full random ASCII input, all 95 printable chars)
+#### Honest Byte Measurement
 
-| Length | Babel | zlib | bz2 | lzma |
-|-------:|------:|-----:|----:|-----:|
-| 100 | **+33.0%** | −8.0% | −50.0% | −56.0% |
-| 500 | **+33.4%** | +11.0% | −5.0% | −3.2% |
-| 1,000 | **+33.5%** | +14.3% | +3.0% | +6.0% |
-| 5,000 | **+33.6%** | +16.5% | +13.4% | +14.2% |
-| 100,000 | **+33.6%** | +16.8% | +17.0% | +16.2% |
-
-Babel delivers a stable **~33.6% savings at every scale** on random ASCII. Standard compressors plateau at ~16–17% on random data because they rely on statistical patterns that don't exist in random input. Babel's savings are structural — a mathematical consequence of base conversion.
-
-Compression ratio converges quickly with length and holds precisely. The theoretical savings for any input is:
+Babel's output is a sequence of symbols from the 948-symbol CHARSET. For a fair byte-level comparison against standard compressors, symbols are packed as **10-bit integers** (`ceil(log₂(948)) = 10`) into a binary blob with an 8-byte header:
 
 ```
-savings = 1 - log(base_in) / log(base_out)
+[0:2]  BASE_OUT       uint16   — library version
+[2:4]  depth          uint16   — encodes base_in
+[4:8]  original_length uint32  — restores leading characters
+[8:]   symbol indices  10 bits each, MSB-first
 ```
+
+Total size: `8 + ceil(n_symbols × 10 / 8)` bytes.
+
+#### Benchmark Results
+
+**Random full ASCII** (95 printable chars, uniform random — no statistical patterns):
+
+| Chars | Babel (packed) | Babel-FREQ (packed) | zlib-9 | bz2-9 | lzma |
+|------:|---------------:|--------------------:|-------:|------:|-----:|
+| 1,000 | 840B **+16.0%** ✓ | 840B **+16.0%** ✓ | 857B +14.3% | 970B +3.0% | 940B +6.0% |
+| 5,000 | 4,161B **+16.8%** ✓ | 4,161B **+16.8%** ✓ | 4,174B +16.5% | 4,331B +13.4% | 4,288B +14.2% |
+| 10,000 | 8,313B **+16.9%** ✓ | 8,313B **+16.9%** ✓ | 8,329B +16.7% | 8,430B +15.7% | 8,476B +15.2% |
+
+On truly random data, Babel matches zlib and beats bz2/lzma at all lengths. Standard compressors rely on statistical patterns (word repetition, byte frequency skew) that don't exist in random input. Babel's savings are structural — a direct result of base conversion — and hold regardless of randomness.
+
+**Structured English prose** (Pride & Prejudice, Project Gutenberg):
+
+| Chars | Babel (packed) | Babel-FREQ (packed) | zlib-9 | bz2-9 | lzma |
+|------:|---------------:|--------------------:|-------:|------:|-----:|
+| 1,000 | 830B +17.0% ✓ | 836B +16.4% ✓ | 288B **+71.2%** | 325B +67.5% | 356B +64.4% |
+| 5,000 | 4,675B +6.5% ✓ | 4,676B +6.5% ✓ | 2,246B **+55.1%** | 2,218B +55.6% | 2,312B +53.8% |
+| 10,000 | 9,342B +6.6% ✓ | 9,342B +6.6% ✓ | 4,443B **+55.6%** | 4,192B +58.1% | 4,400B +56.0% |
+
+Standard compressors win decisively on structured text by exploiting word and phrase repetition — redundancy that base conversion is blind to. Babel's savings also degrade when rare characters push `depth` higher (a single uncommon character raises `base_in` for the entire document).
+
+#### Key Findings
+
+| Input type | Babel | Standard best | Winner |
+|---|---|---|---|
+| Random ASCII | ~17% | ~17% (zlib) | **Tie** |
+| Structured prose | ~7–17% | ~55–71% | **Standard** |
+| Digits only | ~52% (symbol savings) | ~50% (bz2) | **Tie** |
+
+**Babel's structural advantage:** For random or near-random data it matches the best general-purpose compressors with a far simpler algorithm and no statistical analysis. It is purely mathematical.
+
+**Babel's limitation:** Single high-index characters poison the depth, inflating `base_in` toward `base_out` and collapsing savings. One rare character in a large document can drop compression from 17% to near 0%.
 
 #### Frequency-Ordered Charset (branch: `freq-ordered-charset`)
 
-A variant CHARSET ordered by English letter frequency (`e=0, t=1, a=2, ...`) instead of ASCII code point order. Because common letters get low indices, typical English prose has a much lower depth and smaller `base_in`:
+A CHARSET variant ordered by English letter frequency (`e=0, t=1, a=2, ...`). Common letters get low indices, lowering `depth` for typical prose:
 
 | Input type | ASCII-ordered | Freq-ordered |
 |---|---|---|
-| Lowercase text | +34% (base_in=91) | **+52%** (base_in=26) |
-| Alphanumeric | +34% (base_in=91) | **+37%** (base_in=74) |
-| Full random ASCII | +33% | +33% (no difference — all chars appear) |
-| Digits only | **+52%** (base_in=26) | +37% (base_in=74) — worse |
+| Lowercase text | ~17% byte savings | **~22% byte savings** |
+| Moby Dick (5k chars) | +17.6% | **+19.2%** |
+| Full random ASCII | ~17% | ~17% (no difference) |
 
-Frequency ordering is a trade-off: it improves compression for text matching the frequency assumptions, and hurts for content that doesn't.
+#### Correctness
 
-#### Accuracy
-
-All compression is fully lossless. A Hypothesis-based property test (`tests/test_roundtrip.py`) verifies `decompress(compress(s)) == s` for 500+ random inputs across the full CHARSET.
+All compression is fully lossless. A Hypothesis-based property test (`tests/test_roundtrip.py`) verifies `decompress(compress(s)) == s` for 500+ random inputs. The `packing.py` roundtrip (pack → decode_packed → decompress) is also verified on every benchmark run.
 
 #### Usage
 
 ```python
 from babel import compress, decompress, analyze
+from babel.packing import encode_packed, decode_packed
 
+# Compress
 depth, length, compressed = compress("Hello, World!")
-original = decompress(depth, length, compressed)
 
+# Pack to bytes (fair byte-level representation)
+blob = encode_packed(depth, length, compressed)
+
+# Unpack and decompress
+depth2, length2, compressed2 = decode_packed(blob)
+original = decompress(depth2, length2, compressed2)
+
+# Analysis
 result = analyze("Hello, World!")
 print(result)
 ```
 
 ```bash
 python3 cli.py compress "Hello, World!"
-python3 cli.py decompress --depth 82 --length 13 "εWQǳȅ̝ȿ"
 python3 cli.py analyze --file input.txt
+python3 benchmark.py
 ```
 
 #### Project Structure
@@ -86,25 +121,27 @@ babel/
   codec.py          # Core algorithm (ASCII-ordered CHARSET)
   codec_freq.py     # Frequency-ordered CHARSET variant
   charset_freq.py   # Frequency-ordered symbol library definition
-  analysis.py       # Compression ratio analysis and reporting
-  generator.py      # Random text corpus generator for benchmarking
+  packing.py        # 10-bit symbol packing for honest byte measurement
+  analysis.py       # Compression ratio analysis
+  generator.py      # Random text corpus generator
   exceptions.py     # BabelInputError, BabelDecodeError
-  __init__.py       # Public API
+  __init__.py
 
 tests/
   test_codec.py       # Deterministic unit tests
   test_roundtrip.py   # Hypothesis property-based roundtrip tests
 
-benchmark.py      # Full comparison: Babel vs zlib/bz2/lzma
-cli.py            # Command-line interface
+benchmark.py      # Byte-level comparison vs zlib/bz2/lzma
+cli.py
 ```
 
 #### Open Questions / Next Steps
 
-- Does frequency ordering of the output CHARSET (not just input mapping) further improve compression?
-- What is the optimal CHARSET ordering for a mixed real-world corpus?
-- Can the compression key `(depth, original_length)` itself be compressed?
-- Extend CHARSET further into Unicode (CJK etc.) for even larger `base_out`.
+- **Depth poisoning:** Filtering or remapping outlier characters before compression to prevent one rare char from collapsing savings.
+- **Larger CHARSET:** Extending into CJK or other Unicode blocks increases `base_out`, improving savings for all inputs.
+- **Optimal ordering:** What CHARSET ordering minimises depth for a target corpus?
+- **Key compression:** Can `(depth, original_length)` itself be compressed?
+- **O(n²) performance:** The big-integer encoding is quadratic in input length. At ~10k characters it takes ~100ms; at 100k chars it would take minutes. A chunked encoding strategy would fix this.
 
 ---
 
