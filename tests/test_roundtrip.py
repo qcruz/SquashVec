@@ -1,49 +1,45 @@
 """
 Property-based roundtrip tests using Hypothesis.
-The core invariant: decompress(compress(s)) == s for all valid inputs.
+Core invariant: decompress(*compress(s)) == s for all valid inputs.
 """
 
-import pytest
 from hypothesis import given, settings, strategies as st
-from babel.codec import compress, decompress, BASE_OUT
+from babel.codec import compress, decompress, BASE_OUT, CHARSET
 
-printable_ascii = st.text(
-    alphabet=st.characters(min_codepoint=32, max_codepoint=126),
-    min_size=1,
-    max_size=500,
-)
+# Any character in our CHARSET
+babel_chars = st.sampled_from(CHARSET)
+babel_text = st.text(alphabet=babel_chars, min_size=1, max_size=500)
 
 
-@given(printable_ascii)
+@given(babel_text)
 @settings(max_examples=500)
 def test_roundtrip(s):
-    depth, compressed = compress(s)
-    recovered = decompress(depth, compressed)
+    depth, length, compressed = compress(s)
+    recovered = decompress(depth, length, compressed)
     assert recovered == s
 
 
-@given(printable_ascii)
-def test_depth_invariant(s):
-    depth, _ = compress(s)
-    assert depth == max(ord(c) for c in s)
-    assert 32 <= depth <= 126
+@given(babel_text)
+def test_depth_is_max_charset_index(s):
+    from babel.codec import _CHAR_TO_IDX
+    depth, _, _ = compress(s)
+    expected = max(_CHAR_TO_IDX[c] for c in s)
+    assert depth == expected
+    assert 0 <= depth <= BASE_OUT - 1
 
 
-@given(printable_ascii)
-def test_compressed_is_printable_ascii(s):
-    _, compressed = compress(s)
-    assert all(32 <= ord(c) <= 126 for c in compressed)
+@given(babel_text)
+def test_base_in_leq_base_out(s):
+    depth, _, _ = compress(s)
+    assert depth + 1 <= BASE_OUT
+
+
+@given(babel_text)
+def test_compressed_chars_in_charset(s):
+    from babel.codec import _CHAR_TO_IDX
+    _, _, compressed = compress(s)
+    assert all(c in _CHAR_TO_IDX for c in compressed)
     assert len(compressed) >= 1
-
-
-@given(printable_ascii)
-def test_compression_ratio_narrow_charset(s):
-    # Strings using only digits (max ord 57, base_in 58 < base_out 95)
-    # should compress for length >= 2
-    digits_only = st.text(
-        alphabet=st.characters(min_codepoint=48, max_codepoint=57),
-        min_size=3,
-    )
 
 
 @given(st.text(
@@ -51,8 +47,8 @@ def test_compression_ratio_narrow_charset(s):
     min_size=3,
     max_size=200,
 ))
-def test_digit_strings_compress(s):
-    depth, compressed = compress(s)
-    # base_in=58, base_out=95: ratio should be < 1 for strings of length >= 3
+def test_digit_strings_always_compress(s):
+    # digits: CHARSET index 16-25, base_in≤26 << BASE_OUT → strong compression
+    depth, length, compressed = compress(s)
     assert len(compressed) <= len(s)
-    assert decompress(depth, compressed) == s
+    assert decompress(depth, length, compressed) == s

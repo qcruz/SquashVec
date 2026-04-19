@@ -3,7 +3,7 @@ Compression analysis and reporting.
 """
 
 from dataclasses import dataclass
-from .codec import compress
+from .codec import compress, CHARSET, BASE_OUT
 
 
 @dataclass
@@ -20,22 +20,26 @@ class CompressionResult:
     savings_pct: float
 
     def __str__(self) -> str:
-        direction = "compressed" if self.savings_pct > 0 else "expanded"
+        direction = "compressed" if self.savings_pct > 0 else "no change"
+        deepest_char = CHARSET[self.depth]
         return (
-            f"Original:    {self.original_len} chars  (base {self.base_in}, depth={self.depth})\n"
-            f"Compressed:  {self.compressed_len} chars  (+1 byte depth header = {self.effective_len} effective)\n"
-            f"Ratio:       {self.ratio:.4f}  →  {abs(self.savings_pct):.2f}% {direction}\n"
-            f"Depth:       {self.depth}  ('{chr(self.depth)}')\n"
-            f"Output:      {repr(self.compressed)}"
+            f"Input text:    {repr(self.original)}\n"
+            f"ASCII depth:   {self.depth}  (deepest char: '{deepest_char}' = U+{ord(deepest_char):04X})\n"
+            f"Base in:       {self.base_in}  →  Base out: {BASE_OUT}\n"
+            f"Original len:  {self.original_len} chars\n"
+            f"Compressed:    {self.compressed}  ({self.compressed_len} chars)\n"
+            f"Ratio:         {self.ratio:.4f}  →  {abs(self.savings_pct):.2f}% {direction}"
         )
 
 
 def analyze(text: str) -> CompressionResult:
-    depth, compressed = compress(text)
+    depth, original_length, compressed = compress(text)
     base_in = depth + 1
     orig_len = len(text)
     comp_len = len(compressed)
-    effective = comp_len + 1  # 1 byte for depth header
+    # key overhead: depth (1 byte, range 0-94) + length (varint, ~1-4 bytes)
+    # simplified here as 2 bytes overhead
+    effective = comp_len + 2
     ratio = effective / orig_len
     savings = (1 - ratio) * 100
     return CompressionResult(

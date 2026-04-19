@@ -1,107 +1,129 @@
 """
 Babel Compression Codec
 =======================
-Core algorithm: treat input text as a big integer in base (max_ascii + 1),
-then re-encode it in base 95 (printable ASCII 32–126).
+Each character is mapped to its 0-indexed position in the CHARSET — an
+ordered list of printable Unicode characters (Basic Latin through Greek):
 
-Compression key: (depth, compressed_string)
-  - depth: highest ASCII value in the original text (determines base_in)
-  - compressed_string: the integer re-encoded in base 95
+  space=0, !=1, "=2, ... A=33, ... z=90, ... ~=94,
+  ¡=95, ¢=96, ... ÿ=188, Ā=189, ... ω=947, ...
 
-Compression is lossless. Ratio improves as the input character set narrows
-(lower depth → smaller base_in → more symbols needed → bigger integer →
-bigger efficiency gain when re-encoded in the wider base-95 alphabet).
+The input string is treated as a big integer where each character is a digit:
+
+  base_in  = depth + 1,  where depth = max position index among input chars
+  base_out = len(CHARSET)
+
+Because base_in ≤ BASE_OUT always, re-encoding produces a shorter (or
+equal-length) string. The wider the output alphabet, the more it compresses.
+
+Compression key: (depth, original_length)
+  depth           — highest CHARSET index used (determines base_in for decoding)
+  original_length — recovers leading CHARSET[0] characters (leading zeros)
 """
 
 from .exceptions import BabelInputError, BabelDecodeError
 
-# Output base: printable ASCII 32–126
-BASE_OUT = 95
-OFFSET_OUT = 32  # digit 0 → chr(32) = ' ', digit 94 → chr(126) = '~'
+# ── Symbol library ────────────────────────────────────────────────────────────
+# Printable Unicode from Basic Latin through Greek block (U+0020–U+03FF).
+# chr.isprintable() filters out control chars, surrogates, and unassigned points.
+CHARSET: list[str] = [chr(i) for i in range(0x0020, 0x0400) if chr(i).isprintable()]
+BASE_OUT: int = len(CHARSET)
+
+# Fast lookup: character → 0-based index in CHARSET
+_CHAR_TO_IDX: dict[str, int] = {ch: i for i, ch in enumerate(CHARSET)}
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def charset_info() -> str:
+    return (
+        f"CHARSET: {BASE_OUT} symbols  "
+        f"(U+{ord(CHARSET[0]):04X} '{CHARSET[0]}' … "
+        f"U+{ord(CHARSET[-1]):04X} '{CHARSET[-1]}')"
+    )
 
 
 def _validate_input(s: str) -> None:
     if not s:
         raise BabelInputError("Input string must not be empty.")
-    bad = [c for c in s if not (32 <= ord(c) <= 126)]
+    bad = [c for c in s if c not in _CHAR_TO_IDX]
     if bad:
         raise BabelInputError(
-            f"Input contains characters outside printable ASCII 32–126: "
-            f"{[repr(c) for c in bad]}"
+            f"Input contains characters outside CHARSET: "
+            f"{[repr(c) for c in bad[:5]]}"
         )
 
 
 def _validate_compressed(s: str) -> None:
     if not s:
         raise BabelDecodeError("Compressed string must not be empty.")
-    bad = [c for c in s if not (32 <= ord(c) <= 126)]
+    bad = [c for c in s if c not in _CHAR_TO_IDX]
     if bad:
         raise BabelDecodeError(
-            f"Compressed string contains characters outside printable ASCII 32–126: "
-            f"{[repr(c) for c in bad]}"
+            f"Compressed string contains characters outside CHARSET: "
+            f"{[repr(c) for c in bad[:5]]}"
         )
 
 
-def _str_to_int(s: str, base: int) -> int:
+def compress(text: str) -> tuple[int, int, str]:
     """
-    Interpret s as a big integer where each character's ASCII value is a digit
-    in the given base (Horner's method, O(n) multiplications).
-    """
-    N = 0
-    for ch in s:
-        N = N * base + ord(ch)
-    return N
+    Compress text → (depth, original_length, compressed_string).
 
+    depth:             0-indexed position of the highest character in CHARSET.
+                       base_in = depth + 1.
+    original_length:   original string length (restores leading CHARSET[0] chars).
+    compressed_string: the input integer re-encoded in BASE_OUT (CHARSET).
 
-def _int_to_str(N: int, base: int, offset: int) -> str:
-    """
-    Convert integer N to a string of characters where digit d maps to
-    chr(d + offset). The base is the number of symbols.
-    """
-    if N == 0:
-        return chr(offset)
-    digits = []
-    while N > 0:
-        N, remainder = divmod(N, base)
-        digits.append(chr(remainder + offset))
-    return "".join(reversed(digits))
-
-
-def compress(text: str) -> tuple[int, str]:
-    """
-    Compress text into (depth, compressed_string).
-
-    depth:             highest ASCII value of any character in text
-    compressed_string: text re-encoded as a base-95 number (printable ASCII)
-
-    Compression ratio = len(compressed_string) / len(text)
-    Ratio < 1 when depth < 126 (input doesn't use the full printable range).
+    base_in ≤ BASE_OUT always → output length ≤ input length.
     """
     _validate_input(text)
-    depth = max(ord(c) for c in text)
-    base_in = depth + 1  # all ordinal values are valid digits (0 .. depth)
-    N = _str_to_int(text, base_in)
-    compressed = _int_to_str(N, BASE_OUT, OFFSET_OUT)
-    return (depth, compressed)
+    indices = [_CHAR_TO_IDX[c] for c in text]
+    depth = max(indices)
+    base_in = depth + 1
+
+    # Encode to big integer (Horner's method)
+    N = 0
+    for idx in indices:
+        N = N * base_in + idx
+
+    # Re-encode in BASE_OUT
+    if N == 0:
+        compressed = CHARSET[0]
+    else:
+        digits: list[str] = []
+        M = N
+        while M > 0:
+            M, r = divmod(M, BASE_OUT)
+            digits.append(CHARSET[r])
+        compressed = "".join(reversed(digits))
+
+    return (depth, len(text), compressed)
 
 
-def decompress(depth: int, compressed: str) -> str:
+def decompress(depth: int, original_length: int, compressed: str) -> str:
     """
-    Recover original text from (depth, compressed_string).
-
-    depth must be the value returned by compress() for the original input.
+    Recover original text from (depth, original_length, compressed_string).
     """
-    if not (32 <= depth <= 126):
-        raise BabelDecodeError(
-            f"depth must be in range 32–126, got {depth}."
-        )
+    max_depth = BASE_OUT - 1
+    if not (0 <= depth <= max_depth):
+        raise BabelDecodeError(f"depth must be in range 0–{max_depth}, got {depth}.")
+    if original_length < 1:
+        raise BabelDecodeError(f"original_length must be >= 1, got {original_length}.")
     _validate_compressed(compressed)
     base_in = depth + 1
-    # Decode the base-95 string back to an integer.
-    # Each compressed character: digit = ord(ch) - OFFSET_OUT
+
+    # Decode base-BASE_OUT string → integer
     N = 0
     for ch in compressed:
-        N = N * BASE_OUT + (ord(ch) - OFFSET_OUT)
-    # Re-encode the integer in base_in; digits are raw ASCII code points (offset=0)
-    original = _int_to_str(N, base_in, offset=0)
-    return original
+        N = N * BASE_OUT + _CHAR_TO_IDX[ch]
+
+    # Decode integer → CHARSET indices in base_in
+    indices: list[int] = []
+    while N > 0:
+        N, r = divmod(N, base_in)
+        indices.append(r)
+    indices.reverse()
+
+    # Restore leading zeros (CHARSET[0] = space) lost in integer conversion
+    padding = original_length - len(indices)
+    indices = [0] * padding + indices
+
+    return "".join(CHARSET[i] for i in indices)
