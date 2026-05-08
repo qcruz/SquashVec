@@ -18,16 +18,35 @@ This is a living document. Pick up from wherever the checkboxes leave off.
 - [ ] Define the verification protocol (how is output quality checked?)
 - [ ] Define the reputation scoring formula
 
-### 0.2 Local Model Research -- HIGH PRIORITY
+### 0.2 Local Model & Agent -- COMPLETE (v1)
 - [x] Identify best free open-source models for local use
 - [x] Write step-by-step local model setup guide (Ollama)
-- [ ] Test guide on macOS (Apple Silicon)
-- [ ] Test guide on macOS (Intel)
-- [ ] Test guide on Windows
-- [ ] Test guide on Linux
-- [ ] Identify minimum hardware requirements per model tier
-- [ ] Document which models are best for which task types (coding, writing, analysis, etc.)
+- [x] Install and verify Ollama on macOS Apple Silicon (16GB M-series)
+- [x] Download and verify llama3.1:8b model
+- [x] Write Ollama deep-dive explainer (risks, limitations, architecture)
+- [x] Build agent.py -- interactive tool-calling chat with file + git access
+- [x] Tools implemented: read_file, write_file, list_directory, git_commit, git_push
+- [x] Shell alias `openwork` configured
+- [x] Write agent system overview and future roadmap (docs/agent/overview.md)
+- [ ] Test setup guide on macOS (Intel)
+- [ ] Test setup guide on Windows
+- [ ] Test setup guide on Linux
+- [ ] Evaluate additional models for specific task types (coding, analysis, etc.)
 - [ ] Evaluate model performance vs. resource usage tradeoffs
+
+### 0.2.1 Agent System -- Next Steps (see docs/agent/overview.md for full detail)
+- [ ] API authentication on Ollama local endpoint
+- [ ] Path sandboxing for read_file / write_file (restrict to repo workspace)
+- [ ] Tool call allowlisting per session/task type
+- [ ] Audit logging for all tool calls
+- [ ] patch_file tool (diff-based edits instead of full overwrite)
+- [ ] search_files tool (grep across repo)
+- [ ] run_python / run_shell tools (sandboxed execution)
+- [ ] web_search and fetch_url tools
+- [ ] Auto-context: detect relevant files without manual -f flag
+- [ ] Persistent memory across sessions (vector store)
+- [ ] Session save/restore (serialize message history)
+- [ ] Retry logic and infinite-loop detection
 
 ### 0.3 Competitive Research
 - [ ] Deep-dive on Bittensor -- what works, what doesn't, what to avoid
