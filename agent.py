@@ -135,7 +135,6 @@ AVAILABLE TOOLS:
 - complete_task(id)                            mark a task done
 - get_next_task()                              claim the next eligible task
 - git_commit(message)                          commit all changes (asks confirmation)
-- git_push()                                   push to GitHub (asks confirmation)
 - run_python(code, timeout)                    execute Python code, return stdout/stderr
 - run_tests(path)                              run pytest, return pass/fail summary
 
@@ -631,7 +630,6 @@ TOOL_DISPATCH = {
     "complete_task":  lambda a: tool_complete_task(a["id"]),
     "get_next_task":  lambda a: tool_get_next_task(),
     "git_commit":     lambda a: tool_git_commit(a["message"]),
-    "git_push":       lambda a: tool_git_push(),
     "run_python":     lambda a: tool_run_python(a["code"], int(a.get("timeout", 30))),
     "run_tests":      lambda a: tool_run_tests(a.get("path", ".")),
 }
@@ -770,14 +768,6 @@ TOOLS = [
                 },
                 "required": ["message"],
             },
-        },
-    },
-    {
-        "type": "function",
-        "function": {
-            "name": "git_push",
-            "description": "Push committed changes to GitHub. Will ask user for confirmation.",
-            "parameters": {"type": "object", "properties": {}, "required": []},
         },
     },
     {
