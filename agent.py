@@ -38,50 +38,60 @@ import urllib.request
 
 OLLAMA_CHAT_URL   = "http://localhost:11434/api/chat"
 DEFAULT_MODEL     = "llama3.1"
-REPO_ROOT         = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT         = os.getcwd()           # always the directory where openwork is run
 TASKS_FILE        = os.path.join(REPO_ROOT, ".openwork", "tasks.json")
 MAX_TOOL_CALLS    = 20          # per turn, prevents infinite loops
 COMPACT_THRESHOLD = 120_000     # estimated chars before auto-compact
 COMPACT_KEEP_TAIL = 6           # number of recent messages to keep as-is
 
-# Files auto-read on 'continue' to orient the agent
-ORIENT_FILES = ["README.md", "docs/ROADMAP.md"]
+# Candidate files to auto-read on 'continue' -- first match per group wins
+ORIENT_CANDIDATES = [
+    # Project description
+    "README.md", "README.rst", "README.txt", "README",
+    # Roadmap / planning
+    "docs/ROADMAP.md", "ROADMAP.md", "TODO.md", "TASKS.md",
+    # Project config (for project-type detection)
+    "pyproject.toml", "setup.py", "package.json", "Cargo.toml", "go.mod",
+]
 
 # ---------------------------------------------------------------------------
 # System prompt (repo manifest injected at startup)
 # ---------------------------------------------------------------------------
 
 SYSTEM_PROMPT_TEMPLATE = """\
-You are a software development assistant working on the OpenWork project.
+You are an expert software development assistant.
 
-OpenWork is a distributed cognition marketplace: a network where AI agents act as
-autonomous workers completing tasks submitted by users, with reputation-based economic
-coordination and adversarial output verification.
+PROJECT: {project_name}
+LOCATION: {project_root}
+TYPE: {project_type}
 
-CURRENT REPOSITORY STRUCTURE:
+{project_description}
+
+CURRENT FILE STRUCTURE:
 {manifest}
 
 AVAILABLE TOOLS:
-- read_file(path)                    read a file from the repo
-- write_file(path, content)          create or overwrite a file
-- patch_file(path, old_text, new)    replace first occurrence of old_text in a file
-- list_directory(path)               list directory contents
-- add_task(description)              add a task to the queue
-- list_tasks()                       show all tasks in the queue
-- complete_task(id)                  mark a task as done
-- get_next_task()                    get the next pending task
-- git_commit(message)                commit all changes (requires confirmation)
-- git_push()                         push to GitHub (requires confirmation)
+- read_file(path)                         read any file in the project
+- write_file(path, content)               create or overwrite any file
+- patch_file(path, old_text, new_text)    replace first occurrence of text in a file
+- search_files(query, directory, pattern) search file contents for a string
+- list_directory(path)                    list directory contents
+- add_task(description)                   add a task to the persistent queue
+- list_tasks()                            show the task queue
+- complete_task(id)                       mark a task done
+- get_next_task()                         get and start the next pending task
+- git_commit(message)                     commit all changes (asks confirmation)
+- git_push()                              push to GitHub (asks confirmation)
 
 RULES:
-- Use tools whenever the task involves files or the task queue.
-- When writing files, always write complete content. Never truncate.
-- When editing a file, prefer patch_file for small changes, write_file for rewrites.
-- When you want to save output, call write_file with an appropriate path.
-- Do not delete files. Do not access paths outside the repository.
+- Use tools whenever the task involves files, search, or the task queue.
+- When writing code or any file, always write complete, working content. Never truncate.
+- Match the language, style, and conventions already present in the project.
+- For small edits to existing files, prefer patch_file. For new files or full rewrites, use write_file.
+- Do not delete files. Do not access paths outside the project directory.
 - git_commit and git_push will ask the user for confirmation before executing.
-- If a task is large, break it into subtasks using add_task before starting.
-- Work through tasks one at a time. Mark each complete_task when done.
+- For large tasks, use add_task to break work into steps before starting.
+- Work through tasks one at a time. Call complete_task when each one is done.
 """
 
 # ---------------------------------------------------------------------------
@@ -108,6 +118,80 @@ def build_manifest() -> str:
             tag   = f"{size // 1024}KB" if size >= 1024 else f"{size}B"
             lines.append(f"{'  ' * (depth + 1)}{fname} ({tag})")
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Project detection
+# ---------------------------------------------------------------------------
+
+def detect_project() -> dict:
+    """
+    Inspect the current directory and return a dict describing the project.
+    Used to build a meaningful system prompt for any project, not just OpenWork.
+    """
+    name = os.path.basename(REPO_ROOT)
+
+    # Detect project type from indicator files
+    indicators = {
+        "pyproject.toml": "Python",
+        "setup.py":       "Python",
+        "setup.cfg":      "Python",
+        "requirements.txt": "Python",
+        "package.json":   "JavaScript/TypeScript",
+        "Cargo.toml":     "Rust",
+        "go.mod":         "Go",
+        "pom.xml":        "Java (Maven)",
+        "build.gradle":   "Java (Gradle)",
+        "Gemfile":        "Ruby",
+        "composer.json":  "PHP",
+        "CMakeLists.txt": "C/C++",
+    }
+    project_type = "General"
+    for fname, ptype in indicators.items():
+        if os.path.exists(os.path.join(REPO_ROOT, fname)):
+            project_type = ptype
+            break
+
+    # Try to read a short description from README
+    description = ""
+    for candidate in ["README.md", "README.rst", "README.txt", "README"]:
+        rpath = os.path.join(REPO_ROOT, candidate)
+        if os.path.exists(rpath):
+            try:
+                with open(rpath, "r", encoding="utf-8", errors="ignore") as f:
+                    # First 800 chars is enough for orientation
+                    description = f.read(800).strip()
+                description = f"PROJECT OVERVIEW (from {candidate}):\n{description}"
+            except Exception:
+                pass
+            break
+
+    return {
+        "name":        name,
+        "root":        REPO_ROOT,
+        "type":        project_type,
+        "description": description,
+    }
+
+
+def get_orient_files() -> list:
+    """Return a list of files that exist and are worth loading on 'continue'."""
+    found = []
+    seen_types = set()
+    for candidate in ORIENT_CANDIDATES:
+        # Only load one file per purpose (first README, first roadmap, etc.)
+        purpose = (
+            "readme"   if any(c in candidate.lower() for c in ["readme"]) else
+            "roadmap"  if any(c in candidate.lower() for c in ["roadmap", "todo", "task"]) else
+            "config"
+        )
+        if purpose in seen_types:
+            continue
+        full = os.path.join(REPO_ROOT, candidate)
+        if os.path.exists(full) and os.path.getsize(full) < 200_000:  # skip huge files
+            found.append(candidate)
+            seen_types.add(purpose)
+    return found
 
 
 # ---------------------------------------------------------------------------
@@ -270,6 +354,52 @@ def tool_list_directory(path: str) -> str:
         return f"Error: {e}"
 
 
+def tool_search_files(query: str, directory: str = ".", pattern: str = "*") -> str:
+    """Search file contents for a query string. Returns matching lines with context."""
+    import fnmatch
+    try:
+        search_root = _safe_path(directory)
+    except ValueError as e:
+        return f"Error: {e}"
+
+    results = []
+    matched_files = 0
+    MAX_RESULTS = 50
+
+    for root, dirs, files in os.walk(search_root):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        for fname in sorted(files):
+            if fname in SKIP_FILES:
+                continue
+            if not fnmatch.fnmatch(fname, pattern):
+                continue
+            fpath = os.path.join(root, fname)
+            rel   = os.path.relpath(fpath, REPO_ROOT)
+            try:
+                with open(fpath, "r", encoding="utf-8", errors="ignore") as f:
+                    lines = f.readlines()
+            except Exception:
+                continue
+            file_hits = []
+            for i, line in enumerate(lines, 1):
+                if query.lower() in line.lower():
+                    file_hits.append(f"  {i:>4}: {line.rstrip()}")
+                    if len(file_hits) >= 5:   # max 5 hits per file
+                        file_hits.append("  ...")
+                        break
+            if file_hits:
+                results.append(f"{rel}:\n" + "\n".join(file_hits))
+                matched_files += 1
+                if matched_files >= MAX_RESULTS:
+                    results.append(f"(stopped after {MAX_RESULTS} matching files)")
+                    break
+
+    if not results:
+        return f"No matches for '{query}' in {directory}"
+    print(f"  [search_files] '{query}' → {matched_files} file(s)")
+    return f"Search results for '{query}':\n\n" + "\n\n".join(results)
+
+
 # ---------------------------------------------------------------------------
 # Git tools (with confirmation)
 # ---------------------------------------------------------------------------
@@ -326,6 +456,7 @@ TOOL_DISPATCH = {
     "read_file":      lambda a: tool_read_file(a["path"]),
     "write_file":     lambda a: tool_write_file(a["path"], a["content"]),
     "patch_file":     lambda a: tool_patch_file(a["path"], a["old_text"], a["new_text"]),
+    "search_files":   lambda a: tool_search_files(a.get("query",""), a.get("directory","."), a.get("pattern","*")),
     "list_directory": lambda a: tool_list_directory(a["path"]),
     "add_task":       lambda a: tool_add_task(a["description"]),
     "list_tasks":     lambda a: tool_list_tasks(),
@@ -378,6 +509,22 @@ TOOLS = [
                     "new_text": {"type": "string", "description": "Replacement text"},
                 },
                 "required": ["path", "old_text", "new_text"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_files",
+            "description": "Search file contents for a string. Returns matching lines with file paths and line numbers. Use to find where something is defined, used, or mentioned across the project.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query":     {"type": "string",  "description": "String to search for (case-insensitive)"},
+                    "directory": {"type": "string",  "description": "Directory to search in (default: project root)"},
+                    "pattern":   {"type": "string",  "description": "Filename glob pattern to filter files (e.g. '*.py', '*.md'). Default: all files"},
+                },
+                "required": ["query"],
             },
         },
     },
@@ -755,24 +902,33 @@ def handle_slash(cmd: str, messages: list, loaded_files: list, model: str) -> bo
 # ---------------------------------------------------------------------------
 
 def interactive(model: str, preload_files: list, opening: str = None, continue_mode: bool = False):
+    project  = detect_project()
     manifest = build_manifest()
-    system_prompt = SYSTEM_PROMPT_TEMPLATE.format(manifest=manifest)
+    system_prompt = SYSTEM_PROMPT_TEMPLATE.format(
+        project_name=project["name"],
+        project_root=project["root"],
+        project_type=project["type"],
+        project_description=project["description"],
+        manifest=manifest,
+    )
     messages = [{"role": "system", "content": system_prompt}]
     loaded_files = []
 
-    print(f"\nOpenWork Agent  |  model: {model}")
+    print(f"\nOpenWork Agent  |  {project['name']}  |  {project['type']}  |  model: {model}")
+    print(f"Directory: {REPO_ROOT}")
     print("Type /help for commands, /exit to quit.")
     print("-" * 60)
 
     # Continue mode: auto-load orientation files and task queue
     if continue_mode:
         print("Loading project context...")
-        for path in ORIENT_FILES:
+        for path in get_orient_files():
             content = tool_read_file(path)
             if not content.startswith("Error:"):
                 messages.append({"role": "user",     "content": f"--- FILE: {path} ---\n{content}\n--- END FILE ---"})
                 messages.append({"role": "assistant", "content": f"Loaded {path}."})
                 loaded_files.append(path)
+                print(f"  Loaded {path}")
         # Load task queue summary
         queue_summary = tool_list_tasks()
         messages.append({"role": "user",     "content": f"Current task queue:\n{queue_summary}"})
