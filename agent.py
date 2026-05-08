@@ -40,9 +40,58 @@ OLLAMA_CHAT_URL   = "http://localhost:11434/api/chat"
 DEFAULT_MODEL     = "llama3.1"
 REPO_ROOT         = os.getcwd()           # always the directory where openwork is run
 TASKS_FILE        = os.path.join(REPO_ROOT, ".openwork", "tasks.json")
+SESSION_FILE      = os.path.join(REPO_ROOT, ".openwork", "session.json")
 MAX_TOOL_CALLS    = 20          # per turn, prevents infinite loops
 COMPACT_THRESHOLD = 120_000     # estimated chars before auto-compact
 COMPACT_KEEP_TAIL = 6           # number of recent messages to keep as-is
+
+# ---------------------------------------------------------------------------
+# Model tier system
+# ---------------------------------------------------------------------------
+
+DIFFICULTY_ORDER = ["low", "medium", "high", "critical"]
+
+TIER_MAX_DIFFICULTY = {
+    1: "low",       # small local (≤8B): doc stubs, append-only, simple code additions
+    2: "medium",    # medium local/cloud (13B-34B): new files, refactoring, schemas
+    3: "high",      # large local/cloud (70B+): complex code, architecture
+    4: "critical",  # frontier only: security, auth, payment, irreversible decisions
+}
+
+MODEL_TIER_MAP = [
+    ("70b",        3),
+    ("72b",        3),
+    ("34b",        2),
+    ("13b",        2),
+    ("mixtral",    2),
+    ("codestral",  3),
+    ("mistral",    2),
+    ("gpt-4",      4),
+    ("claude",     4),
+    ("gemini",     4),
+    ("opus",       4),
+    ("sonnet",     3),
+]
+
+
+def get_model_tier(model: str) -> int:
+    m = model.lower()
+    for pattern, tier in MODEL_TIER_MAP:
+        if pattern in m:
+            return tier
+    return 1
+
+
+def can_handle(model: str, difficulty: str) -> bool:
+    tier     = get_model_tier(model)
+    max_diff = TIER_MAX_DIFFICULTY[tier]
+    try:
+        return DIFFICULTY_ORDER.index(difficulty) <= DIFFICULTY_ORDER.index(max_diff)
+    except ValueError:
+        return True
+
+
+_session_model: str = DEFAULT_MODEL
 
 # Candidate files to auto-read on 'continue' -- first match per group wins
 ORIENT_CANDIDATES = [
@@ -70,28 +119,43 @@ TYPE: {project_type}
 CURRENT FILE STRUCTURE:
 {manifest}
 
-AVAILABLE TOOLS:
-- read_file(path)                         read any file in the project
-- write_file(path, content)               create or overwrite any file
-- patch_file(path, old_text, new_text)    replace first occurrence of text in a file
-- search_files(query, directory, pattern) search file contents for a string
-- list_directory(path)                    list directory contents
-- add_task(description)                   add a task to the persistent queue
-- list_tasks()                            show the task queue
-- complete_task(id)                       mark a task done
-- get_next_task()                         get and start the next pending task
-- git_commit(message)                     commit all changes (asks confirmation)
-- git_push()                              push to GitHub (asks confirmation)
+MODEL CAPABILITY:
+You are running as a Tier {model_tier} model. You may work on tasks with difficulty: {max_difficulty} and below.
+Difficulty levels (low → medium → high → critical).
+Call get_next_task() to claim a task — it filters automatically for your tier.
 
-RULES:
-- Use tools whenever the task involves files, search, or the task queue.
-- When writing code or any file, always write complete, working content. Never truncate.
-- Match the language, style, and conventions already present in the project.
-- For small edits to existing files, prefer patch_file. For new files or full rewrites, use write_file.
+AVAILABLE TOOLS:
+- read_file(path)                              read any file in the project
+- write_file(path, content)                    create a NEW file only
+- patch_file(path, old_text, new_text)         edit an existing file by replacing text
+- search_files(query, directory, pattern)      search file contents
+- list_directory(path)                         list directory contents
+- add_task(description, difficulty, category)  add a task to the queue
+- list_tasks()                                 show the task queue
+- complete_task(id)                            mark a task done
+- get_next_task()                              claim the next eligible task
+- git_commit(message)                          commit all changes (asks confirmation)
+- git_push()                                   push to GitHub (asks confirmation)
+- run_python(code, timeout)                    execute Python code, return stdout/stderr
+- run_tests(path)                              run pytest, return pass/fail summary
+
+FILE RULES — READ CAREFULLY:
+- write_file is for CREATING NEW FILES ONLY. Never use it on a file that already exists.
+- To edit an existing file, always use patch_file. Read the file first to get exact text to replace.
+- Before editing any code file: call read_file to read its current contents first.
+- Never truncate file content. Always write complete, working content.
 - Do not delete files. Do not access paths outside the project directory.
+
+TASK RULES:
+- Use tools to complete actions. Never show a tool call as text and ask the user to run it — just run it.
+- For doc stub tasks: create the file with proper headings and placeholder text. Use write_file (new file).
+- For code tasks that add to an existing file: read the file first, then use patch_file to insert the new code.
+- When asked to append to an existing doc: use patch_file to add a new section at the end. Do not rewrite the file.
+- After completing a task, call complete_task(id), then immediately call get_next_task() to continue.
+- Only call run_tests or run_python if the user explicitly asks to run tests or execute code.
+- When asked to summarize the project, read README.md and any ROADMAP file, then respond.
+- Never invent content. Everything you write must come from what you have read.
 - git_commit and git_push will ask the user for confirmation before executing.
-- For large tasks, use add_task to break work into steps before starting.
-- Work through tasks one at a time. Call complete_task when each one is done.
 """
 
 # ---------------------------------------------------------------------------
@@ -211,20 +275,25 @@ def _save_queue(q: dict) -> None:
         json.dump(q, f, indent=2)
 
 
-def tool_add_task(description: str) -> str:
+def tool_add_task(description: str, difficulty: str = "low", category: str = "") -> str:
+    if difficulty not in DIFFICULTY_ORDER:
+        difficulty = "low"
     q = _load_queue()
     task = {
         "id":           q["next_id"],
         "description":  description,
+        "difficulty":   difficulty,
+        "category":     category,
         "status":       "pending",
         "created_at":   datetime.datetime.now().isoformat(),
         "completed_at": None,
+        "claimed_by":   None,
     }
     q["tasks"].append(task)
     q["next_id"] += 1
     _save_queue(q)
-    print(f"  [add_task] #{task['id']}: {description[:60]}")
-    return f"Task #{task['id']} added: {description}"
+    print(f"  [add_task] #{task['id']} [{difficulty}]: {description[:55]}")
+    return f"Task #{task['id']} added [{difficulty}]: {description}"
 
 
 def tool_list_tasks() -> str:
@@ -253,12 +322,29 @@ def tool_complete_task(task_id: int) -> str:
 
 def tool_get_next_task() -> str:
     q = _load_queue()
+    skipped = 0
     for t in q["tasks"]:
-        if t["status"] == "pending":
-            t["status"] = "in_progress"
-            _save_queue(q)
-            print(f"  [get_next_task] #{t['id']}: {t['description'][:60]}")
-            return f"Next task #{t['id']}: {t['description']}"
+        if t["status"] != "pending":
+            continue
+        diff = t.get("difficulty", "low")
+        if not can_handle(_session_model, diff):
+            skipped += 1
+            continue
+        t["status"]     = "in_progress"
+        t["claimed_by"] = _session_model
+        _save_queue(q)
+        cat = f" [{t['category']}]" if t.get("category") else ""
+        print(f"  [get_next_task] #{t['id']} [{diff}]{cat}: {t['description'][:50]}")
+        return (
+            f"Task #{t['id']} [{diff}]{cat}:\n{t['description']}\n\n"
+            f"When done, call complete_task with id={t['id']}."
+        )
+    if skipped:
+        tier = get_model_tier(_session_model)
+        return (
+            f"No eligible tasks for this model (Tier {tier}, max: {TIER_MAX_DIFFICULTY[tier]}). "
+            f"{skipped} task(s) require a higher-capability model."
+        )
     return "No pending tasks in queue."
 
 
@@ -268,14 +354,20 @@ def show_tasks() -> None:
     if not q["tasks"]:
         print("Task queue is empty.")
         return
-    pending  = [t for t in q["tasks"] if t["status"] == "pending"]
-    active   = [t for t in q["tasks"] if t["status"] == "in_progress"]
-    done     = [t for t in q["tasks"] if t["status"] == "done"]
+    pending = [t for t in q["tasks"] if t["status"] == "pending"]
+    active  = [t for t in q["tasks"] if t["status"] == "in_progress"]
+    done    = [t for t in q["tasks"] if t["status"] == "done"]
+    tier     = get_model_tier(_session_model)
+    max_diff = TIER_MAX_DIFFICULTY[tier]
     print(f"\nTask queue  ({len(done)} done, {len(active)} active, {len(pending)} pending)")
-    print("-" * 50)
+    print(f"Model: {_session_model}  |  Tier {tier}  |  Max difficulty: {max_diff}")
+    print("-" * 65)
     for t in q["tasks"]:
-        icon = {"pending": "[ ]", "in_progress": "[~]", "done": "[x]"}.get(t["status"], "[ ]")
-        print(f"  {icon} #{t['id']:>3}  {t['description']}")
+        icon   = {"pending": "[ ]", "in_progress": "[~]", "done": "[x]"}.get(t["status"], "[ ]")
+        diff   = t.get("difficulty", "low")
+        cat    = f"/{t['category']}" if t.get("category") else ""
+        marker = "" if t["status"] == "done" or can_handle(_session_model, diff) else " ✗"
+        print(f"  {icon} #{t['id']:>3}  [{diff}{cat}]{marker}  {t['description'][:58]}")
     print()
 
 
@@ -449,6 +541,82 @@ def tool_git_push() -> str:
 
 
 # ---------------------------------------------------------------------------
+# Code execution tools
+# ---------------------------------------------------------------------------
+
+def tool_run_python(code: str, timeout: int = 30) -> str:
+    import tempfile
+    tmp = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False, encoding="utf-8") as f:
+            f.write(code)
+            tmp = f.name
+        result = subprocess.run(
+            [sys.executable, tmp], capture_output=True, text=True,
+            timeout=timeout, cwd=REPO_ROOT,
+        )
+        parts = []
+        if result.stdout: parts.append(f"stdout:\n{result.stdout.rstrip()}")
+        if result.stderr: parts.append(f"stderr:\n{result.stderr.rstrip()}")
+        parts.append(f"returncode: {result.returncode}")
+        status = "OK" if result.returncode == 0 else "FAILED"
+        print(f"  [run_python] {status} (rc={result.returncode})")
+        return "\n\n".join(parts) if parts else "(no output)"
+    except subprocess.TimeoutExpired:
+        return f"Error: timed out after {timeout}s."
+    except Exception as e:
+        return f"Error: {e}"
+    finally:
+        if tmp and os.path.exists(tmp):
+            os.unlink(tmp)
+
+
+def tool_run_tests(path: str = ".") -> str:
+    try:
+        safe = _safe_path(path)
+    except ValueError as e:
+        return f"Error: {e}"
+    try:
+        result = subprocess.run(
+            [sys.executable, "-m", "pytest", safe, "-v", "--tb=short", "--no-header"],
+            capture_output=True, text=True, timeout=120, cwd=REPO_ROOT,
+        )
+        output = (result.stdout + result.stderr).strip()
+        lines = output.splitlines()
+        if len(lines) > 100:
+            output = f"...(truncated, showing last 100 of {len(lines)} lines)...\n" + "\n".join(lines[-100:])
+        status = "PASSED" if result.returncode == 0 else "FAILED"
+        print(f"  [run_tests] {status} (rc={result.returncode})")
+        return output or "(no output)"
+    except subprocess.TimeoutExpired:
+        return "Error: test run timed out after 120s."
+    except Exception as e:
+        return f"Error: {e}"
+
+
+# ---------------------------------------------------------------------------
+# Session persistence
+# ---------------------------------------------------------------------------
+
+def save_session(model: str, messages: list) -> None:
+    os.makedirs(os.path.dirname(SESSION_FILE), exist_ok=True)
+    data = {"model": model, "saved_at": datetime.datetime.now().isoformat(), "messages": messages}
+    with open(SESSION_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+    print(f"  [save_session] {len(messages)} messages → .openwork/session.json")
+
+
+def load_session() -> dict | None:
+    if not os.path.exists(SESSION_FILE):
+        return None
+    try:
+        with open(SESSION_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+# ---------------------------------------------------------------------------
 # Tool dispatch
 # ---------------------------------------------------------------------------
 
@@ -458,12 +626,14 @@ TOOL_DISPATCH = {
     "patch_file":     lambda a: tool_patch_file(a["path"], a["old_text"], a["new_text"]),
     "search_files":   lambda a: tool_search_files(a.get("query",""), a.get("directory","."), a.get("pattern","*")),
     "list_directory": lambda a: tool_list_directory(a["path"]),
-    "add_task":       lambda a: tool_add_task(a["description"]),
+    "add_task":       lambda a: tool_add_task(a["description"], a.get("difficulty","low"), a.get("category","")),
     "list_tasks":     lambda a: tool_list_tasks(),
     "complete_task":  lambda a: tool_complete_task(a["id"]),
     "get_next_task":  lambda a: tool_get_next_task(),
     "git_commit":     lambda a: tool_git_commit(a["message"]),
     "git_push":       lambda a: tool_git_push(),
+    "run_python":     lambda a: tool_run_python(a["code"], int(a.get("timeout", 30))),
+    "run_tests":      lambda a: tool_run_tests(a.get("path", ".")),
 }
 
 TOOLS = [
@@ -551,6 +721,8 @@ TOOLS = [
                 "type": "object",
                 "properties": {
                     "description": {"type": "string", "description": "What needs to be done"},
+                    "difficulty":  {"type": "string", "description": "Task difficulty: low | medium | high | critical"},
+                    "category":    {"type": "string", "description": "Task category: docs | code | design | testing | devops | security | ui"},
                 },
                 "required": ["description"],
             },
@@ -582,7 +754,7 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "get_next_task",
-            "description": "Get the next pending task from the queue and mark it in_progress.",
+            "description": "Get the next pending task you are eligible for (filtered by model tier) and mark it in_progress.",
             "parameters": {"type": "object", "properties": {}, "required": []},
         },
     },
@@ -606,6 +778,35 @@ TOOLS = [
             "name": "git_push",
             "description": "Push committed changes to GitHub. Will ask user for confirmation.",
             "parameters": {"type": "object", "properties": {}, "required": []},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "run_python",
+            "description": "Execute a Python code snippet in a subprocess. Returns stdout, stderr, and return code.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "code":    {"type": "string",  "description": "Python source code to execute"},
+                    "timeout": {"type": "integer", "description": "Max seconds to wait (default: 30)"},
+                },
+                "required": ["code"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "run_tests",
+            "description": "Run pytest on the specified path. Returns pass/fail summary.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string", "description": "File or directory to test (default: '.')"},
+                },
+                "required": [],
+            },
         },
     },
 ]
@@ -831,18 +1032,35 @@ Slash commands:
   /files            show files loaded this session
   /load <path>      load a file into context
   /clear            clear conversation history (keeps system prompt)
-  /exit  /quit      exit
+  /save             save session to .openwork/session.json
+  /model <name>     switch model for the rest of this session
+  /exit  /quit      save session and exit
 """
 
 
 def handle_slash(cmd: str, messages: list, loaded_files: list, model: str) -> bool:
+    global _session_model
     parts   = cmd.strip().split(None, 1)
     command = parts[0].lower()
     arg     = parts[1] if len(parts) > 1 else ""
 
     if command in ("/exit", "/quit"):
+        save_session(model, messages)
         print("Goodbye.")
         sys.exit(0)
+
+    elif command == "/save":
+        save_session(model, messages)
+        print("Session saved.")
+
+    elif command == "/model":
+        if not arg:
+            tier = get_model_tier(model)
+            print(f"Current model: {model}  (Tier {tier}, max difficulty: {TIER_MAX_DIFFICULTY[tier]})")
+        else:
+            _session_model = arg
+            tier = get_model_tier(arg)
+            print(f"Switched to model: {arg}  (Tier {tier}, max difficulty: {TIER_MAX_DIFFICULTY[tier]})")
 
     elif command == "/help":
         print(HELP_TEXT)
@@ -902,14 +1120,20 @@ def handle_slash(cmd: str, messages: list, loaded_files: list, model: str) -> bo
 # ---------------------------------------------------------------------------
 
 def interactive(model: str, preload_files: list, opening: str = None, continue_mode: bool = False):
+    global _session_model
+    _session_model = model
+
     project  = detect_project()
     manifest = build_manifest()
+    tier     = get_model_tier(model)
     system_prompt = SYSTEM_PROMPT_TEMPLATE.format(
         project_name=project["name"],
         project_root=project["root"],
         project_type=project["type"],
         project_description=project["description"],
         manifest=manifest,
+        model_tier=tier,
+        max_difficulty=TIER_MAX_DIFFICULTY[tier],
     )
     messages = [{"role": "system", "content": system_prompt}]
     loaded_files = []
@@ -919,21 +1143,41 @@ def interactive(model: str, preload_files: list, opening: str = None, continue_m
     print("Type /help for commands, /exit to quit.")
     print("-" * 60)
 
-    # Continue mode: auto-load orientation files and task queue
+    # Continue mode: resume saved session or load fresh orientation context
     if continue_mode:
-        print("Loading project context...")
-        for path in get_orient_files():
-            content = tool_read_file(path)
-            if not content.startswith("Error:"):
-                messages.append({"role": "user",     "content": f"--- FILE: {path} ---\n{content}\n--- END FILE ---"})
-                messages.append({"role": "assistant", "content": f"Loaded {path}."})
-                loaded_files.append(path)
-                print(f"  Loaded {path}")
-        # Load task queue summary
-        queue_summary = tool_list_tasks()
-        messages.append({"role": "user",     "content": f"Current task queue:\n{queue_summary}"})
-        messages.append({"role": "assistant", "content": "Got it, I have the project context and task queue."})
-        print("Context loaded. Ready to continue.\n")
+        saved = load_session()
+        resumed = False
+        if saved:
+            saved_at  = saved.get("saved_at", "unknown time")
+            msg_count = len(saved.get("messages", []))
+            try:
+                answer = input(
+                    f"  Found saved session from {saved_at} ({msg_count} messages).\n"
+                    f"  Resume it? [Y/n]: "
+                ).strip().lower()
+            except (EOFError, KeyboardInterrupt):
+                answer = "n"
+            if answer in ("", "y"):
+                messages.clear()
+                messages.extend(saved["messages"])
+                if saved.get("model") and model == DEFAULT_MODEL:
+                    model = saved["model"]
+                print(f"  Resumed session ({msg_count} messages).\n")
+                resumed = True
+
+        if not resumed:
+            print("Loading project context...")
+            for path in get_orient_files():
+                content = tool_read_file(path)
+                if not content.startswith("Error:"):
+                    messages.append({"role": "user",     "content": f"--- FILE: {path} ---\n{content}\n--- END FILE ---"})
+                    messages.append({"role": "assistant", "content": f"Loaded {path}."})
+                    loaded_files.append(path)
+                    print(f"  Loaded {path}")
+            queue_summary = tool_list_tasks()
+            messages.append({"role": "user",     "content": f"Current task queue:\n{queue_summary}"})
+            messages.append({"role": "assistant", "content": "Got it, I have the project context and task queue."})
+            print("Context loaded. Ready to continue.\n")
 
     # Preload any explicitly specified files
     for path in preload_files:
@@ -960,6 +1204,7 @@ def interactive(model: str, preload_files: list, opening: str = None, continue_m
         try:
             user_input = input("\nYou: ").strip()
         except (EOFError, KeyboardInterrupt):
+            save_session(model, messages)
             print("\nGoodbye.")
             break
 
