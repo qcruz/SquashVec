@@ -1,25 +1,30 @@
 #!/usr/bin/env python3
 """
-agent.py -- OpenWork local dev agent powered by Ollama tool calling.
+agent.py -- OpenWork local dev agent
 
-Runs an interactive chat session with llama3.1. The model can autonomously
-read files, write files, list directories, and push to GitHub using tool calls.
+Interactive chat with tool calling, auto-context, context compaction,
+and a persistent task queue.
 
 Usage:
-    python3 agent.py                        # interactive chat, no preloaded context
-    python3 agent.py -f README.md           # preload a file into context
-    python3 agent.py -f README.md docs/ROADMAP.md   # preload multiple files
-    python3 agent.py -m mistral             # use a different model
+    openwork                        # start session (blank)
+    openwork continue               # auto-load repo context + task queue, resume work
+    openwork -f docs/ROADMAP.md     # preload specific files
+    openwork -m mistral             # use a different model
 
-Slash commands (type these during chat):
-    /help           show available commands
+Slash commands:
+    /help           show all commands
+    /tasks          show task queue
+    /next           start working on next pending task
+    /compact        manually compact conversation history
+    /context        show repo file manifest
+    /files          show files loaded in context this session
+    /load <path>    load a file into context
     /clear          clear conversation history (keeps system prompt)
-    /files          show what files are currently in context
-    /load <path>    load a file into context mid-conversation
     /exit           quit
 """
 
 import argparse
+import datetime
 import json
 import os
 import subprocess
@@ -31,50 +36,315 @@ import urllib.request
 # Config
 # ---------------------------------------------------------------------------
 
-OLLAMA_CHAT_URL = "http://localhost:11434/api/chat"
-DEFAULT_MODEL = "llama3.1"
-REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
+OLLAMA_CHAT_URL   = "http://localhost:11434/api/chat"
+DEFAULT_MODEL     = "llama3.1"
+REPO_ROOT         = os.path.dirname(os.path.abspath(__file__))
+TASKS_FILE        = os.path.join(REPO_ROOT, ".openwork", "tasks.json")
+MAX_TOOL_CALLS    = 20          # per turn, prevents infinite loops
+COMPACT_THRESHOLD = 120_000     # estimated chars before auto-compact
+COMPACT_KEEP_TAIL = 6           # number of recent messages to keep as-is
 
-SYSTEM_PROMPT = """\
+# Files auto-read on 'continue' to orient the agent
+ORIENT_FILES = ["README.md", "docs/ROADMAP.md"]
+
+# ---------------------------------------------------------------------------
+# System prompt (repo manifest injected at startup)
+# ---------------------------------------------------------------------------
+
+SYSTEM_PROMPT_TEMPLATE = """\
 You are a software development assistant working on the OpenWork project.
 
 OpenWork is a distributed cognition marketplace: a network where AI agents act as
 autonomous workers completing tasks submitted by users, with reputation-based economic
 coordination and adversarial output verification.
 
-You have access to the following tools:
-- read_file: read any file in the project repository
-- write_file: create or overwrite any file in the project repository
-- list_directory: list the contents of a directory
-- git_commit: commit staged changes with a message
-- git_push: push committed changes to GitHub
+CURRENT REPOSITORY STRUCTURE:
+{manifest}
 
-Use tools whenever the task involves the filesystem or git. For example:
-- If asked to save something, call write_file with the appropriate path and content.
-- If you need to see a file you haven't been shown, call read_file.
-- If asked to commit or push, call git_commit and/or git_push.
+AVAILABLE TOOLS:
+- read_file(path)                    read a file from the repo
+- write_file(path, content)          create or overwrite a file
+- patch_file(path, old_text, new)    replace first occurrence of old_text in a file
+- list_directory(path)               list directory contents
+- add_task(description)              add a task to the queue
+- list_tasks()                       show all tasks in the queue
+- complete_task(id)                  mark a task as done
+- get_next_task()                    get the next pending task
+- git_commit(message)                commit all changes (requires confirmation)
+- git_push()                         push to GitHub (requires confirmation)
 
-When writing files, write complete, correct content. Do not truncate.
-When responding in chat without writing a file, use clear plain text.
+RULES:
+- Use tools whenever the task involves files or the task queue.
+- When writing files, always write complete content. Never truncate.
+- When editing a file, prefer patch_file for small changes, write_file for rewrites.
+- When you want to save output, call write_file with an appropriate path.
+- Do not delete files. Do not access paths outside the repository.
+- git_commit and git_push will ask the user for confirmation before executing.
+- If a task is large, break it into subtasks using add_task before starting.
+- Work through tasks one at a time. Mark each complete_task when done.
 """
 
 # ---------------------------------------------------------------------------
-# Tool definitions (sent to Ollama so the model knows what's available)
+# Repo manifest
 # ---------------------------------------------------------------------------
+
+SKIP_DIRS  = {".git", "__pycache__", ".pytest_cache", ".hypothesis", "node_modules"}
+SKIP_FILES = {".DS_Store"}
+
+def build_manifest() -> str:
+    lines = []
+    for root, dirs, files in os.walk(REPO_ROOT):
+        dirs[:] = sorted(d for d in dirs if d not in SKIP_DIRS)
+        rel = os.path.relpath(root, REPO_ROOT)
+        depth = 0 if rel == "." else rel.count(os.sep) + 1
+        indent = "  " * depth
+        if rel != ".":
+            lines.append(f"{indent}{os.path.basename(root)}/")
+        for fname in sorted(files):
+            if fname in SKIP_FILES:
+                continue
+            fpath = os.path.join(root, fname)
+            size  = os.path.getsize(fpath)
+            tag   = f"{size // 1024}KB" if size >= 1024 else f"{size}B"
+            lines.append(f"{'  ' * (depth + 1)}{fname} ({tag})")
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
+# Task queue
+# ---------------------------------------------------------------------------
+
+def _load_queue() -> dict:
+    if os.path.exists(TASKS_FILE):
+        with open(TASKS_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {"next_id": 1, "tasks": []}
+
+
+def _save_queue(q: dict) -> None:
+    os.makedirs(os.path.dirname(TASKS_FILE), exist_ok=True)
+    with open(TASKS_FILE, "w", encoding="utf-8") as f:
+        json.dump(q, f, indent=2)
+
+
+def tool_add_task(description: str) -> str:
+    q = _load_queue()
+    task = {
+        "id":           q["next_id"],
+        "description":  description,
+        "status":       "pending",
+        "created_at":   datetime.datetime.now().isoformat(),
+        "completed_at": None,
+    }
+    q["tasks"].append(task)
+    q["next_id"] += 1
+    _save_queue(q)
+    print(f"  [add_task] #{task['id']}: {description[:60]}")
+    return f"Task #{task['id']} added: {description}"
+
+
+def tool_list_tasks() -> str:
+    q = _load_queue()
+    if not q["tasks"]:
+        return "Task queue is empty."
+    lines = ["Task queue:"]
+    for t in q["tasks"]:
+        status_icon = {"pending": "[ ]", "in_progress": "[~]", "done": "[x]"}.get(t["status"], "[ ]")
+        lines.append(f"  {status_icon} #{t['id']} {t['description']}")
+    print("  [list_tasks]")
+    return "\n".join(lines)
+
+
+def tool_complete_task(task_id: int) -> str:
+    q = _load_queue()
+    for t in q["tasks"]:
+        if t["id"] == int(task_id):
+            t["status"] = "done"
+            t["completed_at"] = datetime.datetime.now().isoformat()
+            _save_queue(q)
+            print(f"  [complete_task] #{task_id} done")
+            return f"Task #{task_id} marked as done."
+    return f"Error: task #{task_id} not found."
+
+
+def tool_get_next_task() -> str:
+    q = _load_queue()
+    for t in q["tasks"]:
+        if t["status"] == "pending":
+            t["status"] = "in_progress"
+            _save_queue(q)
+            print(f"  [get_next_task] #{t['id']}: {t['description'][:60]}")
+            return f"Next task #{t['id']}: {t['description']}"
+    return "No pending tasks in queue."
+
+
+def show_tasks() -> None:
+    """Print task queue to terminal (for slash command)."""
+    q = _load_queue()
+    if not q["tasks"]:
+        print("Task queue is empty.")
+        return
+    pending  = [t for t in q["tasks"] if t["status"] == "pending"]
+    active   = [t for t in q["tasks"] if t["status"] == "in_progress"]
+    done     = [t for t in q["tasks"] if t["status"] == "done"]
+    print(f"\nTask queue  ({len(done)} done, {len(active)} active, {len(pending)} pending)")
+    print("-" * 50)
+    for t in q["tasks"]:
+        icon = {"pending": "[ ]", "in_progress": "[~]", "done": "[x]"}.get(t["status"], "[ ]")
+        print(f"  {icon} #{t['id']:>3}  {t['description']}")
+    print()
+
+
+# ---------------------------------------------------------------------------
+# File tools
+# ---------------------------------------------------------------------------
+
+def _safe_path(p: str) -> str:
+    """Resolve path and ensure it stays within REPO_ROOT."""
+    full = os.path.realpath(os.path.join(REPO_ROOT, p) if not os.path.isabs(p) else p)
+    if not full.startswith(os.path.realpath(REPO_ROOT)):
+        raise ValueError(f"Path '{p}' is outside the repository. Access denied.")
+    return full
+
+
+def tool_read_file(path: str) -> str:
+    try:
+        full = _safe_path(path)
+        with open(full, "r", encoding="utf-8") as f:
+            content = f.read()
+        print(f"  [read_file] {path} ({len(content):,} chars)")
+        return content
+    except ValueError as e:
+        return f"Error: {e}"
+    except FileNotFoundError:
+        return f"Error: file not found: {path}"
+    except Exception as e:
+        return f"Error reading {path}: {e}"
+
+
+def tool_write_file(path: str, content: str) -> str:
+    try:
+        full = _safe_path(path)
+        os.makedirs(os.path.dirname(full), exist_ok=True) if os.path.dirname(full) else None
+        with open(full, "w", encoding="utf-8") as f:
+            f.write(content)
+        print(f"  [write_file] {path} ({len(content):,} chars)")
+        return f"Written: {path}"
+    except ValueError as e:
+        return f"Error: {e}"
+    except Exception as e:
+        return f"Error writing {path}: {e}"
+
+
+def tool_patch_file(path: str, old_text: str, new_text: str) -> str:
+    try:
+        full = _safe_path(path)
+        with open(full, "r", encoding="utf-8") as f:
+            content = f.read()
+        if old_text not in content:
+            return f"Error: patch target not found in {path}. No changes made."
+        patched = content.replace(old_text, new_text, 1)
+        with open(full, "w", encoding="utf-8") as f:
+            f.write(patched)
+        print(f"  [patch_file] {path}")
+        return f"Patched: {path}"
+    except ValueError as e:
+        return f"Error: {e}"
+    except Exception as e:
+        return f"Error patching {path}: {e}"
+
+
+def tool_list_directory(path: str) -> str:
+    try:
+        full = _safe_path(path)
+        if not os.path.isdir(full):
+            return f"Error: not a directory: {path}"
+        entries = sorted(os.listdir(full))
+        lines = []
+        for e in entries:
+            marker = "/" if os.path.isdir(os.path.join(full, e)) else ""
+            lines.append(f"  {e}{marker}")
+        print(f"  [list_directory] {path}")
+        return f"{path}/\n" + "\n".join(lines)
+    except ValueError as e:
+        return f"Error: {e}"
+
+
+# ---------------------------------------------------------------------------
+# Git tools (with confirmation)
+# ---------------------------------------------------------------------------
+
+def _git(*args) -> str:
+    result = subprocess.run(
+        ["git"] + list(args), cwd=REPO_ROOT,
+        capture_output=True, text=True,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(result.stderr.strip() or result.stdout.strip())
+    return result.stdout.strip()
+
+
+def tool_git_commit(message: str) -> str:
+    try:
+        # Show what will be committed
+        status = _git("status", "--short")
+        if not status:
+            return "Nothing to commit -- working tree is clean."
+        print(f"\n  [git_commit] Proposed commit: \"{message}\"")
+        print(f"  Changes:\n" + "\n".join(f"    {l}" for l in status.splitlines()))
+        confirm = input("  Commit? [y/N]: ").strip().lower()
+        if confirm != "y":
+            return "Commit cancelled by user."
+        _git("add", "-A")
+        out = _git("commit", "-m", message)
+        print(f"  Committed.")
+        return f"Committed: {message}\n{out}"
+    except RuntimeError as e:
+        return f"Git error: {e}"
+
+
+def tool_git_push() -> str:
+    try:
+        # Show what will be pushed
+        ahead = _git("rev-list", "--count", "origin/main..HEAD")
+        print(f"\n  [git_push] {ahead} commit(s) ahead of origin/main")
+        confirm = input("  Push to GitHub? [y/N]: ").strip().lower()
+        if confirm != "y":
+            return "Push cancelled by user."
+        _git("push", "origin", "main")
+        print("  Pushed.")
+        return "Pushed to origin/main."
+    except RuntimeError as e:
+        return f"Git error: {e}"
+
+
+# ---------------------------------------------------------------------------
+# Tool dispatch
+# ---------------------------------------------------------------------------
+
+TOOL_DISPATCH = {
+    "read_file":      lambda a: tool_read_file(a["path"]),
+    "write_file":     lambda a: tool_write_file(a["path"], a["content"]),
+    "patch_file":     lambda a: tool_patch_file(a["path"], a["old_text"], a["new_text"]),
+    "list_directory": lambda a: tool_list_directory(a["path"]),
+    "add_task":       lambda a: tool_add_task(a["description"]),
+    "list_tasks":     lambda a: tool_list_tasks(),
+    "complete_task":  lambda a: tool_complete_task(a["id"]),
+    "get_next_task":  lambda a: tool_get_next_task(),
+    "git_commit":     lambda a: tool_git_commit(a["message"]),
+    "git_push":       lambda a: tool_git_push(),
+}
 
 TOOLS = [
     {
         "type": "function",
         "function": {
             "name": "read_file",
-            "description": "Read the contents of a file in the project repository.",
+            "description": "Read a file from the repository.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "path": {
-                        "type": "string",
-                        "description": "File path relative to the repo root, e.g. docs/ROADMAP.md",
-                    }
+                    "path": {"type": "string", "description": "Path relative to repo root"}
                 },
                 "required": ["path"],
             },
@@ -84,18 +354,12 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "write_file",
-            "description": "Create or overwrite a file in the project repository with the given content.",
+            "description": "Create or fully overwrite a file.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "path": {
-                        "type": "string",
-                        "description": "File path relative to the repo root, e.g. docs/explainer.md",
-                    },
-                    "content": {
-                        "type": "string",
-                        "description": "The complete content to write to the file.",
-                    },
+                    "path":    {"type": "string", "description": "Path relative to repo root"},
+                    "content": {"type": "string", "description": "Complete file content"},
                 },
                 "required": ["path", "content"],
             },
@@ -104,15 +368,28 @@ TOOLS = [
     {
         "type": "function",
         "function": {
-            "name": "list_directory",
-            "description": "List the files and subdirectories inside a directory.",
+            "name": "patch_file",
+            "description": "Replace the first occurrence of old_text with new_text in a file. Use for small targeted edits.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "path": {
-                        "type": "string",
-                        "description": "Directory path relative to the repo root, e.g. docs/",
-                    }
+                    "path":     {"type": "string", "description": "Path relative to repo root"},
+                    "old_text": {"type": "string", "description": "Exact text to find and replace"},
+                    "new_text": {"type": "string", "description": "Replacement text"},
+                },
+                "required": ["path", "old_text", "new_text"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_directory",
+            "description": "List files and subdirectories in a directory.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "path": {"type": "string", "description": "Directory path relative to repo root"},
                 },
                 "required": ["path"],
             },
@@ -121,15 +398,56 @@ TOOLS = [
     {
         "type": "function",
         "function": {
-            "name": "git_commit",
-            "description": "Stage all modified and new tracked files and create a git commit.",
+            "name": "add_task",
+            "description": "Add a task to the persistent task queue.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "message": {
-                        "type": "string",
-                        "description": "The commit message.",
-                    }
+                    "description": {"type": "string", "description": "What needs to be done"},
+                },
+                "required": ["description"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_tasks",
+            "description": "Show all tasks in the queue with their status.",
+            "parameters": {"type": "object", "properties": {}, "required": []},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "complete_task",
+            "description": "Mark a task as done by its ID.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "integer", "description": "Task ID to mark complete"},
+                },
+                "required": ["id"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_next_task",
+            "description": "Get the next pending task from the queue and mark it in_progress.",
+            "parameters": {"type": "object", "properties": {}, "required": []},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "git_commit",
+            "description": "Stage all changes and commit. Will ask user for confirmation.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "message": {"type": "string", "description": "Commit message"},
                 },
                 "required": ["message"],
             },
@@ -139,105 +457,26 @@ TOOLS = [
         "type": "function",
         "function": {
             "name": "git_push",
-            "description": "Push committed changes to the remote GitHub repository.",
-            "parameters": {
-                "type": "object",
-                "properties": {},
-                "required": [],
-            },
+            "description": "Push committed changes to GitHub. Will ask user for confirmation.",
+            "parameters": {"type": "object", "properties": {}, "required": []},
         },
     },
 ]
 
-# ---------------------------------------------------------------------------
-# Tool implementations
-# ---------------------------------------------------------------------------
-
-def abs_path(p: str) -> str:
-    return p if os.path.isabs(p) else os.path.join(REPO_ROOT, p)
-
-
-def tool_read_file(path: str) -> str:
-    try:
-        with open(abs_path(path), "r", encoding="utf-8") as f:
-            content = f.read()
-        print(f"  [read_file] {path} ({len(content)} chars)")
-        return content
-    except FileNotFoundError:
-        return f"Error: file not found: {path}"
-    except Exception as e:
-        return f"Error reading {path}: {e}"
-
-
-def tool_write_file(path: str, content: str) -> str:
-    try:
-        full = abs_path(path)
-        parent = os.path.dirname(full)
-        if parent:
-            os.makedirs(parent, exist_ok=True)
-        with open(full, "w", encoding="utf-8") as f:
-            f.write(content)
-        print(f"  [write_file] {path} ({len(content)} chars written)")
-        return f"File written successfully: {path}"
-    except Exception as e:
-        return f"Error writing {path}: {e}"
-
-
-def tool_list_directory(path: str) -> str:
-    full = abs_path(path)
-    if not os.path.isdir(full):
-        return f"Error: not a directory: {path}"
-    entries = sorted(os.listdir(full))
-    lines = []
-    for e in entries:
-        marker = "/" if os.path.isdir(os.path.join(full, e)) else ""
-        lines.append(f"  {e}{marker}")
-    result = f"{path}/\n" + "\n".join(lines)
-    print(f"  [list_directory] {path}")
-    return result
-
-
-def tool_git_commit(message: str) -> str:
-    try:
-        subprocess.run(["git", "add", "-A"], cwd=REPO_ROOT, check=True, capture_output=True)
-        result = subprocess.run(
-            ["git", "commit", "-m", message],
-            cwd=REPO_ROOT, check=True, capture_output=True, text=True,
-        )
-        print(f"  [git_commit] {message}")
-        return f"Committed: {message}\n{result.stdout.strip()}"
-    except subprocess.CalledProcessError as e:
-        return f"Git commit error: {e.stderr.strip() if e.stderr else str(e)}"
-
-
-def tool_git_push() -> str:
-    try:
-        result = subprocess.run(
-            ["git", "push", "origin", "main"],
-            cwd=REPO_ROOT, check=True, capture_output=True, text=True,
-        )
-        print("  [git_push] pushed to origin/main")
-        return "Pushed to origin/main successfully."
-    except subprocess.CalledProcessError as e:
-        return f"Git push error: {e.stderr.strip() if e.stderr else str(e)}"
-
-
-TOOL_DISPATCH = {
-    "read_file": lambda args: tool_read_file(args["path"]),
-    "write_file": lambda args: tool_write_file(args["path"], args["content"]),
-    "list_directory": lambda args: tool_list_directory(args["path"]),
-    "git_commit": lambda args: tool_git_commit(args["message"]),
-    "git_push": lambda args: tool_git_push(),
-}
-
 
 def execute_tool(name: str, arguments) -> str:
     if isinstance(arguments, str):
-        arguments = json.loads(arguments)
+        try:
+            arguments = json.loads(arguments)
+        except json.JSONDecodeError:
+            return f"Error: could not parse tool arguments for '{name}'"
     handler = TOOL_DISPATCH.get(name)
     if not handler:
         return f"Error: unknown tool '{name}'"
-    return handler(arguments)
+    try:
+        return handler(arguments)
+    except Exception as e:
+        return f"Error executing {name}: {e}"
 
 
 # ---------------------------------------------------------------------------
@@ -252,136 +491,183 @@ def check_ollama() -> bool:
         return False
 
 
-def ollama_call(model: str, messages: list, tools: list) -> dict:
-    """Single non-streaming call. Returns the full message dict."""
+def ollama_call(model: str, messages: list) -> dict:
     payload = json.dumps({
-        "model": model,
+        "model":   model,
         "messages": messages,
-        "tools": tools,
-        "stream": False,
+        "tools":   TOOLS,
+        "stream":  False,
         "options": {"temperature": 0.3},
     }).encode("utf-8")
-
     req = urllib.request.Request(
-        OLLAMA_CHAT_URL,
-        data=payload,
-        headers={"Content-Type": "application/json"},
-        method="POST",
+        OLLAMA_CHAT_URL, data=payload,
+        headers={"Content-Type": "application/json"}, method="POST",
     )
     try:
         with urllib.request.urlopen(req) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-            return data.get("message", {})
+            return json.loads(resp.read().decode("utf-8")).get("message", {})
     except urllib.error.URLError as e:
-        print(f"\nError talking to Ollama: {e}", file=sys.stderr)
+        print(f"\nOllama error: {e}", file=sys.stderr)
         sys.exit(1)
 
 
 def ollama_stream(model: str, messages: list) -> str:
-    """Streaming call for plain text responses (no tools). Prints as it goes."""
     payload = json.dumps({
-        "model": model,
+        "model":   model,
         "messages": messages,
-        "stream": True,
+        "stream":  True,
         "options": {"temperature": 0.3},
     }).encode("utf-8")
-
     req = urllib.request.Request(
-        OLLAMA_CHAT_URL,
-        data=payload,
-        headers={"Content-Type": "application/json"},
-        method="POST",
+        OLLAMA_CHAT_URL, data=payload,
+        headers={"Content-Type": "application/json"}, method="POST",
     )
     tokens = []
     try:
         with urllib.request.urlopen(req) as resp:
-            for raw_line in resp:
-                if not raw_line:
+            for raw in resp:
+                if not raw:
                     continue
-                chunk = json.loads(raw_line.decode("utf-8"))
-                token = chunk.get("message", {}).get("content", "")
-                if token:
-                    print(token, end="", flush=True)
-                    tokens.append(token)
+                chunk = json.loads(raw.decode("utf-8"))
+                tok = chunk.get("message", {}).get("content", "")
+                if tok:
+                    print(tok, end="", flush=True)
+                    tokens.append(tok)
                 if chunk.get("done"):
                     break
     except urllib.error.URLError as e:
-        print(f"\nError talking to Ollama: {e}", file=sys.stderr)
+        print(f"\nOllama error: {e}", file=sys.stderr)
         sys.exit(1)
     print()
     return "".join(tokens)
 
 
 # ---------------------------------------------------------------------------
-# Agentic loop
+# Agent turn
 # ---------------------------------------------------------------------------
 
 def run_turn(model: str, messages: list) -> str:
     """
-    Run one full agent turn: call Ollama, execute any tool calls in a loop,
-    then get and stream the final text response.
-    Returns the assistant's final text.
+    Execute one full agent turn.
+    Resolves tool calls in a loop (up to MAX_TOOL_CALLS), then streams final response.
     """
-    # Phase 1: resolve tool calls
+    tool_call_count = 0
+
     while True:
-        msg = ollama_call(model, messages, TOOLS)
+        msg = ollama_call(model, messages)
         tool_calls = msg.get("tool_calls")
 
         if not tool_calls:
-            # No tool calls -- get the final response with streaming
-            messages.append({"role": "assistant", "content": msg.get("content", "")})
-            break
+            # Final text response -- stream it
+            content = msg.get("content", "")
+            if content:
+                print(content)
+            messages.append({"role": "assistant", "content": content})
+            return content
 
-        # Add the assistant's tool-call message to history
-        messages.append({"role": "assistant", "content": msg.get("content", ""), "tool_calls": tool_calls})
+        # Safety: cap tool calls per turn
+        tool_call_count += len(tool_calls)
+        if tool_call_count > MAX_TOOL_CALLS:
+            warning = f"[Halted: exceeded {MAX_TOOL_CALLS} tool calls in one turn. Possible loop.]"
+            print(f"\n  {warning}")
+            messages.append({"role": "assistant", "content": warning})
+            return warning
+
+        # Add assistant tool-call message to history
+        messages.append({
+            "role": "assistant",
+            "content": msg.get("content", ""),
+            "tool_calls": tool_calls,
+        })
 
         # Execute each tool and add results
         for tc in tool_calls:
-            fn = tc.get("function", {})
+            fn   = tc.get("function", {})
             name = fn.get("name", "")
-            arguments = fn.get("arguments", {})
-            result = execute_tool(name, arguments)
+            args = fn.get("arguments", {})
+            result = execute_tool(name, args)
             messages.append({"role": "tool", "content": result})
 
-    # Phase 2: if the last assistant message has content, stream it
-    # (it was already added above; print it now)
-    final_content = messages[-1].get("content", "")
-    if final_content:
-        # Re-stream by printing (content was added non-streamed in tool loop)
-        # For a cleaner UX, do a fresh streaming call after tool resolution
-        # only if we had tool calls. Otherwise stream from the start.
-        print(final_content)
-
-    return final_content
+    # After all tool calls resolved, stream the final response
+    final = ollama_stream(model, messages)
+    messages.append({"role": "assistant", "content": final})
+    return final
 
 
-def run_turn_streaming(model: str, messages: list) -> str:
+# ---------------------------------------------------------------------------
+# Context compaction
+# ---------------------------------------------------------------------------
+
+def estimate_chars(messages: list) -> int:
+    return sum(len(json.dumps(m)) for m in messages)
+
+
+def compact(model: str, messages: list) -> None:
     """
-    Optimized turn: stream directly if no tools are likely needed.
-    Falls back to tool-call loop if the first response contains tool calls.
+    Summarize the middle of the conversation to free up context space.
+    Keeps: messages[0] (system) + last COMPACT_KEEP_TAIL messages.
+    Summarizes everything in between.
     """
-    # First try a non-streaming call with tools to check for tool calls
-    msg = ollama_call(model, messages, TOOLS)
-    tool_calls = msg.get("tool_calls")
+    if len(messages) <= COMPACT_KEEP_TAIL + 1:
+        print("  [compact] Not enough history to compact.")
+        return
 
-    if tool_calls:
-        # Has tool calls -- go through the full loop
-        messages.append({"role": "assistant", "content": msg.get("content", ""), "tool_calls": tool_calls})
-        for tc in tool_calls:
-            fn = tc.get("function", {})
-            result = execute_tool(fn.get("name", ""), fn.get("arguments", {}))
-            messages.append({"role": "tool", "content": result})
+    tail  = messages[-COMPACT_KEEP_TAIL:]
+    mid   = messages[1:-COMPACT_KEEP_TAIL]  # everything between system and tail
 
-        # After tools, get final response with streaming
-        final = ollama_stream(model, messages)
-        messages.append({"role": "assistant", "content": final})
-        return final
-    else:
-        # No tool calls -- just print what we got
-        content = msg.get("content", "")
-        print(content)
-        messages.append({"role": "assistant", "content": content})
-        return content
+    if not mid:
+        return
+
+    # Build a summarization prompt
+    summary_messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are summarizing a development session. "
+                "Produce a dense, structured summary that captures: "
+                "what was discussed, what files were created or modified, "
+                "what tasks were completed, what decisions were made, "
+                "and what the current state of the work is. "
+                "Be specific. Include file names and key content. "
+                "This summary will replace the full conversation history."
+            ),
+        },
+        {
+            "role": "user",
+            "content": "Summarize this conversation:\n\n"
+                       + "\n\n".join(
+                           f"[{m['role'].upper()}]: {m.get('content','')}"
+                           for m in mid
+                           if m.get("content")
+                       ),
+        },
+    ]
+
+    print("\n  [compact] Summarizing conversation history...", flush=True)
+    summary_msg = ollama_call(model, summary_messages)
+    summary = summary_msg.get("content", "(no summary generated)")
+
+    # Replace middle messages with the summary
+    summary_entry = {
+        "role": "user",
+        "content": f"[CONVERSATION SUMMARY -- earlier session condensed]\n\n{summary}",
+    }
+    summary_ack = {
+        "role": "assistant",
+        "content": "Got it, I have the session summary loaded.",
+    }
+
+    messages[1:-COMPACT_KEEP_TAIL] = [summary_entry, summary_ack]
+
+    new_chars = estimate_chars(messages)
+    print(f"  [compact] Done. History reduced to ~{new_chars:,} chars.")
+
+
+def maybe_compact(model: str, messages: list) -> None:
+    """Auto-compact if over threshold."""
+    if estimate_chars(messages) > COMPACT_THRESHOLD:
+        print(f"\n  [auto-compact] Context approaching limit, compacting...")
+        compact(model, messages)
 
 
 # ---------------------------------------------------------------------------
@@ -390,18 +676,22 @@ def run_turn_streaming(model: str, messages: list) -> str:
 
 HELP_TEXT = """
 Slash commands:
-  /help           show this message
-  /clear          clear conversation history (keeps system prompt)
-  /files          show files currently loaded in context
-  /load <path>    load a file into context
-  /exit /quit     exit the agent
+  /help             show this message
+  /tasks            show task queue
+  /next             work on next pending task
+  /compact          manually compact conversation history
+  /context          show repo file manifest
+  /files            show files loaded this session
+  /load <path>      load a file into context
+  /clear            clear conversation history (keeps system prompt)
+  /exit  /quit      exit
 """
 
+
 def handle_slash(cmd: str, messages: list, loaded_files: list, model: str) -> bool:
-    """Returns True if the input was a slash command (so the main loop skips it)."""
-    parts = cmd.strip().split(None, 1)
+    parts   = cmd.strip().split(None, 1)
     command = parts[0].lower()
-    arg = parts[1] if len(parts) > 1 else ""
+    arg     = parts[1] if len(parts) > 1 else ""
 
     if command in ("/exit", "/quit"):
         print("Goodbye.")
@@ -410,11 +700,23 @@ def handle_slash(cmd: str, messages: list, loaded_files: list, model: str) -> bo
     elif command == "/help":
         print(HELP_TEXT)
 
-    elif command == "/clear":
-        # Keep only the system prompt
-        del messages[1:]
-        loaded_files.clear()
-        print("Conversation cleared.")
+    elif command == "/tasks":
+        show_tasks()
+
+    elif command == "/next":
+        next_task = tool_get_next_task()
+        print(f"\n{next_task}")
+        if "No pending tasks" not in next_task:
+            messages.append({"role": "user", "content": next_task})
+            print("\nAgent: ", end="", flush=True)
+            run_turn(model, messages)
+            maybe_compact(model, messages)
+
+    elif command == "/compact":
+        compact(model, messages)
+
+    elif command == "/context":
+        print("\n" + build_manifest())
 
     elif command == "/files":
         if loaded_files:
@@ -422,7 +724,7 @@ def handle_slash(cmd: str, messages: list, loaded_files: list, model: str) -> bo
             for f in loaded_files:
                 print(f"  {f}")
         else:
-            print("No files loaded into context.")
+            print("No files explicitly loaded this session.")
 
     elif command == "/load":
         if not arg:
@@ -432,16 +734,16 @@ def handle_slash(cmd: str, messages: list, loaded_files: list, model: str) -> bo
             if content.startswith("Error:"):
                 print(content)
             else:
-                messages.append({
-                    "role": "user",
-                    "content": f"--- FILE: {arg} ---\n{content}\n--- END FILE: {arg} ---"
-                })
-                messages.append({
-                    "role": "assistant",
-                    "content": f"Got it, I've loaded {arg} into context."
-                })
+                messages.append({"role": "user",      "content": f"--- FILE: {arg} ---\n{content}\n--- END FILE ---"})
+                messages.append({"role": "assistant",  "content": f"Loaded {arg}."})
                 loaded_files.append(arg)
-                print(f"Loaded {arg} into context.")
+                print(f"Loaded {arg}.")
+
+    elif command == "/clear":
+        del messages[1:]
+        loaded_files.clear()
+        print("Conversation cleared.")
+
     else:
         return False
 
@@ -449,43 +751,54 @@ def handle_slash(cmd: str, messages: list, loaded_files: list, model: str) -> bo
 
 
 # ---------------------------------------------------------------------------
-# Interactive chat loop
+# Interactive session
 # ---------------------------------------------------------------------------
 
-def interactive(model: str, preload_files: list, opening: str = None):
+def interactive(model: str, preload_files: list, opening: str = None, continue_mode: bool = False):
+    manifest = build_manifest()
+    system_prompt = SYSTEM_PROMPT_TEMPLATE.format(manifest=manifest)
+    messages = [{"role": "system", "content": system_prompt}]
+    loaded_files = []
+
     print(f"\nOpenWork Agent  |  model: {model}")
     print("Type /help for commands, /exit to quit.")
     print("-" * 60)
 
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-    loaded_files = []
+    # Continue mode: auto-load orientation files and task queue
+    if continue_mode:
+        print("Loading project context...")
+        for path in ORIENT_FILES:
+            content = tool_read_file(path)
+            if not content.startswith("Error:"):
+                messages.append({"role": "user",     "content": f"--- FILE: {path} ---\n{content}\n--- END FILE ---"})
+                messages.append({"role": "assistant", "content": f"Loaded {path}."})
+                loaded_files.append(path)
+        # Load task queue summary
+        queue_summary = tool_list_tasks()
+        messages.append({"role": "user",     "content": f"Current task queue:\n{queue_summary}"})
+        messages.append({"role": "assistant", "content": "Got it, I have the project context and task queue."})
+        print("Context loaded. Ready to continue.\n")
 
-    # Preload any files passed at startup
+    # Preload any explicitly specified files
     for path in preload_files:
         content = tool_read_file(path)
         if content.startswith("Error:"):
             print(content)
         else:
-            messages.append({
-                "role": "user",
-                "content": f"--- FILE: {path} ---\n{content}\n--- END FILE: {path} ---"
-            })
-            messages.append({
-                "role": "assistant",
-                "content": f"Got it, I've loaded {path} into context."
-            })
+            messages.append({"role": "user",     "content": f"--- FILE: {path} ---\n{content}\n--- END FILE ---"})
+            messages.append({"role": "assistant", "content": f"Loaded {path}."})
             loaded_files.append(path)
-            print(f"Loaded: {path}")
 
-    if preload_files:
+    if preload_files or continue_mode:
         print("-" * 60)
 
-    # If an opening message was passed on the command line, send it immediately
+    # Opening message from CLI args
     if opening:
         print(f"You: {opening}")
         messages.append({"role": "user", "content": opening})
         print("\nAgent: ", end="", flush=True)
-        run_turn_streaming(model, messages)
+        run_turn(model, messages)
+        maybe_compact(model, messages)
 
     while True:
         try:
@@ -503,7 +816,8 @@ def interactive(model: str, preload_files: list, opening: str = None):
 
         messages.append({"role": "user", "content": user_input})
         print("\nAgent: ", end="", flush=True)
-        run_turn_streaming(model, messages)
+        run_turn(model, messages)
+        maybe_compact(model, messages)
 
 
 # ---------------------------------------------------------------------------
@@ -512,34 +826,30 @@ def interactive(model: str, preload_files: list, opening: str = None):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="OpenWork local dev agent -- interactive chat with tool calling.",
+        description="OpenWork local dev agent",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
     parser.add_argument(
         "task", nargs="*",
-        help="Optional opening message (if omitted, starts interactive chat)",
+        help="Optional opening message or 'continue' to resume project work",
     )
-    parser.add_argument(
-        "-f", "--files", nargs="+", metavar="FILE",
-        help="Files to preload into context at startup",
-    )
-    parser.add_argument(
-        "-m", "--model", default=DEFAULT_MODEL,
-        help=f"Ollama model to use (default: {DEFAULT_MODEL})",
-    )
+    parser.add_argument("-f", "--files", nargs="+", metavar="FILE",
+                        help="Files to preload into context at startup")
+    parser.add_argument("-m", "--model", default=DEFAULT_MODEL,
+                        help=f"Ollama model (default: {DEFAULT_MODEL})")
     args = parser.parse_args()
 
     if not check_ollama():
-        print(
-            "Error: Ollama is not running.\n"
-            "Start it with:  brew services start ollama",
-            file=sys.stderr,
-        )
+        print("Error: Ollama is not running.\nStart it: brew services start ollama",
+              file=sys.stderr)
         sys.exit(1)
 
-    opening = " ".join(args.task).strip() if args.task else None
-    interactive(args.model, args.files or [], opening)
+    raw = " ".join(args.task).strip() if args.task else ""
+    continue_mode = raw.lower() == "continue"
+    opening = None if (not raw or continue_mode) else raw
+
+    interactive(args.model, args.files or [], opening, continue_mode)
 
 
 if __name__ == "__main__":
