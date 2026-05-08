@@ -452,7 +452,7 @@ def handle_slash(cmd: str, messages: list, loaded_files: list, model: str) -> bo
 # Interactive chat loop
 # ---------------------------------------------------------------------------
 
-def interactive(model: str, preload_files: list):
+def interactive(model: str, preload_files: list, opening: str = None):
     print(f"\nOpenWork Agent  |  model: {model}")
     print("Type /help for commands, /exit to quit.")
     print("-" * 60)
@@ -479,6 +479,13 @@ def interactive(model: str, preload_files: list):
 
     if preload_files:
         print("-" * 60)
+
+    # If an opening message was passed on the command line, send it immediately
+    if opening:
+        print(f"You: {opening}")
+        messages.append({"role": "user", "content": opening})
+        print("\nAgent: ", end="", flush=True)
+        run_turn_streaming(model, messages)
 
     while True:
         try:
@@ -510,6 +517,10 @@ def main():
         epilog=__doc__,
     )
     parser.add_argument(
+        "task", nargs="*",
+        help="Optional opening message (if omitted, starts interactive chat)",
+    )
+    parser.add_argument(
         "-f", "--files", nargs="+", metavar="FILE",
         help="Files to preload into context at startup",
     )
@@ -527,7 +538,8 @@ def main():
         )
         sys.exit(1)
 
-    interactive(args.model, args.files or [])
+    opening = " ".join(args.task).strip() if args.task else None
+    interactive(args.model, args.files or [], opening)
 
 
 if __name__ == "__main__":
