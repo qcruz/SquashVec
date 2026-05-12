@@ -59,11 +59,15 @@ Scenario files reference these base maps and add scenario-specific overlays
 
 | Scenario | Status | Detail Level |
 |---|---|---|
-| [Oil Restriction](scenarios/oil-restriction/overview.md) | In progress | Phases 1–3 complete |
-| [Pandemic](scenarios/pandemic/overview.md) | Stub | — |
-| [Drought](scenarios/drought/overview.md) | Stub | — |
-| [Semiconductor Collapse](scenarios/semiconductor-collapse/overview.md) | Stub | — |
-| [Grid Cyberattack](scenarios/grid-cyberattack/overview.md) | Stub | — |
+| [Oil Restriction](scenarios/oil-restriction/overview.md) | In progress | Phases 1–3, demand policy, supply chains (transport, agriculture, energy, industrial) |
+| [Pandemic](scenarios/pandemic/overview.md) | Overview complete | Severity tiers, cascade timeline, phase responses |
+| [Drought](scenarios/drought/overview.md) | Overview complete | Severity tiers, cascade timeline, phase responses |
+| [Semiconductor Collapse](scenarios/semiconductor-collapse/overview.md) | Overview complete | Severity tiers, cascade timeline, phase responses |
+| [Grid Cyberattack](scenarios/grid-cyberattack/overview.md) | Overview complete | Severity tiers, cascade timeline, phase responses |
+| [Rare Earth Denial](scenarios/rare-earth-denial/overview.md) | Overview complete | Chinese supply concentration, downstream effects, phase responses |
+| [Shipping Blockade](scenarios/shipping-blockade/overview.md) | Overview complete | Chokepoint analysis, trade share, phase responses |
+| [Financial Fragmentation](scenarios/financial-fragmentation/overview.md) | Overview complete | Dollar weaponization framing, severity tiers, phase responses |
+| [AI Unemployment](scenarios/ai-unemployment/overview.md) | Overview complete | Vulnerable occupation analysis, safety net and transition policy |
 
 ---
 
