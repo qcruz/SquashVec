@@ -1,33 +1,77 @@
-# Scenario: Grid Cyberattack
-
-> **Status: Stub** — framework defined, detailed analysis not yet written.
+# Scenario: Electrical Grid Cyberattack
 
 ## Scenario Definition
 
-TODO: Define the triggering conditions, geographic scope, and severity tiers for this scenario.
+A coordinated cyberattack targeting U.S. electrical grid control systems —
+SCADA, energy management systems, substation automation — causing deliberate
+equipment damage, cascading outages, or sustained loss of grid control
+across one or more interconnects (Eastern, Western, ERCOT).
 
-## Why This Scenario Matters
+Unlike a weather-related outage, a cyberattack can cause **physical damage**
+(destroying transformers, generators) that takes months to years to repair,
+not days. A successful attack on large power transformers is particularly
+severe: lead times of 12–24 months per unit, with limited domestic manufacturing.
 
-TODO: Explain the cascade mechanism — how this disruption propagates across sectors.
+---
 
-## Critical Systems Affected
+## The Transformer Problem
 
-TODO: List the supply chains most at risk. Reference files in `supply-chains/`.
+| Metric | Value |
+|---|---|
+| Large power transformers (LPT) in U.S. grid | ~2,000 |
+| Domestic LPT manufacturing capacity | ~20% of demand |
+| LPT lead time (custom order) | 12–24 months |
+| LPTs without a spare | Majority |
+| DHS assessment of LPT vulnerability | "Loss of a small number could cause cascading failures" |
+
+A coordinated attack destroying 9 specific substations could reportedly
+destabilize the entire U.S. grid (public reporting from 2013 Metcalf attack analysis).
+
+---
 
 ## Severity Tiers
 
-| Tier | Disruption Level | Trigger Example |
+| Tier | Effect | Duration |
 |---|---|---|
-| Tier 1 | TODO | TODO |
-| Tier 2 | TODO | TODO |
-| Tier 3 | TODO | TODO |
+| Tier 1 | Regional outage, 1–7 days | Days (normal restoration) |
+| Tier 2 | Multi-state outage, equipment damage | Weeks to months |
+| Tier 3 | Interconnect-level failure, LPT destruction | 6 months–2 years |
 
-## Response Documents
+---
 
-- Phase 1: Immediate Stabilization — *not yet written*
-- Phase 2: Medium-Term Adaptation — *not yet written*
-- Phase 3: Long-Term Structural Change — *not yet written*
+## Cascade Effects (Tier 2–3)
 
-## Cross-References
+An extended grid outage is a cascading crisis across every sector:
 
-TODO: Link to relevant supply chain base maps.
+| Day | Effect |
+|---|---|
+| 1–3 | Communications, water treatment, gas stations, ATMs fail |
+| 3–7 | Food cold chain breaks; hospitals on generator fuel |
+| 1–2 weeks | Generator fuel exhausted; water treatment fails |
+| 2–4 weeks | Civil order risk; heat/cold mortality if seasonal |
+| 1+ months | Economic activity in affected region largely halted |
+
+---
+
+## Phase Responses
+
+### Phase 1: Immediate
+
+- **Island mode activation:** Utilities pre-configured to island critical microgrids
+- **Generator fuel priority:** Diesel allocation to hospitals, water plants, emergency services
+- **Manual control protocols:** Substation operations without digital control systems
+- **Transformer emergency logistics:** Strategic transformer reserve deployment
+
+### Phase 2: Recovery and Hardening
+
+- **Air-gapped control systems:** Critical control infrastructure physically separated from internet
+- **Distributed transformer reserve:** Regional stockpiles of LPTs (currently minimal)
+- **Domestic LPT manufacturing expansion:** Defense Production Act investment
+- **Microgrid deployment:** Critical facilities with islanding capability (hospitals, water, comms)
+
+### Phase 3: Structural Resilience
+
+- **Grid architecture redesign:** Move from centralized to distributed generation
+- **Transformer standardization:** Reduce custom one-off designs; build reserve-compatible inventory
+- **Offensive deterrence:** Credible cyber retaliation capability as deterrence
+- **Allied grid hardening:** Coordinate with Canada and Mexico on interconnect security
