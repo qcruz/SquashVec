@@ -26,7 +26,7 @@
     {
       "id": 3,
       "description": "Add tool_git_status() to agent.py: runs git status --short, returns output. Register in TOOL_DISPATCH and TOOLS list.",
-      "difficulty": "low",
+      "difficulty": "medium",
       "category": "code",
       "phase": "1.2",
       "status": "pending",
@@ -37,7 +37,7 @@
     {
       "id": 4,
       "description": "Add tool_git_diff(path) to agent.py: runs git diff, returns output. Register in TOOL_DISPATCH and TOOLS list.",
-      "difficulty": "low",
+      "difficulty": "medium",
       "category": "code",
       "phase": "1.2",
       "status": "pending",
@@ -48,7 +48,7 @@
     {
       "id": 5,
       "description": "Add tool_git_log(n=10) to agent.py: runs git log --oneline -n, returns output. Register in TOOL_DISPATCH and TOOLS list.",
-      "difficulty": "low",
+      "difficulty": "medium",
       "category": "code",
       "phase": "1.2",
       "status": "pending",
@@ -59,7 +59,7 @@
     {
       "id": 6,
       "description": "Add /load glob support to handle_slash: if arg contains *, use glob.glob() to expand, then load each matched file into context.",
-      "difficulty": "low",
+      "difficulty": "medium",
       "category": "code",
       "phase": "1.4",
       "status": "pending",
@@ -70,7 +70,7 @@
     {
       "id": 7,
       "description": "Add /model <name> slash command to handle_slash: updates _session_model and prints new tier info.",
-      "difficulty": "low",
+      "difficulty": "medium",
       "category": "code",
       "phase": "1.4",
       "status": "pending",
