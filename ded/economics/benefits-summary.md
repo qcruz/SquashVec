@@ -2,7 +2,28 @@
 
 **Document Type:** Living document — update quarterly or when new scenario/asset data is added
 **Last Updated:** 2026-05
-**Version:** 1.0
+**Version:** 1.1
+
+---
+
+## Two Distinct Value Categories
+
+The DED generates economic value through two separate mechanisms. Both belong in this document.
+Neither alone makes the full case.
+
+**Category A — Loss Avoidance:** Crisis prevention and mitigation saves economic output that
+would otherwise be destroyed. This is insurance logic. It is real value but politically difficult
+to sell because the benefit is invisible when it works.
+
+**Category B — Value Creation:** Systematic analysis of supply chains surfaces opportunities to
+create new economic positions — proprietary IP, dominant supply platforms, licensing revenue, and
+trade agreement leverage. This is investment logic. The benefit is visible, ongoing, and
+commercially tangible. See `value-discovery.md` for the full opportunity catalog.
+
+**The combination is the argument.** Loss avoidance makes the DED necessary. Value creation
+makes it profitable. An organization that prevents $5T in losses and generates $3T in new revenue
+and IP value over 20 years is not a government cost center — it is a strategic investment with
+one of the highest ROIs in federal history.
 
 ---
 
@@ -12,22 +33,32 @@
 |--------|-------|------------|
 | Total DED 10-year investment (all programs) | ~$800B–$1.1T | Medium |
 | Annual DED operating cost (steady state) | ~$60–80B/year | Medium |
-| Expected economic loss prevented over 10 years | ~$4.8T–$9.2T | Low-Medium |
-| Expected value ratio (benefit / cost) | **5:1 to 10:1** | Low-Medium |
-| Fiscal breakeven (single Tier 2 scenario prevented) | 1 event in 10 years | High |
+| **Category A:** Expected loss prevented (10 years) | ~$4.8T–$9.2T | Low-Medium |
+| **Category B:** Expected new value created (20-year IP + revenue) | ~$1.5T–$4T | Low |
+| **Combined expected benefit** | ~$6.3T–$13.2T | Low-Medium |
+| Expected value ratio (combined benefit / cost) | **7:1 to 15:1** | Low-Medium |
+| Fiscal breakeven — loss avoidance alone | 1 Tier 2 event in 10 years | High |
+| Fiscal breakeven — value creation alone | ~15 years of IP revenue at base case | Medium |
 
-**Plain-English Summary:** The entire DED program costs roughly what the federal government spent on COVID relief in a single year. A single Tier 2 pandemic, major grid attack, or severe oil restriction prevented once per decade pays for the program several times over. The question is not whether the math works — it does, decisively — but whether the political will to invest before the crisis exists.
+**Plain-English Summary:** The DED costs roughly what the federal government spent on COVID relief
+in a single year — and that response did not prevent COVID or generate any ongoing value. The DED
+does both: it makes crises survivable, and it converts the research required to understand those
+crises into proprietary economic positions that generate revenue and diplomatic leverage
+indefinitely.
 
 ---
 
-## Why Expected Value Framing Is the Right Lens
+## Why Two Framings Are Needed
 
-DED investments are not normal government spending. They are **insurance premiums** against low-probability, high-consequence events. Standard cost-benefit analysis systematically undervalues insurance because it averages costs and benefits in ways that obscure tail-risk.
+### Loss Avoidance Framing (Category A)
+DED investments are **insurance premiums** against low-probability, high-consequence events.
+Standard cost-benefit analysis systematically undervalues insurance because it averages costs
+and benefits in ways that obscure tail-risk.
 
 The correct framing is expected value:
 
 ```
-Expected Benefit = Σ [ P(scenario) × Loss(without DED) × Mitigation(DED) ]
+Expected Benefit (A) = Σ [ P(scenario) × Loss(without DED) × Mitigation(DED) ]
 ```
 
 Where:
@@ -35,11 +66,31 @@ Where:
 - `Loss(without DED)` = estimated economic loss in the unmitigated scenario
 - `Mitigation(DED)` = fraction of losses DED programs prevent (typically 40–70%)
 
-This document maintains those estimates with transparent assumptions. As data improves, estimates are updated. See `assumptions-log.md` for full methodology.
+This document maintains those estimates with transparent assumptions. As data improves, estimates
+are updated. See `assumptions-log.md` for full methodology.
+
+### Value Creation Framing (Category B)
+DED analysis identifies structural positions where the U.S. can convert research investment
+into proprietary IP, dominant supply, and platform leverage — and then structure trade agreements
+that generate ongoing commercial and diplomatic value.
+
+The correct framing is net present value of the IP/platform position:
+
+```
+Expected Benefit (B) = Σ [ NPV(annual revenue stream) + NPV(diplomatic leverage) ]
+```
+
+Where:
+- `Annual revenue stream` = licensing fees, subscriptions, supply contracts
+- `Diplomatic leverage` = negotiating chips created by allied dependency on U.S. IP/platform;
+  valued conservatively at the estimated worth of concessions extracted per agreement
+- NPV calculated at 4% discount rate over 20 years
+
+See `value-discovery.md` for the full opportunity catalog with individual investment cases.
 
 ---
 
-## Scenario-Level Expected Value Table
+## Scenario-Level Expected Value Table (Category A — Loss Avoidance)
 
 *All figures in 2026 USD. 10-year horizon. See `historical-baseline.md` for loss estimate sources.*
 
@@ -146,6 +197,56 @@ Several DED investments pay off across multiple scenarios simultaneously. This c
 
 ---
 
+## Value Creation Opportunities (Category B)
+
+*These are not loss-avoidance programs. They are investments that generate new, ongoing economic value. Full details in `value-discovery.md`.*
+
+### Summary Table
+
+| Opportunity | DED Investment | Annual Revenue (at scale) | 20-yr NPV | Diplomatic Leverage Value | Primary Mechanism |
+|-------------|---------------|--------------------------|-----------|--------------------------|-------------------|
+| Advanced crop genetics IP | $3–5B | $1–3B/year licensing | $15–40B | Food security dependency in 40+ allied nations | IP Licensing |
+| Rare earth-free magnet IP | $1B | $2–4B/year licensing | $25–55B | Severs Chinese magnet leverage over allies | IP Licensing |
+| SMR export platform | $52B total | $5–15B/year (fuel + services) | $60–180B | Energy dependency in 30+ nations; Rosatom replacement | Standard-Setting |
+| Climate/crop intelligence platform | $2.5B | $2–4B/year subscriptions | $25–50B | Food policy co-alignment with 40 nations | Platform Control |
+| Pharmaceutical IP reserve | $15B | $5–20B/year licensing | $65–250B | Health security dependency; first-access in pandemics | IP Licensing |
+| Grid control software standard | $2B | $0.6–3B/year subscriptions | $8–40B | Allied grid visibility; adversary system exclusion | Platform Control |
+| Water purification IP | $3B | $5–15B/year licensing | $65–190B | Water security leverage in MENA, S. Asia, Africa | IP Licensing + Monopoly |
+| Synthetic biology for chemicals | $5B | $10–30B/year licensing | $130–390B | Petroleum-free industrial chemistry for allies | Strategic Monopoly |
+| **Totals** | **~$84B** | **~$31–99B/year** | **~$393B–$1.2T** | Cross-cutting | |
+
+### What This Changes About the Political Argument
+
+Loss avoidance asks Congress to spend $800B to prevent events that might not happen.
+Value creation asks Congress to invest $84B in programs that generate $31–99B/year in licensing
+and subscription revenue — while *also* reducing crisis exposure across all nine scenarios.
+
+The second argument is categorically easier to make. It has a positive P&L, a visible commercial
+return, and creates jobs and IP in the domestic economy. The geopolitical leverage it generates
+is the most durable form of foreign policy influence the U.S. has demonstrated historically
+(GPS, dollar reserve status, SWIFT) — but systematized across a dozen domains instead of three.
+
+### Key Insight: The Corn Example as Template
+
+The crop genetics opportunity illustrates the full chain that DED analysis produces:
+
+```
+Scenario research (drought + food security)
+    → Identifies vulnerability: U.S. agriculture is not as dominant as it appears once
+      water stress, soil depletion, and yield plateaus are mapped
+    → Asks: could U.S. flip from volume competitor to IP monopolist in high-value genetics?
+    → Models: $3-5B investment → 20-35% yield advantage strains → exclusive ally licenses
+    → Designs agreement: access fees + reciprocal IP sharing + emergency production clause
+    → Output: $1-3B/year IP revenue + food security dependency in 40 nations + 8-12
+      separately negotiable diplomatic leverage points per agreement
+```
+
+Every scenario in the DED produces this chain if the right questions are asked. The DED is not
+just a risk management organization — it is the analytical infrastructure for discovering where
+the U.S. should deliberately build economic dominance.
+
+---
+
 ## What DED Does Not Prevent (Honest Boundaries)
 
 DED programs reduce the economic impact of crises but do not eliminate them. Honest accounting:
@@ -229,6 +330,7 @@ In both the pessimistic and optimistic cases, the DED investment produces positi
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2026-05 | Initial document; 9 scenarios; historical baseline from NOAA, BLS, Fed, CBO sources |
+| 1.1 | 2026-05 | Add Category B (Value Creation); value discovery summary table; corn example template chain; combined top-line numbers updated to $6.3T–$13.2T |
 
 **Next scheduled update:** 2026-Q3
 **Update triggers (immediate):**
