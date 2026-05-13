@@ -103,6 +103,7 @@ Every tool entry follows this structure:
 | Tool | Category | File | Scenarios | Last Updated |
 |------|----------|------|-----------|--------------|
 | Stimulus Checks | Direct Transfers | [stimulus-checks.md](stimulus-checks.md) | Pandemic, AI Unemployment, Oil Restriction, Drought | 2026-05 |
+| Tax Return Advance Loans (Semi-Annual) | Direct Transfers | [tax-advance-loans.md](tax-advance-loans.md) | Pandemic, AI Unemployment, Oil Restriction, Drought, Financial Fragmentation | 2026-05 |
 | *Gas Tax / Fuel Surcharge* | Price Instruments | *see demand-reduction-policy.md* | Oil Restriction | 2026-05 |
 | *Point-of-Sale EV Rebate* | Price Instruments | *see demand-reduction-policy.md* | Oil Restriction | 2026-05 |
 | *Remote Work Mandate* | Mandates | *see demand-reduction-policy.md* | Oil Restriction, Pandemic | 2026-05 |
