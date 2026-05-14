@@ -45,3 +45,6 @@ Each scenario document follows this structure:
 | Federal Helium Reserve Collapse + Qatar Embargo | [helium-supply-collapse.md](helium-supply-collapse.md) | Semiconductor Collapse, Rare Earth Denial (analog), Healthcare | $80–120B |
 | Polynomial-Time Factorization Algorithm Published | [rsa-cryptographic-break.md](rsa-cryptographic-break.md) | Financial Fragmentation, Grid Cyberattack, Semiconductor Collapse | $2–8T (if unmanaged) |
 | Varroa-X: Catastrophic Honeybee Colony Collapse | [honeybee-colony-collapse.md](honeybee-colony-collapse.md) | Drought (food supply analog), Shipping Blockade (food import), Financial Fragmentation | $200–400B over 5 years |
+| Carrington-Class Solar Superstorm | [solar-superstorm.md](solar-superstorm.md) **[STUB]** | Grid Cyberattack (analog), Semiconductor Collapse, Shipping Blockade | $600B–$2.5T |
+| Mississippi River System Extended Closure | [mississippi-river-closure.md](mississippi-river-closure.md) **[STUB]** | Drought, Shipping Blockade, Oil Restriction | $80–200B |
+| Neon Supply Collapse (Semiconductor Lithography) | [neon-supply-crisis.md](neon-supply-crisis.md) **[STUB]** | Semiconductor Collapse | $150–300B |

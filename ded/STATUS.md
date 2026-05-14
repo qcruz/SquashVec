@@ -70,3 +70,7 @@
 3. **Grid Cyberattack Phase 2** — physical recovery and hardening; air-gapped control systems
 4. **Rare Earth Denial Phase 2** — supply diversification; domestic REE processing; battery chemistry
 5. **Asset profiles** — Corn Belt stub needs full build-out; other category profiles needed
+6. **Red team stubs** — RT-004 (solar superstorm), RT-005 (Mississippi closure), RT-006 (neon crisis) need full build-out
+7. **Agricultural Biological Threat scenario** — new category identified via RT-003; overview stub created; phase files needed
+8. **Retraining programs tool** — stub created; full TAA/WIOA/SkillsFuture analysis needed
+9. **Supply chain concentration risk economics** — stub created; HHI measurement and option value analysis needed
