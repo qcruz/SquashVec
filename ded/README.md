@@ -77,6 +77,19 @@ Scenario files reference these base maps and add scenario-specific overlays
 
 ---
 
+## Economics and Instrument Library
+
+| Document | Purpose |
+|----------|---------|
+| `economics/benefits-summary.md` | Combined $6.3T–$13.2T expected benefit case (loss avoidance + value creation) |
+| `economics/value-discovery.md` | 8 IP/platform opportunities with investment cases and agreement anatomy |
+| `economics/historical-instruments.md` | Historical precedent for all DED economic tools: anchor buying, trade restrictions, IP rights and seizure, compulsory licensing |
+| `economics/ip-licensing-as-trade-tool.md` | How DED IP becomes a trade negotiation instrument; pharma licensing / IP swap mechanism [STUB] |
+| `economics/historical-baseline.md` | Historical crisis loss data (sourced) |
+| `economics/assumptions-log.md` | Confidence ratings and data sources for all estimates |
+
+---
+
 ## How to Deepen a Branch
 
 To go deeper into any supply chain or scenario:
