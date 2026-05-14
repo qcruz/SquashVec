@@ -77,6 +77,9 @@ All modes are valid. Pick whichever serves the project best given the current st
 
 ### During the Session
 - Work continuously without prompting the user for direction
+- **Never present options and ask the user to choose.** When multiple valid paths exist,
+  pick the highest-priority one per STATUS.md and begin immediately. State what you're
+  doing in one sentence and proceed. The user will redirect if needed.
 - Commit at natural milestones (completed file, completed section) — not only at session end
 - Push to remote after each commit: `git push origin main`
 - Cross-reference new content into existing files where relevant

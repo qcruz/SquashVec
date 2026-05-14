@@ -25,6 +25,7 @@
 | `ded/proposal/workforce-development-floor.md` | Full legislative proposal for Employer Development Obligation (EDO); 1M paid experiences/year; $7–8.5B employer-funded wages; 35–40:1 ROI; historical precedents (Germany, UK, France, Singapore, GI Bill); DED integration (ATC linkage, CRHP pipeline, ERP feeder) |
 | `ded/tools/internship-floor.md` | Tool analysis backing WDF proposal; mechanism, scale math, 390k net new slots, targeting variants, interaction effects |
 | `ded/tools/outcome-linked-bonds.md` | Full tool analysis: inverse crop yield bonds (primary); energy price, regional employment, semiconductor allocation bond variants; CAT bond / Brady bond / IBLI / LFP / SIB historical precedents with data; fiscal math at $30B scale; deployment levels (pilot/regional/national); 5 DED scenario applications; targeting variants; interaction effects; failure modes and mitigations; legislative vehicle |
+| `ded/proposal/mission.md` | Full organizational charter: enabling legislation (DPA/Bayh-Dole/§232/IEEPA modifications + new authorities); 5-office org structure; career/political balance; NESC interagency design; IG; $60–80B budget with 10-year ROI model; 3-tier emergency declaration framework; JCED oversight; anti-capture design (geographic caps, contract transparency, revolving door, scenario linkage requirement, GAO audits); independence doctrine |
 | `ded/framework/methodology.md` | Economic-first mandate fully documented; what DED does and does not do; military cost connection |
 
 ---
@@ -47,13 +48,12 @@
 
 ## Key Gaps
 
-- `ded/proposal/mission.md` — organizational charter (stub created; legal authority, budget design needed)
+- `ded/proposal/mission.md` — complete
 - `ded/assets/profiles/` — only 2 of 8 planned profiles written (Mississippi River, National Labs)
 - `ded/status/manufacturing/semiconductors.md` — referenced but not written
 - Drought Phase 2 (stub only) and Phase 3 not yet written; supply chains (water, agriculture, power) needed
-- AI Unemployment Phase 1 stub needs full build-out; Phase 2 and 3 not started
+- AI Unemployment Phase 2 and 3 not yet written
 - `ded/tools/` — price controls, DPA invocation, business survival loans not yet written
-- `ded/tools/outcome-linked-bonds.md` — stub complete; historical precedents section needs full citations; scale estimates pending
 
 ---
 
