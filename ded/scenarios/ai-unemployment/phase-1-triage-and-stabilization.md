@@ -245,7 +245,162 @@ training income) → CRHP service track completion (federal credential, ongoing 
 
 ---
 
-## 5. Accelerator Alpha — AI Transition as R&D Opportunity
+## 5. The ATC → Benefit Pipeline — The Policy Sell
+
+The AI Transition Contribution is not only a funding mechanism. It is the central
+political argument for the entire Phase 1 package, and it should be communicated as such.
+
+**The direct line:**
+
+> *The companies deploying AI that replaces your job pay into a fund. That fund pays you.
+> Your transition benefits are funded by the productivity gains your replacement generated.*
+
+This framing is politically durable across coalitions: it does not tax AI companies for
+innovating — it prices the externality they create. Pro-business audiences recognize the
+externality pricing logic. Pro-labor audiences recognize the accountability structure.
+Fiscal conservatives see a self-funding mechanism that requires no general appropriations.
+
+### ATC Revenue Allocation — The Fund Disbursements
+
+Treasury maintains the **AI Transition Fund (ATF)** as a dedicated account. ATC
+collections are allocated by statute to specific benefits in defined proportions.
+The allocation is not discretionary — it is statutory, meaning the connection between
+the levy and the benefit is direct and visible in the budget:
+
+| Benefit | ATF Allocation | Mechanism | Per-Beneficiary Value |
+|---------|---------------|-----------|----------------------|
+| Extended UI (52 weeks, up from 26) | 35% of ATF | DOL administers; AI-displaced track auto-qualifies | $12,000–18,000 additional benefits per displaced worker |
+| Displacement stimulus payment | 20% of ATF | IRS direct payment within 30 days of documented displacement | $2,500 per qualifying event |
+| Retraining completion tax forgiveness | 15% of ATF | IRS credit; complete DED-certified program → $25,000 federal tax forgiveness | $25,000 per completed retraining |
+| Student loan suspension | 10% of ATF | ED administers; automatic 24-month suspension on displacement, no interest accrual | $3,000–8,000 in avoided interest per worker |
+| CRHP fee subsidy for displaced workers | 10% of ATF | DED administers; covers CRHP annual fee for 24 months | Healthcare coverage for $0 marginal cost |
+| DSA employer contribution match | 10% of ATF | IRS administers; match employer DSA contributions for companies below ATC threshold | Increases DSA balance for workers at smaller employers |
+
+**The compounding effect:** A displaced worker who accesses all available ATF benefits receives:
+- Extended UI: $15,000 additional (average)
+- Displacement stimulus: $2,500
+- Retraining tax forgiveness: $25,000 (on completion)
+- Student loan suspension savings: $5,000 (average)
+- Healthcare: CRHP coverage for 24 months (~$15,000 value at commercial equivalent)
+
+**Total: ~$62,500 in direct financial support** over the transition period — funded entirely
+by the ATC levy on the companies that deployed the AI that caused the displacement.
+This is the number to lead with in any policy presentation.
+
+### Revenue Sufficiency at Scale
+
+ATC rate sensitivity analysis:
+
+| Scenario | Annual AI Labor Cost Reduction | ATC Revenue (18%) | ATF Benefits Funded |
+|----------|-------------------------------|------------------|---------------------|
+| Conservative (2026–2028) | $150B/year | $27B/year | ~1.8M displaced workers fully supported |
+| Base case (2028–2032) | $400B/year | $72B/year | ~4.8M displaced workers fully supported |
+| Accelerated (2030+) | $700B/year | $126B/year | ~8.4M displaced workers fully supported |
+
+At the base case, the ATF self-funds the complete Phase 1 benefit package for the full
+projected displacement cohort with no additional appropriation. The fund becomes net
+positive by Year 3 as early ATC payers' contributions compound while the early displaced
+cohort completes retraining and re-enters the workforce as taxpayers.
+
+---
+
+## 6. The AI Retraining Flywheel
+
+The most overlooked dimension of AI-driven displacement is that the same AI capabilities
+that eliminated certain jobs are also the most efficient tools for retraining displaced
+workers into new ones. The DED deploys AI as the delivery infrastructure for the
+retraining programs funded by the ATC — turning the displacement mechanism into the
+recovery mechanism.
+
+**The irony is the point.** Publicizing it is a policy asset, not a liability: the technology
+that created the transition is being put to work solving it. This is a narrative the
+private sector will fund alongside the government because it demonstrates AI's societal value.
+
+### Personalized Learning Path Generation
+
+Traditional retraining programs are cohort-based, curriculum-fixed, and slow — designed
+for the speed of institutional decision-making, not for individual workers with specific
+gaps to close on a financial deadline.
+
+AI-powered learning path generation, deployed across DED-contracted training providers:
+- **Skills gap assessment:** Worker inputs current skills and credentials; AI maps against
+  target occupation requirements and identifies the specific gap, not a generic curriculum
+- **Custom curriculum:** AI assembles a personalized learning sequence from existing
+  course content, simulation modules, and competency exercises — targeting only the gaps,
+  not re-teaching what the worker already knows
+- **Adaptive pacing:** Progress monitoring adjusts difficulty and pacing in real time;
+  a worker who advances fast moves faster; a worker who needs repetition gets it without
+  falling behind a cohort schedule
+- **Estimated time compression:** A traditional 2-year community college retraining program
+  can be completed in 9–14 months for a worker who already has relevant foundational skills.
+  AI-personalized paths have demonstrated 30–40% time reduction in military and corporate
+  training programs (reference: DARPA Accelerated Learning program; Amazon Upskilling initiative).
+
+### AI-Administered Certification
+
+Credentialing is the bottleneck that turns fast learning into slow employment. Traditional
+certification cycles are tied to testing windows, institutional schedules, and human evaluator
+availability. An AI-administered competency certification system eliminates the bottleneck:
+
+- **Continuous assessment:** Worker demonstrates competency on-demand — not on a semester
+  calendar. A worker ready for certification on day 67 gets certified on day 67.
+- **Multi-modal evaluation:** AI assesses written responses, simulation performance, code
+  execution, and video-demonstrated physical procedures — covering both cognitive and
+  applied skill in a single session
+- **DED credential issuance:** DED-certified training providers issue DED-recognized credentials
+  through the AI certification platform. These credentials are directly readable by federal
+  contracting systems, CRHP enrollment systems, and ERP eligibility databases — no translation
+  layer between certification and employment pathway
+- **Fraud resistance:** AI-administered exams with biometric verification and behavioral
+  anomaly detection; credential integrity is verifiable on-chain or through a DED-maintained
+  digital registry
+
+### Real-Time Job Matching
+
+Credentials sitting in a registry are not employment. The DED closes the loop with
+an AI-powered matching layer that connects certified workers to active openings in
+DED-priority sectors:
+
+- **Priority queue for federal contract positions:** Every DED Type A/B/C contract that
+  creates employment requirements feeds openings to the matching system; DED-certified
+  workers are pre-qualified, reducing employer screening cost to near zero
+- **CRHP deployment matching:** Certified workers eligible for CRHP deployment receive
+  automatically generated deployment offers matched to their skill profile and geographic
+  availability
+- **Private sector relay:** With worker consent, credentials and skills profiles are shared
+  with DED-partner employers in priority sectors — creating a direct channel from DED
+  certification to private employment in AI-resistant occupations
+
+### The Flywheel Effect
+
+```
+ATC levy on AI deployment
+        ↓
+Funds AI-powered retraining infrastructure
+        ↓
+Displaced workers retrain 40% faster via AI-personalized paths
+        ↓
+Certify faster via AI-administered continuous assessment
+        ↓
+Match faster to DED-priority sector openings
+        ↓
+Re-enter workforce as taxpayers (reduces net ATF cost)
+        ↓
+DED-priority sectors (grid, water, precision mfg) build out faster
+        ↓
+Increased infrastructure capacity reduces economic vulnerability costs
+        ↓
+Lower long-run scenario response cost → more ATF surplus available
+        ↓
+Reinvest surplus in next retraining cohort
+```
+
+The flywheel generates three compounding returns simultaneously:
+1. Workers transition faster → ATF costs per worker fall with each cohort
+2. DED-priority sectors build capacity faster → scenario response readiness increases
+3. Tax base recovers faster → federal revenue loss from displacement is shorter-duration
+
+---
 
 The AI displacement scenario is also the DED's primary opportunity to advance the national
 AI safety and alignment research that protects critical infrastructure from AI-related failure.
@@ -275,7 +430,7 @@ their own AI systems from becoming a national security liability.
 
 ---
 
-## 6. Military Cost Connection
+## 8. Military Cost Connection
 
 The AI displacement scenario directly affects defense readiness through three channels:
 
@@ -311,7 +466,7 @@ workforce transition that adoption requires. The two programs are designed as a 
 
 ---
 
-## 7. Phase 1 → Phase 2 Transition
+## 9. Phase 1 → Phase 2 Transition
 
 Phase 1 stabilizes the economic floor. Phase 2 focuses on the structural labor market
 transformation: human-complementary sector investment, work-sharing frameworks, and
@@ -354,3 +509,4 @@ See `ded/scenarios/ai-unemployment/phase-2-transition.md` [STUB].
 - `ded/proposal/civilian-reserve-health/overview.md` — CRHP as healthcare bridge and retraining pipeline
 - `ded/economics/value-discovery.md` — Accelerator Alpha output as potential new OPP entry (AI safety IP)
 - `ded/assets/human-capital.md` — skilled trades and manufacturing workforce assets at risk
+- `ded/scenarios/ai-unemployment/ai-job-creation.md` — taxonomy of AI-created job categories; DED acceleration mechanisms; flywheel dynamics

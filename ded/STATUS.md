@@ -20,7 +20,8 @@
 | `ded/scenarios/oil-restriction/` | Most complete scenario; phases 1–3, demand policy, energy transition, 4 supply chains |
 | `ded/scenarios/pandemic/` | Phases 1–3 complete; most directly relevant near-term scenario |
 | `ded/scenarios/drought/phase-1-demand-management.md` | Economic-first framing; Type A/B/C contracts activated; irrigation efficiency tax credit; crop transition payments; CRHP deployment; economic intelligence dashboard |
-| `ded/scenarios/ai-unemployment/phase-1-triage-and-stabilization.md` | AI Transition Contribution (ATC) self-funding mechanism; DSA portable savings accounts; TRAL AI-displacement track; CRHP health bridge; Type B retraining contracts; Accelerator Alpha integration; military cost channels |
+| `ded/scenarios/ai-unemployment/phase-1-triage-and-stabilization.md` | ATC self-funding mechanism; ATC→benefit pipeline (extended UI, $2.5k stimulus, $25k retraining tax forgiveness, student loan suspension, CRHP subsidy = ~$62.5k per worker); AI retraining flywheel (personalized paths, continuous AI certification, real-time job matching) |
+| `ded/scenarios/ai-unemployment/ai-job-creation.md` | 5 AI-created job categories (infrastructure, oversight, service expansion, R&D/alignment, physical-world integration); bottlenecks and DED acceleration mechanisms; projected 5.9M–9.8M jobs 2026–2035 at 1.9× baseline |
 | `ded/framework/methodology.md` | Economic-first mandate fully documented; what DED does and does not do; military cost connection |
 
 ---
