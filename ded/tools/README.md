@@ -111,6 +111,7 @@ Every tool entry follows this structure:
 | *Remote Work Mandate* | Mandates | *see demand-reduction-policy.md* | Oil Restriction, Pandemic | 2026-05 |
 | *SPR Drawdown* | Reserve Deployments | *see oil-restriction/supply-chains/energy.md* | Oil Restriction | 2026-05 |
 | Mandatory Paid Internship Floor | Labor Mobilization / Human Capital | [internship-floor.md](internship-floor.md) | AI Unemployment (primary), Pandemic, all scenarios | 2026-05 |
+| Outcome-Linked Bond Guarantees | Financial Instruments | [outcome-linked-bonds.md](outcome-linked-bonds.md) | Drought (primary), AI Unemployment, Oil Restriction, Semiconductor Collapse | 2026-05 |
 | *Rationing Systems* | *Out of scope — see scope note* | [rationing-systems.md](rationing-systems.md) | N/A — DED uses price stabilization instruments instead | 2026-05 |
 
 *Italicized entries exist in scenario files; standalone tool entries are added as the

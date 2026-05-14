@@ -22,6 +22,9 @@
 | `ded/scenarios/drought/phase-1-demand-management.md` | Economic-first framing; Type A/B/C contracts activated; irrigation efficiency tax credit; crop transition payments; CRHP deployment; economic intelligence dashboard |
 | `ded/scenarios/ai-unemployment/phase-1-triage-and-stabilization.md` | ATC self-funding mechanism; ATC→benefit pipeline (extended UI, $2.5k stimulus, $25k retraining tax forgiveness, student loan suspension, CRHP subsidy = ~$62.5k per worker); AI retraining flywheel (personalized paths, continuous AI certification, real-time job matching) |
 | `ded/scenarios/ai-unemployment/ai-job-creation.md` | 5 AI-created job categories (infrastructure, oversight, service expansion, R&D/alignment, physical-world integration); bottlenecks and DED acceleration mechanisms; projected 5.9M–9.8M jobs 2026–2035 at 1.9× baseline |
+| `ded/proposal/workforce-development-floor.md` | Full legislative proposal for Employer Development Obligation (EDO); 1M paid experiences/year; $7–8.5B employer-funded wages; 35–40:1 ROI; historical precedents (Germany, UK, France, Singapore, GI Bill); DED integration (ATC linkage, CRHP pipeline, ERP feeder) |
+| `ded/tools/internship-floor.md` | Tool analysis backing WDF proposal; mechanism, scale math, 390k net new slots, targeting variants, interaction effects |
+| `ded/tools/outcome-linked-bonds.md` | Stub: inverse crop yield bonds (primary example); energy price, regional employment, semiconductor supply bond variants; government guarantee structure; design questions |
 | `ded/framework/methodology.md` | Economic-first mandate fully documented; what DED does and does not do; military cost connection |
 
 ---
@@ -50,6 +53,7 @@
 - Drought Phase 2 (stub only) and Phase 3 not yet written; supply chains (water, agriculture, power) needed
 - AI Unemployment Phase 1 stub needs full build-out; Phase 2 and 3 not started
 - `ded/tools/` — price controls, DPA invocation, business survival loans not yet written
+- `ded/tools/outcome-linked-bonds.md` — stub complete; historical precedents section needs full citations; scale estimates pending
 
 ---
 
