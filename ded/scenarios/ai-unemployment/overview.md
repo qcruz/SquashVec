@@ -54,3 +54,35 @@ to a blockade or pandemic, but its aggregate economic disruption potential is la
 - **Productivity dividend policy:** Tax mechanisms to share AI productivity gains broadly
 - **Care economy investment:** Paid caregiving, community work, recognizing non-market labor
 - **Universal basic services:** Healthcare, education, housing as a floor regardless of employment
+
+---
+
+## DED Programs Summary
+
+Programs proposed across all phases of this scenario and how they reduce impact:
+
+**Monitoring and Early Warning**
+- **ODRI (Occupation Displacement Risk Index)** — real-time monitoring using WARN Act filings, SSDI application rates, and wage tax receipts; detects displacement 12–18 months before it registers in official unemployment data
+- **NEID AI Adoption Dashboard** — sector-level AI deployment tracking; activates phase protocols before mass layoffs occur
+
+**Self-Funding Revenue Mechanism**
+- **ATC (AI Transition Contribution)** — 18% excise levy on documented labor cost savings from AI displacement; generates $70–110B/year; companies that replaced workers fund the programs that support them
+
+**Phase 1 — Stabilization**
+- **Extended UI expansion** — pre-designed framework for duration and coverage increase; activated on Tier 1 declaration
+- **$2,500 displacement stimulus** — direct transfer to ODRI Tier 1 workers; funded by ATC
+- **$25,000 retraining tax forgiveness** — forgives federal loan obligations tied to retraining programs for displaced workers
+- **Student loan suspension** — 36-month pause for workers in ODRI Tier 1 occupations
+- **TRAL AI-displacement track** — 75% advance on future refund; 36-month repayment; covers liquidity gap during retraining
+- **DSA (Displacement Savings Account)** — portable savings account with ATC-funded $1:$1 match; follows the worker across employers
+- **CRHP healthcare bridge** — subsidized CRHP enrollment for displaced workers losing employer healthcare
+- **AI Retraining Flywheel** — AI-personalized retraining paths (30–40% time compression); on-demand credentialing; real-time matching to DED-priority openings
+
+**Phase 2 — Structural Transition**
+- **CETC (Care Employer Tax Credit)** — closes the $7–9/hr wage gap in care occupations; attracts displaced workers to the sector with 6.1M projected openings by 2034; funded by ATC
+- **TAP (Trades Accelerator Program)** — 300k apprenticeship starts/year in electrician, plumber, HVAC, carpentry; targets 439k/yr construction labor gap; 1M new tradespeople in 5 years
+- **AWSI (AI Work-Sharing Initiative)** — federal Kurzarbeit analog; partial UI for workers on reduced hours rather than layoffs; 1.5pp ATC rate reduction for participating employers
+- **ATC profit-sharing incentive** — 2pp ATC rate reduction for companies adopting qualifying employee profit-sharing or equity programs; up to 6–8M workers gain AI economy stake
+- **DIWG (Defense Industrial Workforce Guarantee)** — joint DED-DoD Type A contracts maintaining minimum skilled headcount in defense manufacturing occupations; $15k retention bonuses
+- **Regional employment bonds** — DED-guaranteed bonds paying above-baseline interest when county unemployment exceeds 5-year average; hedges regional banks, municipalities, and pension funds in AI-displaced communities
+- **Mandatory Paid Internship Floor (WDF)** — preserves entry-level on-ramps as AI eliminates routine positions; 1M new paid experiences/year at near-zero federal cost

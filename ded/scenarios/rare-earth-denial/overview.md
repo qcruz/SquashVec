@@ -75,3 +75,28 @@ solar panels, and power electronics. The clean energy transition requires more o
 - **Material efficiency standards:** Require reduced rare earth content in government-procured equipment
 - **International mineral reserve:** Coordinate with G7 on shared strategic stockpiles
 - **Circular economy mandate:** Recovery rates for critical minerals from end-of-life products
+
+---
+
+## DED Programs Summary
+
+Programs proposed across all phases of this scenario and how they reduce impact:
+
+**Stockpile and Monitoring**
+- **Critical mineral strategic stockpile (Type A contracts)** — pre-positioned reserves of the highest-risk minerals (REEs, gallium, germanium, cobalt) at 12–24 months of defense and clean energy production use; eliminates the immediate crisis window during which no domestic substitute is available
+- **NEID critical mineral dashboard** — continuous monitoring of Chinese export controls, mine output, and processing capacity; triggers phase protocols before inventory depletion
+
+**Phase 1 — Triage and Sourcing**
+- **Allied sourcing contracts (Type C)** — fast-track agreements with Australia (Lynas), Canada (MP Materials-adjacent), Greenland, and Brazil for prioritized export of REEs and battery minerals; DED IP concessions as diplomatic leverage
+- **Urban mining / recycling investment (Type B)** — co-investment with domestic electronics recyclers to scale rare earth and battery mineral recovery from end-of-life devices; currently near-zero, scalable to 10–15% of demand within 3 years
+
+**Phase 2 — Supply Diversification**
+- **Domestic REE processing contracts (Type B)** — MP Materials Mountain Pass and new site development; DED anchor buyer commitments for domestic REE output; processing capacity is the critical gap (mining exists; refining is nearly entirely in China)
+- **Allied processing capacity (Type B + IP licensing)** — DED co-investment and IP licensing to build REE and battery mineral processing in allied nations; converts the IP-as-trade-tool mechanism into a physical processing supply chain
+- **Battery chemistry substitution R&D (Accelerator)** — DED Accelerator program for lithium-iron-phosphate (no cobalt), sodium-ion (no lithium), and rare-earth-free magnet alternatives; reduces the demand for vulnerable minerals in parallel with diversifying supply
+- **Substitution research contracts (Type B)** — ferrite and alternative magnet formulations for defense and industrial applications; every substitution reduces the leverage of a mineral denial
+
+**Long-Run Independence**
+- **End-to-end domestic REE supply chain (Type A/B/C)** — coordinated contracts across mining, processing, and magnet manufacturing; DED as anchor buyer at each stage until domestic industry is commercially self-sustaining
+- **Material efficiency procurement standards** — DED and DoD procurement standards requiring reduced rare earth content in government-procured equipment; reduces demand and drives commercial R&D toward material efficiency
+- **ERP deployment** — rare earth and materials science experts in DED reserve; rapid deployment to critical domestic processing operations during supply disruption

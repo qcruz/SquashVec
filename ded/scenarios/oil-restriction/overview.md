@@ -62,3 +62,31 @@ beginning immediately rather than after six months.
 - [Agriculture](supply-chains/agriculture.md)
 - [Industrial](supply-chains/industrial.md)
 - [Energy Systems](supply-chains/energy.md)
+
+---
+
+## DED Programs Summary
+
+Programs proposed across all phases of this scenario and how they reduce impact:
+
+**Demand Management**
+- **Gas tax / fuel surcharge** — price signal that reduces discretionary consumption; revenue funds transition programs
+- **Point-of-sale EV rebate** — accelerates fleet electrification, permanently reducing oil demand
+- **Remote work mandate (economic incentive version)** — employers receive tax credits to enable remote work, cutting commute fuel demand 15–25%
+- **Freight efficiency contracts (Type B)** — DED contracts with logistics firms for fuel-efficient routing and vehicle upgrades
+
+**Supply Stabilization**
+- **SPR drawdown coordination** — DED coordinates Strategic Petroleum Reserve release with IEA allies to dampen price spikes in first 90 days
+- **Allied oil access agreements** — pre-negotiated import priority with Canada, Norway, Gulf state producers; activated on Tier 1 declaration
+- **Type A contracts with domestic producers** — capacity preservation payments to ensure idle U.S. production can be restarted within 60–90 days
+
+**Income and Household Protection**
+- **TRAL (Tax Return Advance Loans)** — advance against future refunds for households facing fuel and heating cost spikes; no appropriation required
+- **Stimulus checks / fuel cost supplement** — direct transfer to households below income threshold, funded by fuel surcharge revenue
+- **Energy price bonds** — DED-guaranteed bonds paying above-baseline interest when energy prices exceed index; hedges for manufacturers and low-income housing operators
+
+**Long-Run Transition**
+- **Energy transition Type B contracts** — co-investment in domestic solar, wind, battery storage, and grid infrastructure; DED retains IP rights on technology advances
+- **EV manufacturing Type B contracts** — anchor buying and co-investment to scale domestic EV and battery production
+- **CRHP deployment** — civilian reserve labor for grid infrastructure construction and energy transition build-out
+- **Expert Reserve Program (ERP)** — energy sector engineers in DED reserve for rapid deployment to critical supply chain gaps

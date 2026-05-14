@@ -95,3 +95,28 @@ The CHIPS and Science Act (2022) committed ~$52B to domestic semiconductor manuf
 First new fabs (TSMC Arizona, Samsung Taylor, Intel Ohio) are under construction as of 2025–2026.
 **Lead time from groundbreaking to production:** 4–5 years minimum.
 **Current status:** See [status/manufacturing/semiconductors.md](../../status/manufacturing/semiconductors.md)
+
+---
+
+## DED Programs Summary
+
+Programs proposed across all phases of this scenario and how they reduce impact:
+
+**Monitoring and Early Warning**
+- **NSIVS (National Semiconductor Inventory Visibility System)** — voluntary-but-incentivized quarterly inventory reporting by major chip buyers; NEID aggregate map prevents allocation decisions from being made blind; distinguishes real shortage from phantom-demand hoarding
+
+**Phase 1 — Triage and Allocation**
+- **Priority sector reserve contracts** — Type A contracts with top distributors committing to 5-tier priority allocation (defense → medical → grid → industrial → consumer) with DED covering the spot-to-contract price spread; ensures DoD and hospitals get chips when consumer electronics companies would otherwise outbid them
+- **ERLP (Equipment Repair and Life Extension Program)** — 40% tax credit for refurbishing chip-dependent industrial and medical equipment; 500–800 certified repair providers; chip reclamation from decommissioned equipment; reduces demand 2–5% during peak shortage
+- **Allied Supply Coordination (SAA)** — Semiconductor Access Agreement with South Korea, Japan, Netherlands, EU; mutual inventory transparency; joint allocation of third-party supply; ASML bilateral R&D partnership as diplomatic anchor
+- **Mature node domestic activation** — Type B contracts with GlobalFoundries, Texas Instruments, ON Semiconductor for rapid 28nm+ capacity expansion; 18–30 month timeline vs. 4–5 years for advanced node greenfield
+- **Semiconductor allocation bonds** — DED-guaranteed bonds paying above-baseline interest when SAI (supply-to-demand ratio) falls below 0.7; hedges DoD contractors, medical OEMs, and automotive manufacturers against shortage liquidity crises
+
+**Phase 2 — Domestic Production Build-Out**
+- **Anchor buyer offtake guarantees** — multi-year volume commitments to domestic advanced fabs (TSMC AZ, Intel 18A, Samsung TX); de-risks investment without permanent subsidy; activated only if commercial demand falls short
+- **Type B fab co-investment** — DED co-funds process R&D at next node alongside each major fab; IP jointly owned; enters IP Asset Register as strategic diplomatic asset
+- **ASIC (Allied Semiconductor Industrial Compact)** — permanent allied coordination framework with node specialization matrix; $2B/yr joint R&D fund via IMEC; prevents redundant allied investment
+- **Lithography diversification (Accelerator)** — U.S.-Netherlands joint Accelerator program ($1.5–2B) for next-generation lithography; MBEBL, DSA, and NIL alternative patterning research; reduces ASML single-point-of-failure risk over 10-year horizon
+- **Semiconductor workforce pipeline** — ERP semiconductor engineer reserve (5,000 engineers); CRHP fab technician track (20,000/yr); 15–20 university semiconductor program contracts; K-12 pipeline grants
+- **Strategic chip reserve** — 12–18 month supply of Tier 1–2 priority chips (MIL-SPEC, medical-grade, grid controls); $12–18B initial capital; rotated continuously
+- **Chip-minimal design standards** — DoD and DED procurement standards requiring mature-node fallback architecture in all long-life defense and critical infrastructure systems

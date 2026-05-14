@@ -59,3 +59,25 @@ can disrupt a major global trade route with significant economic effect.
 - **Strategic import reduction:** Identify top 50 goods by import volume and domestic substitution potential
 - **Nearshoring incentives:** Tax and procurement policy to move manufacturing to Americas
 - **Domestic pharmaceutical manufacturing:** Top priority — currently 80%+ of APIs imported
+
+---
+
+## DED Programs Summary
+
+Programs proposed across all phases of this scenario and how they reduce impact:
+
+**Pre-Positioned Domestic Capacity**
+- **Domestic pharmaceutical manufacturing (Type B contracts)** — DED co-investment with domestic API and generic drug manufacturers; reduces 80%+ import dependency for the highest-consequence blocked category; IP retained in Asset Register
+- **Import substitution contracts (Type C)** — targeted domestic production build-out for the top 50 goods by import volume and strategic priority; activated pre-crisis so domestic capacity exists when shipping is disrupted
+- **Nearshoring incentives (procurement preference + tax)** — DED procurement standards that preference goods from the Western Hemisphere; combined with tax credits for manufacturers relocating to Canada, Mexico, or the U.S.
+
+**Phase 1 — Routing and Inventory**
+- **Allied freight rerouting agreements** — pre-negotiated priority routing with Canada and Mexico for land-border alternatives; activated immediately on blockade declaration without requiring new diplomatic negotiation mid-crisis
+- **Port surge capacity contracts (Type A)** — pre-committed agreements with overflow port operators and inland logistics hubs to absorb diverted cargo; prevents port congestion from choking the rerouted supply
+- **Air freight priority contracts (Type A)** — pre-committed air freight capacity for pharmaceuticals, defense components, and critical medical supplies; highest value-per-weight goods shift to air during maritime disruption
+- **TRAL + stimulus** — income bridge for workers in import-dependent manufacturing sectors losing jobs during blockade; maintains consumer demand base
+
+**Phase 2 — Substitution**
+- **DPA coordination** — DED as lead coordinator for Defense Production Act Title III activation; prioritizes domestic manufacturing surge for the most strategically critical blocked goods
+- **Jones Act coordination** — DED works with DOT to accelerate Jones Act waiver process for domestic coastal shipping, expanding domestic maritime capacity
+- **Type B manufacturing contracts** — co-investment with domestic manufacturers in the sectors most affected by import disruption; anchor buying creates demand certainty that makes domestic production investment rational

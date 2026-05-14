@@ -107,3 +107,30 @@ Key differences:
 - Labor status data: [status/labor/remote-work.md](../../status/labor/remote-work.md)
 - Food supply chain: [supply-chains/food/grain.md](../../supply-chains/food/grain.md)
 - Energy staffing risk: *TODO: ded/supply-chains/energy/grid-staffing.md*
+
+---
+
+## DED Programs Summary
+
+Programs proposed across all phases of this scenario and how they reduce impact:
+
+**Healthcare Surge Capacity**
+- **CRHP (Civilian Reserve Health Program)** — pre-enrolled civilian healthcare workers mobilized as surge labor for hospitals and field facilities; removes the ad-hoc staffing crisis of 2020
+- **Strategic medical stockpile contracts (Type A)** — pre-positioned PPE, ventilators, and pharmaceutical reserves maintained at 90-day national supply; rotated continuously so they are not depleted between pandemics
+- **DPA (Defense Production Act) coordination** — DED as lead coordinator for Title III domestic manufacturing surge of PPE, vaccines, and critical medical equipment
+
+**Income and Household Protection**
+- **Stimulus checks** — direct transfers to displaced workers; DED pre-designs the delivery infrastructure so checks deploy within 14 days of declaration, not 6+ weeks
+- **TRAL (Tax Return Advance Loans) — pandemic track** — 90% advance against future refund for workers in declared pandemic sectors; covers gap between job loss and UI processing
+- **Extended UI expansion** — pre-written statutory framework for UI duration and coverage expansion, activated on Tier 2 declaration rather than passed mid-crisis
+
+**Supply Chain Continuity**
+- **Type B contracts for domestic pharmaceutical manufacturing** — co-investment with domestic API and drug manufacturers; DED retains IP; reduces 80%+ import dependency on critical medicines
+- **Type C supply chain contracts** — targeted investment to build domestic production of the goods most disrupted in 2020: N95 masks, gloves, testing materials, generic pharmaceuticals
+- **Allied supply access agreements** — pre-negotiated priority import access for critical medical goods with allied nations; avoids the competitive bidding chaos of 2020
+
+**Workforce and Economic Continuity**
+- **Remote work infrastructure investment (Type B)** — broadband expansion, device access, and employer framework pre-built so remote-capable workers transition within days, not months
+- **Internship floor (sector-adjusted)** — contact-intensive sector suspensions; remote-capable sectors maintain or accelerate the pipeline; preserves workforce development through the crisis
+- **CRHP deployment to food processing and logistics** — civilian reserve augments workforce in critical-but-dangerous processing facilities to maintain food supply chain
+- **Mandatory Paid Internship Floor** — remote-capable employers maintain entry-level development pipeline; provides income for young workers who lose jobs in hospitality and retail

@@ -75,3 +75,28 @@ An extended grid outage is a cascading crisis across every sector:
 - **Transformer standardization:** Reduce custom one-off designs; build reserve-compatible inventory
 - **Offensive deterrence:** Credible cyber retaliation capability as deterrence
 - **Allied grid hardening:** Coordinate with Canada and Mexico on interconnect security
+
+---
+
+## DED Programs Summary
+
+Programs proposed across all phases of this scenario and how they reduce impact:
+
+**Pre-Positioned Infrastructure (Peacetime)**
+- **Strategic transformer reserve (Type A contracts)** — pre-positioned spare large power transformers (LPTs) at regional DED facilities; the single most effective intervention since LPT lead times are 12–24 months and a reserve eliminates that constraint entirely
+- **Domestic LPT manufacturing contracts (Type B)** — DED co-investment to scale U.S. LPT production capacity; currently ~20% of demand domestically; target 60%+ within 5 years; IP retained in Asset Register
+- **Microgrid deployment contracts (Type B)** — investment with utilities, hospitals, water plants, and emergency services to install islanding-capable microgrids; critical facilities can maintain operations independent of the main grid during an attack
+
+**Phase 1 — Immediate Response**
+- **CRHP deployment** — civilian reserve engineers and electricians mobilized for emergency grid restoration work alongside utility crews; expands the human capacity available for repairs
+- **Generator fuel priority contracts (Type A)** — pre-committed diesel and natural gas allocation agreements with fuel suppliers; ensures hospitals, water treatment, and emergency services have fuel priority without competing in a disrupted market
+- **Emergency procurement authority** — DED coordinates DPA invocation for priority manufacturing and delivery of replacement grid components; reduces procurement timeline from months to weeks
+
+**Phase 2 — Recovery and Hardening**
+- **Air-gapped control system investment (Type B)** — DED contracts with grid operators and SCADA vendors for physically isolated backup control systems; ensures manual operation capability survives a digital attack
+- **Cybersecurity hardening contracts (Type B)** — DED co-investment with grid operators for zero-trust architecture, network segmentation, and intrusion detection in grid control systems
+- **Transformer standardization program** — DED procurement standards that push the industry toward fewer custom LPT designs, enabling a meaningful national reserve to be maintained at reasonable cost
+
+**Long-Run Resilience**
+- **Grid architecture investment (Type B)** — co-investment in distributed generation and storage that reduces the consequence of any single node being destroyed; a distributed grid degrades gracefully rather than cascading
+- **Allied grid hardening compact** — DED coordinates with Canada and Mexico on interconnect security standards and shared LPT reserve pools; an attack on one interconnect should not cascade across borders
