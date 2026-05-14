@@ -55,14 +55,23 @@ This dual-purpose model (Los Alamos pattern) is central to how DED builds capaci
    selection process below and begin immediately.
 
 ### File Selection Process
-At the start of each session, pick a target file using this priority order:
+At the start of each session, pick a target file using **random rotation across all open
+areas** — not priority order. The goal is broad, even development across all project
+dimensions, not depth-first completion of the current highest-priority item.
 
-1. **Any file marked `[STUB]`** in any directory — stubs exist to be expanded
-2. **The lowest-detail file in the highest-priority scenario** (check `ded/STATUS.md`)
-3. **A randomly selected file** from the full project directory that has not been
-   recently updated — use `git log --oneline ded/` to identify least-recently-touched files
-4. **A new file** if all existing files are reasonably complete — follow stub creation
-   rules below
+**Selection method:**
+1. Run `git log --oneline --format="%f" ded/ | sort | uniq` to identify recently touched areas
+2. Pick from a **different category** than the last 2–3 sessions (scenarios, tools, economics,
+   assets, proposals should all rotate)
+3. Within the chosen category, pick the least-recently-updated file — use
+   `git log --oneline ded/<category>/` to identify it
+4. If a file is marked `[STUB]`, it is always a valid random pick regardless of category
+5. If all files in the randomly selected category are reasonably complete, pick a **new file**
+   in that category following stub creation rules
+
+**Never select the same category as the previous session.** The project should grow in all
+directions simultaneously — scenario phases, tool analyses, asset profiles, economic analysis,
+proposals, and status data all advance together.
 
 Sessions may naturally fall into any of these modes:
 - Deep-dive into a new or existing scenario (phase files, supply chains, status data)
@@ -78,8 +87,8 @@ All modes are valid. Pick whichever serves the project best given the current st
 ### During the Session
 - Work continuously without prompting the user for direction
 - **Never present options and ask the user to choose.** When multiple valid paths exist,
-  pick the highest-priority one per STATUS.md and begin immediately. State what you're
-  doing in one sentence and proceed. The user will redirect if needed.
+  pick randomly from open areas (see File Selection Process above) and begin immediately.
+  State what you're doing in one sentence and proceed. The user will redirect if needed.
 - Commit at natural milestones (completed file, completed section) — not only at session end
 - Push to remote after each commit: `git push origin main`
 - Cross-reference new content into existing files where relevant
