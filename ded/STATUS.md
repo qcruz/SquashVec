@@ -28,6 +28,9 @@
 | `ded/proposal/mission.md` | Full organizational charter: enabling legislation (DPA/Bayh-Dole/§232/IEEPA modifications + new authorities); 5-office org structure; career/political balance; NESC interagency design; IG; $60–80B budget with 10-year ROI model; 3-tier emergency declaration framework; JCED oversight; anti-capture design (geographic caps, contract transparency, revolving door, scenario linkage requirement, GAO audits); independence doctrine |
 | `ded/proposal/space-mining-incentives.md` | Full program proposal: SPACE Act 2015 legal foundation; $2.05B market at 21.4% CAGR; AstroForge/ispace/Karman+ industry state; DED Accelerator (Type D, $3–5B/5yr), APCs at 90% terrestrial spot, Strategic Space Resource Reserve, International Space Mining Framework; scenario impact table across 5 scenarios (10–25yr horizons); ~$5–8B committed |
 | `ded/proposal/synthetic-protein-program.md` | Full program proposal: $1M→$20/kg→<$10/kg cost trajectory; 5 FDA-approved products; 99% land / 82–96% water reduction vs. conventional beef; Synthetic Protein Accelerator, federal anchor buyer (DoD/BOP/VA), NSPIP bioreactor infrastructure, regulatory fast-track, National Synthetic Protein Reserve; ~$6–9B over 5 years; reduces drought/oil restriction/food shortage severity |
+| `ded/assets/profiles/strategic-petroleum-reserve.md` | Full asset profile: salt cavern configuration; historical deployment data (1991/2005/2011/2022); 2022 drawdown analysis (600M→365M bbl); replenishment cost math; geographic concentration vulnerability; DED enhancements (automated replenishment rule, distributed expansion, priority allocation contracts, commodity-backed payment integration); SPR as founding DED design template |
+| `ded/assets/profiles/darpa.md` | Full asset profile: DARPA model anatomy (PM authority, failure tolerance, rotating experts, Heilmeier Catechism); technology track record (internet, GPS, stealth, AV, mRNA); scenario matrix; active programs (ERI, ADEPT/P3, RADICS, GIDDEON, BTO); DED Accelerator as DARPA extension; DED leverage points (bridge to commercial scale, APC commitment, IP licensing, PM alumni as ERP candidates) |
+| `ded/proposal/universal-basic-income.md` | NIT-based UBI via TRAL advance guarantee: 30% phase-out rate; $6,200 individual guarantee; monthly advances via private lenders against IRS-calculated entitlement; EITC extension pathway; ATC→NIT statutory allocation (60% of ATC revenue); net cost ~$89B/year after replacements and ATC offset; Phase 3 AI unemployment normalization instrument |
 | `ded/framework/methodology.md` | Economic-first mandate fully documented; what DED does and does not do; military cost connection |
 
 ---
@@ -62,7 +65,7 @@
 
 ## Next Priority Areas
 
-1. **Asset profiles** — SPR and DARPA profiles are highest-value unwritten entries; Corn Belt stub exists
+1. **Asset profiles** — SPR and DARPA profiles complete; Corn Belt stub exists (needs full build-out)
 2. **Drought Phase 3** — stub referenced in Phase 2; resilience and normalization
 3. **Grid Cyberattack Phase 1** — overview only; high near-term relevance; no phase files
 4. **Rare Earth Denial Phase 1** — overview only; directly connected to semiconductor and defense scenarios
