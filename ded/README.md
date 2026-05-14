@@ -14,17 +14,23 @@ crisis, and a social stability crisis. The DED treats these as integrated system
 
 ## Core Function
 
+The DED's exclusive instrument set is **economic and fiscal**: strategic contracts,
+financial incentives, R&D programs, civilian labor deployment, and economic intelligence.
+It does not manage crises, implement rationing, or operate infrastructure. It pre-positions
+the economic conditions that make the right response rational before a crisis forces it.
+
 The department continuously runs a planning loop across all critical systems:
 
 1. **Identify** — which systems are critical and currently vulnerable
 2. **Map** — the full dependency graph of each system
 3. **Substitute** — what replaces each dependency if it fails
-4. **Preserve** — maintain dormant capacity and restart-ready plans
-5. **Transition** — pre-built emergency conversion playbooks
-6. **Simulate** — stress-test continuously, not only during crises
+4. **Preserve** — pre-build the financial contracts that keep dormant capacity alive
+5. **Transition** — pre-build the incentive packages that make voluntary adaptation economical
+6. **Simulate** — stress-test continuously; update economic cost projections
 
-This produces a living set of contingency plans updated by ongoing research,
-not a static report filed and forgotten.
+Every step produces a **fiscal or contractual action** — not an operational directive.
+The output is a portfolio of pre-built interventions ready to deploy, not a crisis
+management manual for a department that doesn't run operations.
 
 ---
 

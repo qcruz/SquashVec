@@ -103,17 +103,36 @@ when scenario trigger thresholds are approached.
 
 ---
 
+## The Defense Budget Argument
+
+Economic disruption is not only a civilian concern. The Department of Defense spends
+approximately **$20B/year on energy**, **$5B/year on food service and rations**, and
+trillions on weapons platforms whose production costs are directly tied to energy,
+water, steel, semiconductor, and specialty material prices. Every sustained commodity
+price shock is simultaneously a defense readiness cost shock.
+
+The 2021–2022 energy price spike increased DoD energy costs by an estimated **$3–5B**
+in a single year. The 2021–2022 semiconductor shortage delayed multiple weapons program
+deliveries and reduced readiness. The COVID pandemic disrupted military supply chains
+across 40+ categories of equipment and consumables.
+
+A department that maintains stable, competitive costs for the economy's critical inputs
+is a force multiplier for the defense budget — not a competitor for it. **DED's annual
+budget is a hedge against defense procurement cost inflation.**
+
+---
+
 ## Scale and Cost
 
 The DED is not a large bureaucracy. Its value is in coordination, analysis, and pre-positioning
 — not in direct operation of economic systems. The department's standing budget is estimated
 at **$60–80 billion per year** in steady state, covering:
 
-- Strategic reserve maintenance and pre-positioned contingency capacity
+- Strategic contracts maintaining critical industrial and supply chain capacity
 - National laboratory coordination and directed research programs
-- Workforce and income infrastructure programs
-- Scenario simulation exercises and planning operations
-- Administrative and intelligence functions
+- Civilian Reserve (CRHP) administration and infrastructure deployment programs
+- Scenario simulation exercises and economic intelligence operations
+- Administrative functions
 
 For context, this is approximately equal to the current annual federal highway budget — and
 it is a fraction of the cost of a single unmitigated crisis. The 2020 COVID response cost

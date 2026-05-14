@@ -14,6 +14,38 @@ Completed or paused projects are preserved on named branches.
 
 ---
 
+## DED Mandate Philosophy — Read Before Writing Any Content
+
+**The DED operates exclusively through economic and fiscal instruments.**
+It does not implement rationing, manage emergency distribution, operate infrastructure,
+or issue mandates. Those functions belong to FEMA, USDA, DOE, HHS, and state agencies.
+
+**DED's instrument set:**
+1. Strategic contracts (Types A/B/C/D) — financial incentives for private actors to
+   maintain, build, or redirect capabilities the nation needs
+2. Research programs (Accelerators, ERP) — produce IP and capabilities as national assets
+3. Financial instruments — loan guarantees, tax credits, advance payment programs
+4. CRHP civilian labor — low-cost, rapidly mobilizable workforce for infrastructure
+   build-out and repair via the civilian reserve program
+5. Economic intelligence — monitors leading cost indicators (energy, food, water,
+   housing, manufacturing inputs) before they become crises
+
+**All DED content must be framed economically:**
+- Every intervention addresses a rising-cost concern (energy prices, food prices,
+  water rates, housing costs, manufacturing input costs)
+- These same cost increases directly raise the cost of military readiness — this is
+  the constitutional defense justification for DED authority
+- Phase files describe pre-built financial incentive packages, not crisis management protocols
+- Do NOT write about rationing systems, emergency distribution, mandatory curtailment,
+  or any operational crisis management — that is out of scope for DED
+
+**The CRHP civilian force is a core DED tool:**
+Mobilizable low-cost labor for infrastructure construction and repair, combined with
+federal funding contracts that simultaneously serve as R&D programs and economic stimulus.
+This dual-purpose model (Los Alamos pattern) is central to how DED builds capacity.
+
+---
+
 ## Session Protocol — DED
 
 ### Start of Session

@@ -5,6 +5,49 @@ This document defines the loop and how to apply it.
 
 ---
 
+## The DED Mandate — Economic and Fiscal Instruments Only
+
+The DED does not manage crises. It does not ration fuel, operate grain reserves, or
+issue emergency orders. Those functions belong to existing agencies: FEMA, USDA, DOE,
+HHS, state emergency management.
+
+**The DED's exclusive instrument set is economic and fiscal:**
+- Strategic contracts that financially incentivize private actors to maintain, build, or
+  redirect capabilities the nation needs
+- Research programs (Accelerators, ERP deployments) that produce IP and technological
+  capabilities as national assets
+- Financial instruments (loan guarantees, tax credits, advance payment programs) that
+  make the economically correct choice also the privately rational choice
+- Civilian labor deployment (CRHP reserve) as a low-cost, rapidly mobilizable workforce
+  for infrastructure build-out and repair
+- Economic intelligence that monitors leading cost indicators — energy, food, water,
+  housing, and manufacturing input prices — before they become crises
+
+**Every DED intervention addresses an economic concern first:**
+Rising energy costs. Rising food prices. Rising water utility rates. Rising construction
+costs. These are the DED's triggering conditions — not only existential supply failure.
+A 30% rise in residential electricity rates is a DED-scope concern before it is a FEMA
+concern. The department's job is to act at the economic indicator stage, not the
+emergency stage.
+
+**The military cost connection:**
+Every cost increase in energy, food, water, transportation, and manufacturing is also
+a direct increase in the cost of maintaining military readiness. The Department of
+Defense spends ~$20B/year on energy, ~$5B/year on food service and rations, and trillions
+on platforms built with steel, semiconductors, and specialized materials subject to
+supply disruption. DED's economic interventions protect military purchasing power and
+procurement stability — this is the constitutional defense justification for the department's
+authority and budget.
+
+**What the DED does not do:**
+It does not implement rationing systems, manage emergency food distribution, operate
+utility infrastructure, or issue mandates to private businesses outside of contract terms
+voluntarily agreed. Where those functions are needed, DED pre-positions the economic
+conditions that make other agencies' jobs easier — and funds the preparation before
+the crisis, not the response during it.
+
+---
+
 ## The Core Loop
 
 ```
@@ -20,6 +63,13 @@ This document defines the loop and how to apply it.
       ↓
 6. SIMULATE      Stress-test the plan. Find gaps. Repeat from step 1.
 ```
+
+**The loop produces economic intervention packages, not operational directives.**
+Each step culminates in a fiscal or contractual action the DED can take in peacetime
+to ensure the transition path exists when needed. Step 4 (Preserve) is not "stockpile
+grain" — it is "fund Type C strategic reserve contracts with grain elevator operators."
+Step 5 (Transition) is not "mandate crop shifts" — it is "pre-build the financial
+incentive package that makes voluntary crop shifts economically rational."
 
 ---
 
