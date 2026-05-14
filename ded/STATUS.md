@@ -8,17 +8,19 @@
 
 | Document | Why It Matters |
 |----------|---------------|
-| `ded/proposal/one-pager.md` | Primary pitch document; the entry point for all audiences |
+| `ded/proposal/one-pager.md` | Primary pitch document; includes defense budget argument (DED as hedge against DoD procurement cost inflation) |
 | `ded/economics/benefits-summary.md` | Combined $6.3T–$13.2T expected benefit case; Category A (loss avoidance) + Category B (value creation) |
 | `ded/economics/value-discovery.md` | 8 IP/platform opportunities; $84B investment → $31–99B/year revenue; trade agreement anatomy template |
+| `ded/economics/historical-instruments.md` | Historical precedent for all DED economic instruments — anchor buying, trade restrictions, IP rights, compulsory licensing; DED synthesis table |
+| `ded/economics/ip-licensing-as-trade-tool.md` | Full mechanism: 3 licensing scenarios (trade terms, IP swap, resource access); India pharma case study; compulsory licensing reversal; full negotiating package design |
 | `ded/tools/expert-reserve-program.md` | Los Alamos model; 4 Accelerator program designs; competing-company recruitment doctrine |
 | `ded/tools/strategic-contracts.md` | 4 contract types; full JCED congressional oversight framework; anti-pork provisions |
 | `ded/proposal/civilian-reserve-health/` | Universal healthcare via military enrollment; phased solvency model; DED force multiplier |
 | `ded/assets/README.md` + category files | 70+ assets scored on 4-dimension DED Score; Tier S/A/B/C classification |
 | `ded/scenarios/oil-restriction/` | Most complete scenario; phases 1–3, demand policy, energy transition, 4 supply chains |
 | `ded/scenarios/pandemic/` | Phases 1–3 complete; most directly relevant near-term scenario |
-| `ded/scenarios/drought/phase-1-demand-management.md` | Full Phase 1 built; water priority allocation, emergency crop shift, grain reserve release, hydroelectric backup, income support |
-| `ded/tools/rationing-systems.md` | Stub created; commodity frameworks and historical precedents to be built out |
+| `ded/scenarios/drought/phase-1-demand-management.md` | Economic-first framing; Type A/B/C contracts activated; irrigation efficiency tax credit; crop transition payments; CRHP deployment; economic intelligence dashboard |
+| `ded/framework/methodology.md` | Economic-first mandate fully documented; what DED does and does not do; military cost connection |
 
 ---
 
@@ -28,8 +30,8 @@
 |----------|------------|-------------------|
 | Oil Restriction | High — phases + supply chains + demand policy + energy transition | Low |
 | Pandemic | High — phases 1–3 complete | Low |
-| Drought | Phase 1 complete; Phase 2 stubbed; Phase 3 needed; supply chains needed | High |
-| AI Unemployment | Overview only | High |
+| Drought | Phase 1 complete (economic framing); Phase 2 stub; Phase 3 needed | High |
+| AI Unemployment | Overview + Phase 1 stub | High |
 | Semiconductor Collapse | Overview only | Medium |
 | Grid Cyberattack | Overview only | Medium |
 | Rare Earth Denial | Overview only | Medium |
@@ -40,19 +42,19 @@
 
 ## Key Gaps
 
-- `ded/proposal/mission.md` — organizational charter, legal authority, budget — **not yet written**
+- `ded/proposal/mission.md` — organizational charter (stub created; legal authority, budget design needed)
 - `ded/assets/profiles/` — only 2 of 8 planned profiles written (Mississippi River, National Labs)
 - `ded/status/manufacturing/semiconductors.md` — referenced but not written
-- Drought scenario — Phase 2 (stub only), Phase 3 needed; supply chains (water, agriculture, power) needed
-- AI Unemployment scenario — no phase files or tool connections
-- `ded/tools/` — rationing systems (stub), price controls, DPA invocation, business survival loans all need full build-out
+- Drought Phase 2 (stub only) and Phase 3 not yet written; supply chains (water, agriculture, power) needed
+- AI Unemployment Phase 1 stub needs full build-out; Phase 2 and 3 not started
+- `ded/tools/` — price controls, DPA invocation, business survival loans not yet written
 
 ---
 
 ## Next Priority Areas
 
-1. **Drought Phase 2** — structural water efficiency (drip irrigation conversion, aquifer management law, desalination)
-2. **AI Unemployment Phase 1** — income support, workforce triage, sector mapping
-3. **`ded/proposal/mission.md`** — the organizational charter is the missing anchor for the legislative proposal
-4. **`ded/tools/rationing-systems.md`** — referenced in multiple scenarios; needs standalone analysis
-5. **Drought supply chains** — water system, agriculture, hydroelectric power
+1. **AI Unemployment Phase 1** — stub exists; full economic triage and stabilization design needed
+2. **`ded/proposal/mission.md`** — stub exists; legal authority, budget model, anti-capture design needed
+3. **Drought Phase 2** — structural water efficiency (drip irrigation, aquifer management, desalination)
+4. **Semiconductor scenario** — overview only; highest-value incomplete scenario after drought/AI
+5. **Asset profiles** — Corn Belt, SPR, DARPA profiles are highest-value unwritten entries

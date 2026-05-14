@@ -1,5 +1,3 @@
-[STUB — expand in future session]
-
 # IP Licensing as a Trade Negotiation Instrument
 
 **Document Type:** DED Value Discovery — Mechanism Analysis
@@ -11,149 +9,502 @@
 
 ## The Core Mechanism
 
-When the DED funds research through a Type B strategic contract or Accelerator program,
-the U.S. government retains a royalty-free license to the resulting IP under pre-agreed
-contract terms. This creates a portfolio of IP that the DED can use as a negotiating
-instrument — licensing access in exchange for trade concessions, diplomatic alignment,
-IP reciprocity, or strategic resource access.
+Standard trade negotiation is a market-access exchange: the U.S. offers reduced tariffs
+or quota expansion; the other party reciprocates. The U.S. is a wealthy, open market —
+this is a real concession, but it is finite and carries domestic political costs.
 
-The mechanism inverts the traditional trade negotiation model. Instead of the U.S.
-offering market access or reduced tariffs as concessions, the DED offers something
-the other nation cannot produce independently: access to IP that provides a measurable
-competitive or security advantage.
+The DED's IP-as-leverage model offers a fundamentally different class of concession:
+**access to capabilities the other nation cannot independently produce**. A drought-tolerant
+seed variety that provides a 30% yield advantage in water-stressed conditions. A pharmaceutical
+platform that reduces antiviral development time from years to months. A desalination
+process that cuts energy cost by half.
 
-This document will build out the full analysis of this mechanism, with particular focus
-on the pharmaceutical licensing example.
+These are not market access concessions. They are capability transfers — and they create
+a qualitatively different kind of diplomatic relationship. Nations that depend on U.S.
+market access can find alternative markets. Nations whose food security, healthcare system,
+or energy infrastructure is built on U.S.-licensed IP have permanently aligned their
+national interest with the continued goodwill of the U.S. government.
 
----
+**The full mechanism:**
 
-## Primary Case Study: Pharmaceutical IP Licensing (to be built out)
+```
+1. DED funds R&D (Type B contract / Accelerator program)
+         ↓
+2. Government retains IP rights under pre-agreed contract terms
+         ↓
+3. DED structures IP as a licensing package with tiered access
+         ↓
+4. Licensing terms become the currency of trade negotiations
+         ↓
+5. Allied nations receive access in exchange for:
+   — Trade concessions (tariffs, quotas, currency terms)
+   — IP reciprocity (allied nation IP in exchange)
+   — Strategic resource access (minerals, basing, overflight)
+   — Manufacturing commitments (surge capacity for U.S. use)
+   — Diplomatic alignment (UN votes, coalition participation)
+         ↓
+6. Each license term is a separately negotiable chip
+   — creates 8-15 distinct negotiating points per agreement
+   — usable for objectives unrelated to the original IP domain
+```
 
-### The Setup
-
-The DED funds pharmaceutical platform development through BARDA + NIH strategic contracts
-(see OPP-05 in `ded/economics/value-discovery.md`). The resulting IP — broad-spectrum
-antivirals, mRNA vaccine platforms, AMR compound libraries — is held by the government
-with commercial rights retained by the contractors.
-
-The DED licenses this IP to allied pharmaceutical manufacturers. The license terms are
-not fixed — they are a **negotiating package**, with specific terms exchangeable for
-specific concessions from the allied nation.
-
-### The Pharmaceutical IP Swap
-
-*TODO: Full mechanism design*
-
-**Scenario A — License for trade terms:**
-The allied nation receives favorable licensing terms (lower royalty rate, longer exclusivity
-window, priority access to new compound classes) in exchange for:
-- Reduced tariffs on U.S. agricultural exports to that nation
-- Priority supply agreements for API manufacturing (the allied manufacturer produces
-  active pharmaceutical ingredients for U.S. use as a condition of the license)
-- Agreement to use U.S.-certified good manufacturing practices (GMP), creating
-  ongoing regulatory dependency
-
-**Scenario B — IP swap:**
-The allied nation grants the U.S. reciprocal rights to pharmaceutical IP developed
-domestically — Japanese oncology compounds, European biosimilar platforms, South Korean
-manufacturing processes — in exchange for access to DED pharmaceutical IP.
-
-The U.S. government accumulates a global IP portfolio not through development alone but
-through exchange. Each allied nation contributes domestically developed IP in exchange
-for DED IP access; the cumulative result is a U.S.-held IP portfolio that spans the
-entire pharmaceutical value chain.
-
-**Scenario C — License for strategic resource access:**
-Water-stressed allied nations receive favorable terms on DED water purification IP
-(OPP-07) in exchange for agreements granting U.S. access to:
-- Strategic mineral deposits (cobalt, lithium, rare earths)
-- Naval basing or overflight rights
-- Participation in U.S.-led intelligence sharing programs
-
-The license term is the price; the resource access is the consideration. This is
-the same structure as the historical oil-for-security arrangements in the Gulf —
-but with IP rather than arms as the U.S. offering, and diplomatic alignment rather
-than only cash as the return.
+This document develops the mechanism across three primary scenarios — pharmaceutical IP
+licensing, agricultural IP swaps, and strategic resource access — then builds the full
+design of the negotiating package.
 
 ---
 
-## Key Sections (to be built out)
+## I. The DED IP Portfolio
 
-### 1. The IP Portfolio — What the DED Holds
+Before the licensing structure can be designed, the government must understand what it
+holds. DED IP accumulates from two sources:
 
-*TODO: Map of DED IP assets across all strategic contracts and Accelerator programs*
+### Source 1: Strategic Contract (Type B) Outputs
 
-- Accelerator Alpha outputs (AI safety tools, alignment frameworks)
-- Accelerator Bravo outputs (fusion engineering processes)
-- Accelerator Charlie outputs (crop genetics germplasm, breeding protocols)
-- Accelerator Delta outputs (grid security software)
-- Type B contract outputs across all scenarios
+Every Type B developmental contract includes a government IP rights clause: the government
+retains a paid-up, royalty-free license to any IP developed under the contract. The contractor
+retains commercial rights; the government retains the right to license, produce, or share
+the technology in a declared national emergency or under a pre-agreed licensing program.
 
-### 2. Licensing Structures — Designing the Package
+IP categories generated by Type B contracts across DED scenarios:
 
-*TODO: Full licensing structure taxonomy*
+| Domain | IP Type | Originating Contract | Scenario |
+|--------|---------|---------------------|----------|
+| Crop genetics | Plant variety protection + patents on breeding methods | USDA ARS + seed company consortium | Drought, Oil Restriction |
+| Rare earth-free magnets | Chemistry patents + manufacturing process | Ames Lab + DOE partners | Rare Earth Denial |
+| SMR designs | Reactor design patents + safety certifications | TerraPower, NuScale, Kairos | Oil Restriction, Grid |
+| Pharmaceutical platforms | mRNA platform patents + compound libraries | BARDA + NIH consortium | Pandemic |
+| Grid control software | Software copyright + security module trade secrets | PNNL + Sandia + NREL | Grid Cyberattack |
+| Desalination processes | Membrane technology patents + process IP | NREL + MIT + UCSB | Drought |
+| Synthetic biology strains | Microorganism patents + bioprocess IP | JBEI + DARPA BTO | Oil Restriction |
+| AMR compound libraries | Pharmaceutical compound patents | NIH + BARDA | Pandemic |
 
-- Exclusive vs. non-exclusive licenses
-- Territory restrictions and re-export prohibitions
-- Sublicensing rights (can the allied nation share with its own allies?)
-- IP inheritance — improvements developed by the licensee
-- Termination triggers (political misalignment, sanctions, adversary technology transfer)
-- The negotiating suite — which terms are chips vs. non-negotiable
+### Source 2: Accelerator Program Outputs
 
-### 3. IP Swap Mechanics
+Accelerator programs produce classified technical output that is jointly developed
+by government researchers, national lab staff, and recruited private sector experts.
+The government holds the primary IP interest under the Accelerator's pre-agreed terms;
+participants receive a royalty-free domestic commercial license as their compensation
+for contributing proprietary knowledge to the joint effort.
 
-*TODO: How bilateral and multilateral IP swap agreements work*
+The classified status of Accelerator output provides additional leverage: the IP
+itself is not publicly known, which means its existence and availability are
+intelligence assets. An allied nation offered access to classified Accelerator output
+is receiving something that competitors — including other allied nations — may not
+even know exists.
 
-- Valuation methodology — how to compare IP assets across domains
-- Due diligence — verifying the allied nation actually holds the IP it claims
-- Escrow mechanisms — how IP is held and transferred
-- Anti-circumvention — preventing allied nation from using received IP to develop
-  competing capabilities or transfer to adversaries
+### The Portfolio as a Diplomatic Asset Register
 
-### 4. Historical Precedents
+The DED's Office of Research and National Laboratory Coordination maintains the
+**IP Asset Register** — a classified catalog of all government-held IP from strategic
+contracts and Accelerator programs, with:
+- Current technology readiness level (TRL 1–9)
+- Estimated commercial value at full deployment
+- Licensing readiness status (legal work complete / in progress)
+- Pre-designed licensing packages by allied nation tier
+- Exclusion triggers (which nations are ineligible at each tier)
 
-*TODO: Detailed case studies*
+This register is the DED's equivalent of the Treasury's foreign exchange reserve —
+a managed asset available for deployment in service of national objectives.
 
-- TRIPS negotiations as offensive IP instrument (covered in historical-instruments.md)
-- Post-WWII German IP redistribution
-- NASA technology transfer programs
-- DOE national lab licensing history
-- Bilateral IP agreements in existing trade deals (USMCA, KORUS, etc.)
+---
 
-### 5. The Compulsory Licensing Reversal
+## II. Licensing Structures — Designing the Package
 
-*TODO: Full mechanism for how the DED uses compulsory licensing affirmatively*
+Not all IP licenses are equal. The structure of the license determines its diplomatic
+value, its revenue potential, and its strategic durability. DED licenses are designed
+along several dimensions:
 
-- Standard model: country A invokes compulsory license to override U.S. pharma patent
-  in health emergency. U.S. protests; negotiates; sometimes accommodates.
-- DED model: DED pre-designs the compulsory license equivalent for allied nations as
-  a *deliberate incentive* built into the original licensing agreement.
-  - Allied nation receives emergency production rights, pre-granted, under defined conditions
-  - In exchange, allied nation pre-commits manufacturing capacity for U.S. use in a
-    declared U.S. economic emergency
-  - The compulsory license threat becomes a pre-agreed bilateral guarantee
+### Exclusivity
 
-### 6. The Negotiating Package — Full Design
+**Exclusive license:** The allied nation is the only licensed producer in its territory
+or globally. Extremely valuable — the ally gets a competitive moat. Priced accordingly.
+Appropriate for early-stage commercial development where the U.S. wants an allied nation
+to invest in building the manufacturing ecosystem.
 
-*TODO: Walk through a complete hypothetical negotiation*
+**Non-exclusive license:** Multiple nations can license the same IP. Lower individual value
+but higher total revenue. Appropriate for widely-needed technologies where broad adoption
+is the strategic objective (grid control software, water purification) — creating the
+maximum dependency network rather than a single deep relationship.
 
-Example: DED negotiates pharmaceutical IP license with India
+**First-mover window:** Non-exclusive access is structured with a 5–10 year exclusivity
+period for Tier 1 allies. After the window, Tier 2 allies can access. This creates both
+an incentive for early alignment and ongoing diplomatic competition to remain in Tier 1.
 
-India is the world's largest generic pharmaceutical manufacturer and has historically
-used compulsory licensing to access patented drugs. The DED reframes this:
-- India receives licensed access to DED antiviral platform IP (avoiding the need for
-  compulsory licensing disputes)
-- In exchange: Indian API manufacturers commit 20% of production capacity for U.S.
-  first-call rights in a pandemic; India agrees to U.S. GMP standards; India shares
-  AMR compound library developed by Indian pharmaceutical companies
-- Each of these terms is separately negotiable; additional terms available as chips
-  for broader diplomatic objectives
+### Territory and Re-Export Controls
+
+All DED licenses are geographically bounded to the licensed nation's territory.
+The allied nation may not sub-license, export, or transfer the IP — or products derived
+from it — to non-licensed nations without explicit DED authorization.
+
+This provision is the commercial equivalent of Wassenaar export controls: the
+U.S. controls not just direct exports but derivative access. A nation that receives
+SMR technology cannot then sell that technology to a non-aligned nation — any
+downstream SMR deployment requires a fresh U.S. license.
+
+### IP Inheritance — Improvements
+
+A critical clause in every DED license: any improvements or derivative IP developed
+by the licensee using DED-licensed foundational IP must be shared with the U.S.
+government under a pre-agreed joint ownership or right-of-first-refusal arrangement.
+
+**Why this matters:** An allied nation's agricultural scientists, pharmaceutical researchers,
+or materials engineers who work with DED IP will develop innovations. Without this clause,
+those innovations stay with the ally. With it, the DED's IP portfolio compounds over time —
+each license generates additional IP that flows back to the government.
+
+This is how a single $5B investment in crop genetics (OPP-01) can continuously generate
+new IP over 20 years as licensed nations contribute their own improvements to the shared
+pool.
+
+### Termination Triggers
+
+License agreements include automatic suspension or termination provisions:
+
+| Trigger | Effect |
+|---------|--------|
+| U.S. sanctions designation | Immediate suspension; 30-day grace for humanitarian carve-out |
+| Armed conflict with U.S. or U.S. ally | Immediate suspension |
+| Material breach of non-transfer obligation | 90-day cure period; then termination |
+| Adoption of designated adversary equivalent technology in same domain | 12-month notice; either reverse or lose access |
+| Expropriation of U.S. corporate assets without fair compensation | Suspension until resolution |
+
+The last trigger is particularly powerful: a nation that nationalizes U.S. companies
+without compensation automatically loses access to DED IP licenses. This creates a
+property rights guarantee backed not by litigation but by technology access.
+
+### The Negotiating Suite
+
+The licensing package as a whole is designed with a **negotiating suite** — terms that
+are offered or withheld as chips in broader negotiations:
+
+| Suite Term | What It Offers | What the U.S. Can Ask For It |
+|------------|---------------|------------------------------|
+| Exclusivity window length | 5 → 10 → 15 years | Tariff reduction; basing rights |
+| Territory expansion | Add neighboring markets | UN vote alignment |
+| Sublicensing right | Licensed nation can sub-license within its trade bloc | IP sharing from ally's domestic R&D |
+| Third-country extension | License applies to ally's overseas territories or dependencies | Defense cooperation agreement |
+| Emergency clause threshold | Raise the bar for U.S. production resumption | Manufacturing surge commitment |
+| IP inheritance rate | Reduce ally's sharing obligation | Increase in minimum purchase commitment |
+| Dispute resolution forum | Move from ICSID to bilateral arbitration | Diplomatic cooperation in multilateral forums |
+
+Each of these is a real and separable term. A skilled negotiator arrives at an IP licensing
+negotiation with 10+ distinct chips to offer — entirely separate from the core technology
+access — each of which can unlock progress on objectives that appear unrelated to the
+IP domain.
+
+---
+
+## III. Scenario A: License for Trade Concessions
+
+### The Structure
+
+An allied nation receives favorable DED IP licensing terms — lower royalty rate, longer
+exclusivity window, priority access to next-generation improvements — in exchange for
+concrete trade concessions that reduce economic costs for U.S. households and businesses.
+
+### The India Pharmaceutical Case Study
+
+**Context:**
+India is the world's largest generic pharmaceutical manufacturer, producing approximately
+30% of global generic drug volume by value and supplying 40% of U.S. generic prescriptions.
+India is simultaneously the source of 60–70% of U.S. active pharmaceutical ingredient (API)
+imports — a significant supply chain concentration risk identified in the pandemic scenario.
+
+India has historically used compulsory licensing (TRIPS Article 31) to override U.S. and
+European pharmaceutical patents for domestic generic production — most notably sorafenib
+(Nexavar, 2012) and multiple antiretroviral compounds. From the U.S. pharmaceutical
+industry's perspective, this is a threat. From the DED's perspective, it is a negotiating
+opening.
+
+**The standard adversarial model:**
+U.S. companies protest Indian compulsory licensing through USTR Special 301 reports and
+WTO dispute processes. India issues the license anyway. The U.S. gets nothing except
+reduced revenue for one company and ongoing diplomatic friction.
+
+**The DED model:**
+The DED pre-designs an IP access agreement that gives India equivalent access to DED-funded
+pharmaceutical IP — without the need for compulsory licensing disputes — in exchange for
+manufacturing commitments and IP reciprocity. The compulsory license threat becomes a
+pre-agreed bilateral license, and the diplomatic friction converts to commercial partnership.
+
+**What India receives:**
+- Licensed access to the DED broad-spectrum antiviral platform (OPP-05) at cost + 8% royalty
+  — below any commercially available equivalent, structured to make generic production economically
+  superior to compulsory licensing
+- Priority notification of new DED pharmaceutical IP entering the licensing program —
+  India's generic manufacturers are first offered each new compound class at the favorable rate
+- 10-year exclusivity window for DED-licensed compounds in the South Asian market
+
+**What India provides in exchange:**
+
+*Direct manufacturing commitment:*
+- Indian API manufacturers under contract commit 20% of capacity for U.S. first-call rights
+  at pre-agreed pricing during a declared DED health emergency. This directly addresses
+  the pandemic scenario supply chain risk — U.S. access to Indian manufacturing is
+  pre-contracted, not improvised during a crisis.
+- Indian pharmaceutical manufacturers produce emergency stockpiles of 10 critical API compounds
+  under Type C reserve contracts (see `ded/tools/strategic-contracts.md`) — held in India,
+  but U.S. has first-call rights.
+
+*IP reciprocity:*
+- Indian Council of Medical Research (ICMR) and major Indian pharmaceutical companies
+  (Sun Pharma, Cipla, Dr. Reddy's) share AMR compound library data developed in India's
+  significant domestic AMR research programs. India has one of the world's most severe
+  AMR burdens; its researchers have consequently produced significant novel antibiotic work.
+- Joint ownership: any AMR compounds developed using DED-licensed foundational IP are
+  co-owned by the U.S. government and the Indian research institution.
+
+*Trade terms:*
+- Reduced tariffs on U.S. agricultural exports to India — specifically wheat, soy, and
+  processed food products where India currently imposes tariffs of 30–100%
+- Agreement to price DED-licensed pharmaceutical product transactions in USD, maintaining
+  dollar transaction volume in pharmaceutical trade
+
+*Diplomatic alignment:*
+- India agrees not to supply DED-licensed compound classes to designated adversary nations
+- India aligns with U.S. positions in WHO pandemic preparedness framework negotiations —
+  specifically on IP sharing for next-pandemic preparedness
+
+**Net result:**
+The U.S. converts a recurring bilateral IP dispute into a manufacturing partnership, secures
+API supply chain resilience from its primary source of risk, acquires Indian AMR research
+output it cannot produce domestically at equivalent speed, and gains agricultural export
+market access — all without a single tariff negotiation or WTO dispute.
+
+The cost to the U.S.: reduced royalty rates on pharmaceutical IP the government funded.
+The net benefit: supply chain security, IP expansion, and trade concessions worth multiples
+of the foregone royalty revenue.
+
+---
+
+## IV. Scenario B: IP Swap
+
+### The Structure
+
+Rather than exchanging IP access for trade concessions, the U.S. exchanges one category of
+IP for another. Each party contributes IP it has developed domestically; each party gains
+capabilities it would otherwise have taken years and billions to develop independently.
+
+The IP swap converts what would be parallel, duplicative national R&D programs into
+a coordinated international R&D system — with the U.S. at the center as the primary
+IP holder and coordinator.
+
+### Japan Oncology — Crop Genetics Exchange
+
+**Context:**
+Japan is the global leader in several categories of oncology research — particularly in
+gastric cancer (extremely rare in the U.S.; extremely common in East Asia), precision
+medicine approaches for Asian-specific genetic variants, and certain antibody-drug
+conjugate manufacturing processes.
+
+Japan is simultaneously a food-insecure nation: 63% of caloric intake is imported, with
+significant dependence on U.S. grain. Rising agricultural input costs and climate-driven
+yield uncertainty are a national security concern for Japanese policymakers.
+
+**The swap:**
+- U.S. provides Japan licensed access to OPP-01 advanced crop genetics — drought-tolerant
+  corn and wheat varieties optimized for Japanese growing conditions through a
+  co-development agreement with Japanese agricultural universities
+- Japan provides U.S. access to RIKEN and National Cancer Center Japan oncology compound
+  libraries — decades of pharmaceutical research targeting cancer types common in East Asia
+  but understudied by U.S. pharma due to smaller domestic patient populations
+
+**Why both parties benefit beyond the swap itself:**
+The oncology IP Japan transfers is largely not commercially deployed in the U.S. market —
+small patient population means limited commercial incentive for U.S. pharma to develop it.
+But for the DED's pharmaceutical IP portfolio (OPP-05), it has real value: a compound
+library developed by world-class researchers, acquired at the cost of crop genetics access
+rather than billions in new research.
+
+The crop genetics Japan receives solve a genuine national food security problem. Japan
+is willing to pay more for this capability than the market rate for U.S. crop exports —
+because the value is in the seed technology, not the commodity.
+
+**The compounding dynamic:**
+Both parties commit IP inheritance clauses: improvements developed by Japan using DED
+crop genetics flow back to the U.S.; improvements developed by U.S. researchers using
+Japanese oncology IP flow back to Japan. The swap creates an ongoing bilateral R&D
+relationship rather than a one-time exchange.
+
+Over 20 years, this compounds: each party continuously upgrades the other's IP at no
+additional cost, funded entirely by the research programs each would run domestically anyway.
+
+---
+
+### Germany / EU: Grid Software for Water Purification IP
+
+**Context:**
+Germany and the EU have invested heavily in water purification and treatment technology —
+particularly in membrane bioreactor systems and advanced oxidation processes. European
+water technology companies (Veolia, Suez, Xylem) are the current world leaders in
+municipal water treatment, with IP that would directly complement the DED's OPP-07
+desalination program.
+
+The EU is simultaneously concerned about grid cybersecurity — specifically the
+heterogeneous SCADA systems that make European grids difficult to defend collectively.
+The DED's OPP-06 grid control software standard is directly relevant.
+
+**The swap:**
+- U.S. provides EU access to the DED grid control software platform (OPP-06) and
+  associated cybersecurity monitoring for NATO member grid operators — framed as
+  a NATO infrastructure security enhancement
+- EU provides U.S. access to European water treatment IP, specifically membrane
+  bioreactor designs and advanced oxidation processes, contributing to the OPP-07
+  desalination program
+
+**Strategic effect:**
+The EU grid security relationship creates a mutual defense dimension to the grid software:
+a cyberattack on an EU member's power grid now triggers U.S. monitoring system alerts,
+and U.S. cyber teams can be deployed under the software support agreement. This is a
+grid-level mutual defense clause embedded in a commercial software agreement.
+
+The water treatment IP accelerates OPP-07 by 3–5 years — the U.S. starts from the
+current European technology frontier rather than from its own baseline. The resulting
+improved desalination IP, when licensed back out, is superior to what either party would
+have produced independently.
+
+---
+
+## V. Scenario C: License for Strategic Resource Access
+
+### The Structure
+
+In this model, IP access is exchanged not for trade concessions or IP reciprocity but for
+physical resource access: mining rights, naval basing, overflight, or intelligence cooperation.
+The IP functions as a capability transfer that makes the allied nation willing to offer
+strategic access it would not otherwise provide.
+
+### DRC Cobalt: Water Purification IP for Mining Access
+
+**Context:**
+The Democratic Republic of Congo holds approximately 60–70% of global cobalt reserves —
+a critical input for electric vehicle batteries, defense systems, and energy storage.
+Current mining is heavily influenced by Chinese investment and Chinese state-owned
+enterprises. The DRC government has expressed willingness to diversify, but U.S.
+offers to date have not been sufficiently compelling.
+
+The DRC has a severe drinking water access problem: approximately 75% of the population
+lacks access to safely managed drinking water. This is a genuine national security and
+development priority for Congolese leadership — and it is a problem U.S. water purification
+IP (OPP-07) could directly address.
+
+**The exchange:**
+- U.S. provides DRC licensed access to DED water purification technology for municipal
+  water systems, including atmospheric water generation for rural communities — licensed
+  at cost, with CRHP deployment support for installation
+- DRC provides U.S. with preferential mining investment rights: U.S. companies receive
+  priority licensing for new cobalt and lithium concessions; existing Chinese-affiliated
+  concessions face renegotiation conditions when they expire
+
+**The strategic logic:**
+This is the "Food for Peace → commercial trade" pattern applied to critical minerals.
+The U.S. uses a genuine capability transfer to establish the relationship; the resource
+access follows from the relationship. The DRC receives something it genuinely needs that
+China cannot offer — because China does not have equivalent water purification IP and would
+not provide it at cost.
+
+**The CRHP component:**
+CRHP civilian reserve members with water systems and civil infrastructure skills are
+deployed to DRC for 90-day assignments under the installation agreement. This places
+trained U.S. civilian personnel in-country, builds local technical capacity, and establishes
+long-term operational relationships with DRC infrastructure managers. The deployment cost
+is a DED line item; the relationship-building effect is worth multiples of the cost.
+
+---
+
+## VI. The Compulsory Licensing Reversal
+
+One of the most powerful applications of DED IP leverage is the pre-designed compulsory
+license — turning a tool historically used against the U.S. into a deliberate diplomatic
+instrument.
+
+**The historical problem:**
+Under TRIPS Article 31, any nation can override a pharmaceutical patent in a public health
+emergency by issuing a compulsory license to domestic manufacturers. The U.S. pharmaceutical
+industry has opposed this practice vigorously. The result is recurring bilateral friction
+(India, Thailand, South Africa, Brazil) that damages the relationship without preventing
+the compulsory license.
+
+**The DED inversion:**
+Rather than fighting compulsory licensing after the fact, the DED pre-grants an equivalent
+right as part of the licensing agreement — under specific conditions, with specific
+commitments in exchange.
+
+**Pre-granted emergency license structure:**
+- The allied nation receives an automatic right to produce DED-licensed compounds domestically
+  in a declared national health emergency — no diplomatic negotiation required
+- Conditions: (1) the emergency is genuine (WHO declaration or domestic declaration meeting
+  pre-agreed criteria); (2) production is for domestic use only, not export; (3) the
+  allied nation resumes royalty payments within 24 months of emergency end
+- In exchange: the allied nation pre-commits its domestic pharmaceutical manufacturing
+  capacity for U.S. first-call rights in a parallel emergency — the same right is mutual
+
+**Why this is strategically superior to opposition:**
+The U.S. gets the manufacturing commitment it needs for supply chain resilience. The allied
+nation gets the health emergency access it would have taken anyway through compulsory
+licensing — but now it is a contractual right rather than an adversarial action. The
+bilateral relationship gains a layer of mutual obligation. The DED avoids recurring
+diplomatic friction over an outcome it was never going to prevent.
+
+This converts the TRIPS Article 31 exception from a recurring dispute into a designed
+instrument. The exception is not exploited — it is pre-priced into the agreement as a
+mutual benefit, with the manufacturing commitment as its consideration.
+
+---
+
+## VII. The Full Negotiating Package — Design Principles
+
+When the DED approaches any trade negotiation involving IP, the negotiating team carries
+the following package structure:
+
+### Tier 1 Offer (opens the negotiation)
+Core IP access at standard Tier 1 terms: 10-year exclusivity, cost + 12% royalty,
+standard non-transfer obligations, pre-granted emergency license with manufacturing
+reciprocity.
+
+### Upgrade Suite (each term exchangeable for a concession)
+
+| Upgrade | Concession Required |
+|---------|-------------------|
+| Exclusivity extension to 15 years | Tariff reduction in target category |
+| Royalty reduction to cost + 6% | Direct manufacturing commitment above baseline |
+| Priority access to next-generation IP | IP reciprocity from ally's R&D |
+| Sublicensing right within trade bloc | Bloc-wide alignment commitment |
+| CRHP deployment support for installation | Basing or overflight rights |
+| Emergency clause threshold raised | Additional manufacturing surge capacity |
+| IP inheritance rate reduced to 25% (from 50%) | UN voting alignment on economic security resolutions |
+| Dispute resolution moved to bilateral arbitration | Intelligence sharing agreement |
+
+### Non-Negotiable Core
+The following terms appear in every DED IP agreement and are not part of the suite:
+- U.S. government emergency production right (28 U.S.C. § 1498 equivalent)
+- Non-transfer to designated adversaries
+- IP inheritance clause (minimum 25% of improvements)
+- Automatic suspension on sanctions designation
+- DED inspection rights on production using licensed IP
+
+### The Compound Negotiation
+IP licensing agreements are frequently used to open conversations on topics unrelated
+to the IP itself. A negotiation that begins with pharmaceutical access can conclude with:
+- Agricultural tariff reductions
+- Mineral development agreements
+- Defense basing arrangements
+- Intelligence sharing protocols
+- Currency and financial alignment commitments
+
+Each of these is achievable because the IP offer is genuinely valuable — valuable enough
+to bring senior counterparts to the table and keep them there through a complex multi-issue
+negotiation. The IP is the entry point; the diplomatic suite is the deliverable.
 
 ---
 
 ## Cross-References
 
-- `ded/economics/value-discovery.md` — OPP-01 through OPP-08 individual agreement anatomies
-- `ded/economics/historical-instruments.md` — Historical precedent for each mechanism
-- `ded/tools/strategic-contracts.md` — IP provisions in Type B contracts
-- `ded/tools/expert-reserve-program.md` — Accelerator program IP structure
+- `ded/economics/value-discovery.md` — 8 specific opportunity entries; each has an agreement anatomy section
+- `ded/economics/historical-instruments.md` — Bayh-Dole, § 1498, TRIPS, DARPA, COCOM precedents
+- `ded/tools/strategic-contracts.md` — Type B IP provisions; how government rights are established
+- `ded/tools/expert-reserve-program.md` — Accelerator program IP structure; classification as competitive barrier removal
+- `ded/proposal/civilian-reserve-health/` — CRHP deployment in Scenario C (DRC water purification)
+- `ded/scenarios/pandemic/` — OPP-05 pharmaceutical IP; India API supply chain resilience
+- `ded/scenarios/drought/` — OPP-01 crop genetics; Japan food security exchange
