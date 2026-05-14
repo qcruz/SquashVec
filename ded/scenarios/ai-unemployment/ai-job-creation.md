@@ -370,3 +370,4 @@ a 4-year transition is survivable; a 9-year transition is a permanently damaged 
 - `ded/proposal/civilian-reserve-health/` — CRHP service tracks as the entry point for all categories
 - `ded/assets/human-capital.md` — skilled trades, community colleges, veterans pipeline as retraining infrastructure
 - `ded/economics/value-discovery.md` — AI safety IP from Accelerator Alpha as potential OPP entry
+- `ded/tools/internship-floor.md` — mandatory paid internship floor; ~1M new entry-level experiences/year; structural first-rung creation
