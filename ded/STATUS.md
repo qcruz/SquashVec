@@ -41,11 +41,11 @@
 |----------|------------|-------------------|
 | Oil Restriction | High — phases + supply chains + demand policy + energy transition | Low |
 | Pandemic | High — phases 1–3 complete | Low |
-| Drought | Phase 1 complete; Phase 2 complete; Phase 3 stub needed | Medium |
+| Drought | Phases 1–3 complete | Low |
 | AI Unemployment | Phase 1 complete; Phase 2 complete; Phase 3 stub needed | Medium |
 | Semiconductor Collapse | Phases 1–2 complete; Phase 3 stub created | Low |
-| Grid Cyberattack | Overview only | Medium |
-| Rare Earth Denial | Overview only | Medium |
+| Grid Cyberattack | Phase 1 complete; Phases 2–3 needed | Medium |
+| Rare Earth Denial | Phase 1 complete; Phases 2–3 needed | Medium |
 | Shipping Blockade | Overview only | Low |
 | Financial Fragmentation | Overview only | Low |
 
@@ -65,8 +65,8 @@
 
 ## Next Priority Areas
 
-1. **Asset profiles** — SPR and DARPA profiles complete; Corn Belt stub exists (needs full build-out)
-2. **Drought Phase 3** — stub referenced in Phase 2; resilience and normalization
-3. **Grid Cyberattack Phase 1** — overview only; high near-term relevance; no phase files
-4. **Rare Earth Denial Phase 1** — overview only; directly connected to semiconductor and defense scenarios
-5. **AI Unemployment Phase 3 / Semiconductor Phase 3** — stubs created; long-run normalization designs
+1. **AI Unemployment Phase 3** — stub created; long-run normalization design; NIT integration
+2. **Semiconductor Phase 3** — stub created; concentration monitoring, post-EUV commercialization
+3. **Grid Cyberattack Phase 2** — physical recovery and hardening; air-gapped control systems
+4. **Rare Earth Denial Phase 2** — supply diversification; domestic REE processing; battery chemistry
+5. **Asset profiles** — Corn Belt stub needs full build-out; other category profiles needed
