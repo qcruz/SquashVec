@@ -36,7 +36,7 @@
 |----------|------------|-------------------|
 | Oil Restriction | High — phases + supply chains + demand policy + energy transition | Low |
 | Pandemic | High — phases 1–3 complete | Low |
-| Drought | Phase 1 complete (economic framing); Phase 2 stub; Phase 3 needed | High |
+| Drought | Phase 1 complete; Phase 2 complete; Phase 3 stub needed | Medium |
 | AI Unemployment | Phase 1 complete; Phase 2 stub; Phase 3 needed | High |
 | Semiconductor Collapse | Overview only | Medium |
 | Grid Cyberattack | Overview only | Medium |
@@ -51,7 +51,7 @@
 - `ded/proposal/mission.md` — complete
 - `ded/assets/profiles/` — only 2 of 8 planned profiles written (Mississippi River, National Labs)
 - `ded/status/manufacturing/semiconductors.md` — referenced but not written
-- Drought Phase 2 (stub only) and Phase 3 not yet written; supply chains (water, agriculture, power) needed
+- Drought Phase 3 not yet written; supply chains (water, agriculture, power) needed
 - AI Unemployment Phase 2 and 3 not yet written
 - `ded/tools/` — price controls, DPA invocation, business survival loans not yet written
 
