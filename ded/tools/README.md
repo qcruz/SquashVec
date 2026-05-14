@@ -110,6 +110,7 @@ Every tool entry follows this structure:
 | *Point-of-Sale EV Rebate* | Price Instruments | *see demand-reduction-policy.md* | Oil Restriction | 2026-05 |
 | *Remote Work Mandate* | Mandates | *see demand-reduction-policy.md* | Oil Restriction, Pandemic | 2026-05 |
 | *SPR Drawdown* | Reserve Deployments | *see oil-restriction/supply-chains/energy.md* | Oil Restriction | 2026-05 |
+| Rationing Systems | Rationing Systems | [rationing-systems.md](rationing-systems.md) | Oil Restriction, Drought, Pandemic, Shipping Blockade | 2026-05 |
 
 *Italicized entries exist in scenario files; standalone tool entries are added as the
 catalogue is built out.*
