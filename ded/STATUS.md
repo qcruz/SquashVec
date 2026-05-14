@@ -38,7 +38,7 @@
 | Pandemic | High — phases 1–3 complete | Low |
 | Drought | Phase 1 complete; Phase 2 complete; Phase 3 stub needed | Medium |
 | AI Unemployment | Phase 1 complete; Phase 2 complete; Phase 3 stub needed | Medium |
-| Semiconductor Collapse | Phase 1 complete; Phase 2 stub needed | Medium |
+| Semiconductor Collapse | Phases 1–2 complete; Phase 3 stub created | Low |
 | Grid Cyberattack | Overview only | Medium |
 | Rare Earth Denial | Overview only | Medium |
 | Shipping Blockade | Overview only | Low |
@@ -52,15 +52,16 @@
 - `ded/assets/profiles/` — only 2 of 8 planned profiles written (Mississippi River, National Labs)
 - `ded/status/manufacturing/semiconductors.md` — referenced but not written
 - Drought Phase 3 not yet written; supply chains (water, agriculture, power) needed
-- AI Unemployment Phase 3 not yet written
+- AI Unemployment Phase 3: stub created; full build-out needed
+- Semiconductor Phase 3: stub created; full build-out needed
 - `ded/tools/` — price controls, DPA invocation, business survival loans not yet written
 
 ---
 
 ## Next Priority Areas
 
-1. **AI Unemployment Phase 2** — stub exists; human-complementary sectors, productivity dividend, work-sharing
-2. **Semiconductor Phase 2** — stub created; domestic production build-out, allied strategy, ASML diversification
-3. **Drought Phase 3** — stub referenced in Phase 2; resilience and normalization
-4. **Asset profiles** — Corn Belt stub created; SPR and DARPA profiles are highest-value remaining entries
-5. **AI Unemployment Phase 3** — not started; long-term structural labor market design
+1. **Asset profiles** — SPR and DARPA profiles are highest-value unwritten entries; Corn Belt stub exists
+2. **Drought Phase 3** — stub referenced in Phase 2; resilience and normalization
+3. **Grid Cyberattack Phase 1** — overview only; high near-term relevance; no phase files
+4. **Rare Earth Denial Phase 1** — overview only; directly connected to semiconductor and defense scenarios
+5. **AI Unemployment Phase 3 / Semiconductor Phase 3** — stubs created; long-run normalization designs
