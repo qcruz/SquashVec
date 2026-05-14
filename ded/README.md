@@ -90,6 +90,23 @@ Scenario files reference these base maps and add scenario-specific overlays
 
 ---
 
+## Standalone Programs — DED-Derived
+
+A secondary output of the DED's analysis is the identification of policy instruments that
+have significant standalone value independent of any crisis scenario — programs worth
+pursuing on their own merits, whose design was sharpened by DED scenario planning.
+
+| Program | File | Standalone Case |
+|---------|------|-----------------|
+| **Workforce Development Floor** | `proposal/workforce-development-floor.md` | Requires every employer (≥100 FTE) to maintain 1 paid intern per 100 employees. Creates ~1M new paid work experiences/year at near-zero federal cost, funded entirely by private employers. 35–40:1 projected ROI. Addresses the disappearing entry-level on-ramp as AI eliminates routine positions — a structural labor market fix the market will not self-correct. |
+| **Outcome-Linked Bond Guarantees** | `tools/outcome-linked-bonds.md` | Government-guaranteed bonds that pay higher interest when adverse economic outcomes occur (crop yield decline, energy price spikes, regional unemployment rises). Converts unpredictable emergency subsidy obligations into pre-committed contingent guarantees priced by private markets. Primary example: inverse crop yield bonds as farmer and insurer hedge, reducing direct farm subsidy expenditure in bad years. |
+
+These programs emerged from DED scenario analysis but do not require a crisis to justify
+deployment — they reduce structural vulnerabilities and government fiscal exposure in normal
+operating conditions.
+
+---
+
 ## How to Deepen a Branch
 
 To go deeper into any supply chain or scenario:

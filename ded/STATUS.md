@@ -24,7 +24,7 @@
 | `ded/scenarios/ai-unemployment/ai-job-creation.md` | 5 AI-created job categories (infrastructure, oversight, service expansion, R&D/alignment, physical-world integration); bottlenecks and DED acceleration mechanisms; projected 5.9M–9.8M jobs 2026–2035 at 1.9× baseline |
 | `ded/proposal/workforce-development-floor.md` | Full legislative proposal for Employer Development Obligation (EDO); 1M paid experiences/year; $7–8.5B employer-funded wages; 35–40:1 ROI; historical precedents (Germany, UK, France, Singapore, GI Bill); DED integration (ATC linkage, CRHP pipeline, ERP feeder) |
 | `ded/tools/internship-floor.md` | Tool analysis backing WDF proposal; mechanism, scale math, 390k net new slots, targeting variants, interaction effects |
-| `ded/tools/outcome-linked-bonds.md` | Stub: inverse crop yield bonds (primary example); energy price, regional employment, semiconductor supply bond variants; government guarantee structure; design questions |
+| `ded/tools/outcome-linked-bonds.md` | Full tool analysis: inverse crop yield bonds (primary); energy price, regional employment, semiconductor allocation bond variants; CAT bond / Brady bond / IBLI / LFP / SIB historical precedents with data; fiscal math at $30B scale; deployment levels (pilot/regional/national); 5 DED scenario applications; targeting variants; interaction effects; failure modes and mitigations; legislative vehicle |
 | `ded/framework/methodology.md` | Economic-first mandate fully documented; what DED does and does not do; military cost connection |
 
 ---
