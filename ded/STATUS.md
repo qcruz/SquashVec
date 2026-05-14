@@ -38,7 +38,7 @@
 | Pandemic | High — phases 1–3 complete | Low |
 | Drought | Phase 1 complete; Phase 2 complete; Phase 3 stub needed | Medium |
 | AI Unemployment | Phase 1 complete; Phase 2 stub; Phase 3 needed | High |
-| Semiconductor Collapse | Overview only | Medium |
+| Semiconductor Collapse | Phase 1 complete; Phase 2 stub needed | Medium |
 | Grid Cyberattack | Overview only | Medium |
 | Rare Earth Denial | Overview only | Medium |
 | Shipping Blockade | Overview only | Low |
@@ -59,8 +59,8 @@
 
 ## Next Priority Areas
 
-1. **`ded/proposal/mission.md`** — stub exists; legal authority, budget model, anti-capture design needed
-2. **Drought Phase 2** — stub exists; structural water efficiency (drip irrigation, aquifer management, desalination)
-3. **Semiconductor scenario Phase 1** — overview only; second-highest-priority incomplete scenario
-4. **Asset profiles** — Corn Belt, SPR, DARPA profiles are highest-value unwritten entries
-5. **AI Unemployment Phase 2** — stub exists; human-complementary sectors, productivity dividend, work-sharing
+1. **AI Unemployment Phase 2** — stub exists; human-complementary sectors, productivity dividend, work-sharing
+2. **Semiconductor Phase 2** — stub created; domestic production build-out, allied strategy, ASML diversification
+3. **Drought Phase 3** — stub referenced in Phase 2; resilience and normalization
+4. **Asset profiles** — Corn Belt stub created; SPR and DARPA profiles are highest-value remaining entries
+5. **AI Unemployment Phase 3** — not started; long-term structural labor market design
