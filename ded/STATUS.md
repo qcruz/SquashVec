@@ -20,6 +20,7 @@
 | `ded/scenarios/oil-restriction/` | Most complete scenario; phases 1–3, demand policy, energy transition, 4 supply chains |
 | `ded/scenarios/pandemic/` | Phases 1–3 complete; most directly relevant near-term scenario |
 | `ded/scenarios/drought/phase-1-demand-management.md` | Economic-first framing; Type A/B/C contracts activated; irrigation efficiency tax credit; crop transition payments; CRHP deployment; economic intelligence dashboard |
+| `ded/scenarios/ai-unemployment/phase-1-triage-and-stabilization.md` | AI Transition Contribution (ATC) self-funding mechanism; DSA portable savings accounts; TRAL AI-displacement track; CRHP health bridge; Type B retraining contracts; Accelerator Alpha integration; military cost channels |
 | `ded/framework/methodology.md` | Economic-first mandate fully documented; what DED does and does not do; military cost connection |
 
 ---
@@ -31,7 +32,7 @@
 | Oil Restriction | High — phases + supply chains + demand policy + energy transition | Low |
 | Pandemic | High — phases 1–3 complete | Low |
 | Drought | Phase 1 complete (economic framing); Phase 2 stub; Phase 3 needed | High |
-| AI Unemployment | Overview + Phase 1 stub | High |
+| AI Unemployment | Phase 1 complete; Phase 2 stub; Phase 3 needed | High |
 | Semiconductor Collapse | Overview only | Medium |
 | Grid Cyberattack | Overview only | Medium |
 | Rare Earth Denial | Overview only | Medium |
@@ -53,8 +54,8 @@
 
 ## Next Priority Areas
 
-1. **AI Unemployment Phase 1** — stub exists; full economic triage and stabilization design needed
-2. **`ded/proposal/mission.md`** — stub exists; legal authority, budget model, anti-capture design needed
-3. **Drought Phase 2** — structural water efficiency (drip irrigation, aquifer management, desalination)
-4. **Semiconductor scenario** — overview only; highest-value incomplete scenario after drought/AI
-5. **Asset profiles** — Corn Belt, SPR, DARPA profiles are highest-value unwritten entries
+1. **`ded/proposal/mission.md`** — stub exists; legal authority, budget model, anti-capture design needed
+2. **Drought Phase 2** — stub exists; structural water efficiency (drip irrigation, aquifer management, desalination)
+3. **Semiconductor scenario Phase 1** — overview only; second-highest-priority incomplete scenario
+4. **Asset profiles** — Corn Belt, SPR, DARPA profiles are highest-value unwritten entries
+5. **AI Unemployment Phase 2** — stub exists; human-complementary sectors, productivity dividend, work-sharing
