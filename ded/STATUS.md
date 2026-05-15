@@ -32,6 +32,7 @@
 | `ded/assets/profiles/darpa.md` | Full asset profile: DARPA model anatomy (PM authority, failure tolerance, rotating experts, Heilmeier Catechism); technology track record (internet, GPS, stealth, AV, mRNA); scenario matrix; active programs (ERI, ADEPT/P3, RADICS, GIDDEON, BTO); DED Accelerator as DARPA extension; DED leverage points (bridge to commercial scale, APC commitment, IP licensing, PM alumni as ERP candidates) |
 | `ded/proposal/universal-basic-income.md` | NIT-based UBI via TRAL advance guarantee: 30% phase-out rate; $6,200 individual guarantee; monthly advances via private lenders against IRS-calculated entitlement; EITC extension pathway; ATC→NIT statutory allocation (60% of ATC revenue); net cost ~$89B/year after replacements and ATC offset; Phase 3 AI unemployment normalization instrument |
 | `ded/framework/methodology.md` | Economic-first mandate fully documented; what DED does and does not do; military cost connection |
+| `ded/proposal/american-sovereign-fund.md` | Full proposal: ASF funded by 7.5% of arms sales, 20% of tariff revenue, TAT + financial transaction surcharge + resource royalty (~$60–137B/year); two-tranche investment (25% DED Strategic Reserve, 75% Commercial Portfolio); 18-year citizenship dividend starting Year 15 (~$108/yr) growing to $720+ at Year 30 and $2,000+ at Year 50; Norway/Alaska/Singapore/Temasek precedents; DED SRID mechanism ties CRS analysis to mandatory ASF deployment; dividend as DED's political moat; emergency 10% Strategic Reserve deployment authority in Tier 2+ |
 | `ded/economics/supply-chain-concentration-risk.md` | Full analysis: Geographic HHI adapted to supply geography; DED Concentration Risk Score (CRS) formula with ACF/SUB/IDF components; CRS values for 8 key commodities; EAL calculation ($56–190B/year uninsured risk); 4 historical crisis case studies (REE 2010, semiconductor 2021, PPE 2020, EU gas 2022) all confirming systematic zero-risk-premium; actuarial insurance cost framework (DED = 4–20 cents per dollar of coverage); real options analysis of domestic capacity (BSM-derived $31–68B NPV); CRS-based intervention trigger rules |
 
 ---
@@ -70,7 +71,8 @@
 2. **Semiconductor Phase 3** — stub created; concentration monitoring, post-EUV commercialization
 3. **Grid Cyberattack Phase 2** — physical recovery and hardening; air-gapped control systems
 4. **Rare Earth Denial Phase 2** — supply diversification; domestic REE processing; battery chemistry
-5. **Asset profiles** — Corn Belt stub needs full build-out; national-freight-rail stub created (new); DPA invocation tool stub created (new)
+5. **Asset profiles** — Corn Belt stub needs full build-out; national-freight-rail stub created; DPA invocation tool stub created
+10. **Political Economy Playbook** — stub created; coalition maps, legislative sequencing, messaging matrix needed across all proposals
 6. **Red team stubs** — RT-004 (solar superstorm), RT-005 (Mississippi closure), RT-006 (neon crisis) need full build-out
 7. **Agricultural Biological Threat scenario** — new category identified via RT-003; overview stub created; phase files needed
 8. **Retraining programs tool** — stub created; full TAA/WIOA/SkillsFuture analysis needed
