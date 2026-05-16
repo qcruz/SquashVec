@@ -1,6 +1,6 @@
 # DED Project Status
 
-**Last Updated:** 2026-05 (session: supply chain concentration risk economics)
+**Last Updated:** 2026-05 (session: job posting penalty + feasibility analysis directory)
 
 ---
 
@@ -57,6 +57,28 @@
 
 ---
 
+## Feasibility Analysis Directory
+
+New `ded/feasibility/` directory contains structured feasibility analysis across six
+dimensions (legal, administrative, economic, political, implementation, international
+precedent) for each major program. Implementation Readiness Scores:
+
+| Program | Readiness |
+|---------|-----------|
+| Department of Economic Defense charter | Conditional |
+| American Sovereign Fund | Conditional |
+| Negative Income Tax / UBI | Needs Work |
+| Workforce Development Floor | **Ready** |
+| Civilian Reserve and Health Program | Conditional |
+| Space Mining Incentives | Premature (extraction) / Conditional (APC + framework) |
+| Synthetic Protein Program | Conditional |
+| Care Economy / Social Security Credit | **Ready** (SSA credit) / Conditional (full track) |
+| Job Posting Accountability Penalty | **Ready** (reporting) / Conditional (penalty) |
+| Supply Chain Risk Framework | Conditional (NEID dependency) — stub |
+| Expert Reserve Program / Accelerators | Conditional (DED dependency) — stub |
+
+---
+
 ## Key Gaps
 
 - `ded/proposal/mission.md` — complete
@@ -71,7 +93,8 @@
 
 ## Next Priority Areas
 
-1. **AI Unemployment Phase 3** — stub created; long-run normalization design; NIT integration
+1. **Articles 04-10** — stubs ready to build out; 04 (economic citizenship) and 05 (supply chain risk) are next in rotation
+2. **AI Unemployment Phase 3** — stub created; long-run normalization design; NIT integration
 2. **Semiconductor Phase 3** — stub created; concentration monitoring, post-EUV commercialization
 3. **Grid Cyberattack Phase 2** — physical recovery and hardening; air-gapped control systems
 4. **Rare Earth Denial Phase 2** — supply diversification; domestic REE processing; battery chemistry
