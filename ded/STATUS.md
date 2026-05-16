@@ -94,7 +94,8 @@ precedent) for each major program. Implementation Readiness Scores:
 ## Next Priority Areas
 
 1. **Articles 04-10** — stubs ready to build out; 04 (economic citizenship) and 05 (supply chain risk) are next in rotation
-2. **AI Unemployment Phase 3** — stub created; long-run normalization design; NIT integration
+2. **Autonomous Highway Lane Program** — stub created (`proposal/autonomous-highway-lane.md`); needs full build-out including variant analysis, toll self-funding model, V2I infrastructure design, trucker workforce transition plan, and feasibility doc
+3. **AI Unemployment Phase 3** — stub created; long-run normalization design; NIT integration
 2. **Semiconductor Phase 3** — stub created; concentration monitoring, post-EUV commercialization
 3. **Grid Cyberattack Phase 2** — physical recovery and hardening; air-gapped control systems
 4. **Rare Earth Denial Phase 2** — supply diversification; domestic REE processing; battery chemistry
