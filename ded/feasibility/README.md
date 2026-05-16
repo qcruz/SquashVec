@@ -37,7 +37,9 @@ and an overall **Implementation Readiness Score** (Ready / Conditional / Needs W
 | 9 | Job Posting Accountability Penalty | `tools/job-posting-penalty.md` | `09-job-posting-penalty.md` | Complete |
 | 10 | Supply Chain Concentration Risk Framework | `economics/supply-chain-concentration-risk.md` | `10-supply-chain-risk-framework.md` | Stub |
 | 11 | Expert Reserve Program / Accelerators | `tools/expert-reserve-program.md` | `11-expert-reserve-program.md` | Stub |
-| 12 | Outcome-Linked Bonds | `tools/outcome-linked-bonds.md` | `12-outcome-linked-bonds.md` | Stub |
+| 12 | Autonomous Highway Lane Program | `proposal/autonomous-highway-lane.md` | `12-autonomous-highway-lane.md` | Complete |
+| 13 | American Prosperity Visa | `proposal/golden-visa-asf-pathway.md` | `13-american-prosperity-visa.md` | Complete |
+| 14 | Outcome-Linked Bonds | `tools/outcome-linked-bonds.md` | `14-outcome-linked-bonds.md` | Stub |
 
 ---
 
