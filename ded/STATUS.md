@@ -94,7 +94,9 @@ precedent) for each major program. Implementation Readiness Scores:
 ## Next Priority Areas
 
 1. **Articles 04-10** — stubs ready to build out; 04 (economic citizenship) and 05 (supply chain risk) are next in rotation
-2. **Autonomous Highway Lane Program** — stub created (`proposal/autonomous-highway-lane.md`); needs full build-out including variant analysis, toll self-funding model, V2I infrastructure design, trucker workforce transition plan, and feasibility doc
+2. **Autonomous Highway Lane Program** — COMPLETE (`proposal/autonomous-highway-lane.md`); four variants, toll self-funding model, V2I infrastructure, workforce transition plan, emergency applications
+3. **Flying Car Pilot Projection** — COMPLETE (`economics/automation-labor-projection.md`); historical cost curves, 3-tier AV job projections, gig work evolution, policy reserve design, global positioning
+4. **American Prosperity Visa (Golden Visa → ASF)** — COMPLETE (`proposal/golden-visa-asf-pathway.md`); two tiers, ASF contribution mechanism, children's eligibility, national security design, EB-5 comparison
 3. **AI Unemployment Phase 3** — stub created; long-run normalization design; NIT integration
 2. **Semiconductor Phase 3** — stub created; concentration monitoring, post-EUV commercialization
 3. **Grid Cyberattack Phase 2** — physical recovery and hardening; air-gapped control systems
