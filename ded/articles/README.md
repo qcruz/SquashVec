@@ -12,15 +12,15 @@ and `ded/economics/` directories. These articles are the public translation laye
 | Article | Status | Source Proposals | Target Length |
 |---------|--------|-----------------|---------------|
 | [53 million unpaid workers](01-care-economy-ubi.md) | **Complete** | universal-basic-income, care-economy-scenarios, ubi-long-term-success, american-sovereign-fund | ~4,000 words |
-| [The Ownership Economy](02-american-sovereign-fund.md) | Stub | american-sovereign-fund, economic-citizenship | ~3,500 words |
-| [The Case for Economic Defense](03-ded-overview.md) | Stub | one-pager, mission, benefits-summary, historical-baseline | ~3,500 words |
-| [The Social Contract, Renegotiated](04-economic-citizenship.md) | Stub | economic-citizenship, system-map | ~3,000 words |
-| [The Invisible Supply Chain](05-supply-chain-risk.md) | Stub | supply-chain-concentration-risk, historical-baseline, value-discovery | ~3,500 words |
+| [The Ownership Economy](02-american-sovereign-fund.md) | **Complete** | american-sovereign-fund, economic-citizenship | ~3,500 words |
+| [The Case for Economic Defense](03-ded-overview.md) | **Complete** | one-pager, mission, benefits-summary, historical-baseline | ~3,500 words |
+| [The Social Contract, Renegotiated](04-economic-citizenship.md) | **Complete** | economic-citizenship, system-map | ~3,000 words |
+| [The Invisible Supply Chain](05-supply-chain-risk.md) | **Complete** | supply-chain-concentration-risk, historical-baseline, value-discovery | ~3,500 words |
 | [What If the Economy Trained You](06-workforce-labor.md) | **Complete** | workforce-development-floor, internship-floor, retraining-programs, civilian-reserve-health | ~3,500 words |
-| [The Machine That Pays For Itself](07-system-map.md) | Stub | system-map, economic-citizenship, american-sovereign-fund | ~3,000 words |
-| [When the Food Runs Out](08-food-resilience.md) | Stub | synthetic-protein-program, scenarios/drought | ~3,000 words |
-| [Mining the Moon to Secure the Earth](09-space-mining.md) | Stub | space-mining-incentives, supply-chain-concentration-risk | ~3,000 words |
-| [What AI Owes You](10-ai-unemployment.md) | Stub | scenarios/ai-unemployment, universal-basic-income, workforce-development-floor | ~3,500 words |
+| [The Machine That Pays For Itself](07-system-map.md) | **Complete** | system-map, economic-citizenship, american-sovereign-fund | ~3,000 words |
+| [When the Food Runs Out](08-food-resilience.md) | **Complete** | synthetic-protein-program, scenarios/drought | ~3,000 words |
+| [Mining the Moon to Secure the Earth](09-space-mining.md) | **Complete** | space-mining-incentives, supply-chain-concentration-risk | ~3,000 words |
+| [What AI Owes You](10-ai-unemployment.md) | **Complete** | scenarios/ai-unemployment, universal-basic-income, workforce-development-floor | ~3,500 words |
 
 ---
 
