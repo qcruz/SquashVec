@@ -223,6 +223,76 @@ prices, consumer spending, capital markets, and estate values.**
 
 ---
 
+### 2.5 Proposed Additional Streams — Under Evaluation
+
+The following streams are identified in the DED Funding Options Catalog
+(`ded/economics/funding-options-catalog.md`) as high-priority additions to the ASF.
+They are not yet adopted but are recommended for inclusion in enabling legislation:
+
+**Stream G — Penny Transaction Tax ($0.01 per transaction, recipient pays):**
+A flat one-cent tax on every financial transaction at settlement — cash register sales,
+electronic payments, payroll deposits, wire transfers, brokerage settlements. For cash
+transactions, collected from the business recipient (already required to record cash
+receipts for income tax purposes). For electronic transactions, collected automatically
+at clearing. Micro-transaction grouping permitted (transactions under $1 may be batched
+daily per merchant). Government-to-citizen transfers exempt (Negative Income Tax,
+American Dividend, disaster relief).
+
+*Revenue:* $2–3B/year near-term; $5–8B/year in a fully cashless economy. Grows directly
+with transaction volume — the more economic activity, the more the fund receives.
+
+*Narrative:* "One penny on every transaction pays for your monthly dividend. When the
+economy moves, you get paid." The clearest single-sentence funding rationale in the
+program. Directly links economic activity to citizen benefit; nearly impossible to
+characterize as punitive.
+
+*Loop connection:* American Dividend paid → citizen spends → penny tax collected →
+back to ASF → next month's dividend is slightly larger. The fund partially self-funds
+through the economic activity its own distributions generate.
+
+**Stream H — Stock Buyback Excise Expansion (increase from 1% to 2.5%):**
+The Inflation Reduction Act (2022) established a 1% excise tax on corporate stock
+buybacks. This stream increases the rate to 2.5% and directs the additional 1.5% to
+the ASF. Builds on existing statutory mechanism — no new definitional or collection
+infrastructure required.
+
+*Revenue:* $15–22B/year. Among the highest-revenue near-term additions available.
+
+*Narrative:* "When corporations buy back their own stock instead of investing in workers
+or growth, they pay a fee into the national investment fund."
+
+**Stream I — National Asset Revenue (Spectrum + Federal Land):**
+100% of FCC spectrum auction and annual license fee revenue, plus 25% of federal land
+lease, permit, and recreation fee revenue (Bureau of Land Management, National Park
+Service, U.S. Forest Service). No new taxes — redirects existing revenue from general
+fund to ASF.
+
+*Revenue:* $4–6B/year combined. Trivial to implement; requires only a statutory
+redirect of existing collection mechanisms.
+
+*Narrative:* "The airwaves and public lands belong to all Americans. When companies pay
+to use them, that revenue goes into the national fund." Strongest public-asset framing
+in the catalog.
+
+**With all proposed additions (base case):**
+
+| Stream | Revenue |
+|--------|---------|
+| Arms sales (7.5%) | $17B |
+| Tariff revenue (20%) | $16B |
+| Technology Automation Tax | $4B |
+| Financial Transaction Surcharge | $17B |
+| Resource Royalty Enhancement | $6B |
+| Consumption Loop | $7B |
+| Capital Gains Surtax | $5B |
+| Estate Tax Enhancement | $8B |
+| Penny Transaction Tax (proposed G) | $2.5B |
+| Stock Buyback Excise Expansion (proposed H) | $15B |
+| Spectrum + Land Revenue (proposed I) | $4B |
+| **Total** | **~$101.5B/year** |
+
+---
+
 ### 2.4 Combined Annual Contribution Projection
 
 | Revenue Stream | Base Case (Current) | Mid Case | High Case |
@@ -982,6 +1052,7 @@ AUM milestones with potential mandate adjustment.
 - `ded/economics/supply-chain-concentration-risk.md` — SRID triggers use CRS scores; ASF is the capital deployment vehicle
 - `ded/economics/benefits-summary.md` — ASF Category B value creation: Strategic Reserve positions generate IP licensing revenue and diplomatic leverage
 - `ded/economics/implementation-timeline.md` — ASF dividend first payment Year 1; Stream D, E, F growth projections mapped by year; FIP account infrastructure timeline
+- `ded/economics/funding-options-catalog.md` — master catalog of all revenue instruments evaluated for ASF and DED programs; scoring, narratives, and circulation loop map
 - `ded/tools/strategic-contracts.md` — Type B/D contract co-investment with ASF Strategic Reserve
 - `ded/tools/expert-reserve-program.md` — Accelerator program equity → ASF Tranche 1 return
 - `ded/tools/financial-institution-partnerships.md` — FIP is the primary ASF dividend distribution infrastructure; FIP geographic contracts include ASF account servicing obligations; FIP per-account economics improved by ASF monthly deposit volume
