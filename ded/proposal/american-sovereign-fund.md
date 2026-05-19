@@ -25,10 +25,12 @@ vehicle, funded by designated revenue streams from arms sales, tariffs, and taxe
 
 1. **Invests** in U.S. companies and strategic assets — with a mandate that combines
    commercial return-seeking with DED strategic sector priorities
-2. **Distributes** annual dividends to every American citizen who has held citizenship for
-   18 or more years — a direct ownership stake in the national economy
-3. **Compounds** over decades — the longer it operates, the larger the dividend, creating
-   a growing permanent income supplement for every eligible American and an expanding
+2. **Distributes** monthly dividends to every American citizen who has held citizenship for
+   18 or more years — interest and dividends earned by the fund divided equally among all
+   eligible participants and paid the first of each month, beginning with the fund's first
+   year of operation
+3. **Compounds** over decades — the longer it operates, the larger the monthly payment,
+   creating a growing permanent income supplement for every eligible American and an expanding
    capital base for DED strategic investment
 
 The ASF is **not** a government spending program. It does not disburse grants, run agencies,
@@ -166,7 +168,58 @@ land generates public capital, not just current government revenue.
 *Scale:* Federal land oil/gas royalties currently ~$14B/year.
 Additional 3% on extraction value (~$200B/year): **~$6B/year.**
 
-**Combined tax stream: ~$27–30B/year, growing with software markets and resource prices.**
+**Stream D — Consumption and Sales Tax Dividend Loop:**
+A 5% share of the federal excise tax base (alcohol, tobacco, gasoline, air travel, phone
+service) plus, by negotiated revenue-sharing agreement, a 1% share of participating states'
+general sales tax collections, remitted monthly to the ASF.
+
+*Scale:* Federal excise taxes: ~$85B/year. 5% share = **~$4.3B/year.**
+State sales tax collections: ~$600B/year. Participating states at 1%: **~$3–6B/year** depending
+on opt-in. Full national participation: ~$6B/year.
+
+*Rationale — the circulation loop:* ASF monthly dividends are distributed to eligible citizens
+who spend them in the domestic economy. That spending generates sales and excise tax revenue.
+Routing a share of that revenue back to the ASF closes the loop: the fund's own distributions
+partially self-fund the next month's distributions. As the fund grows and dividends increase,
+the circulation revenue grows proportionally — a built-in, automatic growth stabilizer.
+
+*State participation incentive:* States that opt in to the 1% revenue share receive Priority
+Access Agreements with DED Strategic Reserve investments targeting their jurisdictions, access
+to pooled Financial Institution Partnerships procurement at federal contract rates, and early
+Civilian Reserve and Health Program deployment priority. Participation is voluntary but
+economically attractive.
+
+**Stream E — Capital Gains Tax Surtax Allocation:**
+An additional 0.5% surtax on net long-term capital gains above $100,000, deposited to the
+ASF. Structured as a legislated add-on to the existing capital gains rate, not a replacement
+of existing revenue.
+
+*Scale:* Reported long-term capital gains in the U.S. run $1.5–2.0T/year in high-return
+periods. 0.5% surtax on gains above $100k threshold (roughly top quintile of capital
+gains recipients): **~$5–8B/year.**
+
+*Rationale:* As the ASF grows and its Strategic Reserve investments appreciate, capital gains
+are realized across the broader economy. The surtax routes a fraction of that wealth creation
+back to the fund that helped generate it — capturing a portion of the market appreciation
+that ASF-catalyzed domestic investment produces.
+
+**Stream F — Estate and Inheritance Tax Enhancement:**
+An increase of 2 percentage points on the federal estate tax rate above the current exemption
+threshold ($13.6M per individual), with all additional revenue deposited to the ASF rather
+than the general fund.
+
+*Scale:* Federal estate tax currently generates ~$35B/year. A 2pp rate increase above the
+existing threshold on estates above $25M: **~$8–12B/year** additional, depending on estate
+size distribution.
+
+*Rationale — generational equity:* The ASF distributes wealth to living citizens every month.
+The estate surtax ensures that the concentrated wealth accumulation of one generation
+contributes to the fund that benefits all citizens of the next. The ASF both builds wealth
+(through dividends and strategic investment) and moderates extreme intergenerational
+concentration (through the estate surtax that helps fund it).
+
+**Combined dedicated tax stream: ~$52–72B/year, growing with software markets, resource
+prices, consumer spending, capital markets, and estate values.**
 
 ---
 
@@ -179,20 +232,30 @@ Additional 3% on extraction value (~$200B/year): **~$6B/year.**
 | Technology Automation Tax | $4B | $6B | $10B |
 | Financial Transaction Surcharge | $17B | $20B | $25B |
 | Resource Royalty Enhancement | $6B | $8B | $12B |
-| **Total Annual Contribution** | **$60B** | **$86B** | **$137B** |
+| Consumption/Sales Tax Loop (Streams D) | $7B | $10B | $15B |
+| Capital Gains Surtax (Stream E) | $5B | $7B | $10B |
+| Estate Tax Enhancement (Stream F) | $8B | $10B | $12B |
+| **Total Annual Contribution** | **$80B** | **$113B** | **$174B** |
 
-At the base case of **$60B/year** in contributions plus reinvested returns, the ASF grows
-to scale:
+The three new streams (D, E, F) are directly linked to ASF dividend outflow: as the fund
+grows and monthly payments increase, downstream consumer spending, investment returns, and
+wealth transfer all grow — feeding larger contributions back into the fund. This creates a
+partially self-reinforcing capitalization dynamic that accelerates as the fund matures.
+
+At the base case of **$80B/year** in contributions plus reinvested capital appreciation,
+the ASF grows to scale:
 
 | Year | AUM (Base Case) | AUM (Mid Case) | AUM (High Case) |
 |------|-----------------|----------------|-----------------|
-| 5 | $350B | $500B | $800B |
-| 10 | $850B | $1.3T | $2.1T |
-| 20 | $2.5T | $4.0T | $6.5T |
-| 30 | $5.5T | $9.0T | $15T |
+| 5 | $450B | $650B | $1.0T |
+| 10 | $1.1T | $1.7T | $2.8T |
+| 20 | $3.2T | $5.2T | $8.5T |
+| 30 | $7.0T | $11.5T | $19T |
 
 *Assumes 5.5% net annual return on invested capital (conservative vs. historical equity returns).
-Norway's Government Pension Fund Global averaged 6.3% annually since inception.*
+Norway's Government Pension Fund Global averaged 6.3% annually since inception. AUM projections
+reflect immediate monthly yield distributions (approximately 2.5% of AUM annually), with capital
+appreciation (~3%) retained in the fund and new annual contributions continuing to compound.*
 
 ---
 
@@ -278,8 +341,8 @@ by Congress (fund is insulated from political investment direction by charter).
 
 **Eligible recipients:** U.S. citizens who have held citizenship continuously for 18 or more years.
 
-**Natural-born citizens:** Eligible beginning at age 18. First payment in the calendar year
-of their 18th birthday (prorated by quarter of birthday).
+**Natural-born citizens:** Eligible beginning at age 18. First monthly payment in the month
+following their 18th birthday.
 
 **Naturalized citizens:** Eligible 18 years after the date of naturalization. Incentivizes
 long-term integration and creates a meaningful distinction between citizenship and permanent
@@ -298,67 +361,212 @@ There is no clawback of prior dividends received before renunciation.
 
 ---
 
-### 4.2 Dividend Calculation
+### 4.2 Monthly Dividend Calculation
 
-The annual dividend is calculated as:
+The American Dividend is paid monthly, beginning in the first full calendar month after
+the ASF's initial capitalization. There is no accumulation phase — the fund distributes
+its earned income from day one.
+
+**What is distributed monthly:**
 
 ```
-Annual Dividend per Eligible Citizen =
-  (ASF Distributable Income for Year) / (Number of Eligible Citizens as of December 31)
+Monthly American Dividend per Eligible Citizen =
+  (ASF Yield Income for Month) / (Number of Eligible Citizens as of 1st of month)
+  minus Operating expenses (target: < 0.10% of AUM annualized)
 
-Distributable Income =
-  (Investment returns for year) × Distribution Rate
-  minus Operating expenses (target: < 0.10% of AUM)
+Yield Income = interest received on fixed income + dividends received on equity holdings
+             + net rental and real asset income
+             (approximately 2.5% of AUM annually, distributed monthly)
 
-Distribution Rate:
-  Years 1–10:  0% distributed; all returns reinvested (accumulation phase)
-  Years 11–20: 30% of annual return distributed; 70% reinvested (growth phase)
-  Years 21–30: 50% of annual return distributed; 50% reinvested (mature phase)
-  Year 31+:    60% of annual return distributed; 40% reinvested (steady state)
-               (40% reinvestment maintains real AUM value after inflation)
+Capital Appreciation = unrealized and realized gains RETAINED in the fund
+  (approximately 3% of AUM annually; not distributed; compounds into fund value)
+
+New Contributions = annual revenue streams (arms, tariffs, tax allocations)
+  ADDED to AUM monthly, not distributed; compounds into fund value
 ```
 
-**Illustrative dividend projections:**
+**Why this structure sustains growth:**
+Interest and dividends are cash income the fund earns without selling positions. Distributing
+yield while retaining capital appreciation means the fund's asset base grows continuously
+from both retained appreciation and new annual contributions — while recipients receive
+meaningful monthly payments from Year 1. This mirrors how endowment universities operate:
+Harvard distributes ~5% of AUM annually while the fund still grows, because new gifts and
+retained gains exceed distributions.
 
-| Year | AUM (Base) | Annual Return (5.5%) | Distribution Rate | Distributable | Eligible Pop (est.) | **Annual Dividend** |
-|------|-----------|---------------------|-----------------|--------------|--------------------|--------------------|
-| 10 | $850B | $46.8B | 0% | $0 | — | $0 (accumulation) |
-| 15 | $1.6T | $88B | 30% | $26.4B | ~245M | **$108** |
-| 20 | $2.5T | $137.5B | 50% | $68.8B | ~248M | **$277** |
-| 25 | $3.8T | $209B | 50% | $104.5B | ~250M | **$418** |
-| 30 | $5.5T | $302.5B | 60% | $181.5B | ~252M | **$720** |
-| 40 | $10T | $550B | 60% | $330B | ~256M | **$1,289** |
-| 50 | $17T | $935B | 60% | $561B | ~258M | **$2,174** |
+**Illustrative monthly dividend projections:**
 
-*Mid case at Year 50: ~$3,800/year per eligible citizen. High case: ~$5,500/year.*
+| Year | AUM (Base) | Annual Yield (2.5%) | Monthly Yield | Eligible Pop | **Monthly Dividend** | **Annual Dividend** |
+|------|-----------|---------------------|---------------|-------------|---------------------|---------------------|
+| 1 | ~$80B | ~$2.0B | ~$167M | ~245M | **$0.68** | **$8** |
+| 3 | ~$280B | ~$7.0B | ~$583M | ~245M | **$2.38** | **$29** |
+| 5 | ~$450B | ~$11.3B | ~$942M | ~245M | **$3.85** | **$46** |
+| 10 | ~$1.1T | ~$27.5B | ~$2.3B | ~246M | **$9.35** | **$112** |
+| 15 | ~$2.1T | ~$52.5B | ~$4.4B | ~247M | **$17.81** | **$214** |
+| 20 | ~$3.2T | ~$80B | ~$6.7B | ~248M | **$27.02** | **$324** |
+| 25 | ~$4.9T | ~$122.5B | ~$10.2B | ~250M | **$40.83** | **$490** |
+| 30 | ~$7.0T | ~$175B | ~$14.6B | ~252M | **$57.94** | **$695** |
+| 40 | ~$12.5T | ~$312.5B | ~$26.0B | ~256M | **$101.56** | **$1,219** |
+| 50 | ~$21T | ~$525B | ~$43.8B | ~258M | **$169.77** | **$2,037** |
 
-**The dividend is modest initially ($100–400/year in Years 15–20) and grows to meaningful
-income supplement levels ($1,000–2,000+/year) after 30–40 years.** This is the correct
-framing — not as immediate poverty relief, but as a generational wealth-building instrument
-that every American citizen owns a stake in from birth.
+*Mid case at Year 30: ~$1,100/year per eligible citizen. High case: ~$1,600/year.*
+*Mid case at Year 50: ~$3,400/year. High case: ~$5,000/year.*
+
+**The monthly dividend is small in the early years but immediately universal.** Every
+eligible American receives their first deposit within the fund's first year of operation —
+establishing ownership, political constituency, and trust before the amounts become large.
+The framing is correct: not a poverty program, but a citizen dividend on national assets
+owned collectively. A $0.68/month check in Year 1 is not life-changing. A $58/month check
+in Year 30, arriving reliably on the first of every month for life, is meaningful income.
+
+**Circulation effect on Streams D, E, F:**
+As monthly dividends increase, downstream consumer spending increases → sales tax and
+excise revenue increases → Stream D contributions increase → ASF receives more capital →
+fund grows faster → next year's yield is larger. The system is self-reinforcing. At Year 20,
+estimated Stream D contributions from dividend circulation alone exceed $12B/year —
+partially funding the dividends that generate them.
 
 ---
 
-### 4.3 Distribution Infrastructure
+### 4.3 Distribution Infrastructure — Financial Institution Partnership Accounts
 
-**Payment mechanism:** Annual direct deposit to verified bank account on file with the IRS.
-For unbanked citizens: pre-loaded debit card mailed to address of record, or option to
-accumulate in an ASF-administered savings account (earning ASF short-term returns).
+The ASF monthly dividend is delivered through the Financial Institution Partnerships
+(FIP) infrastructure. Rather than building a parallel government payment system, the ASF
+leverages the geographic account network established by FIP to distribute dividends to
+every eligible citizen through their existing or newly opened FIP-serviced account.
+
+**The institutional account competition:**
+
+Every eligible American's monthly dividend — beginning in Year 1 — represents a regular
+deposit into a financial institution account. At scale:
+
+- ~245M eligible citizens × $8/year in Year 1 = $2B in annual deposits flowing through FIP accounts
+- ~245M eligible citizens × $112/year in Year 10 = $27B in annual deposits
+- ~245M eligible citizens × $695/year in Year 30 = $170B in annual deposits
+
+These deposits are predictable, recurring, and government-guaranteed. For financial
+institutions, this represents an extraordinary acquisition opportunity: **millions of new
+accounts with guaranteed monthly deposits, at zero marketing cost.**
+
+Under the FIP contract structure, financial institutions compete by geographic zone for the
+right to service ASF dividend accounts in their area. Competition terms include:
+
+- **No-fee commitment:** FIP-contracted institutions may not charge monthly service fees,
+  minimum balance fees, or overdraft fees on ASF dividend accounts
+- **Enhanced account benefits:** Competing institutions offer ASF account holders preferential
+  rates on savings products, fee waivers on additional banking services, and access to
+  financial literacy tools — as inducements to win and retain the accounts
+- **Account bundling:** Citizens who hold their ASF dividend account with a FIP-contracted
+  institution may also access Negative Income Tax Tax Return Advance Loan distributions,
+  Civilian Reserve and Health Program compensation, and other DED program payments through
+  the same account — making a single FIP-serviced account the primary financial relationship
+  for millions of Americans
+- **Deposit minimum guarantees:** FIP contracts with ASF addendum commit the institution to
+  maintain ASF dividend account holders' access to deposits within 24 hours of scheduled
+  payment, with penalty provisions for delayed access
+
+**Why institutions compete aggressively:**
+
+A financial institution servicing 8 million ASF dividend accounts holds a guaranteed
+relationship with 8 million citizens who receive regular deposits for life. Even if the
+initial deposit is small ($0.68/month in Year 1), the long-term value of the account
+relationship — cross-sell of savings, lending, insurance products to an account holder
+who receives government-guaranteed deposits for the rest of their eligible life — is
+substantial. The institution that wins urban FIP zones in Year 1 builds a structural
+advantage in retail banking that compounds over 30 years.
+
+**Payment schedule:**
+
+Monthly dividends are calculated as of the 25th of each preceding month and deposited
+to FIP accounts on the 1st of the following month. Citizens without an existing FIP
+account are enrolled automatically using IRS records; a default account with the
+designated FIP contractor for their geographic zone is created unless the citizen
+designates a different FIP-contracted institution.
 
 **Tax treatment:** The dividend is taxable as ordinary income for recipients above the
 standard deduction threshold. For low-income recipients, it is tax-free (falls below
 deduction threshold). Middle-income recipients pay marginal rates on dividend income.
 *This creates a mild progressive structure without means-testing the dividend itself.*
 
-**Integration with NIT/UBI:** The dividend is income for purposes of the NIT calculation.
-At the proposed NIT guarantee of $6,200 (see `universal-basic-income.md`) and a 30% phase-out
-rate, a $720 dividend reduces the NIT benefit by $216 for the lowest-income recipients —
-meaning the combined program delivers slightly less to the lowest-income recipients than
-the NIT alone, but creates universal stake in the fund regardless of income level.
+**Integration with Negative Income Tax:** The dividend is income for purposes of the
+Negative Income Tax calculation. At the proposed guarantee of $6,200 (see
+`universal-basic-income.md`) and a 30% phase-out rate, a $695 annual dividend reduces
+the Negative Income Tax benefit by $208 for the lowest-income recipients — meaning the
+combined program delivers slightly less to the lowest-income recipients than the
+Negative Income Tax alone, but creates universal stake in the fund regardless of income
+level.
 
 *Design choice:* The dividend is a **wealth-building instrument for all**, not a poverty
 alleviation instrument for few. These are different policy goals and the design reflects
 that distinction.
+
+---
+
+### 4.4 Eligible Vendor Restriction — Years 1–5
+
+During the first five years of the American Dividend program, all monthly distributions
+are subject to an Eligible Vendor Restriction: funds may only be spent at categories of
+approved domestic vendors and services. This restriction operates identically to the
+SNAP/EBT model — payments arrive in the citizen's ASF account and are available
+immediately, but the account's debit function is restricted to eligible merchant categories
+for the duration of the restriction period.
+
+**Policy rationale:**
+
+The first five years of distribution are also the years when the fund is smallest and
+monthly payments are smallest (under $5/month). The economic impact of allowing unrestricted
+spending during this period is minimal — but the *certainty* of domestic circulation is
+valuable. During the fund's formative years, guaranteed domestic spend:
+
+1. Protects the circulation loop: dividend spend → sales tax → Stream D → back to ASF
+2. Prevents early political attacks framing the program as "giving money away to be spent
+   on imports" — the restriction makes clear that ASF distributions are a domestic
+   economic activation instrument, not a consumption subsidy
+3. Builds merchant enrollment infrastructure: businesses that enroll as eligible vendors
+   in Years 1–5 have the systems, familiarity, and political stake to defend the program
+   when the restriction lifts
+
+**Eligible vendor categories (Years 1–5):**
+
+| Category | Eligible | Notes |
+|----------|---------|-------|
+| Groceries and food (domestic chains and local) | Yes | All SNAP-eligible food vendors eligible |
+| Utilities (electric, gas, water, internet) | Yes | Domestic-headquartered providers |
+| Healthcare (copays, pharmacy, dental) | Yes | All licensed U.S. healthcare providers |
+| Housing (rent, mortgage payment, HOA) | Yes | Direct payment to domestic landlord/servicer |
+| Education (tuition, books, supplies) | Yes | Accredited U.S. institutions |
+| Domestic small business (NAICS-coded) | Yes | U.S.-headquartered, <500 employees |
+| Public transit / transportation | Yes | U.S. carriers |
+| Large domestic retailers | Yes | U.S.-headquartered, full-price domestic goods |
+| International travel | No | Restriction period only |
+| Foreign-domiciled online merchants | No | Restriction period only |
+| Cash withdrawal | No | No cash-out during restriction period |
+| Financial products (investment, crypto) | No | Restriction period only |
+
+**Restriction lift (Year 6):**
+
+Beginning in Year 6, the ASF dividend account converts to an unrestricted account. Citizens
+may spend their monthly dividend on any legal purchase. The FIP-serviced account operates
+as a standard checking account from that point forward.
+
+*The restriction is graduated, not cliff-edged:* In Year 5, a 50% unrestricted option is
+introduced — half the monthly dividend remains restricted to eligible vendors, half is
+freely spendable. This gives citizens time to adjust spending patterns before full
+unrestriction in Year 6.
+
+**Merchant enrollment and ASF Preferred Vendor Network:**
+
+The Eligible Vendor Restriction creates an Enrolled Merchant Network — businesses that
+register as ASF-eligible vendors, accept ASF debit payments, and agree to the program
+terms (domestic goods sourcing verification, reporting). Enrolled merchants receive:
+
+- Priority listing in ASF account holder-facing apps and directories
+- Marketing rights: "ASF Preferred Vendor" designation
+- Accelerated DED procurement consideration for ASF-enrolled small businesses (enrollment
+  signals domestic sourcing compliance already on record)
+
+After Year 5, the Enrolled Merchant Network persists as a voluntary program with benefits
+for continued participation, creating a lasting directory of domestically-verified merchants
+that other DED programs can reference.
 
 ---
 
@@ -423,9 +631,16 @@ Alaska than Norway.
 **ASF improvement on Alaska model:**
 - Federal constitutional authority (harder to raid than state statute)
 - Citizenship requirement (not residency) — more durable eligibility
-- Accumulation phase (10 years of reinvestment before first distribution) — Alaska began
-  distributing too early and the fund is smaller as a result
-- Revenue diversification (arms/tariffs/taxes vs. single oil revenue stream)
+- Yield-only distribution (interest and dividends paid monthly; capital appreciation
+  retained): Alaska distributes a fixed percentage of AUM regardless of market conditions,
+  creating volatility in annual payments. The ASF distributes actual earned yield, which
+  grows steadily with AUM and is less sensitive to annual market swings
+- Immediate distribution from Year 1 builds political constituency before amounts are large,
+  rather than requiring a silent accumulation phase during which the program can be canceled
+- Revenue diversification across six streams (arms/tariffs/taxes/consumption loop/capital
+  gains/estate) vs. Alaska's single oil revenue stream — dramatically lower concentration risk
+- FIP account infrastructure ensures universal access without government-operated payment
+  systems; Alaska mails checks, creating friction for unbanked Alaskans
 
 ---
 
@@ -529,19 +744,29 @@ replace the protection income.
 Every DED program faces political economy risks: constituencies that benefit from the
 status quo (importers of cheap Chinese inputs, free-trade ideologues, deficit hawks) will
 lobby against the investments that reduce supply chain vulnerability. The ASF dividend
-creates a countervailing constituency of overwhelming size.
+creates a countervailing constituency of overwhelming size — and it begins creating that
+constituency in Year 1.
 
-**Once the dividend begins (~Year 15):**
-- Every eligible American (235M+ people) has a direct financial stake in the ASF's continued
-  growth and the DED programs that feed the Strategic Reserve
-- Cutting DED strategic investment programs reduces ASF returns → reduces dividends → costs
-  every American money
+**From the first month of operation:**
+- Every eligible American (235M+ people) receives a monthly deposit, however small
+- Every eligible American has a direct financial stake in the ASF's continued growth and
+  the DED programs that feed the Strategic Reserve
+- Cutting DED strategic investment programs reduces ASF returns → reduces dividends →
+  costs every American money, visibly, the following month
 - This is the same political dynamic that has protected Social Security and Medicare for
   80+ years: universal benefit creates universal constituency
 
-**The dividend is DED's political moat.** It converts a program that most Americans have no
-direct stake in (supply chain resilience, strategic materials investment) into a program that
-every American receives a check from.
+**The immediate distribution model is politically superior to deferred distribution:**
+A program that writes everyone a check in Year 1 — even a small one — is defended from
+Year 1. A program that promises checks starting in Year 15 can be canceled in Year 8
+by a different political majority, because no constituency has received anything yet.
+The $0.68/month first-year payment is not economically significant. Its political
+significance is substantial: it is proof of concept, visible to every eligible American,
+arriving in their FIP account on the first of the month.
+
+**The dividend is DED's political moat.** It converts a program that most Americans have
+no direct stake in (supply chain resilience, strategic materials investment) into a program
+that every American receives a check from — beginning the month the fund opens.
 
 ---
 
@@ -659,11 +884,14 @@ national economy.
 
 ### 9.1 Who Supports — and Why
 
-**Universal constituency from Year 15 forward:** Every eligible American citizen has
-financial interest in the fund's success. $720/year at Year 30 is not life-changing —
-but it is politically meaningful, visible, and universally received. History shows that
-even modest universal benefits create fierce political constituencies (Social Security's
-early $22/month payments; Alaska PFD's $1,000/year).
+**Universal constituency from Month 1:** Every eligible American citizen has financial
+interest in the fund's success from the moment of first distribution. $695/year at Year 30
+is not life-changing — but it is politically meaningful, visible, and universally received.
+More importantly: the $8/year first-year payment creates political ownership long before
+the amounts are significant. History shows that even modest universal benefits create fierce
+political constituencies (Social Security's early $22/month payments; Alaska PFD's
+$1,000/year). The immediate distribution model activates that dynamic from Year 1 rather
+than requiring 15 years of zero-distribution patience.
 
 **Defense industry:** Mixed — the 7.5% arms levy reduces margin, but the fund's Strategic
 Reserve investment in the defense industrial base returns capital to the same companies.
@@ -720,13 +948,13 @@ AUM milestones with potential mandate adjustment.
 
 | Phase | Years | Key Milestones |
 |-------|-------|---------------|
-| **Legislation** | 0–2 | American Sovereign Fund Act passed; Board of Trustees appointed; CIO hired; Investment Committee formed |
-| **Capitalization** | 0–3 | Revenue streams begin; first deposits made; Investment Committee selects initial asset managers; Tranche 2 deployed |
-| **Tranche 1 Deployment** | 1–5 | First SRIDs issued by DED; Strategic Reserve investments begin; semiconductor, REE, pharma positions initiated |
-| **Accumulation** | 0–10 | All returns reinvested; fund grows from $0 to ~$850B; no dividends paid |
-| **Growth Distribution** | 10–20 | 30% of returns distributed; first dividend ~$108/year (Year 15); grows to ~$277 (Year 20) |
-| **Mature Distribution** | 20–30 | 50% of returns distributed; dividend grows from $277 to $720 |
-| **Steady State** | 30+ | 60% distribution; dividend ~$720–$1,289 and rising; Strategic Reserve ~$1.4T in domestic strategic sector equity |
+| **Legislation** | 0–2 | American Sovereign Fund Act passed; Board of Trustees appointed; CIO hired; Investment Committee formed; FIP account infrastructure designated |
+| **Capitalization** | 0–1 | Revenue streams begin; first deposits made; Investment Committee selects initial asset managers; Tranche 2 deployed; FIP institutions contracted for ASF dividend account servicing |
+| **First Dividends** | 1 | First monthly American Dividend distributed to all eligible citizens; ~$0.68/month; Eligible Vendor Restriction in effect; ASF Enrolled Merchant Network opens for business enrollment |
+| **Tranche 1 Deployment** | 1–5 | First SRIDs issued by DED; Strategic Reserve investments begin; semiconductor, REE, pharma positions initiated; eligible vendor restriction lifts in Year 5 (50%) and Year 6 (100%) |
+| **Growth Phase** | 5–15 | Fund grows to $2.1T base case; monthly dividend reaches ~$17/month; Stream D circulation contributions become material (~$8–10B/year) |
+| **Mature Phase** | 15–30 | Fund reaches $7.0T base case; monthly dividend reaches ~$58/month ($695/year); Strategic Reserve reaches $1.75T in domestic strategic sector equity; stream D, E, F together contributing $35–50B/year |
+| **Steady State** | 30+ | Monthly dividend ~$58–$100+/month and rising; fund is self-financing through circulation streams; Strategic Reserve provides permanent DED capital; system fiscally independent of annual appropriation |
 
 ---
 
@@ -734,22 +962,28 @@ AUM milestones with potential mandate adjustment.
 
 | DED Program | ASF Interaction |
 |-------------|----------------|
+| Financial Institution Partnerships | ASF dividend accounts are the primary delivery mechanism for monthly payments; FIP institutions compete aggressively for ASF account servicing contracts; ASF account bundling makes FIP the dominant financial relationship for millions of Americans; FIP per-account revenue supplements from ASF volume improve contract economics in rural and CDFI zones |
 | Strategic Contracts (Types A/B/C) | ASF Strategic Reserve provides equity capital that makes Type B contract co-investment more attractive to private partners; ASF positions reduce DED's contingent guarantee exposure |
-| Expert Reserve Program (ERP) / Accelerators | ASF provides patient capital for Accelerator programs with 10–20 year commercialization horizons; equity stake in Accelerator spinouts generates ASF return |
-| CRHP Civilian Reserve | CRHP trained workforce constructs ASF-funded strategic sector facilities; ASF investment creates jobs for CRHP graduates |
+| Expert Reserve Program / Accelerators | ASF provides patient capital for Accelerator programs with 10–20 year commercialization horizons; equity stake in Accelerator spinouts generates ASF return |
+| Civilian Reserve and Health Program | Civilian Reserve and Health Program trained workforce constructs ASF-funded strategic sector facilities; ASF investment creates jobs for Civilian Reserve and Health Program graduates; Civilian Reserve and Health Program compensation flows through FIP/ASF accounts |
 | Outcome-Linked Bonds | ASF is natural buyer of sovereign-backed outcome-linked bonds; reduces Treasury's direct guarantee exposure |
-| NIT/UBI | Dividend is income for NIT calculation; dividend supplements NIT at $720–$2,000/year in mature fund; combined package (NIT + ASF dividend) provides meaningful income floor |
-| TRAL | ASF dividend is guaranteed future income; could backstop TRAL advances for low-income recipients |
+| Negative Income Tax | Monthly dividend is income for Negative Income Tax calculation; monthly dividend supplements Negative Income Tax income floor; combined package provides the most meaningful income support to middle-income recipients (Negative Income Tax phases out before they receive full benefit; ASF dividend does not) |
+| Tax Return Advance Loans | ASF monthly dividend is guaranteed recurring income; FIP-serviced ASF accounts improve creditworthiness assessment for Tax Return Advance Loan issuance; regular deposit history reduces risk profile |
+| Enrolled Merchant Network | Years 1–5 eligible vendor restriction builds the merchant enrollment database that survives restriction lift as a voluntary preferred vendor program; downstream DED procurement references enrollment as domestic sourcing indicator |
 
 ---
 
 ## Cross-References
 
 - `ded/proposal/mission.md` — enabling legislation vehicle; DED charter would incorporate ASF authority
-- `ded/proposal/universal-basic-income.md` — dividend + NIT integration; combined income floor
+- `ded/proposal/universal-basic-income.md` — monthly dividend + Negative Income Tax integration; combined income floor
+- `ded/proposal/cashless-migration.md` — ASF FIP accounts are a primary vehicle for cashless enrollment; eligible vendor restriction accelerates cashless adoption
+- `ded/proposal/ebank-distributed-ledger.md` — eBank local nodes handle ASF monthly dividend transaction processing; FIP/eBank co-extension ensures uptime for guaranteed payments
 - `ded/economics/supply-chain-concentration-risk.md` — SRID triggers use CRS scores; ASF is the capital deployment vehicle
 - `ded/economics/benefits-summary.md` — ASF Category B value creation: Strategic Reserve positions generate IP licensing revenue and diplomatic leverage
+- `ded/economics/implementation-timeline.md` — ASF dividend first payment Year 1; Stream D, E, F growth projections mapped by year; FIP account infrastructure timeline
 - `ded/tools/strategic-contracts.md` — Type B/D contract co-investment with ASF Strategic Reserve
 - `ded/tools/expert-reserve-program.md` — Accelerator program equity → ASF Tranche 1 return
+- `ded/tools/financial-institution-partnerships.md` — FIP is the primary ASF dividend distribution infrastructure; FIP geographic contracts include ASF account servicing obligations; FIP per-account economics improved by ASF monthly deposit volume
 - `ded/assets/README.md` — Tier S/A assets are primary Strategic Reserve investment targets
-- `ded/scenarios/ai-unemployment/` — Phase 3 normalization: dividend as long-run income supplement as labor market restructures around AI
+- `ded/scenarios/ai-unemployment/` — Phase 3 normalization: monthly dividend as long-run income supplement as labor market restructures around AI
