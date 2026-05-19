@@ -589,48 +589,520 @@ the normal relationship between a regulated utility and its regulator.
 
 ---
 
-## Open Questions for Iteration
+## Open Questions and Development Paths
 
-The following design questions are identified but not resolved in this initial concept.
-Each requires additional analysis:
+The following design questions are identified and require further analysis before the
+architecture is finalized. Each question includes two or three candidate development
+paths with their implications for DED goals.
 
-1. **Lending and money creation during partition:** If a bank node is in partition mode,
-   can it originate new loans? New loans create new money in the ledger — which would
-   need to reconcile with the national money supply. Proposed: new loan origination above
-   a defined threshold requires regional confirmation; small consumer credit is local.
+---
 
-2. **Cross-node transactions during partition:** What happens if someone in a partitioned
-   city needs to pay a business in a non-partitioned city? Proposed: the transaction
-   queues at the sending node; the business is notified of pending status; the transaction
-   settles at the next reconciliation.
+### 1. Lending and Money Creation During Partition
 
-3. **Who builds and operates the nodes in areas with no existing bank branch?**
-   Rural areas with limited banking access are the hardest case. Options: postal bank
-   nodes (USPS facilities); government-operated nodes; mobile nodes. This is the unbanked
-   population problem in physical infrastructure form.
+**The question:** If a bank node is in partition mode, can it originate new loans?
+New loans create new deposits in the ledger — money that must reconcile with the
+national money supply when connectivity restores. Uncontrolled local money creation
+during a partition event could produce inflationary divergence or reconciliation
+conflicts at scale.
 
-4. **Privacy architecture:** Local node operators can see all local transactions. This
-   is a surveillance capability. What privacy protections prevent nodes from using
-   transaction data commercially or sharing it with unauthorized parties? A cryptographic
-   privacy layer (similar to zero-knowledge proof systems) that allows NEID aggregate
-   reporting without individual transaction visibility to node operators is technically
-   feasible but needs specification.
+**Development Path A — No New Origination During Partition (Conservative)**
 
-5. **International transactions:** Cross-border payments in a cashless system require
-   foreign counterpart systems or international settlement mechanisms. The distributed
-   ledger architecture does not extend automatically to international transactions.
-   SWIFT replacement or integration needs design.
+New loan origination above a de minimis threshold ($500) is suspended during partition
+mode. Existing loans continue to service normally from the local ledger. Pre-approved
+credit lines (credit cards, overdraft facilities, pre-committed business lines of credit)
+can be drawn down without new origination — the credit was already approved and
+reflected in the national ledger before the partition.
 
-6. **Cryptocurrency and stablecoins:** The distributed partitioned ledger effectively
-   provides what private cryptocurrencies claim to provide — a resilient, distributed,
-   cryptographically secure payment system — but under federal governance and with
-   monetary policy integration. The regulatory relationship with private cryptocurrencies
-   in a world where this system exists needs resolution.
+Implications: Simple to implement and reconcile. Reduces credit availability during
+disruption events, which is when businesses often need short-term credit most. Suitable
+for short partitions (hours to days); becomes economically constraining if partitions
+last weeks.
 
-7. **Physical reserve quantity calibration:** The 90-day subsistence reserve estimate
-   needs actuarial analysis. What is the realistic maximum duration of an extreme network
-   failure? What level of economic activity needs to be supported? How does the reserve
-   interact with existing DED Strategic Reserve holdings?
+**Development Path B — Pre-Authorized Local Credit Lines**
+
+Every account in good standing receives a pre-authorized emergency credit facility —
+a partition credit line — sized as a fraction of their 90-day average transaction volume
+(proposed: 30%). During partition mode, this facility is drawable without new origination.
+It appears as a contingent liability in the local ledger, flagged for national
+reconciliation when connectivity restores.
+
+Implications: Maintains economic liquidity during disruptions without creating
+uncontrolled money supply divergence (the credit lines are pre-sized and nationally
+visible as contingent facilities). Requires actuarial calibration of the credit line
+sizing to avoid systemic over-extension during prolonged partitions. Aligns with the
+existing credit card authorization model — extension of pre-committed credit, not
+new credit creation.
+
+**Development Path C — Tiered Local Credit Authority**
+
+Nodes are granted standing authority to originate new loans up to a locally-managed
+cap (proposed: 5% of the node's total deposit base per partition event). Loans above
+the cap require regional network confirmation. The local cap is treated as a money
+supply float, similar to existing check-clearing float in the current system, and
+reconciled at the next national reconciliation cycle with Fed visibility.
+
+Implications: Most permissive option — preserves local economic dynamism during
+disruptions. Requires more sophisticated reconciliation to handle the float without
+permanent money supply distortion. Appropriate if partition events are expected to be
+frequent (e.g., recurring regional weather events) rather than rare extreme cases.
+
+**Recommended path for evaluation:** Path B for the near term (lowest reconciliation
+complexity); Path C as the long-run target once reconciliation protocols are proven
+at scale.
+
+---
+
+### 2. Cross-Node Transactions During Partition
+
+**The question:** When a payer's home node is operational but the payee's home node
+is in a different jurisdiction — or the inter-node network link is unavailable —
+how does the transaction proceed? Rejecting all cross-node transactions during any
+partial network failure is too restrictive; accepting them without verification risks
+double-spend or insufficient funds errors.
+
+**Development Path A — Hard Queue with Status Notification**
+
+The transaction is logged at the sending node as a debit against the sender's account
+(reducing their local balance immediately) and placed in a reconciliation queue.
+The payee's node receives a pending transaction notification through whatever
+connectivity is available (including, if necessary, a secondary communications channel
+such as satellite messaging). The payee is notified that payment is pending; the
+merchant can choose to accept or hold goods/services pending confirmation. Settlement
+occurs at the next reconciliation cycle.
+
+Implications: No double-spend risk (the sender's balance is debited immediately at
+their home node). Payee bears uncertainty risk — analogous to a check that might
+bounce. Works well for non-time-critical transactions; problematic for real-time
+commerce where the payee cannot extend credit to the payer. Most straightforward
+technically.
+
+**Development Path B — Neighboring Node Bilateral Settlement**
+
+Adjacent nodes — those within the same regional network and with direct peer-to-peer
+connectivity to each other — establish bilateral settlement channels analogous to
+correspondent banking. A transaction between customers of two neighboring nodes is
+settled bilaterally between those nodes in real time, without requiring national
+network connectivity. Nodes maintain a bilateral net settlement balance with their
+neighbors, settled to zero at each regional reconciliation cycle.
+
+Implications: Extends cross-node transaction capability significantly within a region
+even when the regional-to-national link is down. Requires each node to maintain
+bilateral credit limits with its neighbors (a form of inter-node reserve). Adds
+complexity to reconciliation (bilateral balances must be netted and confirmed).
+Mirrors the existing correspondent banking architecture but at the local level.
+Recommended for the regional-to-local tier where inter-node volumes are highest.
+
+**Development Path C — Provisional Credit with Reversal Protocol**
+
+The payee's node issues provisional credit to the payee's account for the transaction
+amount, flagged as contingent on sender confirmation. The sender's account is debited
+at their home node simultaneously. Both transactions are marked provisional until
+the next reconciliation confirms both sides. If reconciliation fails to confirm (e.g.,
+sender had insufficient funds), the provisional credit is reversed at the payee's node
+and an overdraft recovery process is initiated against the sender.
+
+Implications: Best user experience — payee has immediate access to funds. Highest
+complexity — requires a reversal protocol, overdraft recovery, and fraud detection
+to prevent deliberate exploitation of the provisional window. Suitable for
+well-established account relationships (recurring B2B payments, payroll) rather than
+anonymous retail transactions. Should carry an explicit risk disclosure.
+
+**Recommended path:** Path A as the baseline for unknown/anonymous cross-node
+transactions; Path B for inter-regional commerce within a district; Path C as an
+opt-in facility for established commercial relationships.
+
+---
+
+### 3. Rural and Unbanked Area Coverage
+
+**The question:** The distributed ledger depends on physical node infrastructure.
+Rural counties with no bank branches, and populations currently without bank accounts,
+represent the hardest coverage problem — and are disproportionately the populations
+DED programs are designed to serve. The cashless transition cannot proceed until
+universal access is achieved.
+
+**Development Path A — USPS Postal Node Network**
+
+The United States Postal Service operates approximately 31,000 facilities, including
+rural post offices in locations where no commercial bank branch exists. USPS facilities
+are converted to lightweight node operators: they host a node terminal (smaller footprint
+than a full bank branch data center), provide card issuance and account services,
+and connect to the regional network through existing USPS infrastructure plus satellite
+uplink backup.
+
+USPS postal nodes are not full bank branches — they do not originate loans or hold
+significant physical reserves. They are access points: identity verification, card
+issuance, cash account deposits (during the transition period), and NIT/CRHP payment
+access. They connect to the nearest full bank node for ledger services.
+
+Implications: USPS's existing rural footprint solves the geographic coverage problem
+immediately. USPS postal banking has historical precedent (the USPS operated a
+savings banking service from 1911 to 1967). Requires USPS infrastructure investment
+and legislative authority to offer financial services. DED Type B co-investment for
+node terminal installation. Strong political alignment with rural constituencies that
+feel underserved by existing banking.
+
+**Development Path B — CRHP Mobile Node Units**
+
+Civilian Reserve and Health Program units trained in network operations deploy mobile
+node vehicles to areas without fixed infrastructure. Mobile nodes carry server
+hardware, satellite uplink, card terminals, identity verification equipment, and a
+small physical reserve. They operate on a scheduled circuit — visiting each rural
+community on a defined rotation (e.g., weekly) for account services, card replacement,
+and benefit distribution.
+
+Between visits, residents transact via mobile application connected to the nearest
+fixed node via satellite or cellular data. The mobile unit's visit provides the
+physical interface layer for residents without reliable connectivity.
+
+Implications: CRHP workforce creates and maintains the mobile units — generates
+training and employment in the communities being served. Lower upfront infrastructure
+cost than permanent facilities. Rotation schedule means some residents have limited
+access between visits. Suitable as a transitional solution while permanent fixed
+nodes are built out in high-priority rural areas.
+
+**Development Path C — Community Node Cooperative Model**
+
+In communities too small to support a commercial bank node, local governments,
+credit unions, or community development financial institutions are authorized to
+operate cooperative nodes under the same technical and regulatory standards as
+commercial bank nodes. DED provides infrastructure financing (Type B co-investment)
+and CRHP technical assistance. Local ownership of the cooperative node creates
+community economic interest in its maintenance and security.
+
+Implications: Aligns with existing credit union and community development financial
+institution infrastructure — 5,000+ credit unions currently serve rural and low-income
+communities. Community ownership model is politically durable and resistant to
+commercial bank consolidation pressures. Requires a clear regulatory pathway for
+non-bank node operators. The cooperative model produces local governance of a
+critical infrastructure asset, which supports DED's anti-concentration design
+principles.
+
+**Recommended path:** Path A (USPS) for immediate coverage breadth; Path C (cooperative)
+as the long-run governance model for communities without commercial banking; Path B
+(CRHP mobile) as the bridge during the buildout period.
+
+---
+
+### 4. Privacy Architecture
+
+**The question:** Local node operators have visibility into all transactions processed
+through their ledger. This is a significant surveillance capability — it gives the
+node operator, and potentially the government through NEID reporting, a complete
+picture of individual economic behavior. Strong privacy protections are essential
+both for civil liberties and for political viability of the system.
+
+**Development Path A — Zero-Knowledge Proof Aggregation**
+
+Zero-knowledge proof systems allow a party to prove that a statement is true without
+revealing the underlying data. Applied to NEID reporting: each node generates a
+zero-knowledge proof that its aggregate transaction statistics (total volume, category
+breakdown, velocity metrics) are accurate, without transmitting the individual
+transaction records that compose those statistics. The NEID receives provably accurate
+aggregate data; it never receives individual transaction data.
+
+At the node level, operator access to individual transaction data is governed by
+a need-to-know protocol: node operators see only the data required to process and
+reconcile transactions. Retroactive individual transaction lookup requires a two-key
+authorization process (node operator key + regulatory authority key) and generates
+an immutable audit log.
+
+Implications: Gold standard for privacy — individual transaction data is never
+transmitted outside the node without legal process. Requires sophisticated cryptographic
+implementation; zero-knowledge proof systems are computationally intensive and add
+latency. Technically feasible with current cryptography; requires investment in
+implementation. Recommended as the long-run target.
+
+**Development Path B — Differential Privacy with Tiered Access**
+
+Differential privacy adds calibrated statistical noise to individual data before
+aggregation, such that the aggregate is accurate at the population level but no
+individual transaction can be inferred from the aggregate. NEID receives differentially
+private aggregate statistics — economically useful, individually uninformative.
+
+Access tiers:
+- Tier 0 (public): NEID publishes aggregate regional economic indicators
+- Tier 1 (node operator): individual transaction data visible within the node's
+  own ledger; not transmittable externally
+- Tier 2 (regulatory): Fed and DED can request specific account activity with
+  documented regulatory purpose and court authorization
+- Tier 3 (law enforcement): transaction records for specific accounts under active
+  criminal investigation, with court order and independent oversight review
+
+Implications: Simpler to implement than zero-knowledge proofs; lower computational
+overhead; well-established technique in data science. Provides strong practical
+privacy for most use cases. Differential privacy does not prevent node operators from
+seeing individual transactions in their own ledger — it only protects individuals
+from external data aggregation. Internal node operator access controls remain
+necessary. Recommended as the near-term implementation.
+
+**Development Path C — Structural Account Separation**
+
+Rather than cryptographic privacy, structural design separates economic identity
+from transaction data. Each account has two components: a public transaction identifier
+(used for all ledger entries) and a private identity link (stored separately, encrypted
+with a key held jointly by the account holder and a privacy authority independent
+of the node operator and the government).
+
+Routine transactions are recorded against the public identifier — the ledger knows
+amounts and counterparties but not identities. Identity resolution requires the
+private key, which the account holder controls. Law enforcement or regulatory access
+to identity requires the account holder's consent or a court order served on the
+privacy authority.
+
+Implications: Provides the strongest identity privacy — most similar to the anonymity
+of cash, while maintaining transaction auditability. Adds complexity to identity
+verification and AML/KYC compliance. Requires an independent privacy authority
+(potentially the equivalent of a privacy ombudsman with statutory independence from
+the executive branch). Would face strong opposition from law enforcement and Treasury
+on AML grounds. Most likely viable as an opt-in privacy tier for a subset of users
+rather than the universal default.
+
+**Recommended path:** Path B (differential privacy + tiered access) as the baseline;
+Path A (zero-knowledge proofs) as the long-run upgrade target; Path C (structural
+separation) as an opt-in advanced privacy tier for users with demonstrated need
+(domestic violence survivors, journalists, whistleblowers).
+
+---
+
+### 5. International Transactions
+
+**The question:** The distributed partitioned ledger covers domestic U.S. transactions.
+Cross-border payments — imports, exports, remittances, international investment —
+require settlement with foreign financial systems that may use different architectures.
+The U.S. dollar's role as global reserve currency makes the international settlement
+question a strategic as well as technical issue.
+
+**Development Path A — SWIFT Integration Layer**
+
+The existing SWIFT network handles international financial messaging for approximately
+11,000 financial institutions globally. Rather than replacing SWIFT, the distributed
+partitioned ledger interfaces with SWIFT at the regional and national network tier.
+International transactions are converted from distributed ledger format to SWIFT message
+format at the national ledger boundary and transmitted through existing SWIFT
+infrastructure. Incoming SWIFT messages are converted back at the national boundary
+and distributed to the appropriate local nodes.
+
+Implications: Lowest disruption to existing international payment infrastructure.
+Preserves correspondent banking relationships. SWIFT remains a potential single
+point of failure and a geopolitical vulnerability (as demonstrated by the Russia
+SWIFT exclusion in 2022, which was effective but also drove Russia toward alternative
+systems). Does not extend the resilience properties of the distributed ledger to
+international transactions. Appropriate as a transitional arrangement.
+
+**Development Path B — Bilateral Central Bank Digital Currency Bridges**
+
+The Federal Reserve negotiates direct bilateral settlement channels with foreign
+central banks whose countries have deployed compatible central bank digital currency
+infrastructure. Rather than routing through SWIFT, U.S.-to-country transactions
+settle directly between the Fed's national ledger and the foreign central bank's
+equivalent system.
+
+This model is already under active development: the Bank for International Settlements'
+mBridge project is a multilateral central bank digital currency settlement platform
+being developed by the central banks of Hong Kong, Thailand, the UAE, China, and the
+BIS itself. A U.S. bilateral bridge to mBridge-compatible systems, or to individual
+bilateral partners, provides a SWIFT-independent international settlement channel.
+
+Implications: Reduces SWIFT dependency and its associated geopolitical vulnerability.
+Strengthens bilateral financial relationships with participating countries. Requires
+foreign countries to have compatible central bank digital currency infrastructure —
+adoption is uneven. The U.S. would be late to the mBridge discussion but could
+negotiate entry or establish parallel bilateral bridges with key trading partners.
+Aligns with DED's international economic independence goals (reduces concentration
+risk in international settlement infrastructure).
+
+**Development Path C — Dollar Reserve Currency Integration**
+
+The U.S. dollar's role as global reserve currency means that foreign central banks
+and financial institutions hold dollar-denominated assets and settle international
+transactions in dollars. The distributed partitioned ledger can become the definitive
+dollar infrastructure: foreign institutions that hold and transact in dollars access
+a dedicated international node tier in the distributed ledger network — a tier with
+no geographic constraint but with the same cryptographic architecture and reconciliation
+protocols as domestic nodes.
+
+International dollar transactions settle through the international node tier,
+maintaining the dollar's reserve currency function while extending the distributed
+ledger's resilience properties to international dollar settlement.
+
+Implications: Most ambitious path — effectively modernizes the dollar's role in
+international finance, extending U.S. financial infrastructure leadership rather than
+ceding it to multilateral platforms. Requires significant diplomatic and regulatory
+negotiation with foreign financial authorities. Would be strongly resisted by financial
+institutions that earn from current SWIFT-based correspondent banking arrangements.
+Represents a 10-15 year development trajectory, not a near-term option.
+
+**Recommended path:** Path A (SWIFT integration) as the transition arrangement;
+Path B (bilateral central bank digital currency bridges) as the medium-run target for
+key trading partners; Path C (dollar reserve integration) as the long-run strategic
+option if international CBDC adoption reaches sufficient scale.
+
+---
+
+### 6. Cryptocurrency and Private Stablecoins
+
+**The question:** Private cryptocurrencies and stablecoins currently serve some of
+the functions the distributed partitioned ledger would provide — decentralized payment,
+cross-border transfer, financial access outside traditional banking. Once the distributed
+ledger exists, these instruments occupy an ambiguous position: they are partly
+competitive, partly complementary, and partly a regulatory concern (AML, capital
+flight, financial stability).
+
+**Development Path A — Regulated Integration**
+
+Licensed stablecoins — private instruments backed 1:1 by distributed ledger account
+balances, issued by regulated entities — are permitted to operate as a programmability
+layer on top of the distributed ledger. A licensed stablecoin issuer holds distributed
+ledger account balances as reserves; stablecoins are claims on those reserves;
+the stablecoins can be used for programmable transactions (smart contracts, automated
+settlement protocols) that the base distributed ledger does not natively support.
+
+Unlicensed cryptocurrencies and unregulated stablecoins are treated as foreign
+currency — legal to hold and transact, but with full capital gains taxation, mandatory
+reporting above defined thresholds, and no legal tender status.
+
+Implications: Preserves innovation in programmable money and decentralized finance
+while bringing the instruments with systemic importance (large stablecoins) under
+the distributed ledger's reserve and reconciliation architecture. Provides a clear
+regulatory framework that reduces uncertainty for both innovators and regulators.
+Most compatible with DED's preference for economic incentives over prohibition.
+
+**Development Path B — Competitive Displacement with Defined Coexistence Rules**
+
+The distributed partitioned ledger provides, natively, most of what private
+cryptocurrencies claim to offer: resilient payment infrastructure, direct peer-to-peer
+settlement, geographic independence during partition mode, strong cryptographic
+security. The government does not prohibit private cryptocurrency but does not integrate
+it either.
+
+Clear coexistence rules: private crypto is legal to hold and trade; cryptocurrency-to-
+ledger and ledger-to-cryptocurrency exchanges are regulated and taxed at point of
+conversion; cryptocurrency cannot be used to satisfy domestic legal obligations
+(taxes, court judgments) that must be settled in distributed ledger accounts;
+cryptocurrency businesses are required to maintain distributed ledger accounts for
+all dollar-denominated transactions and cannot operate as shadow payment systems
+outside the ledger.
+
+Implications: Allows private crypto to serve its genuine use cases (international
+transfers, programmable finance, speculative investment) while preventing it from
+becoming a parallel economy that avoids the distributed ledger's AML and taxation
+infrastructure. The competitive pressure of the distributed ledger — which is free,
+universal, and government-backed — naturally reduces demand for private crypto for
+domestic payment purposes without requiring prohibition.
+
+**Development Path C — Transition Window with Sunsetting**
+
+During the cashless transition (Phase 2, Years 3–8), private cryptocurrencies and
+stablecoins are permitted to coexist with the distributed ledger. As the distributed
+ledger reaches full national coverage and universal access (Phase 3), a sunsetting
+schedule takes effect: large stablecoins must either convert to regulated integration
+(Path A) or cease domestic operations; private cryptocurrencies must register all
+domestic transactions through distributed ledger exchange accounts.
+
+The sunsetting is not prohibition — it is a requirement that all domestic economic
+activity ultimately touch the distributed ledger, either directly or through a
+regulated conversion point. Holdings of private cryptocurrency remain legal;
+their use for domestic payment without ledger touchpoint becomes non-compliant.
+
+Implications: Maximizes short-run flexibility while ensuring the long-run integrity
+of the distributed ledger as the universal domestic payment infrastructure. Requires
+clear legislative definition of what constitutes a "domestic transaction" for
+cryptocurrency, which is technically complex given cryptocurrency's borderless nature.
+Most appropriate if the regulatory concern is primarily about domestic tax compliance
+and AML rather than about financial stability risk from large stablecoins.
+
+**Recommended path:** Path A (regulated integration) for systemically significant
+stablecoins; Path B (competitive displacement with coexistence rules) as the default
+framework for other private cryptocurrency; Path C sunsetting provisions applied to
+unregulated stablecoins specifically, which pose the clearest stability risk.
+
+---
+
+### 7. Physical Reserve Quantity Calibration
+
+**The question:** The 90-day subsistence reserve estimate is a working assumption.
+The actual reserve quantity per node facility needs to be derived from a defensible
+model accounting for the realistic duration of extreme failure scenarios, the level
+of economic activity the reserve must support, and the interaction with existing DED
+Strategic Reserve holdings to avoid duplication.
+
+**Development Path A — Actuarial Insurance Model**
+
+Reserve quantity is derived from an actuarial model analogous to catastrophe bond
+sizing: probability distribution of network failure duration × economic damage function
+× population served = required reserve to cover a defined confidence interval (proposed:
+99th percentile of expected failure scenarios). The model is updated annually as
+failure scenario data accumulates from the pilot network and from historical
+infrastructure failure events globally.
+
+Reserve quantity is expressed in terms of economic value (dollars per capita) rather
+than specific metals, allowing the physical reserve composition to be adjusted as
+precious metal prices change while maintaining the target economic coverage level.
+The model explicitly accounts for the throttle's role in reducing the economic
+activity that must be supported by physical reserve (most everyday commerce continues
+on the local ledger in partition mode; the physical reserve covers only transactions
+the partition ledger cannot support).
+
+Implications: Most technically rigorous approach; produces a defensible quantity
+with explicit confidence intervals. Requires ongoing actuarial maintenance. The
+99th percentile target means the reserve is sized for scenarios that are quite
+unlikely — which is appropriate given the cost of being wrong.
+
+**Development Path B — Military Logistics Standard**
+
+The Department of Defense has existing standards for supplying isolated installations
+for defined periods without resupply: 30-day, 60-day, and 90-day supply levels for
+food, fuel, medicine, and critical materials. These standards are calibrated to
+actual consumption rates for defined population sizes and are regularly validated
+against operational experience.
+
+The physical reserve is sized using the same methodology, applied to civilian
+subsistence requirements for the node's served population. DoD's logistics planning
+infrastructure and supply chain expertise are leveraged through DED coordination,
+avoiding duplicative actuarial development.
+
+Reserve tiers map to existing DED emergency declaration tiers: Tier 1 declaration
+activates the 30-day reserve; Tier 2 activates the 60-day reserve; Tier 3 activates
+the full 90-day reserve. Each tier requires a higher-level declaration (local →
+state → federal) to access.
+
+Implications: Leverages existing military logistics expertise and avoids duplicative
+methodology development. The DoD standards are already operationally validated.
+Military subsistence standards may not perfectly match civilian economic activity
+patterns — supplemental calibration for non-food economic activity (utilities,
+medical) is needed. Strong alignment with DED's existing military cost linkage
+and reserve system architecture.
+
+**Development Path C — Dynamic Reserve with Strategic Reserve Integration**
+
+Rather than maintaining fixed local physical reserves at every node facility, the
+DED Strategic Reserve maintains a national pool of reserve assets (rare metals,
+commodity-backed instruments, essential goods) that can be distributed to local
+nodes within 24–72 hours of a declared emergency. Individual node facilities maintain
+only a 7-day minimum immediate reserve; the national pool covers the 8-to-90-day
+window.
+
+This reduces the total asset holding required (the national pool is smaller than the
+sum of all local 90-day reserves due to geographic diversification — not all regions
+fail simultaneously) and allows the reserve composition to be managed centrally with
+greater efficiency. The American Sovereign Fund Strategic Reserve tranche is the
+natural funding vehicle.
+
+Implications: Significantly reduces per-node facility requirements and the physical
+security burden of holding large reserves at every location. Introduces a logistics
+dependency — the national pool must reach local nodes within the emergency window,
+which requires a pre-positioned distribution network and may fail in the exact scenarios
+(infrastructure destruction, multi-regional failure) where the reserve is most needed.
+Most appropriate if the primary scenario being planned for is a localized rather than
+national infrastructure failure.
+
+**Recommended path:** Path B (military logistics standard) as the immediate
+implementation baseline — proven, operationally validated, and institutionally
+integrated with DED's existing reserve architecture; Path A (actuarial model) as
+the long-run refinement as node-level failure data accumulates; Path C (dynamic
+reserve) as an efficiency optimization in the steady state once the distribution
+logistics are proven.
 
 ---
 
