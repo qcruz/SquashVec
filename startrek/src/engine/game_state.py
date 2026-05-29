@@ -251,23 +251,56 @@ class GameState:
 
 
 # ---------------------------------------------------------------------------
-# Stat micro-gain tracking (accumulated progress toward +1 stat)
+# Time management
 # ---------------------------------------------------------------------------
 
-# Gain rates per tier for the primary stat used in an action
-STAT_GAIN_RATES = {
-    "critical_success": 0.50,
-    "full_success":     0.25,
-    "partial":          0.10,
-    "full_failure":     0.00,
-    "critical_failure": 0.00,
-}
+DAY_LENGTH_HOURS = 18.0     # hours before the day resets and task pool re-rolls
+TASK_TIME_MIN    = 4.0      # minimum hours a task consumes
+TASK_TIME_MAX    = 6.0      # maximum hours a task consumes
+
+STARTING_CREDITS = 500
 
 import random as _random
 
+
+def advance_time(character: dict, hours: float) -> bool:
+    """
+    Advance in-game time by `hours`. Initialises hour_of_day / day if missing.
+    Returns True if a new day has ticked over (task pool should re-roll).
+    """
+    character.setdefault("hour_of_day", 0.0)
+    character.setdefault("day", 1)
+    character.setdefault("credits", STARTING_CREDITS)
+
+    character["hour_of_day"] += hours
+    new_day = False
+    while character["hour_of_day"] >= DAY_LENGTH_HOURS:
+        character["hour_of_day"] -= DAY_LENGTH_HOURS
+        character["day"] += 1
+        new_day = True
+    return new_day
+
+
+# ---------------------------------------------------------------------------
+# Stat micro-gain tracking (accumulated progress toward +1 stat)
+# ---------------------------------------------------------------------------
+
+# Gain rates per tier for the primary stat used in an action.
+# These are BASE rates before the asymptotic multiplier is applied.
+# Final gain = base * tier_mult * asymptote_factor(current_skill)
+_STAT_GAIN_BASE_MIN = 0.0005
+_STAT_GAIN_BASE_MAX = 0.005
+_STAT_GAIN_TIER_MULT = {
+    "critical_success": 1.5,
+    "full_success":     1.0,
+    "partial":          0.4,
+    "full_failure":     0.0,
+    "critical_failure": 0.0,
+}
+
 # How fast unused stats decay back toward base level per task
-STAT_DECAY_RATE_MIN = 0.03
-STAT_DECAY_RATE_MAX = 0.05
+STAT_DECAY_RATE_MIN = 0.003
+STAT_DECAY_RATE_MAX = 0.008
 
 ALL_STATS = ["Command", "Science", "Tactical", "Engineering", "Medicine", "Diplomacy"]
 
@@ -297,23 +330,35 @@ def apply_stat_decay(character: dict, stat_used: str):
             decay_acc[stat] = 0.0
 
 
-def award_stat_progress(character: dict, stat: str, tier: str) -> bool:
+def award_stat_progress(character: dict, stat: str, tier: str,
+                        xp_multiplier: float = 1.0) -> bool:
     """
     Award micro-progress toward a stat increase.
-    Returns True if the stat increased (so the caller can notify the player).
+    Gain is tiny (0.0005–0.005) and asymptotic: approaches zero as the
+    stat nears 10 so early growth is faster than late growth.
+    xp_multiplier: 0.1–1.0 (credit-reward tasks give less XP).
+    Returns True if the stat actually ticked up by 1.
     """
-    if not stat or tier not in STAT_GAIN_RATES:
-        return False
-    gain = STAT_GAIN_RATES.get(tier, 0.0)
-    if gain <= 0:
+    tier_mult = _STAT_GAIN_TIER_MULT.get(tier, 0.0)
+    if tier_mult <= 0:
         return False
 
-    progress = character.setdefault("stat_progress", {s: 0.0 for s in
-                                    ["Command","Science","Tactical","Engineering","Medicine","Diplomacy"]})
+    current = character["stats"].get(stat, 1)
+    if current >= 10:
+        return False
+
+    # Asymptotic factor: approaches 0 as skill → 10
+    asymptote = (10 - current) / 10.0   # skill 1 → 0.9; skill 9 → 0.1
+
+    base = _random.uniform(_STAT_GAIN_BASE_MIN, _STAT_GAIN_BASE_MAX)
+    gain = base * tier_mult * asymptote * xp_multiplier
+
+    progress = character.setdefault("stat_progress",
+                                    {s: 0.0 for s in ALL_STATS})
     progress[stat] = progress.get(stat, 0.0) + gain
 
-    if progress[stat] >= 1.0 and character["stats"].get(stat, 0) < 10:
-        character["stats"][stat] += 1
+    if progress[stat] >= 1.0:
+        character["stats"][stat] = min(10, current + 1)
         progress[stat] = 0.0
         return True
     return False

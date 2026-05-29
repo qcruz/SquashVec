@@ -211,11 +211,97 @@ def generate_scenario(
 
 
 # ---------------------------------------------------------------------------
+# Day task wrapper (reward type, costs, requirements)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class DayTask:
+    """A scenario packaged with its daily economic context."""
+    scenario: LiveScenario
+    reward_type: str        # "credits" | "xp" | "npc_rep"
+    primary_stat: str       # stat used to determine eligibility + success
+    skill_requirement: int  # minimum stat level to attempt (0 = anyone)
+    credit_cost: int        # upfront cost to attempt (only for xp tasks)
+    credit_reward: int      # credits earned on success
+    xp_multiplier: float    # 0.1 for credit tasks, 1.0 for xp tasks
+    time_cost: float        # hours consumed (4–6)
+    npc_name: str = ""      # NPC whose loyalty/morale is affected
+
+
+def generate_day_tasks(
+    roster=None,
+    rank_idx: int = 0,
+    n: int = 5,
+    player_stats: dict = None,
+) -> list:
+    """
+    Generate a pool of DayTasks for one in-game day.
+    Mix of reward types; skill requirements spread across difficulty tiers.
+    player_stats used to set realistic (but not locked-out) skill requirements.
+    """
+    player_stats = player_stats or {}
+    tasks = []
+    reward_pool = (["credits"] * 3) + (["xp"] * 2) + (["npc_rep"] * 1)
+    random.shuffle(reward_pool)
+
+    # NPC names available for rep tasks
+    npc_names = ["Voss", "Rael", "Osei", "Fane", "Varkis"] if rank_idx == 0 else []
+    if roster:
+        npc_names += [c.name for c in roster.named_crew[:6]]
+
+    for i in range(n):
+        scenario = generate_scenario(rank_idx=rank_idx, roster=roster)
+        # Pick the primary stat from the highest-difficulty option
+        primary_opt = max(scenario.options, key=lambda o: o.difficulty)
+        stat = primary_opt.stat
+        skill_val = player_stats.get(stat, 3)
+
+        rtype = reward_pool[i % len(reward_pool)]
+
+        # Skill requirement: 0–(skill-1), so player can always attempt some tasks
+        if i < 2:
+            req = 0                           # easy — open to all
+        elif i < 4:
+            req = max(0, skill_val - 2)       # moderate
+        else:
+            req = max(0, skill_val - 1)       # near current level
+
+        if rtype == "xp":
+            cost = random.randint(15, 60)
+            reward = 0
+            xp_mult = 1.0
+        elif rtype == "credits":
+            cost = 0
+            reward = random.randint(40, 150) + req * 15
+            xp_mult = 0.15
+        else:  # npc_rep
+            cost = 0
+            reward = random.randint(10, 40)
+            xp_mult = 0.4
+
+        npc = random.choice(npc_names) if npc_names and rtype == "npc_rep" else ""
+
+        tasks.append(DayTask(
+            scenario=scenario,
+            reward_type=rtype,
+            primary_stat=stat,
+            skill_requirement=req,
+            credit_cost=cost,
+            credit_reward=reward,
+            xp_multiplier=xp_mult,
+            time_cost=round(random.uniform(4.0, 6.0), 1),
+            npc_name=npc,
+        ))
+    return tasks
+
+
+# ---------------------------------------------------------------------------
 # Resolution engine
 # ---------------------------------------------------------------------------
 
 RANK_NAMES = ["Ensign", "Lieutenant JG", "Lieutenant",
               "Lt. Commander", "Commander", "Captain"]
+
 
 def resolve(
     scenario: LiveScenario,
@@ -225,23 +311,26 @@ def resolve(
     crew_fatigue: int = 0,
 ) -> ResolutionResult:
     """
-    Roll resolution for a chosen option.
+    Roll-under resolution: roll d20, succeed if roll <= skill*2.
+    skill*2 on d20 ≈ skill*10% success chance.
 
-    player_stats: dict of stat_name -> value (1–10)
-    ship_condition: 0–100 (affects Engineering/Tactical rolls)
-    crew_fatigue: 0–100 (affects all rolls at high values)
+    Tiers (lower roll = better):
+      natural 20           → critical failure  (always)
+      roll <= target - 4   → critical success
+      roll <= target       → full success
+      roll <= target + 4   → partial
+      else                 → full failure
     """
     option = scenario.options[option_idx]
     outcome_set = scenario.outcomes[option_idx]
 
-    # Base d20 roll
     base_roll = random.randint(1, 20)
-
-    # Player stat modifier
     player_val = player_stats.get(option.stat, 1)
-    player_mod = player_val - 5   # stat 5 = 0 mod; stat 10 = +5 mod; stat 1 = -4 mod
 
-    # Assigned crew modifier
+    # Target number: skill*2 on d20 ≈ skill*10% chance
+    target = player_val * 2
+
+    # Crew modifier (raises target = makes success easier)
     crew_member = scenario.assigned_crew.get(option.station)
     crew_val = 0
     hidden_bonus = 0
@@ -249,53 +338,53 @@ def resolve(
 
     if crew_member:
         crew_val = crew_member.stat(option.stat)
-        crew_mod = (crew_val - 5) // 2   # crew contributes half their deviation
+        target += (crew_val - 5) // 2
 
-        # Check hidden stat trigger
         raw_hidden = crew_member.roll_hidden_trigger(option.stat)
         if raw_hidden > 0:
             hidden_bonus = raw_hidden
+            target += hidden_bonus
             hidden_triggered = True
-    else:
-        crew_mod = 0
 
-    # Condition modifiers
+    # Condition modifiers (lower target = harder)
     condition_mod = 0
     if ship_condition < 70 and option.stat in ("Engineering", "Tactical"):
-        condition_mod -= 2
+        condition_mod -= 1
     if ship_condition < 40:
-        condition_mod -= 2
+        condition_mod -= 1
     if crew_fatigue > 70:
         condition_mod -= 1
     if crew_fatigue > 85:
-        condition_mod -= 2
-
-    total = base_roll + player_mod + crew_mod + condition_mod + hidden_bonus
-    difficulty = scenario.difficulty_base + option.difficulty - 11  # normalize to base
+        condition_mod -= 1
+    target += condition_mod
+    target = max(2, min(18, target))
 
     # Determine tier
-    if base_roll == 1:
+    if base_roll == 20:
         tier = "critical_failure"
-        outcome_text = (outcome_set.critical_failure
-                       if outcome_set.critical_failure
-                       else outcome_set.full_failure)
-        effects = list(outcome_set.failure_effects)
-    elif base_roll == 20:
+    elif base_roll <= max(1, target - 4):
         tier = "critical_success"
-        outcome_text = (outcome_set.critical_success
-                       if outcome_set.critical_success
-                       else outcome_set.full_success)
-        effects = list(outcome_set.success_effects)
-    elif total >= difficulty + 5:
+    elif base_roll <= target:
         tier = "full_success"
+    elif base_roll <= target + 4:
+        tier = "partial"
+    else:
+        tier = "full_failure"
+
+    # Outcome text
+    if tier == "critical_failure":
+        outcome_text = outcome_set.critical_failure or outcome_set.full_failure
+        effects = list(outcome_set.failure_effects)
+    elif tier == "critical_success":
+        outcome_text = outcome_set.critical_success or outcome_set.full_success
+        effects = list(outcome_set.success_effects)
+    elif tier == "full_success":
         outcome_text = outcome_set.full_success
         effects = list(outcome_set.success_effects)
-    elif total >= difficulty - 4:
-        tier = "partial"
+    elif tier == "partial":
         outcome_text = outcome_set.partial
         effects = list(outcome_set.partial_effects)
     else:
-        tier = "full_failure"
         outcome_text = outcome_set.full_failure
         effects = list(outcome_set.failure_effects)
 
@@ -309,8 +398,8 @@ def resolve(
         crew_stat=crew_val,
         hidden_bonus=hidden_bonus,
         condition_mod=condition_mod,
-        total=total,
-        difficulty=difficulty,
+        total=base_roll,       # roll IS the total in roll-under; target is the threshold
+        difficulty=target,     # re-use field for target number
         tier=tier,
         outcome_text=outcome_text,
         effects=effects,

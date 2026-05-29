@@ -14,10 +14,12 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from src.engine.crew_generator import generate_roster
-from src.engine.scenario_generator import generate_scenario, resolve
+from src.engine.scenario_generator import generate_scenario, resolve, generate_day_tasks, DayTask
 from src.engine.crew import STATS
 from src.engine.game_state import (GameState, CareerRecord, Score, GameClock,
-                                   RANK_NAMES, award_stat_progress, apply_stat_decay)
+                                   RANK_NAMES, award_stat_progress, apply_stat_decay,
+                                   advance_time, STARTING_CREDITS, DAY_LENGTH_HOURS,
+                                   TASK_TIME_MIN, TASK_TIME_MAX)
 from src.engine.save_load import save_game, load_game, list_saves
 from src.engine.hierarchy import (generate_project, generate_mission, generate_voyage,
                                   auto_assign_crew_to_project, auto_execute_project,
@@ -69,8 +71,10 @@ class StarSleepApp:
         self._pending_result   = None
         self._pending_project  = None
         self._selected_focus   = tk.IntVar(value=0)
-        self._bonus_remaining  = 0
+        self._bonus_remaining   = 0
         self._bonus_assignments = {}
+        self._day_tasks: list = []        # current day's DayTask pool
+        self._pending_day_task = None     # DayTask being resolved
 
         self._build_layout()
         self.show_splash()
@@ -167,9 +171,13 @@ class StarSleepApp:
         fat  = gs.crew_fatigue
         name = gs.character.get("name", "—")
         rank = gs.career.rank
+        credits = gs.character.get("credits", STARTING_CREDITS)
+        hour    = gs.character.get("hour_of_day", 0.0)
+        day     = gs.character.get("day", 1)
         self.lbl_rank.config(text=f"{name}  ·  {rank}")
         self.lbl_status.config(
-            text=f"Hull {hull}%   Fatigue {fat}%   Score {gs.score.total():,}"
+            text=f"Day {day}  {hour:.0f}h/{DAY_LENGTH_HOURS:.0f}h   "
+                 f"₡{credits:,}   Hull {hull}%   Fatigue {fat}%"
         )
         if gs.event_log:
             last = gs.event_log[-1]
@@ -485,9 +493,12 @@ class StarSleepApp:
     def _finalize_character(self):
         char = self._pending_char
         # Store base_stats as the decay floor (after bonus point assignment)
-        char["base_stats"] = dict(char["stats"])
+        char["base_stats"]   = dict(char["stats"])
         char["stat_progress"] = {s: 0.0 for s in STATS}
         char["stat_decay"]    = {s: 0.0 for s in STATS}
+        char["credits"]       = STARTING_CREDITS
+        char["hour_of_day"]   = 0.0
+        char["day"]           = 1
 
         roster = generate_roster("scout", seed=random.randint(0, 9999))
 
@@ -795,10 +806,109 @@ class StarSleepApp:
     # TASK EXECUTION (Ensign / LJG)
     # -----------------------------------------------------------------------
 
+    def _roll_day_tasks(self):
+        """Generate a fresh pool of 5 DayTasks for today."""
+        gs = self.gs
+        self._day_tasks = generate_day_tasks(
+            roster=gs.roster,
+            rank_idx=gs.career.rank_idx,
+            n=5,
+            player_stats=gs.character["stats"],
+        )
+
     def _run_task(self):
-        scenario = generate_scenario(rank_idx=self.gs.career.rank_idx, roster=self.gs.roster)
-        self._pending_scenario = scenario
-        self.show_scenario(scenario)
+        if not self._day_tasks:
+            self._roll_day_tasks()
+        self.show_task_pool()
+
+    def show_task_pool(self):
+        """Show today's available tasks as selectable cards."""
+        self._clear_content()
+        self._clear_actions()
+        gs = self.gs
+
+        # Ensure pool exists
+        if not self._day_tasks:
+            self._roll_day_tasks()
+
+        credits = gs.character.get("credits", STARTING_CREDITS)
+        hour    = gs.character.get("hour_of_day", 0.0)
+        day     = gs.character.get("day", 1)
+
+        txt = self._make_text_area(self.content)
+        self._write(txt, "AVAILABLE TASKS", "header")
+        self._write(txt, "")
+        self._write(txt,
+            f"  Day {day}   {hour:.0f}h elapsed of {DAY_LENGTH_HOURS:.0f}h   "
+            f"Balance: ₡{credits:,}", "dim")
+        self._write(txt, "  Tasks re-roll at end of day.", "dim")
+        self._write(txt, "")
+        self._write_sep(txt)
+
+        reward_icons = {"credits": "₡", "xp": "★", "npc_rep": "♥"}
+
+        for i, dt in enumerate(self._day_tasks):
+            stat_val = gs.character["stats"].get(dt.primary_stat, 1)
+            success_pct = min(95, stat_val * 10)
+            locked_skill = stat_val < dt.skill_requirement
+            locked_funds = credits < dt.credit_cost
+
+            self._write(txt, "")
+            status = ""
+            if locked_skill:
+                status = f"  [need {dt.primary_stat} {dt.skill_requirement}+]"
+            elif locked_funds:
+                status = f"  [need ₡{dt.credit_cost}]"
+
+            title_tag = "dim" if (locked_skill or locked_funds) else "accent"
+            self._write(txt, f"  [{i+1}] {dt.scenario.title}{status}", title_tag)
+            self._write(txt, f"  {dt.scenario.hook[:80]}", "dim")
+
+            # Reward / cost line
+            icon = reward_icons.get(dt.reward_type, "·")
+            if dt.reward_type == "credits":
+                reward_str = f"Reward: ₡{dt.credit_reward}"
+            elif dt.reward_type == "xp":
+                reward_str = f"★ XP focus   Cost: ₡{dt.credit_cost}"
+            else:
+                npc_str = f" ({dt.npc_name})" if dt.npc_name else ""
+                reward_str = f"♥ Relationship{npc_str}  +₡{dt.credit_reward}"
+
+            self._write(txt,
+                f"  {icon}  {dt.primary_stat} {stat_val}  "
+                f"~{success_pct}% success   {reward_str}   ⏱ {dt.time_cost:.0f}h",
+                "dim")
+
+        self._action_header("SELECT TASK")
+        for i, dt in enumerate(self._day_tasks):
+            stat_val = gs.character["stats"].get(dt.primary_stat, 1)
+            locked = stat_val < dt.skill_requirement or credits < dt.credit_cost
+            success_pct = min(95, stat_val * 10)
+            icon = reward_icons.get(dt.reward_type, "·")
+            label = (f"  [{i+1}] {dt.scenario.title[:24]}\n"
+                     f"  {icon} ~{success_pct}%  {dt.primary_stat}")
+            if locked:
+                self._add_action_button(label, lambda: None, color=C["fg_dim"], small=True)
+            else:
+                self._add_action_button(label,
+                    lambda t=dt: self._start_day_task(t), color=C["accent"])
+
+        self._action_sep()
+        self._add_action_button("  ← Bridge", self.show_bridge,
+                                color=C["fg_dim"], small=True)
+        self._add_save_exit()
+
+    def _start_day_task(self, day_task: DayTask):
+        """Deduct credit cost if any, then show the scenario."""
+        gs = self.gs
+        credits = gs.character.get("credits", STARTING_CREDITS)
+        if credits < day_task.credit_cost:
+            return   # shouldn't happen if button was enabled correctly
+        gs.character["credits"] = credits - day_task.credit_cost
+        self._pending_day_task  = day_task
+        self._pending_scenario  = day_task.scenario
+        self._update_header()
+        self.show_scenario(day_task.scenario)
 
     def show_scenario(self, scenario):
         self._clear_content()
@@ -874,20 +984,74 @@ class StarSleepApp:
 
     def _apply_task_result(self, scenario, result):
         gs = self.gs
+        dt: DayTask = self._pending_day_task  # may be None for non-pool tasks
 
         gs.career.tasks_completed += 1
         gs.score.tasks_completed += 1
-        if result.tier in ("critical_success", "full_success"):
+        success = result.tier in ("critical_success", "full_success")
+        partial = result.tier == "partial"
+        if success:
             gs.career.tasks_full_success += 1
             gs.score.tasks_full_success += 1
 
-        stat_inc = award_stat_progress(gs.character, result.stat_used, result.tier)
+        # --- XP gain (asymptotic, small) ---
+        xp_mult = dt.xp_multiplier if dt else 1.0
+        award_stat_progress(gs.character, result.stat_used, result.tier, xp_mult)
         apply_stat_decay(gs.character, result.stat_used)
 
+        # --- Reward / penalty by type ---
+        credits = gs.character.get("credits", STARTING_CREDITS)
+        reward_msg = ""
+        if dt:
+            if success or partial:
+                frac = 1.0 if success else 0.5
+                if dt.reward_type == "credits":
+                    earned = int(dt.credit_reward * frac)
+                    credits += earned
+                    reward_msg = f"+₡{earned}"
+                elif dt.reward_type == "npc_rep" and dt.npc_name:
+                    earned_c = int(dt.credit_reward * frac)
+                    credits += earned_c
+                    reward_msg = f"₡+{earned_c}  ♥ {dt.npc_name} +loyalty"
+                    # Apply to NPC if in roster
+                    if gs.roster:
+                        for m in gs.roster.named_crew:
+                            if m.name == dt.npc_name:
+                                m.loyalty = min(100, m.loyalty + random.randint(3, 8))
+                                m.morale  = min(100, m.morale  + random.randint(2, 5))
+                # xp tasks: XP was the reward (handled by award_stat_progress above)
+            else:
+                # Failure penalties
+                if dt.reward_type == "credits":
+                    penalty = random.randint(5, 25)
+                    credits = max(0, credits - penalty)
+                    reward_msg = f"-₡{penalty}"
+                elif dt.reward_type == "npc_rep" and dt.npc_name:
+                    reward_msg = f"♥ {dt.npc_name} -loyalty"
+                    if gs.roster:
+                        for m in gs.roster.named_crew:
+                            if m.name == dt.npc_name:
+                                m.loyalty = max(0,  m.loyalty - random.randint(3, 8))
+                                m.morale  = max(0,  m.morale  - random.randint(2, 5))
+                # xp tasks: you just lost the upfront credits (already deducted)
+
+        gs.character["credits"] = credits
+
+        # --- Time cost ---
+        time_h = dt.time_cost if dt else random.uniform(TASK_TIME_MIN, TASK_TIME_MAX)
+        new_day = advance_time(gs.character, time_h)
+        if new_day:
+            self._day_tasks = []   # pool re-rolls next time bridge is opened
+
+        # Remove completed task from pool
+        if dt and dt in self._day_tasks:
+            self._day_tasks.remove(dt)
+        self._pending_day_task = None
+
+        # --- Ship / fatigue damage on failure ---
         if result.tier in ("full_failure", "critical_failure"):
-            dmg = random.randint(3, 10)
-            gs.ship_condition = max(0, gs.ship_condition - dmg)
-        gs.crew_fatigue = min(100, gs.crew_fatigue + random.randint(2, 5))
+            gs.ship_condition = max(0, gs.ship_condition - random.randint(1, 6))
+        gs.crew_fatigue = min(100, gs.crew_fatigue + random.randint(1, 4))
 
         if scenario.has_ethical_weight and result.tier in ("full_failure", "critical_failure"):
             flag = f"[{scenario.title}] Ethical failure"
@@ -895,12 +1059,13 @@ class StarSleepApp:
             gs.score.career_flags_negative += 1
             gs.log_event("flag", scenario.title, "flagged", flag)
 
-        gs.log_event("task", scenario.title, result.tier.replace("_", " "),
-                     f"via {result.stat_used}")
+        notes = f"via {result.stat_used}"
+        if reward_msg:
+            notes += f"  {reward_msg}"
+        gs.log_event("task", scenario.title, result.tier.replace("_", " "), notes)
 
-        # XP
-        xp_gain = {"critical_success": 3, "full_success": 2,
-                   "partial": 1, "full_failure": 1, "critical_failure": 2}.get(result.tier, 1)
+        # Legacy XP pool (for level-up events at higher ranks)
+        xp_gain = {"critical_success": 2, "full_success": 1}.get(result.tier, 0)
         gs.xp += xp_gain
 
     def show_result(self, result, on_continue=None):
@@ -921,17 +1086,16 @@ class StarSleepApp:
         self._write(txt, tier_label, tier_tag)
         self._write(txt, "")
 
-        # Roll breakdown
-        crew_mod = (result.crew_stat - 5) // 2 if result.crew_stat else 0
+        # Roll breakdown (roll-under: lower is better)
         self._write(txt,
-            f"  Roll:  {result.base_roll} (d20)  "
-            f"+{result.player_stat - 5} (stat)  "
-            f"+{crew_mod} (crew)",
+            f"  Rolled: {result.base_roll}   "
+            f"Target: {result.difficulty} ({result.player_stat}×2"
+            f"{f' crew+{(result.crew_stat-5)//2}' if result.crew_stat and result.crew_stat != 5 else ''}"
+            f"{f' cond{result.condition_mod:+d}' if result.condition_mod else ''})",
             "dim")
-        if result.condition_mod:
-            self._write(txt, f"  Condition: {result.condition_mod:+d}", "dim")
         self._write(txt,
-            f"  Total: {result.total}  vs  Difficulty: {result.difficulty}",
+            f"  Success if roll ≤ {result.difficulty}  "
+            f"(~{min(95,result.player_stat*10)}% chance at {result.player_stat} {result.stat_used})",
             "dim")
 
         if result.hidden_triggered and result.crew_member:
@@ -945,6 +1109,14 @@ class StarSleepApp:
         self._write(txt, "")
 
         gs = self.gs
+        credits = gs.character.get("credits", STARTING_CREDITS)
+        hour    = gs.character.get("hour_of_day", 0.0)
+        day     = gs.character.get("day", 1)
+        self._write_sep(txt)
+        self._write(txt, "")
+        self._write(txt,
+            f"  Balance: ₡{credits:,}   Day {day}  {hour:.0f}h/{DAY_LENGTH_HOURS:.0f}h",
+            "info")
 
         # XP check
         if gs.xp >= 5:
