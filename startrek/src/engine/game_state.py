@@ -224,6 +224,7 @@ class GameState:
     expedition_active: bool = False
     game_over: bool = False
     game_over_reason: str = ""
+    event_log: list = field(default_factory=list)
 
     def named_crew_count(self) -> int:
         if self.roster:
@@ -235,3 +236,49 @@ class GameState:
         if self.roster:
             return len([c for c in self.roster.named_crew if c.loyalty > 0])
         return 0
+
+    def log_event(self, event_type: str, title: str, outcome: str, notes: str = ""):
+        """Append an event to the game history log."""
+        date = self.clock.display() if self.expedition_active else f"Pre-expedition"
+        self.event_log.append({
+            "date": date,
+            "type": event_type,    # "task" / "project" / "mission" / "voyage" / "promotion" / "flag"
+            "title": title,
+            "outcome": outcome,
+            "notes": notes,
+        })
+
+
+# ---------------------------------------------------------------------------
+# Stat micro-gain tracking (accumulated progress toward +1 stat)
+# ---------------------------------------------------------------------------
+
+# Gain rates per tier for the primary stat used in an action
+STAT_GAIN_RATES = {
+    "critical_success": 0.50,
+    "full_success":     0.25,
+    "partial":          0.10,
+    "full_failure":     0.00,
+    "critical_failure": 0.00,
+}
+
+def award_stat_progress(character: dict, stat: str, tier: str) -> bool:
+    """
+    Award micro-progress toward a stat increase.
+    Returns True if the stat increased (so the caller can notify the player).
+    """
+    if not stat or tier not in STAT_GAIN_RATES:
+        return False
+    gain = STAT_GAIN_RATES.get(tier, 0.0)
+    if gain <= 0:
+        return False
+
+    progress = character.setdefault("stat_progress", {s: 0.0 for s in
+                                    ["Command","Science","Tactical","Engineering","Medicine","Diplomacy"]})
+    progress[stat] = progress.get(stat, 0.0) + gain
+
+    if progress[stat] >= 1.0 and character["stats"].get(stat, 0) < 10:
+        character["stats"][stat] += 1
+        progress[stat] = 0.0
+        return True
+    return False

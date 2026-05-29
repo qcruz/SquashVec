@@ -13,7 +13,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.engine.crew_generator import generate_roster
 from src.engine.scenario_generator import generate_scenario, resolve
 from src.engine.crew import STATS, CrewMember
-from src.engine.game_state import GameState, CareerRecord, Score, GameClock, RANK_NAMES
+from src.engine.game_state import (GameState, CareerRecord, Score, GameClock, RANK_NAMES,
+                                   award_stat_progress)
 from src.engine.hierarchy import (
     Project, ProjectTask, Mission, MissionProject, Voyage, VoyageMission,
     generate_project, generate_mission, generate_voyage,
@@ -412,6 +413,121 @@ def show_score(gs: GameState):
 
 
 # ---------------------------------------------------------------------------
+# Crew logs
+# ---------------------------------------------------------------------------
+
+def show_crew_logs(gs: GameState):
+    while True:
+        clear()
+        header("Public Crew Logs")
+        named = gs.roster.named_crew
+        print(f"  {len(named)} named crew members on manifest.\n")
+
+        # Group by department
+        depts = {}
+        for m in named:
+            depts.setdefault(m.department, []).append(m)
+
+        idx = 1
+        crew_list = []
+        for dept in ["Command", "Helm", "Tactical", "Science", "Engineering", "Medical", "Operations"]:
+            members = depts.get(dept, [])
+            if not members:
+                continue
+            print(f"  {dept.upper()}")
+            for m in sorted(members, key=lambda c: c.loyalty, reverse=True):
+                loyalty_bar = "█" * (m.loyalty // 10) + "░" * (10 - m.loyalty // 10)
+                strained = " [strained]" if m.is_strained() else ""
+                print(f"    [{idx:>2}]  {m.name:<22} {m.rank:<16} "
+                      f"loyalty {m.loyalty} {loyalty_bar}{strained}")
+                crew_list.append(m)
+                idx += 1
+            blank()
+
+        print(f"    [0]  Back")
+        blank()
+
+        valid = ["0"] + [str(i) for i in range(1, len(crew_list) + 1)]
+        choice = prompt("Select crew member", valid=valid)
+        if choice == "0":
+            break
+
+        member = crew_list[int(choice) - 1]
+        _display_crew_profile(member)
+
+
+def _display_crew_profile(m):
+    clear()
+    header(f"Crew Log — {m.name}")
+    print(f"  Rank:        {m.rank}")
+    print(f"  Species:     {m.species}")
+    print(f"  Department:  {m.department}")
+    print(f"  Officer:     {'Yes' if m.is_officer else 'No'}")
+    blank()
+    print(f"  Loyalty:  {m.loyalty:>3}  {'█'*(m.loyalty//10)}{'░'*(10-m.loyalty//10)}")
+    print(f"  Morale:   {m.morale:>3}  {'█'*(m.morale//10)}{'░'*(10-m.morale//10)}")
+    print(f"  Stress:   {m.stress:>3}  {'█'*(m.stress//10)}{'░'*(10-m.stress//10)}")
+    blank()
+    print("  STATS:")
+    for stat, val in m.stats.items():
+        bar = "█" * val + "░" * (10 - val)
+        fit = " ◀" if m.department_fit() and stat == m.department_fit() else ""
+        print(f"    {stat:<14} {bar}  {val}/10{fit}")
+
+    discovered = [hs for hs in m.hidden_stats if hs.discovered]
+    if discovered:
+        blank()
+        print("  KNOWN APTITUDES (discovered hidden stats):")
+        for hs in discovered:
+            print(f"    • {hs.stat}: exceptional aptitude (value {hs.value})")
+
+    blank()
+    print(f"  Department fit: {'natural' if not m.is_misfit() else 'misassigned [*]'}")
+    blank()
+    pause()
+
+
+# ---------------------------------------------------------------------------
+# Game history log
+# ---------------------------------------------------------------------------
+
+def show_history(gs: GameState):
+    clear()
+    header("Mission Log")
+    log = gs.event_log
+    if not log:
+        wrap("No events recorded yet.")
+        pause()
+        return
+
+    # Show most recent 40 entries, newest last
+    visible = log[-40:]
+    print(f"  Showing {len(visible)} of {len(log)} logged events.\n")
+    type_icons = {
+        "task":      "·",
+        "project":   "◆",
+        "mission":   "★",
+        "voyage":    "⬡",
+        "promotion": "▲",
+        "flag":      "⚑",
+        "encounter": "✕",
+    }
+    outcome_colors = {
+        "success": GREEN, "partial": YELLOW,
+        "failure": RED, "promoted": BGREEN,
+        "flagged": RED, "completed": GREEN,
+    }
+    for e in visible:
+        icon = type_icons.get(e["type"], "·")
+        c = outcome_colors.get(e["outcome"], "")
+        notes = f"  {e['notes']}" if e.get("notes") else ""
+        print(f"  {e['date']:<18} {icon}  {e['title']:<34} "
+              f"{c}{e['outcome']}{RESET}{notes}")
+    blank()
+    pause()
+
+
+# ---------------------------------------------------------------------------
 # Promotion flow
 # ---------------------------------------------------------------------------
 
@@ -457,6 +573,7 @@ def check_promotion(gs: GameState) -> bool:
 
     blank()
     print(f"  {BGREEN}Promotion confirmed: {gs.career.rank}{RESET}")
+    gs.log_event("promotion", f"Promoted to {gs.career.rank}", "promoted")
     blank()
 
     # Ship upgrade at Lieutenant (scout → cruiser)
@@ -511,6 +628,12 @@ def run_task(gs: GameState):
         gs.career.tasks_full_success += 1
         gs.score.tasks_full_success += 1
 
+    # Micro stat gain on the stat used
+    stat_increased = award_stat_progress(gs.character, result.stat_used, result.tier)
+    if stat_increased:
+        print(f"  {CYAN}Experience gained: {result.stat_used} increased to "
+              f"{gs.character['stats'][result.stat_used]}.{RESET}")
+
     # Ship condition
     if result.tier in ("full_failure", "critical_failure"):
         dmg = random.randint(3, 10)
@@ -524,6 +647,11 @@ def run_task(gs: GameState):
         gs.career.career_flags.append(flag)
         gs.score.career_flags_negative += 1
         print(f"\n  {RED}Career flag:{RESET} {flag}")
+        gs.log_event("flag", scenario.title, "flagged", flag)
+
+    # Log the task
+    gs.log_event("task", scenario.title, result.tier.replace("_", " "),
+                 f"via {result.stat_used}")
 
     # XP
     if award_xp(gs, result.tier):
@@ -683,12 +811,20 @@ def _execute_project_interactive(project: Project, gs: GameState):
                 print(f"  You step in. +{bonus} to roll → {new_total}")
                 print(f"  {TIER_LABELS.get(new_tier, new_tier.upper())}")
 
+        # Micro stat gain
+        stat_used = task.scenario.options[task.option_idx].stat
+        stat_inc = award_stat_progress(gs.character, stat_used, task.result.tier)
+        if stat_inc:
+            print(f"  {CYAN}Experience: {stat_used} → {gs.character['stats'][stat_used]}{RESET}")
+
         # Track task
         gs.career.tasks_completed += 1
         gs.score.tasks_completed += 1
         if task.result.tier in ("critical_success", "full_success"):
             gs.career.tasks_full_success += 1
             gs.score.tasks_full_success += 1
+        gs.log_event("task", task.scenario.title, task.result.tier.replace("_", " "),
+                     f"project: {project.title}")
 
 
 def run_project(gs: GameState):
@@ -725,6 +861,8 @@ def run_project(gs: GameState):
     gs.score.projects_completed += 1
     if outcome in ("success", "partial"):
         gs.career.projects_succeeded += 1
+    gs.log_event("project", project.title, outcome,
+                 f"{project.success_count()}/{len(project.tasks)} tasks")
 
     # Ship wear
     if outcome == "failure":
@@ -920,6 +1058,8 @@ def run_mission(gs: GameState):
     gs.score.missions_completed += 1
     if mission_outcome in ("success", "partial"):
         gs.career.missions_succeeded += 1
+    lives_note = f"{mission.lives_at_stake:,} lives at stake" if mission.lives_at_stake else ""
+    gs.log_event("mission", mission.title, mission_outcome, lives_note)
 
     gs.crew_fatigue = min(100, gs.crew_fatigue + random.randint(5, 12))
     if mission_outcome == "failure":
@@ -1050,6 +1190,9 @@ def run_voyage(gs: GameState):
     gs.score.voyages_completed += 1
     gs.clock.advance(1)
     gs.score.years_reached = gs.clock.year
+
+    gs.log_event("voyage", f"{voyage.voyage_type} voyage ({voyage.duration})", vo,
+                 f"{len(voyage.missions)} missions")
 
     clear()
     header(f"Voyage Complete — {voyage.voyage_type}")
@@ -1193,9 +1336,11 @@ def run_expedition(gs: GameState):
         print("    [2]  Free time")
         print("    [3]  View status")
         print("    [4]  View score")
+        print("    [c]  Crew logs")
+        print("    [h]  Mission history")
         print()
 
-        action = prompt("Action", valid=["1", "2", "3", "4"])
+        action = prompt("Action", valid=["1", "2", "3", "4", "c", "h"])
 
         if action == "1":
             run_voyage(gs)
@@ -1205,6 +1350,10 @@ def run_expedition(gs: GameState):
             show_status(gs)
         elif action == "4":
             show_score(gs)
+        elif action == "c":
+            show_crew_logs(gs)
+        elif action == "h":
+            show_history(gs)
 
     if not gs.game_over:
         # Five years elapsed without encounter — trigger anyway
@@ -1313,10 +1462,12 @@ def main():
         print("    [2]  Free time")
         print("    [3]  View status")
         print("    [4]  View score")
+        print("    [c]  Crew logs")
+        print("    [h]  Mission history")
         print("    [5]  Quit")
         blank()
 
-        valid = ["1", "2", "3", "4", "5"]
+        valid = ["1", "2", "3", "4", "5", "c", "h"]
         if rank == "Captain":
             valid.append("e")
 
@@ -1344,6 +1495,12 @@ def main():
 
         elif action == "4":
             show_score(gs)
+
+        elif action == "c":
+            show_crew_logs(gs)
+
+        elif action == "h":
+            show_history(gs)
 
         elif action == "5":
             clear()
