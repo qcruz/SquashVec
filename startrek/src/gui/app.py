@@ -377,18 +377,18 @@ class StarSleepApp:
         self._clear_content()
         self._clear_actions()
 
-        # Header
-        hdr = tk.Frame(self.content, bg=C["bg"])
-        hdr.pack(fill=tk.X, padx=PAD_LG, pady=PAD_LG)
-        tk.Label(hdr, text="CREW REGISTRATION", font=FONTS["header"],
-                 fg=C["fg_header"], bg=C["bg"]).pack(anchor="w")
-        tk.Label(hdr, text="Select your academy focus. This shapes your starting stats and trait.",
-                 font=FONTS["small"], fg=C["fg_dim"], bg=C["bg"]).pack(anchor="w", pady=PAD_SM)
+        frm = tk.Frame(self.content, bg=C["bg"])
+        frm.place(relx=0.5, rely=0.4, anchor=tk.CENTER)
 
-        # Name entry
-        name_frm = tk.Frame(self.content, bg=C["bg"])
-        name_frm.pack(fill=tk.X, padx=PAD_LG, pady=PAD_SM)
-        tk.Label(name_frm, text="Officer designation:", font=FONTS["body"],
+        tk.Label(frm, text="NEW SLEEPER", font=FONTS["header"],
+                 fg=C["fg_header"], bg=C["bg"]).pack(anchor="w", pady=(0, PAD_SM))
+        tk.Label(frm, text="You wake from cryo at Farpoint Station.\nDebt balance: 1,200 credits. Departure clearance: pending.",
+                 font=FONTS["small"], fg=C["fg_dim"], bg=C["bg"],
+                 justify=tk.LEFT).pack(anchor="w", pady=(0, PAD_LG))
+
+        name_frm = tk.Frame(frm, bg=C["bg"])
+        name_frm.pack(anchor="w", pady=PAD_SM)
+        tk.Label(name_frm, text="Name:", font=FONTS["body"],
                  fg=C["fg_label"], bg=C["bg"]).pack(side=tk.LEFT)
         self._name_var = tk.StringVar(value="J. Harrington")
         name_entry = tk.Entry(name_frm, textvariable=self._name_var,
@@ -396,76 +396,21 @@ class StarSleepApp:
                               insertbackground=C["fg"], relief=tk.FLAT, bd=0,
                               width=24)
         name_entry.pack(side=tk.LEFT, padx=PAD, ipady=4)
+        name_entry.focus_set()
+        name_entry.bind("<Return>", lambda e: self._confirm_character())
 
-        # Focus list (scrollable frame)
-        list_frm = tk.Frame(self.content, bg=C["bg"])
-        list_frm.pack(fill=tk.BOTH, expand=True, padx=PAD_LG, pady=PAD)
-
-        self._focus_btns = []
-        for i, focus in enumerate(ACADEMY_FOCUSES):
-            row = tk.Frame(list_frm, bg=C["bg_button"], cursor="hand2")
-            row.pack(fill=tk.X, pady=2)
-
-            bonus_str = "  +  ".join(f"{s} +{v}" for s, v in focus["bonuses"].items())
-
-            left = tk.Frame(row, bg=C["bg_button"])
-            left.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=PAD_LG, pady=PAD)
-
-            tk.Label(left, text=focus["name"], font=FONTS["body_bold"],
-                     fg=C["fg_header"], bg=C["bg_button"], anchor="w").pack(anchor="w")
-            tk.Label(left, text=focus["desc"], font=FONTS["small"],
-                     fg=C["fg_dim"], bg=C["bg_button"], anchor="w").pack(anchor="w")
-            tk.Label(left, text=f"Bonuses: {bonus_str}    Trait: {focus['trait']}",
-                     font=FONTS["tiny"], fg=C["fg_label"], bg=C["bg_button"],
-                     anchor="w").pack(anchor="w", pady=(2, 0))
-
-            idx = i
-            for widget in [row, left]:
-                widget.bind("<Button-1>", lambda e, n=idx: self._select_focus(n))
-            for child in left.winfo_children():
-                child.bind("<Button-1>", lambda e, n=idx: self._select_focus(n))
-
-            self._focus_btns.append(row)
-
-        self._select_focus(0)
-
-        # Begin button in actions panel
-        self._action_header("READY TO SHIP OUT?")
-        self._add_action_button("  Begin Career", self._confirm_character,
-                                color=C["success"])
+        self._action_header("READY?")
+        self._add_action_button("  Next →", self._confirm_character, color=C["success"])
         self._action_sep()
-        self._add_action_button("  ← Back to Menu", self.show_splash,
+        self._add_action_button("  ← Back", self.show_splash,
                                 color=C["fg_dim"], small=True)
 
-    def _select_focus(self, idx: int):
-        self._selected_focus.set(idx)
-        for i, row in enumerate(self._focus_btns):
-            bg = C["bg_button_hot"] if i == idx else C["bg_button"]
-            row.configure(bg=bg)
-            for child in row.winfo_children():
-                child.configure(bg=bg)
-                for subchild in child.winfo_children():
-                    try:
-                        subchild.configure(bg=bg)
-                    except tk.TclError:
-                        pass
-
     def _confirm_character(self):
-        focus_idx = self._selected_focus.get()
-        focus = ACADEMY_FOCUSES[focus_idx]
         name = self._name_var.get().strip() or "J. Harrington"
-
-        stats = {s: 3 for s in STATS}
-        for stat, bonus in focus["bonuses"].items():
-            stats[stat] += bonus
-
-        # Store on self; finalized after bonus point assignment
         self._pending_char = {
             "name":  name,
             "rank":  "Ensign",
-            "focus": focus["name"],
-            "trait": focus["trait"],
-            "stats": stats,
+            "stats": {s: 3 for s in STATS},
         }
         self._bonus_remaining   = 2
         self._bonus_assignments = {}
@@ -479,8 +424,7 @@ class StarSleepApp:
         txt = self._make_text_area(self.content)
         self._write(txt, "ASSIGN BONUS POINTS", "header")
         self._write(txt, "")
-        self._write(txt, f"  Officer:  {char['name']}", "dim")
-        self._write(txt, f"  Focus:    {char['focus']}", "dim")
+        self._write(txt, f"  Name:  {char['name']}", "dim")
         self._write(txt, "")
         self._write(txt, f"  You have {self._bonus_remaining} bonus point(s) to assign.", "accent")
         self._write(txt, "  Distribute them freely — these become your baseline,", "dim")
@@ -511,6 +455,11 @@ class StarSleepApp:
         self._action_sep()
         self._add_action_button("  ← Back", self.show_character_creation,
                                 color=C["fg_dim"], small=True)
+        # Allow confirming with all 2 points still unspent too
+        if self._bonus_remaining < 2:
+            self._action_sep()
+            self._add_action_button("  Skip remaining →", self._finalize_character,
+                                    color=C["fg_dim"], small=True)
 
     def _assign_bonus(self, stat: str):
         char = self._pending_char
@@ -523,7 +472,7 @@ class StarSleepApp:
 
     def _finalize_character(self):
         char = self._pending_char
-        # Store base_stats as the decay floor (after focus + bonus points)
+        # Store base_stats as the decay floor (after bonus point assignment)
         char["base_stats"] = dict(char["stats"])
         char["stat_progress"] = {s: 0.0 for s in STATS}
         char["stat_decay"]    = {s: 0.0 for s in STATS}
@@ -567,7 +516,11 @@ class StarSleepApp:
         self._write(txt, f"BRIDGE — {gs.character['name'].upper()}", "header")
         self._write(txt, "")
         self._write(txt, f"  Rank       {rank}", "dim")
-        self._write(txt, f"  Focus      {gs.character['focus']}", "dim")
+        if gs.character.get("focus"):
+            self._write(txt, f"  Focus      {gs.character['focus']}", "dim")
+        elif gs.character.get("faction"):
+            fac = gs.character["faction"].title()
+            self._write(txt, f"  Faction    {fac}", "dim")
         self._write(txt, f"  Hull       {gs.ship_condition}%   "
                          f"Fatigue {gs.crew_fatigue}%", "dim")
         self._write(txt, "")
@@ -2129,8 +2082,12 @@ class StarSleepApp:
         self._write(txt, f"OFFICER STATUS — {gs.character['name'].upper()}", "header")
         self._write(txt, "")
         self._write(txt, f"  Rank:        {gs.career.rank}", "dim")
-        self._write(txt, f"  Focus:       {gs.character['focus']}", "dim")
-        self._write(txt, f"  Trait:       {gs.character['trait']}", "dim")
+        if gs.character.get("focus"):
+            self._write(txt, f"  Focus:       {gs.character['focus']}", "dim")
+        if gs.character.get("trait"):
+            self._write(txt, f"  Trait:       {gs.character['trait']}", "dim")
+        if gs.character.get("faction"):
+            self._write(txt, f"  Faction:     {gs.character['faction'].title()}", "dim")
         self._write(txt, "")
         self._write_sep(txt)
         self._write(txt, "")
