@@ -369,6 +369,18 @@ class StarSleepApp:
         except Exception as e:
             self.lbl_last_event.config(text=f"  Save failed: {e}")
 
+    def _save_and_exit(self):
+        self._save_game_action()
+        self.btn_save.pack_forget()
+        self.gs = None
+        self.show_splash()
+
+    def _add_save_exit(self):
+        """Add Save & Exit to the current actions panel."""
+        self._action_sep()
+        self._add_action_button("  Save & Exit", self._save_and_exit,
+                                color=C["fg_dim"], small=True)
+
     # -----------------------------------------------------------------------
     # CHARACTER CREATION
     # -----------------------------------------------------------------------
@@ -568,10 +580,11 @@ class StarSleepApp:
         self._action_sep()
         self._add_action_button("  Free Time", self.show_free_time)
         self._action_sep()
-        self._add_action_button("  Crew Logs [c]",  self.show_crew_logs, color=C["fg_label"])
-        self._add_action_button("  Mission History [h]", self.show_history, color=C["fg_label"])
-        self._add_action_button("  Career Stats",   self.show_stats,   color=C["fg_label"])
-        self._add_action_button("  Score",          self.show_score,   color=C["fg_label"])
+        self._add_action_button("  Crew Logs",      self.show_crew_logs,  color=C["fg_label"])
+        self._add_action_button("  Mission History", self.show_history,   color=C["fg_label"])
+        self._add_action_button("  Career Stats",   self.show_stats,      color=C["fg_label"])
+        self._add_action_button("  Score",          self.show_score,      color=C["fg_label"])
+        self._add_save_exit()
         self._action_sep()
         self._add_action_button("  Quit", self.root.quit, color=C["fg_dim"], small=True)
 
@@ -643,6 +656,9 @@ class StarSleepApp:
         self._add_action_button("  Crew Logs",      self.show_crew_logs,  color=C["fg_label"])
         self._add_action_button("  History",        self.show_history,    color=C["fg_label"])
         self._add_action_button("  Officer Status", self.show_stats,      color=C["fg_label"])
+        self._add_save_exit()
+        self._action_sep()
+        self._add_action_button("  Quit", self.root.quit, color=C["fg_dim"], small=True)
 
     def show_career_path(self):
         self._clear_content()
@@ -839,6 +855,7 @@ class StarSleepApp:
         self._action_sep()
         self._add_action_button("  ← Bridge", self.show_bridge,
                                 color=C["fg_dim"], small=True)
+        self._add_save_exit()
 
     def _choose_option(self, option_idx: int):
         scenario = self._pending_scenario
@@ -1002,6 +1019,7 @@ class StarSleepApp:
                 f"  {stat}  ({val} → {val+1})",
                 lambda s=stat: self._apply_levelup(s)
             )
+        self._add_save_exit()
 
     def _apply_levelup(self, stat: str):
         self.gs.character["stats"][stat] += 1
@@ -1043,6 +1061,7 @@ class StarSleepApp:
         self._add_action_button("  Decline (stay at current rank)",
                                 on_decline or self.show_bridge,
                                 color=C["fg_dim"], small=True)
+        self._add_save_exit()
 
     def _apply_promotion(self, next_rank: str):
         gs = self.gs
@@ -1564,6 +1583,10 @@ class StarSleepApp:
         self._action_sep()
         self._add_action_button("  Launch Voyage →",
                                 self._launch_voyage, color=C["accent"])
+        self._action_sep()
+        self._add_action_button("  ← Bridge", self.show_bridge,
+                                color=C["fg_dim"], small=True)
+        self._add_save_exit()
 
     def _update_voyage_selection(self):
         # Refresh selection label in header
@@ -2012,8 +2035,7 @@ class StarSleepApp:
         self._write(txt, "")
         self._write(txt, "  STATS", "subhead")
         for stat, val in member.stats.items():
-            fit_marker = "  ◀" if member.department_fit() == stat else ""
-            self._write(txt, f"  {stat:<14}  {bar_str(val)}  {val}/10{fit_marker}", "dim")
+            self._write(txt, f"  {stat:<14}  {bar_str(val)}  {val}/10", "dim")
 
         discovered = [hs for hs in member.hidden_stats if hs.discovered]
         if discovered:
@@ -2024,7 +2046,7 @@ class StarSleepApp:
             for hs in discovered:
                 self._write(txt, f"  ★  {hs.stat}: exceptional aptitude", "accent")
 
-        fit_str = "natural fit" if not member.is_misfit() else "misassigned [*]"
+        fit_str = "natural fit" if member.department_fit() else "misassigned [*]"
         self._write(txt, "")
         self._write(txt, f"  Dept fit: {fit_str}", "dim")
 
