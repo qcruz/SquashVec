@@ -17,7 +17,8 @@ from src.engine.crew_generator import generate_roster
 from src.engine.scenario_generator import generate_scenario, resolve
 from src.engine.crew import STATS
 from src.engine.game_state import (GameState, CareerRecord, Score, GameClock,
-                                   RANK_NAMES, award_stat_progress)
+                                   RANK_NAMES, award_stat_progress, apply_stat_decay)
+from src.engine.save_load import save_game, load_game, list_saves
 from src.engine.hierarchy import (generate_project, generate_mission, generate_voyage,
                                   auto_assign_crew_to_project, auto_execute_project,
                                   INTERRUPTION_OPTIONS)
@@ -68,6 +69,8 @@ class StarSleepApp:
         self._pending_result   = None
         self._pending_project  = None
         self._selected_focus   = tk.IntVar(value=0)
+        self._bonus_remaining  = 0
+        self._bonus_assignments = {}
 
         self._build_layout()
         self.show_splash()
@@ -135,6 +138,16 @@ class StarSleepApp:
                                   font=FONTS["tiny"], fg=C["fg_dim"],
                                   bg=C["bg_panel"])
         self.lbl_score.pack(side=tk.RIGHT, padx=PAD_LG, pady=3)
+
+        self.btn_save = tk.Button(self.status_bar, text=" [S] Save ",
+                                  font=FONTS["tiny"], fg=C["fg_dim"],
+                                  bg=C["bg_panel"],
+                                  activeforeground=C["accent"],
+                                  activebackground=C["bg_button_hot"],
+                                  relief=tk.FLAT, bd=0, cursor="hand2",
+                                  command=self._save_game_action)
+        self.btn_save.pack(side=tk.RIGHT, padx=PAD, pady=2)
+        self.btn_save.pack_forget()   # hidden until game is active
 
     def _clear_content(self):
         for w in self.content.winfo_children():
@@ -242,6 +255,7 @@ class StarSleepApp:
         self._clear_actions()
         self.lbl_rank.config(text="")
         self.lbl_status.config(text="")
+        self.btn_save.pack_forget()
 
         frm = tk.Frame(self.content, bg=C["bg"])
         frm.place(relx=0.5, rely=0.45, anchor=tk.CENTER)
@@ -261,6 +275,26 @@ class StarSleepApp:
                   cursor="hand2", command=self.show_character_creation
                   ).pack(pady=PAD)
 
+        saves = list_saves()
+        if saves:
+            most_recent = saves[0]
+            tk.Button(btn_frm, text="  CONTINUE  ", font=FONTS["body_bold"],
+                      fg=C["success"], bg=C["bg_button"],
+                      activeforeground=C["crit_success"], activebackground=C["bg_button_hot"],
+                      relief=tk.FLAT, bd=0, padx=PAD_LG, pady=PAD_SM,
+                      cursor="hand2",
+                      command=lambda p=most_recent["path"]: self._load_save(p)
+                      ).pack(pady=PAD_SM)
+            tk.Label(btn_frm, text=f"  {most_recent['save_name']}  ·  {most_recent['rank']}  ·  {most_recent['date'][:10]}",
+                     font=FONTS["tiny"], fg=C["fg_dim"], bg=C["bg"]).pack()
+
+            tk.Button(btn_frm, text="  LOAD GAME  ", font=FONTS["small"],
+                      fg=C["fg_label"], bg=C["bg_button"],
+                      activeforeground=C["accent"], activebackground=C["bg_button_hot"],
+                      relief=tk.FLAT, bd=0, padx=PAD_LG, pady=PAD_SM,
+                      cursor="hand2", command=self.show_load_game
+                      ).pack(pady=(PAD_LG, PAD_SM))
+
         tk.Button(btn_frm, text="  QUIT  ", font=FONTS["body"],
                   fg=C["fg_dim"], bg=C["bg_button"],
                   activeforeground=C["failure"], activebackground=C["bg_button_hot"],
@@ -270,6 +304,70 @@ class StarSleepApp:
 
         tk.Label(frm, text="A sci-fi career strategy game.",
                  font=FONTS["tiny"], fg=C["fg_dim"], bg=C["bg"]).pack(pady=PAD_LG)
+
+    # -----------------------------------------------------------------------
+    # LOAD GAME
+    # -----------------------------------------------------------------------
+
+    def show_load_game(self):
+        self._clear_content()
+        self._clear_actions()
+
+        txt = self._make_text_area(self.content)
+        self._write(txt, "LOAD GAME", "header")
+        self._write(txt, "")
+
+        saves = list_saves()
+        if not saves:
+            self._write(txt, "  No save files found.", "dim")
+        else:
+            self._write(txt, f"  {len(saves)} save file(s) found.", "dim")
+            self._write(txt, "")
+            for s in saves:
+                phase_label = {"farpoint": "Farpoint", "career": "Career",
+                               "expedition": "Expedition"}.get(s["phase"], s["phase"])
+                self._write(txt, f"  {s['save_name']}", "accent")
+                self._write(txt,
+                    f"  {s['char_name']}  ·  {s['rank']}  ·  {phase_label}  ·  Score {s['score']}",
+                    "dim")
+                self._write(txt, f"  Saved: {s['date'][:19]}", "dim")
+                self._write(txt, "")
+
+        self._action_header("SAVES")
+        for s in saves:
+            self._add_action_button(
+                f"  {s['save_name'][:28]}\n  {s['char_name']}  ·  {s['rank']}",
+                lambda p=s["path"]: self._load_save(p)
+            )
+        self._action_sep()
+        self._add_action_button("  ← Back", self.show_splash,
+                                color=C["fg_dim"], small=True)
+
+    def _load_save(self, filepath: str):
+        try:
+            self.gs = load_game(filepath)
+            self._update_header()
+            self.btn_save.pack(side=tk.RIGHT, padx=PAD, pady=2)
+            self.show_bridge()
+        except Exception as e:
+            self._clear_content()
+            self._clear_actions()
+            txt = self._make_text_area(self.content)
+            self._write(txt, "LOAD ERROR", "header")
+            self._write(txt, "")
+            self._write(txt, f"  Could not load save file:", "failure")
+            self._write(txt, f"  {e}", "dim")
+            self._action_header("ERROR")
+            self._add_action_button("  ← Back", self.show_splash, color=C["fg_dim"])
+
+    def _save_game_action(self):
+        if not self.gs:
+            return
+        try:
+            path = save_game(self.gs)
+            self.lbl_last_event.config(text=f"  Saved: {path}")
+        except Exception as e:
+            self.lbl_last_event.config(text=f"  Save failed: {e}")
 
     # -----------------------------------------------------------------------
     # CHARACTER CREATION
@@ -361,18 +459,79 @@ class StarSleepApp:
         for stat, bonus in focus["bonuses"].items():
             stats[stat] += bonus
 
-        character = {
-            "name":       name,
-            "rank":       "Ensign",
-            "focus":      focus["name"],
-            "trait":      focus["trait"],
-            "stats":      stats,
+        # Store on self; finalized after bonus point assignment
+        self._pending_char = {
+            "name":  name,
+            "rank":  "Ensign",
+            "focus": focus["name"],
+            "trait": focus["trait"],
+            "stats": stats,
         }
+        self._bonus_remaining   = 2
+        self._bonus_assignments = {}
+        self.show_bonus_assignment()
+
+    def show_bonus_assignment(self):
+        self._clear_content()
+        self._clear_actions()
+
+        char = self._pending_char
+        txt = self._make_text_area(self.content)
+        self._write(txt, "ASSIGN BONUS POINTS", "header")
+        self._write(txt, "")
+        self._write(txt, f"  Officer:  {char['name']}", "dim")
+        self._write(txt, f"  Focus:    {char['focus']}", "dim")
+        self._write(txt, "")
+        self._write(txt, f"  You have {self._bonus_remaining} bonus point(s) to assign.", "accent")
+        self._write(txt, "  Distribute them freely — these become your baseline,", "dim")
+        self._write(txt, "  the floor your skills will never decay below.", "dim")
+        self._write(txt, "")
+        self._write_sep(txt)
+        self._write(txt, "")
+        self._write(txt, "  CURRENT STATS", "subhead")
+        for stat, val in char["stats"].items():
+            extra = self._bonus_assignments.get(stat, 0)
+            marker = f"  +{extra}" if extra else ""
+            self._write(txt,
+                f"  {stat:<14}  {bar_str(val)}  {val}/10{marker}", "dim")
+
+        self._action_header(f"ASSIGN ({self._bonus_remaining} left)")
+        if self._bonus_remaining > 0:
+            for stat in STATS:
+                val = char["stats"][stat]
+                if val < 10:
+                    self._add_action_button(
+                        f"  +1  {stat}  (→ {val+1})",
+                        lambda s=stat: self._assign_bonus(s)
+                    )
+        else:
+            self._add_action_button("  Confirm & Begin →",
+                                    self._finalize_character,
+                                    color=C["success"])
+        self._action_sep()
+        self._add_action_button("  ← Back", self.show_character_creation,
+                                color=C["fg_dim"], small=True)
+
+    def _assign_bonus(self, stat: str):
+        char = self._pending_char
+        if char["stats"][stat] >= 10 or self._bonus_remaining <= 0:
+            return
+        char["stats"][stat] += 1
+        self._bonus_assignments[stat] = self._bonus_assignments.get(stat, 0) + 1
+        self._bonus_remaining -= 1
+        self.show_bonus_assignment()
+
+    def _finalize_character(self):
+        char = self._pending_char
+        # Store base_stats as the decay floor (after focus + bonus points)
+        char["base_stats"] = dict(char["stats"])
+        char["stat_progress"] = {s: 0.0 for s in STATS}
+        char["stat_decay"]    = {s: 0.0 for s in STATS}
 
         roster = generate_roster("scout", seed=random.randint(0, 9999))
 
         self.gs = GameState(
-            character=character,
+            character=char,
             roster=roster,
             score=Score(),
             career=CareerRecord(rank="Ensign", rank_idx=0),
@@ -380,16 +539,21 @@ class StarSleepApp:
             ship_condition=100,
             crew_fatigue=20,
             xp=0,
+            game_phase="farpoint",
         )
 
         self._update_header()
-        self.show_bridge()
+        self.btn_save.pack(side=tk.RIGHT, padx=PAD, pady=2)
+        self.show_farpoint_bridge()
 
     # -----------------------------------------------------------------------
     # BRIDGE (main menu)
     # -----------------------------------------------------------------------
 
     def show_bridge(self):
+        if self.gs and self.gs.game_phase == "farpoint":
+            self.show_farpoint_bridge()
+            return
         self._update_header()
         self._clear_content()
         self._clear_actions()
@@ -457,6 +621,195 @@ class StarSleepApp:
         self._add_action_button("  Score",          self.show_score,   color=C["fg_label"])
         self._action_sep()
         self._add_action_button("  Quit", self.root.quit, color=C["fg_dim"], small=True)
+
+    # -----------------------------------------------------------------------
+    # FARPOINT STATION (beginner phase)
+    # -----------------------------------------------------------------------
+
+    FARPOINT_INTROS = [
+        "Farpoint Station, Dock 7. You wake from cryo to the sound of ventilation fans "
+        "and the smell of recycled air. Debt balance: 1,200 credits. Departure clearance: pending.",
+        "The station roster has you logged as available for general assignment. "
+        "Station Manager Voss needs bodies. You have a body.",
+        "Chief Engineer Rael flags another problem in the industrial bay. "
+        "Third one this week. She needs someone she can trust.",
+        "Doctor Osei's infirmary has a waitlist. The mines are running twelve-hour shifts "
+        "and the medics are stretched thin.",
+        "Milo Fane waves you over near the cargo bay entrance. He looks like he's about to "
+        "ask for a favor. He always looks like that.",
+    ]
+
+    def show_farpoint_bridge(self):
+        self._update_header()
+        self._clear_content()
+        self._clear_actions()
+
+        gs = self.gs
+        tasks_done = gs.career.tasks_completed
+        intro_idx = min(tasks_done, len(self.FARPOINT_INTROS) - 1)
+
+        txt = self._make_text_area(self.content)
+        self._write(txt, "FARPOINT STATION", "header")
+        self._write(txt, "")
+        self._write(txt, self.FARPOINT_INTROS[intro_idx], "dim")
+        self._write(txt, "")
+        self._write_sep(txt)
+        self._write(txt, "")
+        self._write(txt, f"  Assignments completed:  {tasks_done}", "dim")
+        self._write(txt, f"  Hull:    {gs.ship_condition}%    Fatigue: {gs.crew_fatigue}%", "dim")
+        self._write(txt, "")
+        self._write(txt, "STATS", "subhead")
+        for stat, val in gs.character["stats"].items():
+            prog = gs.character.get("stat_progress", {}).get(stat, 0.0)
+            prog_str = f"  [{prog:.0%} to next]" if prog > 0 else ""
+            base = gs.character.get("base_stats", {}).get(stat, val)
+            base_str = f"  (base {base})" if val != base else ""
+            self._write(txt, f"  {stat:<14}  {bar_str(val)}  {val}/10{prog_str}{base_str}", "dim")
+
+        if gs.career.career_flags:
+            self._write(txt, "")
+            self._write_sep(txt)
+            self._write(txt, "CAREER FLAGS", "subhead")
+            for flag in gs.career.career_flags:
+                self._write(txt, f"  ⚑  {flag}", "failure")
+
+        self._action_header("FARPOINT ACTIONS")
+        self._add_action_button("  Take Assignment", self._run_task, color=C["accent"])
+
+        if tasks_done >= 8:
+            self._action_sep()
+            self._add_action_button(
+                "  ◈ Choose Your Path →",
+                self.show_career_path,
+                color=C["crit_success"]
+            )
+
+        self._action_sep()
+        self._add_action_button("  Free Time", self.show_free_time)
+        self._action_sep()
+        self._add_action_button("  Crew Logs",      self.show_crew_logs,  color=C["fg_label"])
+        self._add_action_button("  History",        self.show_history,    color=C["fg_label"])
+        self._add_action_button("  Officer Status", self.show_stats,      color=C["fg_label"])
+
+    def show_career_path(self):
+        self._clear_content()
+        self._clear_actions()
+
+        PATHS = [
+            {
+                "name":    "The Hegemony",
+                "faction": "hegemony",
+                "tagline": "Order. Law. Logistics.",
+                "desc":    (
+                    "The Reach's closest thing to a government. Diplomatic authority, "
+                    "structured career advancement, and a steady salary. "
+                    "You answer to a hierarchy — and the hierarchy expects results."
+                ),
+                "start":   "Medium cruiser · 8,000 credits · Diplomatic clearance",
+                "color":   C["info"],
+            },
+            {
+                "name":    "The Searchers",
+                "faction": "searchers",
+                "tagline": "Science. Discovery. The unknown.",
+                "desc":    (
+                    "A loose collective of scientists and explorers funded by research grants "
+                    "and discovery bonuses. Exceptional sensors, academic standing, limited combat. "
+                    "The hardest path — and the most important work."
+                ),
+                "start":   "Science vessel · 5,000 credits · Research network access",
+                "color":   C["success"],
+            },
+            {
+                "name":    "The RedHawks",
+                "faction": "redhawks",
+                "tagline": "Combat. Escort. Results.",
+                "desc":    (
+                    "The Reach's largest mercenary fleet. Well-armed, contract-paid, and "
+                    "internally disciplined. No diplomatic standing, constant permit friction "
+                    "with the Hegemony — but nobody questions your firepower."
+                ),
+                "start":   "Combat corvette · 6,000 credits · Arms trader contacts",
+                "color":   C["failure"],
+            },
+            {
+                "name":    "Independent Operator",
+                "faction": "independent",
+                "tagline": "No faction. No salary. No safety net.",
+                "desc":    (
+                    "You own your ship. You answer to no one. You can take contracts from "
+                    "any faction, broker deals between parties that can't meet directly, "
+                    "and operate in the grey. The weakest start — the highest ceiling."
+                ),
+                "start":   "Varkis' ship (small, paid off) · 3,000 credits · Cross-faction access",
+                "color":   C["partial"],
+            },
+        ]
+
+        txt = self._make_text_area(self.content)
+        self._write(txt, "CHOOSE YOUR PATH", "header")
+        self._write(txt, "")
+        self._write(txt,
+            "Your time at Farpoint has earned you an introduction. "
+            "What comes next is your choice.", "dim")
+        self._write(txt, "")
+        self._write_sep(txt)
+
+        for p in PATHS:
+            self._write(txt, "")
+            self._write(txt, f"  {p['name'].upper()}", "accent")
+            self._write(txt, f"  {p['tagline']}", "subhead")
+            self._write(txt, f"  {p['desc']}", "dim")
+            self._write(txt, f"  Starting: {p['start']}", "dim")
+
+        self._action_header("PATHS")
+        for p in PATHS:
+            self._add_action_button(
+                f"  {p['name']}",
+                lambda f=p["faction"], n=p["name"]: self._select_career_path(f, n),
+                color=p["color"],
+            )
+        self._action_sep()
+        self._add_action_button("  ← Farpoint", self.show_farpoint_bridge,
+                                color=C["fg_dim"], small=True)
+
+    def _select_career_path(self, faction: str, faction_name: str):
+        gs = self.gs
+        gs.character["faction"] = faction
+        gs.game_phase = "career"
+
+        # Set starting reputation based on faction
+        rep_tables = {
+            "hegemony":    {"hegemony": 30, "searchers": 10, "redhawks":  5, "independent": 0},
+            "searchers":   {"hegemony": 10, "searchers": 40, "redhawks":  0, "independent": 15},
+            "redhawks":    {"hegemony":  0, "searchers":  5, "redhawks": 50, "independent": 20},
+            "independent": {"hegemony":  5, "searchers": 10, "redhawks": 10, "independent": 35},
+        }
+        gs.character["reputation"] = rep_tables.get(faction, {})
+
+        gs.log_event("promotion", f"Joined {faction_name}", "completed",
+                     "Left Farpoint Station")
+
+        self._clear_content()
+        self._clear_actions()
+        txt = self._make_text_area(self.content)
+        self._write(txt, "DEPARTURE", "header")
+        self._write(txt, "")
+        self._write(txt, f"  You have chosen: {faction_name.upper()}", "accent")
+        self._write(txt, "")
+        departure_lines = {
+            "hegemony":    "  Transfer orders received. Report to Centara Station.",
+            "searchers":   "  Doctor Osei's contact at the Archive has confirmed your berth.",
+            "redhawks":    "  Milo Fane's message gets you a seat on the next ship to Redgate.",
+            "independent": "  Varkis signs over the title. It's yours now. Don't wreck it.",
+        }
+        self._write(txt, departure_lines.get(faction, "  You ship out."), "dim")
+        self._write(txt, "")
+        self._write(txt, "  Farpoint is behind you.", "dim")
+        self._write(txt, "  The Reach is ahead.", "dim")
+
+        self._action_header("DEPART")
+        self._add_action_button("  Begin Career →", self.show_bridge, color=C["accent"])
 
     def _dispatch_primary(self):
         rank = self.gs.career.rank
@@ -559,6 +912,7 @@ class StarSleepApp:
             gs.score.tasks_full_success += 1
 
         stat_inc = award_stat_progress(gs.character, result.stat_used, result.tier)
+        apply_stat_decay(gs.character, result.stat_used)
 
         if result.tier in ("full_failure", "critical_failure"):
             dmg = random.randint(3, 10)

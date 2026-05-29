@@ -225,6 +225,7 @@ class GameState:
     game_over: bool = False
     game_over_reason: str = ""
     event_log: list = field(default_factory=list)
+    game_phase: str = "farpoint"       # "farpoint" | "career" | "expedition"
 
     def named_crew_count(self) -> int:
         if self.roster:
@@ -261,6 +262,40 @@ STAT_GAIN_RATES = {
     "full_failure":     0.00,
     "critical_failure": 0.00,
 }
+
+import random as _random
+
+# How fast unused stats decay back toward base level per task
+STAT_DECAY_RATE_MIN = 0.03
+STAT_DECAY_RATE_MAX = 0.05
+
+ALL_STATS = ["Command", "Science", "Tactical", "Engineering", "Medicine", "Diplomacy"]
+
+
+def apply_stat_decay(character: dict, stat_used: str):
+    """
+    After each task, decay all stats that were NOT used toward their base_stats floor.
+    Decay is fractional and accumulates in stat_decay; when decay >= 1.0, stat drops by 1.
+    """
+    base = character.get("base_stats", {})
+    if not base:
+        return
+
+    decay_acc = character.setdefault("stat_decay", {s: 0.0 for s in ALL_STATS})
+
+    for stat in ALL_STATS:
+        if stat == stat_used:
+            continue
+        current = character["stats"].get(stat, 0)
+        floor = base.get(stat, 0)
+        if current <= floor:
+            continue
+        rate = _random.uniform(STAT_DECAY_RATE_MIN, STAT_DECAY_RATE_MAX)
+        decay_acc[stat] = decay_acc.get(stat, 0.0) + rate
+        if decay_acc[stat] >= 1.0:
+            character["stats"][stat] = max(floor, current - 1)
+            decay_acc[stat] = 0.0
+
 
 def award_stat_progress(character: dict, stat: str, tier: str) -> bool:
     """
