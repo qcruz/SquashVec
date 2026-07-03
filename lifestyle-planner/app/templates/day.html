@@ -1,0 +1,809 @@
+{% extends "base.html" %}
+
+{# ── Macro: custom event cards + add form ─────────────────────────────────── #}
+{% macro custom_events_section(custom_events, date_str, is_past) %}
+{% if custom_events %}
+<div class="custom-events-list">
+  <div class="custom-events-heading">Your Events</div>
+  {% for ce in custom_events %}
+  <div class="custom-event-row {% if ce.completed %}ce-done{% endif %} {% if ce.get('is_recurring_instance') %}ce-recurring{% endif %}">
+    <div class="ce-type-dot ce-type-{{ ce.event_type }}"></div>
+    <div class="ce-body">
+      <div class="ce-top">
+        <span class="ce-title">{{ ce.title }}</span>
+        {% if ce.block and ce.block != 'anytime' %}
+        <span class="ce-block-badge">{{ ce.block }}</span>
+        {% endif %}
+        <span class="ce-type-label">{{ ce.event_type | replace('_',' ') }}</span>
+        {% if ce.get('is_recurring_instance') %}
+        <span class="ce-recur-badge">&#x1F501; recurring</span>
+        {% elif ce.get('recurrence') and ce.recurrence != 'none' %}
+        <span class="ce-recur-badge">&#x1F501; repeats {{ ce.recurrence }}</span>
+        {% endif %}
+      </div>
+      <div class="ce-meta">
+        {% if ce.location %}<span class="ce-loc">📍 {{ ce.location }}</span>{% endif %}
+        {% if ce.cost > 0 %}<span class="ce-cost">${{ ce.cost | int }}</span>{% endif %}
+        {% if ce.duration_min %}<span class="ce-dur">{{ ce.duration_min }}m</span>{% endif %}
+        {% if ce.notes %}<span class="ce-notes">{{ ce.notes }}</span>{% endif %}
+      </div>
+    </div>
+    <div class="ce-actions no-print">
+      {% if ce.get('is_recurring_instance') %}
+        <span class="ce-recur-hint">Repeating — manage on original date</span>
+      {% elif ce.completed %}
+        <span class="ce-done-label">✓ Done{% if ce.rating %} · {% for i in range(ce.rating) %}★{% endfor %}{% endif %}</span>
+      {% else %}
+      <form method="POST" action="{{ url_for('main.complete_custom_event_route', date_str=date_str, event_id=ce.id) }}" class="ce-complete-form">
+        <div class="ce-star-row">
+          {% for i in range(1,6) %}
+          <label class="ce-star"><input type="radio" name="rating" value="{{ i }}"><span>★</span></label>
+          {% endfor %}
+        </div>
+        <button type="submit" class="btn-ce-done">✓ Done</button>
+      </form>
+      {% endif %}
+      {% if not ce.completed and not ce.get('is_recurring_instance') %}
+      <form method="POST" action="{{ url_for('main.delete_custom_event_route', date_str=date_str, event_id=ce.id) }}" class="ce-delete-form" onsubmit="return confirm('Remove this event?')">
+        <button type="submit" class="btn-ce-delete" title="Remove">✕</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="add-custom-wrap no-print">
+  <button class="add-custom-toggle" onclick="toggleAddForm(this)" type="button">
+    <span class="add-custom-plus">+</span> Add to this day
+  </button>
+  <form class="add-custom-form" method="POST"
+        action="{{ url_for('main.add_custom_event_route', date_str=date_str) }}">
+    <div class="acf-row">
+      <input type="text" name="title" class="acf-title" placeholder="What are you doing? *" required autofocus>
+    </div>
+    <div class="acf-row acf-grid">
+      <div class="acf-field">
+        <label>When</label>
+        <select name="block" class="acf-select">
+          <option value="anytime">Any time</option>
+          <option value="morning">Morning</option>
+          <option value="midday">Midday</option>
+          <option value="afternoon">Afternoon</option>
+          <option value="dinner">Dinner</option>
+          <option value="nighttime">Nighttime</option>
+        </select>
+      </div>
+      <div class="acf-field">
+        <label>Type</label>
+        <select name="event_type" class="acf-select">
+          {% for val, lbl in custom_event_types %}
+          <option value="{{ val }}">{{ lbl }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="acf-field">
+        <label>Duration</label>
+        <select name="duration_min" class="acf-select">
+          {% for val, lbl in [(15,'15 min'),(30,'30 min'),(45,'45 min'),(60,'1 hour'),(90,'1.5 hrs'),(120,'2 hours'),(180,'3 hours'),(240,'4 hours'),(480,'All day')] %}
+          <option value="{{ val }}" {% if val==60 %}selected{% endif %}>{{ lbl }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="acf-field">
+        <label>Cost ($)</label>
+        <input type="number" name="cost" class="acf-input" placeholder="0" min="0" step="0.01">
+      </div>
+      <div class="acf-field">
+        <label>Repeats</label>
+        <select name="recurrence" class="acf-select">
+          <option value="none">One-time</option>
+          <option value="daily">Every day</option>
+          <option value="weekly">Every week</option>
+          <option value="monthly">Every month</option>
+        </select>
+      </div>
+    </div>
+    <div class="acf-row acf-grid">
+      <div class="acf-field acf-field-wide">
+        <label>Location</label>
+        <input type="text" name="location" class="acf-input" placeholder="Optional">
+      </div>
+      <div class="acf-field acf-field-wide">
+        <label>Notes</label>
+        <input type="text" name="notes" class="acf-input" placeholder="Optional notes">
+      </div>
+    </div>
+    <div class="acf-footer">
+      <button type="submit" class="btn-primary acf-submit">Add Event</button>
+      <button type="button" class="btn-outline acf-cancel" onclick="toggleAddForm(this.closest('.add-custom-wrap').querySelector('.add-custom-toggle'))">Cancel</button>
+    </div>
+  </form>
+</div>
+{% endmacro %}
+
+{% block title %}
+  {% if num_days == 1 %}{{ days_data[0].day_date.strftime('%b %-d') }}{% else %}{{ num_days }}-Day View{% endif %} · Day Planner
+{% endblock %}
+
+{% block content %}
+<div class="day-page{% if num_days > 1 %} multi-day{% endif %}{% if is_brief %} brief{% endif %}">
+
+  <!-- ── Toolbar ──────────────────────────────────────────────────────── -->
+  <div class="day-toolbar no-print">
+    <div class="toolbar-left">
+      <a href="{{ url_for('main.calendar_view') }}" class="toolbar-back">← Calendar</a>
+      {% if not days_data[0].is_today %}
+      <span class="toolbar-sep">·</span>
+      <a href="{{ url_for('main.day_view', date_str=today_str) }}" class="toolbar-today-link">Today</a>
+      {% endif %}
+      <div class="days-selector no-print">
+        <span class="days-label">Days:</span>
+        {% for n in [1,2,3,5,7] %}
+        <a href="{{ url_for('main.day_view', date_str=date_str, days=n) }}"
+           class="days-btn {% if num_days == n %}active{% endif %}">{{ n }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="toolbar-right">
+      {% if not days_data[0].is_past %}
+      <form method="POST" action="{{ url_for('main.regenerate_day', date_str=date_str) }}" class="inline-form">
+        <input type="hidden" name="num_days" value="{{ num_days }}">
+        <button type="submit" class="btn-toolbar">↻ Refresh</button>
+      </form>
+      <button id="free-toggle"
+        class="btn-toolbar btn-toggle {% if filters.free_only %}active{% endif %}"
+        onclick="toggleFree(this)"
+        title="Show free events only">
+        {% if filters.free_only %}Free Only{% else %}$ Any Price{% endif %}
+      </button>
+      {% endif %}
+      <button onclick="window.print()" class="btn-toolbar">⎙ Print</button>
+    </div>
+  </div>
+
+  {% if is_brief %}
+  {# ══════════════════════════════════════════════════════════════════════
+     DAILY BRIEF LAYOUT — today, single-day view
+  ══════════════════════════════════════════════════════════════════════ #}
+  {% set dd            = days_data[0] %}
+  {% set blocks        = dd.blocks %}
+  {% set day_completions = dd.day_completions %}
+  {% set day_date      = dd.day_date %}
+  {% set ds            = dd.date_str %}
+  {% set is_past       = dd.is_past %}
+  {% set link_pairs    = dd.link_pairs %}
+  {% set est_cost      = dd.estimated_cost %}
+
+  <div class="day-brief-wrap">
+
+    <!-- ── Hourly Weather Strip ─────────────────────────────────────── -->
+    <div class="weather-strip no-print">
+      <div class="ws-city">Austin, TX{% if not dd.is_today %} · {{ day_date.strftime('%b %-d') }} forecast{% endif %}</div>
+      <div class="ws-hours">
+        {% for wh in weather_hours %}
+        <div class="wh-cell">
+          <span class="wh-hour">{{ wh.hour }}</span>
+          <span class="wh-icon">{{ wh.icon }}</span>
+          <span class="wh-temp">{{ wh.temp }}°</span>
+          <span class="wh-cond">{{ wh.cond }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ── 3-Column Grid ────────────────────────────────────────────── -->
+    <div class="day-brief-grid">
+
+      <!-- LEFT SIDEBAR ───────────────────────────────────────────── -->
+      <aside class="brief-sidebar-left no-print">
+
+        <!-- Explorer Progress -->
+        <div class="brief-panel">
+          <div class="brief-panel-title">Explorer Progress</div>
+          <div class="brief-exp-level">{{ exploration.explorer_level }}</div>
+          <div class="brief-exp-bar-wrap">
+            <div class="brief-exp-bar" style="width:{{ exploration.level_progress_pct }}%"></div>
+          </div>
+          {% if exploration.next_level_at %}
+          <div class="brief-exp-meta">{{ exploration.total_completions }} / {{ exploration.next_level_at }} to next level</div>
+          {% else %}
+          <div class="brief-exp-meta">Max level reached!</div>
+          {% endif %}
+          <div class="brief-exp-stats">
+            <div class="brief-stat">
+              <span class="brief-stat-n">{{ exploration.total_completions }}</span>
+              <span class="brief-stat-l">Activities</span>
+            </div>
+            <div class="brief-stat">
+              <span class="brief-stat-n">{{ exploration.tag_coverage_pct }}%</span>
+              <span class="brief-stat-l">Tag coverage</span>
+            </div>
+            <div class="brief-stat">
+              <span class="brief-stat-n">{{ exploration.unique_events }}</span>
+              <span class="brief-stat-l">Venues tried</span>
+            </div>
+            <div class="brief-stat">
+              <span class="brief-stat-n">{{ exploration.unique_tags }}</span>
+              <span class="brief-stat-l">Tag types</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity by Category -->
+        <div class="brief-panel">
+          <div class="brief-panel-title">Activity by Category</div>
+          {% if recent_by_category %}
+            {% set max_cat = recent_by_category[0][1] %}
+            {% for cat, cnt in recent_by_category[:8] %}
+            <div class="cat-row">
+              <span class="cat-name">{{ cat }}</span>
+              <div class="cat-bar-wrap">
+                <div class="cat-bar" style="width:{{ (cnt / max_cat * 100)|int }}%"></div>
+              </div>
+              <span class="cat-count">{{ cnt }}</span>
+            </div>
+            {% endfor %}
+          {% else %}
+          <p class="brief-empty-hint">Complete activities to see your history here.</p>
+          {% endif %}
+        </div>
+
+        <!-- New to You Spotlight -->
+        {% if weekly_spotlight %}
+        <div class="brief-panel brief-panel-spotlight">
+          <div class="brief-panel-title">New to You <span class="spotlight-week-badge">this week</span></div>
+          <div class="spotlight-tag-label">{{ weekly_spotlight.spotlight_tag_label }}</div>
+          <div class="spotlight-title">{{ weekly_spotlight.title }}</div>
+          <div class="spotlight-venue">{{ weekly_spotlight.location }}</div>
+          <div class="spotlight-badges">
+            <span class="badge-cost {% if (weekly_spotlight.cost_dollars or 0) == 0 %}badge-free{% endif %}">{{ weekly_spotlight.cost_label }}</span>
+            <span class="badge-dur">{{ weekly_spotlight.duration_min }}m</span>
+          </div>
+          {% if weekly_spotlight.description %}
+          <p class="spotlight-desc">{{ weekly_spotlight.description[:100] }}{% if weekly_spotlight.description|length > 100 %}…{% endif %}</p>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Points & Rewards -->
+        <div class="brief-panel">
+          <div class="brief-panel-title">Points & Rewards</div>
+          <div class="reward-row">
+            <div>
+              <div class="reward-name">Explorer Points</div>
+              <div class="reward-hint">Earned from completions</div>
+            </div>
+            <div class="reward-val">{{ exploration.total_completions * 10 }}</div>
+          </div>
+          <div class="reward-row">
+            <div>
+              <div class="reward-name">Austin Stamps</div>
+              <div class="reward-hint">Unique venues visited</div>
+            </div>
+            <div class="reward-val">{{ exploration.unique_events }}</div>
+          </div>
+          <div class="reward-row reward-dim">
+            <div>
+              <div class="reward-name">Credit Card Points</div>
+              <div class="reward-hint">Link a card to track</div>
+            </div>
+            <div class="reward-val">—</div>
+          </div>
+          <div class="reward-row reward-dim">
+            <div>
+              <div class="reward-name">Loyalty Programs</div>
+              <div class="reward-hint">Coming soon</div>
+            </div>
+            <div class="reward-val">—</div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- CENTER: Day Card ────────────────────────────────────────── -->
+      <div class="day-brief-center">
+        <div class="day-card">
+          <div class="day-card-header">
+            <div class="day-card-dateline">
+              <span class="dc-weekday">{{ day_date.strftime('%A') }}</span>
+              <span class="dc-sep">·</span>
+              <span class="dc-date">{{ day_date.strftime('%B %-d, %Y') }}</span>
+              {% if dd.is_today %}<span class="dc-today-badge">Today</span>{% endif %}
+            </div>
+            <div class="dc-right">
+              <div class="day-card-city">Austin, TX</div>
+              {% if est_cost > 0 %}
+              <div class="dc-est-cost" title="Estimated total spend">~${{ est_cost | int }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if blocks %}
+          <div class="day-card-body">
+            {% for block_key in all_blocks %}
+              {% set event = blocks.get(block_key) %}
+              {% if event is not none %}
+                {% set meta = block_meta[block_key] %}
+                {% set comp = day_completions.get(block_key) %}
+                {% set ev_neighborhood = event.get('neighborhood', '') %}
+                {% set is_linked_block = namespace(val=false) %}
+                {% for a, b_ in link_pairs %}
+                  {% if a == block_key or b_ == block_key %}{% set is_linked_block.val = true %}{% endif %}
+                {% endfor %}
+
+                <details class="block-row bk-{{ block_key }}{% if comp and not comp.skipped %} bk-done{% elif comp %} bk-skipped{% endif %}{% if is_linked_block.val %} bk-linked{% endif %}"
+                         data-block="{{ block_key }}" data-date="{{ ds }}">
+                  <summary class="block-summary">
+                    <div class="bs-indicator bk-color-{{ block_key }}"></div>
+                    <div class="bs-timeblock">
+                      <span class="bs-blockname">{{ meta.label }}</span>
+                      <span class="bs-time">{{ meta.time }}</span>
+                      {% if ev_neighborhood %}
+                      <span class="bs-neighborhood">{{ neighborhood_labels.get(ev_neighborhood, ev_neighborhood) }}</span>
+                      {% endif %}
+                    </div>
+                    <div class="bs-event">
+                      <span class="bs-title">{{ event.title }}</span>
+                      <span class="bs-venue">{{ event.location }}</span>
+                    </div>
+                    <div class="bs-badges">
+                      <span class="badge-cost {% if (event.cost_dollars or 0) == 0 %}badge-free{% endif %}">{{ event.cost_label }}</span>
+                      <span class="badge-dur">{{ event.duration_min }}m</span>
+                      {% if event.distance_miles > 0 %}
+                      <span class="badge-dist">{{ event.distance_miles }}mi</span>
+                      {% endif %}
+                      {% if comp and not comp.skipped %}
+                        <span class="badge-status done">✓</span>
+                      {% elif comp %}
+                        <span class="badge-status skipped">—</span>
+                      {% endif %}
+                    </div>
+                    {% if not is_past and not comp %}
+                    <button class="link-btn no-print" title="Link: reroll will prefer nearby events"
+                      data-block="{{ block_key }}" data-date="{{ ds }}"
+                      onclick="event.stopPropagation(); event.preventDefault(); toggleLink(this)">⛓</button>
+                    <button class="reroll-summary-btn no-print" title="Try a different suggestion"
+                      data-block="{{ block_key }}" data-date="{{ ds }}"
+                      onclick="event.stopPropagation(); event.preventDefault(); doReroll('{{ block_key }}', '{{ ds }}', this)">↻</button>
+                    {% endif %}
+                    <span class="bs-chevron">›</span>
+                  </summary>
+
+                  <div class="block-detail">
+                    <div class="bd-left">
+                      {% if event.address %}
+                      <div class="bd-address">
+                        <span class="bd-label">Address</span>
+                        <span>{{ event.address }}, Austin TX</span>
+                      </div>
+                      {% endif %}
+                      {% if event.get('phone') %}
+                      <div class="bd-phone">
+                        <span class="bd-label">Phone</span>
+                        <span>{{ event.phone }}</span>
+                      </div>
+                      {% endif %}
+                      <p class="bd-description">{{ event.description }}</p>
+                      <div class="bd-note">{{ event.planner_note }}</div>
+                      <div class="bd-tags">
+                        {% for tag in event.tags %}
+                        <span class="tag-pill">{{ tag | replace('_', ' ') }}</span>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                    {% if not is_past %}
+                    <div class="bd-actions no-print">
+                      {% if comp and not comp.skipped %}
+                        <div class="bd-completed">
+                          <span class="done-label">Completed</span>
+                          {% if comp.rating %}
+                          <span class="done-stars">{% for i in range(comp.rating) %}★{% endfor %}</span>
+                          {% endif %}
+                        </div>
+                      {% elif comp and comp.skipped %}
+                        <div class="bd-completed skipped-label">
+                          Skipped{% if comp.skip_reason %} — {{ comp.skip_reason | replace('_', ' ') }}{% endif %}
+                        </div>
+                      {% else %}
+                        <form method="POST" action="{{ url_for('main.accept_event') }}" class="rate-form">
+                          <input type="hidden" name="block"  value="{{ block_key }}">
+                          <input type="hidden" name="title"  value="{{ event.title }}">
+                          <input type="hidden" name="tags"   value='{{ event.tags | tojson }}'>
+                          <input type="hidden" name="date"   value="{{ ds }}">
+                          <div class="star-row">
+                            <span class="star-hint">Rate:</span>
+                            {% for i in range(1, 6) %}
+                            <label class="star-lbl">
+                              <input type="radio" name="rating" value="{{ i }}">
+                              <span>★</span>
+                            </label>
+                            {% endfor %}
+                          </div>
+                          <button type="submit" class="btn-done">✓ Done</button>
+                        </form>
+                        <button class="btn-reroll-sm" onclick="doReroll('{{ block_key }}', '{{ ds }}', this)">↻ Different option</button>
+                        <details class="skip-sub">
+                          <summary class="btn-skip-sm">✗ Skip</summary>
+                          <form method="POST" action="{{ url_for('main.skip_event') }}" class="skip-sub-form">
+                            <input type="hidden" name="block"  value="{{ block_key }}">
+                            <input type="hidden" name="title"  value="{{ event.title }}">
+                            <input type="hidden" name="tags"   value='{{ event.tags | tojson }}'>
+                            <input type="hidden" name="date"   value="{{ ds }}">
+                            {% for val, label in skip_reasons %}
+                            <label class="skip-opt">
+                              <input type="radio" name="reason" value="{{ val }}" required>
+                              {{ label }}
+                            </label>
+                            {% endfor %}
+                            <button type="submit" class="btn-skip-confirm">Confirm</button>
+                          </form>
+                        </details>
+                      {% endif %}
+                    </div>
+                    {% endif %}
+                  </div><!-- block-detail -->
+                </details>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          {% else %}
+          <div class="day-card-empty">
+            <p>No itinerary for today.</p>
+            <form method="POST" action="{{ url_for('main.regenerate_day', date_str=ds) }}">
+              <input type="hidden" name="num_days" value="1">
+              <button type="submit" class="btn-primary">Generate itinerary</button>
+            </form>
+          </div>
+          {% endif %}
+
+          {{ custom_events_section(dd.custom_events, ds, is_past) }}
+
+          <div class="day-card-footer print-only">
+            Day Planner · Austin, TX · {{ day_date.strftime('%B %-d, %Y') }}
+          </div>
+        </div><!-- day-card -->
+      </div><!-- day-brief-center -->
+
+      <!-- RIGHT SIDEBAR: Alternates ──────────────────────────────── -->
+      <aside class="brief-sidebar-right no-print">
+        {% for block_key in all_blocks %}
+          {% set ev   = blocks.get(block_key) %}
+          {% set alts = block_alternatives.get(block_key, []) %}
+          {% if ev %}
+          <div class="alt-block-panel">
+            <div class="alt-block-hd">
+              <div class="alt-block-dot bk-color-{{ block_key }}"></div>
+              <span class="alt-block-name">{{ block_meta[block_key].label }}</span>
+              <span class="alt-block-hint">alternatives</span>
+              <div class="alt-arrows">
+                <button class="alt-arrow" title="Previous" onclick="scrollAlts(this,-1)">‹</button>
+                <button class="alt-arrow" title="Next"     onclick="scrollAlts(this, 1)">›</button>
+              </div>
+            </div>
+            {% if alts %}
+            <div class="alt-scroll">
+              {% for alt in alts %}
+              <div class="alt-card">
+                <div class="alt-card-title">{{ alt.title }}</div>
+                <div class="alt-card-venue">{{ alt.location }}</div>
+                <div class="alt-card-badges">
+                  <span class="badge-cost {% if (alt.cost_dollars or 0) == 0 %}badge-free{% endif %}">{{ alt.cost_label }}</span>
+                  <span class="badge-dur">{{ alt.duration_min }}m</span>
+                  {% if alt.distance_miles > 0 %}
+                  <span class="badge-dist">{{ alt.distance_miles }}mi</span>
+                  {% endif %}
+                </div>
+                {% if not is_past and not day_completions.get(block_key) %}
+                <button class="alt-card-swap"
+                  data-block="{{ block_key }}" data-date="{{ ds }}"
+                  data-event="{{ alt | tojson | e }}"
+                  onclick="doSwapIn('{{ block_key }}', '{{ ds }}', this)">↔ Swap in</button>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+            {% else %}
+            <div class="alt-empty">No alternatives available</div>
+            {% endif %}
+          </div>
+          {% endif %}
+        {% endfor %}
+      </aside>
+
+    </div><!-- day-brief-grid -->
+  </div><!-- day-brief-wrap -->
+
+  {% else %}
+  {# ══════════════════════════════════════════════════════════════════════
+     STANDARD LAYOUT — past days or multi-day view
+  ══════════════════════════════════════════════════════════════════════ #}
+
+  <div class="day-cards-wrap">
+  {% for dd in days_data %}
+    {% set blocks          = dd.blocks %}
+    {% set day_completions = dd.day_completions %}
+    {% set day_date        = dd.day_date %}
+    {% set ds              = dd.date_str %}
+    {% set is_today        = dd.is_today %}
+    {% set is_past         = dd.is_past %}
+    {% set link_pairs      = dd.link_pairs %}
+    {% set est_cost        = dd.estimated_cost %}
+
+  <div class="day-card-outer">
+    <div class="link-bar no-print">
+      {% for block_key in all_blocks %}
+        {% set ev = blocks.get(block_key) %}
+        {% if ev %}
+          {% set prev_key = all_blocks[loop.index0 - 1] if loop.index0 > 0 else none %}
+          {% set next_key = all_blocks[loop.index0 + 1] if loop.index0 < all_blocks|length - 1 else none %}
+          {% set linked_prev = prev_key and (prev_key, block_key) in link_pairs %}
+          {% set linked_next = next_key and (block_key, next_key) in link_pairs %}
+          <div class="lb-cell lb-{{ block_key }}
+            {% if linked_prev %}lb-top{% endif %}
+            {% if linked_next %}lb-bottom{% endif %}
+            {% if linked_prev or linked_next %}lb-active{% endif %}">
+            <div class="lb-dot bk-color-{{ block_key }}"></div>
+            {% if linked_next %}<div class="lb-connector"></div>{% endif %}
+          </div>
+        {% else %}
+          <div class="lb-cell lb-empty"></div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="day-card">
+      <div class="day-card-header">
+        <div class="day-card-dateline">
+          <span class="dc-weekday">{{ day_date.strftime('%A') }}</span>
+          <span class="dc-sep">·</span>
+          <span class="dc-date">{{ day_date.strftime('%B %-d, %Y') }}</span>
+          {% if is_today %}<span class="dc-today-badge">Today</span>{% endif %}
+        </div>
+        <div class="dc-right">
+          <div class="day-card-city">Austin, TX</div>
+          {% if est_cost > 0 %}
+          <div class="dc-est-cost" id="est-cost-{{ ds }}" title="Estimated total spend">~${{ est_cost | int }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if blocks %}
+      <div class="day-card-body">
+        {% for block_key in all_blocks %}
+          {% set event = blocks.get(block_key) %}
+          {% if event is not none %}
+            {% set meta = block_meta[block_key] %}
+            {% set comp = day_completions.get(block_key) %}
+            {% set ev_neighborhood = event.get('neighborhood', '') %}
+            {% set is_linked_block = namespace(val=false) %}
+            {% for a, b_ in link_pairs %}
+              {% if a == block_key or b_ == block_key %}{% set is_linked_block.val = true %}{% endif %}
+            {% endfor %}
+
+            <details class="block-row bk-{{ block_key }}{% if comp and not comp.skipped %} bk-done{% elif comp %} bk-skipped{% endif %}{% if is_linked_block.val %} bk-linked{% endif %}"
+                     data-block="{{ block_key }}" data-date="{{ ds }}">
+              <summary class="block-summary">
+                <div class="bs-indicator bk-color-{{ block_key }}"></div>
+                <div class="bs-timeblock">
+                  <span class="bs-blockname">{{ meta.label }}</span>
+                  <span class="bs-time">{{ meta.time }}</span>
+                  {% if ev_neighborhood %}
+                  <span class="bs-neighborhood">{{ neighborhood_labels.get(ev_neighborhood, ev_neighborhood) }}</span>
+                  {% endif %}
+                </div>
+                <div class="bs-event">
+                  <span class="bs-title">{{ event.title }}</span>
+                  <span class="bs-venue">{{ event.location }}</span>
+                </div>
+                <div class="bs-badges">
+                  <span class="badge-cost {% if (event.cost_dollars or 0) == 0 %}badge-free{% endif %}">{{ event.cost_label }}</span>
+                  <span class="badge-dur">{{ event.duration_min }}m</span>
+                  {% if event.distance_miles > 0 %}
+                  <span class="badge-dist">{{ event.distance_miles }}mi</span>
+                  {% endif %}
+                  {% if comp and not comp.skipped %}
+                    <span class="badge-status done">✓</span>
+                  {% elif comp %}
+                    <span class="badge-status skipped">—</span>
+                  {% endif %}
+                </div>
+                {% if not is_past and not comp %}
+                <button class="link-btn no-print" title="Link: reroll will prefer nearby events"
+                  data-block="{{ block_key }}" data-date="{{ ds }}"
+                  onclick="event.stopPropagation(); event.preventDefault(); toggleLink(this)">⛓</button>
+                <button class="reroll-summary-btn no-print" title="Try a different suggestion"
+                  data-block="{{ block_key }}" data-date="{{ ds }}"
+                  onclick="event.stopPropagation(); event.preventDefault(); doReroll('{{ block_key }}', '{{ ds }}', this)">↻</button>
+                {% endif %}
+                <span class="bs-chevron">›</span>
+              </summary>
+
+              <div class="block-detail">
+                <div class="bd-left">
+                  {% if event.address %}
+                  <div class="bd-address">
+                    <span class="bd-label">Address</span>
+                    <span>{{ event.address }}, Austin TX</span>
+                  </div>
+                  {% endif %}
+                  {% if event.get('phone') %}
+                  <div class="bd-phone">
+                    <span class="bd-label">Phone</span>
+                    <span>{{ event.phone }}</span>
+                  </div>
+                  {% endif %}
+                  <p class="bd-description">{{ event.description }}</p>
+                  <div class="bd-note">{{ event.planner_note }}</div>
+                  <div class="bd-tags">
+                    {% for tag in event.tags %}
+                    <span class="tag-pill">{{ tag | replace('_', ' ') }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
+                {% if not is_past %}
+                <div class="bd-actions no-print">
+                  {% if comp and not comp.skipped %}
+                    <div class="bd-completed">
+                      <span class="done-label">Completed</span>
+                      {% if comp.rating %}
+                      <span class="done-stars">{% for i in range(comp.rating) %}★{% endfor %}</span>
+                      {% endif %}
+                    </div>
+                  {% elif comp and comp.skipped %}
+                    <div class="bd-completed skipped-label">
+                      Skipped{% if comp.skip_reason %} — {{ comp.skip_reason | replace('_', ' ') }}{% endif %}
+                    </div>
+                  {% else %}
+                    <form method="POST" action="{{ url_for('main.accept_event') }}" class="rate-form">
+                      <input type="hidden" name="block"  value="{{ block_key }}">
+                      <input type="hidden" name="title"  value="{{ event.title }}">
+                      <input type="hidden" name="tags"   value='{{ event.tags | tojson }}'>
+                      <input type="hidden" name="date"   value="{{ ds }}">
+                      <div class="star-row">
+                        <span class="star-hint">Rate:</span>
+                        {% for i in range(1, 6) %}
+                        <label class="star-lbl">
+                          <input type="radio" name="rating" value="{{ i }}">
+                          <span>★</span>
+                        </label>
+                        {% endfor %}
+                      </div>
+                      <button type="submit" class="btn-done">✓ Done</button>
+                    </form>
+                    <button class="btn-reroll-sm" onclick="doReroll('{{ block_key }}', '{{ ds }}', this)">↻ Different option</button>
+                    <details class="skip-sub">
+                      <summary class="btn-skip-sm">✗ Skip</summary>
+                      <form method="POST" action="{{ url_for('main.skip_event') }}" class="skip-sub-form">
+                        <input type="hidden" name="block"  value="{{ block_key }}">
+                        <input type="hidden" name="title"  value="{{ event.title }}">
+                        <input type="hidden" name="tags"   value='{{ event.tags | tojson }}'>
+                        <input type="hidden" name="date"   value="{{ ds }}">
+                        {% for val, label in skip_reasons %}
+                        <label class="skip-opt">
+                          <input type="radio" name="reason" value="{{ val }}" required>
+                          {{ label }}
+                        </label>
+                        {% endfor %}
+                        <button type="submit" class="btn-skip-confirm">Confirm</button>
+                      </form>
+                    </details>
+                  {% endif %}
+                </div>
+                {% endif %}
+              </div><!-- block-detail -->
+            </details>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {% else %}
+      <div class="day-card-empty">
+        <p>No itinerary for {{ day_date.strftime('%B %-d') }}.</p>
+        {% if not is_past %}
+        <form method="POST" action="{{ url_for('main.regenerate_day', date_str=ds) }}">
+          <input type="hidden" name="num_days" value="{{ num_days }}">
+          <button type="submit" class="btn-primary">Generate itinerary</button>
+        </form>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      {{ custom_events_section(dd.custom_events, ds, is_past) }}
+
+      <div class="day-card-footer print-only">
+        Day Planner · Austin, TX · {{ day_date.strftime('%B %-d, %Y') }}
+      </div>
+    </div><!-- day-card -->
+  </div><!-- day-card-outer -->
+  {% endfor %}
+  </div><!-- day-cards-wrap -->
+
+  {% endif %}{# end is_brief / standard layout #}
+
+</div><!-- day-page -->
+
+<script>
+const _linkedBlocks = new Set();
+
+function toggleLink(btn) {
+  const block   = btn.dataset.block;
+  const dateStr = btn.dataset.date;
+  const key     = block + ':' + dateStr;
+  if (_linkedBlocks.has(key)) {
+    _linkedBlocks.delete(key);
+    btn.classList.remove('link-active');
+    btn.title = 'Link: reroll will prefer nearby events';
+  } else {
+    _linkedBlocks.add(key);
+    btn.classList.add('link-active');
+    btn.title = 'Linked — reroll will prefer nearby events';
+  }
+}
+
+async function doReroll(block, dateStr, btn) {
+  btn.disabled = true;
+  const orig = btn.textContent;
+  btn.textContent = '…';
+  const linked = _linkedBlocks.has(block + ':' + dateStr);
+  try {
+    const res  = await fetch(`/day/${dateStr}/reroll/${block}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ linked }),
+    });
+    const data = await res.json();
+    if (data.ok) window.location.reload();
+    else { btn.textContent = orig; btn.disabled = false; }
+  } catch { btn.textContent = orig; btn.disabled = false; }
+}
+
+async function doSwapIn(block, dateStr, btn) {
+  btn.disabled = true;
+  const orig = btn.textContent;
+  btn.textContent = '…';
+  let eventData;
+  try { eventData = JSON.parse(btn.dataset.event); } catch { btn.textContent = orig; btn.disabled = false; return; }
+  try {
+    const res  = await fetch(`/day/${dateStr}/set/${block}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(eventData),
+    });
+    const data = await res.json();
+    if (data.ok) window.location.reload();
+    else { btn.textContent = orig; btn.disabled = false; }
+  } catch { btn.textContent = orig; btn.disabled = false; }
+}
+
+function scrollAlts(btn, dir) {
+  const scroll = btn.closest('.alt-block-panel').querySelector('.alt-scroll');
+  scroll.scrollBy({ left: dir * 175, behavior: 'smooth' });
+}
+
+function toggleAddForm(toggleBtn) {
+  const wrap = toggleBtn.closest('.add-custom-wrap');
+  const form = wrap.querySelector('.add-custom-form');
+  const open = form.classList.toggle('acf-open');
+  toggleBtn.classList.toggle('acf-active', open);
+  if (open) form.querySelector('.acf-title').focus();
+}
+
+async function toggleFree(btn) {
+  const isNowFree = !btn.classList.contains('active');
+  const res = await fetch('/settings/filters', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ free_only: isNowFree }),
+  });
+  const data = await res.json();
+  if (data.ok) {
+    btn.classList.toggle('active', data.free_only);
+    btn.textContent = data.free_only ? 'Free Only' : '$ Any Price';
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block title %}{{ year }} · Calendar · Day Planner{% endblock %}
+
+{% block content %}
+<div class="cal-page">
+
+  <!-- ── Header ─────────────────────────────────────────────────────── -->
+  <div class="cal-header no-print">
+    <div class="cal-year-nav">
+      <a href="{{ url_for('main.calendar_view', year=prev_year) }}" class="cal-nav-arrow">‹</a>
+      <h1 class="cal-year">{{ year }}</h1>
+      <a href="{{ url_for('main.calendar_view', year=next_year) }}" class="cal-nav-arrow">›</a>
+    </div>
+    <div class="cal-hdr-right">
+      <span class="cal-legend-item"><span class="legend-dot dot-today"></span> Today</span>
+      <span class="cal-legend-item"><span class="legend-dot dot-planned"></span> Planned</span>
+      <span class="cal-legend-item"><span class="legend-dot dot-done"></span> Done</span>
+    </div>
+  </div>
+
+  <!-- ── Body: sidebar + months ────────────────────────────────────── -->
+  <div class="cal-body">
+
+    <!-- Left sidebar -->
+    <aside class="cal-sidebar no-print">
+
+      <div class="cal-sb-panel">
+        <div class="cal-sb-label">Zoom</div>
+        <input type="range" id="cal-zoom" min="1" max="4" value="2"
+               oninput="setCalZoom(this.value)" class="cal-zoom-slider">
+        <div class="cal-zoom-hint">
+          <span>1 month</span><span>compact</span>
+        </div>
+      </div>
+
+      <div class="cal-sb-panel">
+        <div class="cal-sb-label">Show on days</div>
+        <label class="cal-cb-row">
+          <input type="checkbox" id="cb-pay" checked onchange="toggleLayer('pay', this.checked)">
+          <span class="cal-sticker cal-sticker-pay">$</span> Pay days
+        </label>
+        <label class="cal-cb-row">
+          <input type="checkbox" id="cb-event" checked onchange="toggleLayer('event', this.checked)">
+          <span class="cal-sticker cal-sticker-event">!</span> Special events
+        </label>
+        <label class="cal-cb-row">
+          <input type="checkbox" id="cb-cats" checked onchange="toggleLayer('cats', this.checked)">
+          <span class="cal-mini-dots-preview">
+            <span style="background:#a855f7"></span>
+            <span style="background:#f97316"></span>
+            <span style="background:#3b82f6"></span>
+          </span> Activity types
+        </label>
+        <label class="cal-cb-row">
+          <input type="checkbox" id="cb-names" checked onchange="toggleLayer('names', this.checked)">
+          <span class="cal-sb-icon">☰</span> Activity names
+        </label>
+        <label class="cal-cb-row">
+          <input type="checkbox" id="cb-shading" checked onchange="toggleLayer('shading', this.checked)">
+          <span class="cal-sb-color-swatch"></span> Day shading
+        </label>
+      </div>
+
+      <div class="cal-sb-panel cal-sb-legend">
+        <div class="cal-sb-label">Category colors</div>
+        {% for cat, color in cat_colors.items() %}
+        <div class="cal-legend-row">
+          <span class="cal-legend-swatch" style="background:{{ color }}"></span>
+          <span class="cal-legend-cat">{{ cat }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+    </aside>
+
+    <!-- Month grid -->
+    <div class="cal-months-grid" id="cal-months-grid" data-zoom="2">
+      {% for month in months %}
+        {% set is_past_month = (year < today.year) or (year == today.year and month.month_num < today.month) %}
+        <div class="cal-month">
+          <div class="cal-month-name">
+            {{ month.name }}
+            {% if is_past_month %}
+            <button class="cal-month-toggle" onclick="toggleMonth(this)" title="Expand month">+</button>
+            {% endif %}
+          </div>
+          <div class="cal-month-body {% if is_past_month %}cal-collapsed{% endif %}">
+            <div class="cal-weekdays">
+              {% for wd in weekdays %}
+              <div class="cal-wd">{{ wd }}</div>
+              {% endfor %}
+            </div>
+            <div class="cal-days">
+              {% for week in month.weeks %}
+                {% for day_num in week %}
+                  {% if day_num == 0 %}
+                  <div class="cal-day cal-empty"></div>
+                  {% else %}
+                    {% set d = "%04d-%02d-%02d" | format(year, month.month_num, day_num) %}
+                    {% set is_tod   = (today.year == year and today.month == month.month_num and today.day == day_num) %}
+                    {% set has_plan = d in planned_dates %}
+                    {% set is_past  = d < today.isoformat() %}
+                    {% set meta     = date_meta.get(d, {}) %}
+                    {% set is_pay   = d in pay_days %}
+                    {% set evt      = special_events.get(d) %}
+                    <div class="cal-day
+                      {% if is_tod %} cal-today
+                      {% elif is_past %} cal-past
+                      {% endif %}
+                      {% if has_plan %} cal-has-plan{% endif %}
+                      {% if meta.get('completed') %} cal-completed{% endif %}">
+                      <a href="{{ url_for('main.day_view', date_str=d) }}" class="cal-day-inner">
+                        {% if meta.get('bg_color') and not is_tod %}
+                        <span class="cal-day-bg" style="background:{{ meta['bg_color'] }}"></span>
+                        {% endif %}
+                        <div class="cal-day-top">
+                          <span class="cal-day-num">{{ day_num }}</span>
+                          <span class="cal-stickers">
+                            {% if is_pay %}
+                            <span class="cal-sticker cal-sticker-pay" title="Pay day">$</span>
+                            {% endif %}
+                            {% if evt %}
+                            <span class="cal-sticker cal-sticker-event cal-sticker-{{ evt[1] }}"
+                                  title="{{ evt[0] }}">!</span>
+                            {% endif %}
+                          </span>
+                        </div>
+                        {% if meta.get('colors') %}
+                        <div class="cal-cat-dots">
+                          {% for color in meta['colors'] %}
+                          <span class="cal-cat-dot" style="background:{{ color }}"></span>
+                          {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% if meta.get('title') %}
+                        <div class="cal-day-title">{{ meta['title'] }}</div>
+                        {% endif %}
+                        {% if evt %}
+                        <div class="cal-evt-label cal-sticker-{{ evt[1] }}-text">{{ evt[0] }}</div>
+                        {% endif %}
+                      </a>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endfor %}
+            </div><!-- .cal-days -->
+          </div><!-- .cal-month-body -->
+        </div><!-- .cal-month -->
+      {% endfor %}
+    </div><!-- .cal-months-grid -->
+
+  </div><!-- .cal-body -->
+</div><!-- .cal-page -->
+
+<script>
+function setCalZoom(v) {
+  v = parseInt(v);
+  const grid = document.getElementById('cal-months-grid');
+  grid.dataset.zoom = v;
+  grid.style.setProperty('--cal-cols', v);
+  localStorage.setItem('calZoom', v);
+}
+
+function toggleLayer(layer, show) {
+  const grid = document.getElementById('cal-months-grid');
+  grid.classList.toggle('hide-' + layer, !show);
+  localStorage.setItem('calLayer_' + layer, show ? '1' : '0');
+}
+
+function toggleMonth(btn) {
+  const body = btn.closest('.cal-month').querySelector('.cal-month-body');
+  const nowCollapsed = body.classList.toggle('cal-collapsed');
+  btn.textContent = nowCollapsed ? '+' : '−';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Restore zoom
+  const zoom = parseInt(localStorage.getItem('calZoom') || '2');
+  document.getElementById('cal-zoom').value = zoom;
+  setCalZoom(zoom);
+
+  // Restore layer toggles
+  ['pay', 'event', 'cats', 'names', 'shading'].forEach(layer => {
+    const stored = localStorage.getItem('calLayer_' + layer);
+    const show   = stored !== '0';
+    const cb     = document.getElementById('cb-' + layer);
+    if (cb) cb.checked = show;
+    toggleLayer(layer, show);
+  });
+
+  // Scroll today into view
+  const todayEl = document.querySelector('.cal-today');
+  if (todayEl) todayEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+</script>
+{% endblock %}

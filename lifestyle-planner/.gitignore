@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+.venv/
+
+# Live DB — never overwrite user data on pull
+data/planner.db
+data/planner.db-shm
+data/planner.db-wal
+
+# Keep backups folder but not the actual backup files
+data/backups/*.db

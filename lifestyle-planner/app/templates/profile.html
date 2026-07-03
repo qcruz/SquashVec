@@ -1,0 +1,455 @@
+{% extends "base.html" %}
+{% block title %}Profile · Day Planner{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+
+  <div class="profile-topbar">
+    <h1>{{ user['name'] }}</h1>
+    <p class="profile-sub">Austin, TX · Member since {{ user['created_at'][:10] }}</p>
+  </div>
+
+  <!-- ── Explorer Tracker ──────────────────────────────────────────── -->
+  <section class="pf-section">
+    <div class="explorer-card">
+      <div class="exp-left">
+        <div class="exp-level-row">
+          <span class="exp-level-name">{{ exploration.explorer_level }}</span>
+          <span class="exp-level-badge">Level</span>
+        </div>
+        <div class="exp-bar-wrap">
+          <div class="exp-bar" style="width:{{ exploration.level_progress_pct }}%"></div>
+        </div>
+        {% if exploration.next_level_at %}
+        <div class="exp-next">{{ exploration.total_completions }} / {{ exploration.next_level_at }} activities to next level</div>
+        {% else %}
+        <div class="exp-next">Max level reached!</div>
+        {% endif %}
+      </div>
+      <div class="exp-stats">
+        <div class="exp-stat">
+          <span class="exp-stat-num">{{ exploration.total_completions }}</span>
+          <span class="exp-stat-label">Activities done</span>
+        </div>
+        <div class="exp-stat">
+          <span class="exp-stat-num">{{ exploration.unique_events }}</span>
+          <span class="exp-stat-label">Unique venues</span>
+        </div>
+        <div class="exp-stat">
+          <span class="exp-stat-num">{{ exploration.unique_tags }}</span>
+          <span class="exp-stat-label">Tag types tried</span>
+        </div>
+        <div class="exp-stat">
+          <span class="exp-stat-num">{{ exploration.tag_coverage_pct }}%</span>
+          <span class="exp-stat-label">Tag coverage</span>
+        </div>
+      </div>
+    </div>
+    {% if exploration.favorite_block %}
+    <p class="exp-fav">Favorite time block: <strong>{{ exploration.favorite_block | capitalize }}</strong>
+      ({{ exploration.block_counts.get(exploration.favorite_block, 0) }} completions)</p>
+    {% endif %}
+  </section>
+
+  <!-- ── Routine vs Discovery ──────────────────────────────────────── -->
+  <section class="pf-section">
+    <h2 class="pf-section-title">Routine vs. Discovery</h2>
+    <p class="pf-hint">Controls how much the algorithm explores beyond your stated interests. Left = stick to what you love. Right = surprise me.</p>
+    <div class="discovery-bar profile-disc">
+      <span class="disc-label disc-left">Routine</span>
+      <div class="disc-track">
+        <input type="range" id="pf-discovery-slider" min="0" max="100"
+               value="{{ discovery_level }}"
+               oninput="onPfDiscovery(this.value)"
+               onchange="savePfDiscovery(this.value)">
+        <div class="disc-fill" id="pf-disc-fill" style="width:{{ discovery_level }}%"></div>
+      </div>
+      <span class="disc-label disc-right">Discovery</span>
+      <span class="disc-value" id="pf-disc-value">{{ discovery_level }}%</span>
+    </div>
+    <p class="disc-desc" id="pf-disc-desc">{{ _disc_desc(discovery_level) if _disc_desc is defined else '' }}</p>
+  </section>
+
+  <!-- ── Daily Budget ──────────────────────────────────────────────── -->
+  <section class="pf-section">
+    <h2 class="pf-section-title">Daily Budget</h2>
+    <p class="pf-hint">Sets a maximum spend per day across all blocks. Slide fully left to allow any price.</p>
+    <div class="discovery-bar profile-disc">
+      <span class="disc-label disc-left">Any</span>
+      <div class="disc-track">
+        <input type="range" id="pf-budget-slider" min="0" max="200" step="5"
+               value="{{ filters.max_budget | int }}"
+               oninput="onPfBudget(this.value)"
+               onchange="savePfBudget(this.value)">
+        <div class="disc-fill budget-fill" id="pf-budget-fill"
+             style="width:{{ ((filters.max_budget or 0) / 200 * 100) | int }}%"></div>
+      </div>
+      <span class="disc-label disc-right">$200</span>
+      <span class="disc-value" id="pf-budget-value">
+        {% if filters.max_budget > 0 %}${{ filters.max_budget | int }}{% else %}Any{% endif %}
+      </span>
+    </div>
+  </section>
+
+  <!-- ── Interest Level Sliders ────────────────────────────────────── -->
+  <section class="pf-section">
+    <h2 class="pf-section-title">Interest Levels <span class="pf-label-hint">— drag to adjust, saves automatically</span></h2>
+    <p class="pf-hint">Adjust how often each topic should appear in your daily schedule — higher means it comes up more frequently.</p>
+
+    {% if active_profiles %}
+    <div class="interest-sliders">
+      {% for tag, p in active_profiles %}
+      <div class="interest-row" data-tag="{{ tag }}">
+        <span class="interest-name">{{ tag_display.get(tag, tag) }}</span>
+        <div class="interest-track">
+          <input type="range" class="interest-slider"
+                 min="0" max="100"
+                 value="{{ (p.base_interest * 100) | int }}"
+                 data-tag="{{ tag }}"
+                 oninput="onInterestInput(this)"
+                 onchange="saveInterest(this)">
+          <div class="interest-fill" style="width:{{ (p.base_interest * 100)|int }}%"></div>
+        </div>
+        <span class="interest-pct">{{ (p.base_interest * 100)|int }}%</span>
+        {% if p.saturation_level != 'none' %}
+        <span class="sat-badge sat-{{ p.saturation_level }}">{{ p.saturation_level }}</span>
+        {% endif %}
+        <button class="interest-remove-btn" type="button"
+                onclick="removeInterestTag('{{ tag }}')" title="Remove from interests">×</button>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-msg">Select interests first using the tag cloud below.</p>
+    {% endif %}
+  </section>
+
+  <!-- ── Settings ──────────────────────────────────────────────────── -->
+  <section class="pf-section">
+    <h2 class="pf-section-title">Schedule & Lifestyle Settings</h2>
+    <form method="POST" action="{{ url_for('main.update_settings') }}" class="settings-form">
+
+      <p class="pf-section-group-label">Schedule</p>
+      <div class="settings-grid">
+        <div class="setting-field">
+          <label>Usual wake time</label>
+          <select name="wake_time" class="select-input">
+            {% for val, lbl in [('5:00','5:00 AM'),('6:00','6:00 AM'),('7:00','7:00 AM'),('8:00','8:00 AM'),('9:00','9:00 AM'),('10:00','10:00 AM or later')] %}
+            <option value="{{ val }}" {% if ctx.get('wake_time') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="setting-field">
+          <label>Day type</label>
+          <select name="schedule_type" class="select-input">
+            {% for val, lbl in [('flexible','Flexible / WFH'),('office','Office (9–5)'),('shift','Shift work'),('student','Student'),('retired','Retired / open schedule')] %}
+            <option value="{{ val }}" {% if ctx.get('schedule_type') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="setting-field">
+          <label>Preferred time of day</label>
+          <select name="preferred_time_of_day" class="select-input">
+            {% for val, lbl in [('morning','Morning person'),('flexible','No preference'),('evening','Evening / night person')] %}
+            <option value="{{ val }}" {% if ctx.get('preferred_time_of_day','flexible') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="setting-field">
+          <label>Max activity duration</label>
+          <select name="max_activity_duration" class="select-input">
+            {% for val, lbl in [('0','No limit'),('30','30 min'),('60','1 hour'),('90','1.5 hours'),('120','2 hours'),('180','3 hours')] %}
+            <option value="{{ val }}" {% if ctx.get('max_activity_duration','0')|string == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <p class="pf-section-group-label" style="margin-top:18px">Exercise</p>
+      <div class="settings-grid">
+        <div class="setting-field">
+          <label>Exercise goal (days/week)</label>
+          <select name="exercise_days_per_week" class="select-input">
+            {% for val, lbl in [('0','Not a priority'),('1','1 day'),('2','2 days'),('3','3 days'),('4','4 days'),('5','5 days'),('6','6 days'),('7','Every day')] %}
+            <option value="{{ val }}" {% if ctx.get('exercise_days_per_week','3')|string == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="setting-field">
+          <label>Exercise preference</label>
+          <select name="exercise_preference" class="select-input">
+            {% for val, lbl in [('any','Any type'),('outdoor','Outdoor only'),('gym','Gym / fitness center'),('home','Home / bodyweight'),('classes','Group classes')] %}
+            <option value="{{ val }}" {% if ctx.get('exercise_preference','any') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <p class="pf-section-group-label" style="margin-top:18px">Environment & Social</p>
+      <div class="settings-grid">
+        <div class="setting-field">
+          <label>Indoor / outdoor preference</label>
+          <select name="outdoor_preference" class="select-input">
+            {% for val, lbl in [('outdoors','Prefer outdoors'),('mixed','No preference'),('indoors','Prefer indoors')] %}
+            <option value="{{ val }}" {% if ctx.get('outdoor_preference','mixed') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="setting-field">
+          <label>Social preference</label>
+          <select name="social_preference" class="select-input">
+            {% for val, lbl in [('solo','Mostly solo'),('mixed','Mix of solo and social'),('social','Prefer group / social')] %}
+            <option value="{{ val }}" {% if ctx.get('social_preference','mixed') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="setting-field">
+          <label>Budget consciousness</label>
+          <select name="budget_consciousness" class="select-input">
+            {% for val, lbl in [('frugal','Prefer free or cheap'),('moderate','Moderate spend is fine'),('flexible','No budget concern')] %}
+            <option value="{{ val }}" {% if ctx.get('budget_consciousness','moderate') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="setting-field">
+          <label>Mobility / accessibility</label>
+          <select name="mobility" class="select-input">
+            {% for val, lbl in [('full','Full mobility'),('limited_walking','Limited walking distance'),('wheelchair','Wheelchair accessible only')] %}
+            <option value="{{ val }}" {% if ctx.get('mobility','full') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-checkboxes" style="margin-top:14px">
+        <label class="checkbox-row">
+          <input type="checkbox" name="night_owl" {% if user['night_owl'] %}checked{% endif %}>
+          <span>Night owl — include late-night options on weekends</span>
+        </label>
+        <label class="checkbox-row" style="margin-top:8px">
+          <input type="checkbox" name="avoid_crowds" {% if ctx.get('avoid_crowds') %}checked{% endif %}>
+          <span>Avoid crowds — prefer off-peak hours and quieter venues</span>
+        </label>
+        <label class="checkbox-row" style="margin-top:8px">
+          <input type="checkbox" name="pet_friendly" {% if ctx.get('pet_friendly') %}checked{% endif %}>
+          <span>Pet-friendly — I bring my dog</span>
+        </label>
+      </div>
+
+      <p class="pf-section-group-label" style="margin-top:18px">Home & Travel</p>
+      <div class="settings-grid">
+        <div class="setting-field">
+          <label>Home neighborhood</label>
+          <select name="home_neighborhood" class="select-input">
+            <option value="">— not set —</option>
+            {% for val, lbl in [('greenbelt','Greenbelt'),('downtown','Downtown'),('zilker','Zilker / Lady Bird'),('east_austin','East Austin'),('south_lamar','South Lamar'),('north_austin','North Austin'),('rainey','Rainey Street')] %}
+            <option value="{{ val }}" {% if ctx.get('home_neighborhood','') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="setting-field">
+          <label>Getting around</label>
+          <select name="transport_mode" class="select-input">
+            {% for val, lbl in [('driving','Car / driving'),('transit','Public transit'),('cycling','Cycling'),('walking','Walking only')] %}
+            <option value="{{ val }}" {% if ctx.get('transport_mode','driving') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <p class="pf-section-group-label" style="margin-top:18px">Dietary Restrictions</p>
+      <div class="settings-checkboxes dietary-checks">
+        {% for val, lbl in [('vegetarian','Vegetarian'),('vegan','Vegan'),('gluten_free','Gluten-free'),('dairy_free','Dairy-free'),('nut_allergy','Nut allergy'),('halal','Halal'),('kosher','Kosher')] %}
+        <label class="checkbox-row">
+          <input type="checkbox" name="dietary_restrictions" value="{{ val }}"
+                 {% if val in (ctx.get('dietary_restrictions') or []) %}checked{% endif %}>
+          <span>{{ lbl }}</span>
+        </label>
+        {% endfor %}
+      </div>
+
+      <p class="pf-section-group-label" style="margin-top:18px">Pay Day (for calendar markers)</p>
+      <div class="settings-grid">
+        <div class="setting-field">
+          <label>Pay frequency</label>
+          <select name="payday_frequency" class="select-input"
+                  onchange="document.getElementById('payday-start-wrap').style.display = ['weekly','biweekly'].includes(this.value) ? '' : 'none'">
+            {% for val, lbl in [('','— not set —'),('weekly','Weekly'),('biweekly','Bi-weekly (every 2 weeks)'),('monthly_1st','Monthly — 1st of month'),('monthly_15th','Monthly — 15th of month'),('monthly_1st_15th','Twice monthly — 1st & 15th')] %}
+            <option value="{{ val }}" {% if ctx.get('payday_frequency','') == val %}selected{% endif %}>{{ lbl }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="setting-field" id="payday-start-wrap"
+             style="display:{% if ctx.get('payday_frequency') in ('weekly','biweekly') %}block{% else %}none{% endif %}">
+          <label>Reference pay date</label>
+          <input type="date" name="payday_start" class="select-input"
+                 value="{{ ctx.get('payday_start','') }}"
+                 title="Any past or future pay date — the schedule repeats from here">
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" class="btn-primary">Save settings</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ── Tag Cloud (broad selection) ──────────────────────────────── -->
+  <section class="pf-section">
+    <h2 class="pf-section-title">Manage Interests <span class="pf-label-hint">— check/uncheck to add or remove tags</span></h2>
+    <form method="POST" action="{{ url_for('main.update_tags') }}">
+      {% for category, tags in tag_categories.items() %}
+      <div class="pf-tag-group">
+        <div class="pf-tag-group-label">{{ category }}</div>
+        <div class="pf-tag-cloud">
+          {% for tag in tags %}
+          <label class="pf-tag-chip {% if tag in user_tags %}chip-on{% endif %}">
+            <input type="checkbox" name="tags" value="{{ tag }}"
+                   {% if tag in user_tags %}checked{% endif %}>
+            <span>{{ tag_display.get(tag, tag) }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+      <div class="form-footer">
+        <button type="submit" class="btn-primary">Update interests</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ── Regenerate ────────────────────────────────────────────────── -->
+  <section class="pf-section">
+    <h2 class="pf-section-title">Regenerate</h2>
+    <div class="regen-btns">
+      <form method="POST" action="{{ url_for('main.regenerate_day', date_str=today) }}">
+        <button class="btn-outline">↻ Today</button>
+      </form>
+      <a href="{{ url_for('main.calendar_view') }}" class="btn-outline">Open Calendar</a>
+      <a href="{{ url_for('main.export_data') }}" class="btn-outline">⬇ Export Save File</a>
+    </div>
+    <p class="pf-hint" style="margin-top:10px">Export saves your tag profiles, history, and itineraries as JSON.</p>
+  </section>
+
+  <!-- ── Weight Summary ────────────────────────────────────────────── -->
+  {% if weight_display %}
+  <section class="pf-section">
+    <h2 class="pf-section-title">Learned Weights <span class="pf-label-hint">— updated by your ratings and history</span></h2>
+    <div class="weight-list">
+      {% for tag, p in weight_display[:25] %}
+      <div class="weight-row">
+        <div class="weight-left">
+          <span class="wt-name">{{ tag_display.get(tag, tag) }}</span>
+          {% if p.saturation_level != 'none' %}
+          <span class="sat-badge sat-{{ p.saturation_level }}">{{ p.saturation_level }}</span>
+          {% endif %}
+        </div>
+        <div class="weight-bar-wrap">
+          <div class="weight-bar" style="width:{{ (p.current_weight * 100)|int }}%"></div>
+          <span class="weight-pct">{{ (p.current_weight * 100)|int }}%</span>
+        </div>
+        <div class="weight-meta">
+          {% if p.last_completed %}last {{ p.last_completed }}{% else %}never done{% endif %}
+          · every {{ p.optimal_interval_days|int }}d
+          {% if p.avg_rating_30d > 0 %}· {{ "%.1f"|format(p.avg_rating_30d) }}★{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ── History ───────────────────────────────────────────────────── -->
+  <section class="pf-section">
+    <h2 class="pf-section-title">Recent Activity</h2>
+    {% if recent %}
+    <div class="history-list">
+      {% for r in recent %}
+      <div class="history-row {% if r.skipped %}hr-skipped{% endif %}">
+        <div class="hr-title">{{ r.event_title }}</div>
+        <div class="hr-meta">
+          <a href="{{ url_for('main.day_view', date_str=r.date) }}" class="hr-date">{{ r.date }}</a>
+          · {{ r.block }}
+          {% if r.skipped %}
+          · <span class="hr-skip">skipped{% if r.skip_reason %} ({{ r.skip_reason|replace('_',' ') }}){% endif %}</span>
+          {% elif r.rating %}· {% for i in range(r.rating) %}★{% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-msg">No activity yet. Start your day!</p>
+    {% endif %}
+  </section>
+
+</div>
+
+<script>
+// Discovery slider
+let _pdTimer = null;
+function onPfDiscovery(val) {
+  document.getElementById('pf-disc-value').textContent = val + '%';
+  document.getElementById('pf-disc-fill').style.width  = val + '%';
+  clearTimeout(_pdTimer);
+  _pdTimer = setTimeout(() => savePfDiscovery(val), 600);
+}
+async function savePfDiscovery(val) {
+  await fetch('/settings/discovery', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ level: parseInt(val) }),
+  });
+}
+
+// Budget slider
+let _pbTimer = null;
+function onPfBudget(val) {
+  const v = parseInt(val);
+  document.getElementById('pf-budget-value').textContent = v === 0 ? 'Any' : '$' + v;
+  document.getElementById('pf-budget-fill').style.width = (v / 200 * 100) + '%';
+  clearTimeout(_pbTimer);
+  _pbTimer = setTimeout(() => savePfBudget(v), 600);
+}
+async function savePfBudget(val) {
+  await fetch('/settings/filters', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ max_budget: parseInt(val) }),
+  });
+}
+
+// Interest sliders
+function onInterestInput(el) {
+  const row = el.closest('.interest-row');
+  row.querySelector('.interest-pct').textContent  = el.value + '%';
+  row.querySelector('.interest-fill').style.width = el.value + '%';
+}
+
+let _interestTimers = {};
+function saveInterest(el) {
+  const tag = el.dataset.tag;
+  clearTimeout(_interestTimers[tag]);
+  _interestTimers[tag] = setTimeout(async () => {
+    await fetch('/settings/interest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tag, value: parseFloat(el.value) / 100 }),
+    });
+  }, 400);
+}
+
+async function removeInterestTag(tag) {
+  if (!confirm(`Remove "${tag.replace(/_/g, ' ')}" from your interests?\n\nIt can only be re-added by rating related activities highly.`)) return;
+  const res = await fetch('/settings/remove_tag', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tag }),
+  });
+  if (res.ok) {
+    const row = document.querySelector(`.interest-row[data-tag="${tag}"]`);
+    if (row) row.remove();
+  }
+}
+</script>
+{% endblock %}

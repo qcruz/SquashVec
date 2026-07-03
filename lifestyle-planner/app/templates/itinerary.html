@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}Today — Day Planner{% endblock %}
+
+{% block content %}
+<div class="itinerary-wrap">
+
+  <div class="itinerary-header">
+    <div>
+      <h1 class="date-heading">{{ today }}</h1>
+      <p class="greeting">Good morning, {{ user['name'] }}.</p>
+    </div>
+    <form method="POST" action="{{ url_for('main.regenerate') }}">
+      <button type="submit" class="btn-ghost" title="Regenerate full day">↻ Refresh day</button>
+    </form>
+  </div>
+
+  {% for block_key in all_blocks %}
+    {% set event = blocks.get(block_key) %}
+    {% set meta = block_meta[block_key] %}
+    {% set completion = today_completions.get(block_key) %}
+
+    {% if event is not none %}
+    <section class="block-section block-{{ block_key }} {% if completion %}block-done{% endif %}">
+      <div class="block-header">
+        <span class="block-icon">{{ meta.icon }}</span>
+        <span class="block-label">{{ meta.label }}</span>
+        <span class="block-time">{{ meta.time }}</span>
+      </div>
+
+      <div class="activity-card {% if completion and completion.skipped %}card-skipped{% elif completion %}card-accepted{% endif %}">
+
+        {% if completion %}
+          <div class="completion-badge">
+            {% if completion.skipped %}
+              Skipped{% if completion.skip_reason %} — {{ completion.skip_reason | replace('_', ' ') }}{% endif %}
+            {% else %}
+              Done{% if completion.rating %} · {{ '★' * completion.rating }}{% endif %}
+            {% endif %}
+          </div>
+        {% endif %}
+
+        <div class="card-top">
+          <div class="card-title">{{ event.title }}</div>
+          <div class="card-note">{{ event.planner_note }}</div>
+        </div>
+
+        <div class="card-meta">
+          <span class="meta-item">📍 {{ event.location }}</span>
+          <span class="meta-item">⏱ {{ event.duration_min }} min</span>
+          <span class="meta-item">💰 {{ event.cost_label }}</span>
+          {% if event.distance_miles > 0 %}
+          <span class="meta-item">📏 {{ event.distance_miles }} mi</span>
+          {% endif %}
+        </div>
+
+        <div class="card-description">{{ event.description }}</div>
+
+        <div class="card-tags">
+          {% for tag in event.tags %}
+          <span class="tag-pill">{{ tag | replace('_', ' ') }}</span>
+          {% endfor %}
+        </div>
+
+        {% if not completion %}
+        <div class="card-actions">
+          <!-- Accept + rate -->
+          <div class="accept-group">
+            <form method="POST" action="{{ url_for('main.accept_event') }}" class="inline-form">
+              <input type="hidden" name="block" value="{{ block_key }}">
+              <input type="hidden" name="title" value="{{ event.title }}">
+              <input type="hidden" name="tags" value="{{ event.tags | tojson }}">
+              <div class="star-rating" id="stars-{{ block_key }}">
+                <span class="star-label">Rate &amp; add to plan:</span>
+                {% for i in range(1, 6) %}
+                <label class="star" title="{{ i }} star">
+                  <input type="radio" name="rating" value="{{ i }}" required>
+                  ★
+                </label>
+                {% endfor %}
+              </div>
+              <button type="submit" class="btn-accept">✓ I did this</button>
+            </form>
+          </div>
+
+          <!-- Reroll -->
+          <button
+            class="btn-reroll"
+            onclick="rerollBlock('{{ block_key }}', this)"
+            data-block="{{ block_key }}"
+          >↻ Different option</button>
+
+          <!-- Skip -->
+          <details class="skip-details">
+            <summary class="btn-skip">✗ Skip</summary>
+            <form method="POST" action="{{ url_for('main.skip_event') }}" class="skip-form">
+              <input type="hidden" name="block" value="{{ block_key }}">
+              <input type="hidden" name="title" value="{{ event.title }}">
+              <input type="hidden" name="tags" value="{{ event.tags | tojson }}">
+              <div class="skip-reasons">
+                {% for val, label in skip_reasons %}
+                <label class="skip-reason-label">
+                  <input type="radio" name="reason" value="{{ val }}" required>
+                  {{ label }}
+                </label>
+                {% endfor %}
+              </div>
+              <button type="submit" class="btn-skip-confirm">Confirm skip</button>
+            </form>
+          </details>
+        </div>
+        {% endif %}
+
+      </div><!-- .activity-card -->
+    </section>
+    {% endif %}
+  {% endfor %}
+
+</div><!-- .itinerary-wrap -->
+
+<script>
+async function rerollBlock(block, btn) {
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  const res = await fetch(`/itinerary/reroll/${block}`, { method: 'POST' });
+  const data = await res.json();
+
+  if (data.ok && data.event) {
+    // Reload page to show updated card
+    window.location.reload();
+  } else {
+    btn.textContent = '↻ Different option';
+    btn.disabled = false;
+  }
+}
+</script>
+{% endblock %}

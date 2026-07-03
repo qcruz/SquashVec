@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Day Planner · Austin{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script>
+    // Apply saved theme before paint to avoid flash
+    (function(){
+      const t = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+  {% if session.get('user_id') %}
+  <nav class="topnav no-print">
+    <a class="nav-brand" href="{{ url_for('main.day_view', date_str=today_str) }}">Day Planner</a>
+    <div class="nav-links">
+      <a href="{{ url_for('main.day_view', date_str=today_str) }}"
+         class="{% if request.endpoint == 'main.day_view' and date_str == today_str %}active{% endif %}">Today</a>
+      <a href="{{ url_for('main.calendar_view') }}"
+         class="{% if request.endpoint == 'main.calendar_view' %}active{% endif %}">Calendar</a>
+      <a href="{{ url_for('main.profile') }}"
+         class="{% if request.endpoint == 'main.profile' %}active{% endif %}">Profile</a>
+    </div>
+    <div class="nav-actions">
+      <a href="{{ url_for('main.surprise_me') }}" class="nav-surprise" title="Surprise me — random day">&#9878; Surprise me</a>
+      <button class="nav-theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode" id="theme-btn">🌙</button>
+    </div>
+  </nav>
+  {% endif %}
+
+  <main>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <div class="flash-bar no-print">
+        {% for m in messages %}<span>{{ m }}</span>{% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    document.getElementById('theme-btn').textContent = next === 'dark' ? '☀️' : '🌙';
+  }
+  // Sync button icon on load
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-btn');
+    if (btn) btn.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+  });
+  </script>
+</body>
+</html>

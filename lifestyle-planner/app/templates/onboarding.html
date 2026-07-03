@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Get Started — Day Planner{% endblock %}
+
+{% block content %}
+<div class="onboarding-wrap">
+  <div class="onboarding-header">
+    <h1>Day Planner</h1>
+    <p class="subtitle">Austin, TX — Your daily itinerary, built around you.</p>
+  </div>
+
+  <form method="POST" action="{{ url_for('main.onboarding') }}" class="onboarding-form">
+
+    <!-- Step 1: Name -->
+    <section class="ob-section">
+      <h2>What should we call you?</h2>
+      <input type="text" name="name" placeholder="First name" required class="text-input" autocomplete="off">
+    </section>
+
+    <!-- Step 2: Quick context -->
+    <section class="ob-section">
+      <h2>A bit about your schedule</h2>
+      <div class="context-grid">
+        <div class="context-field">
+          <label>Usual wake time</label>
+          <select name="wake_time" class="select-input">
+            <option value="6:00">6:00 am — Early bird</option>
+            <option value="7:00" selected>7:00 am</option>
+            <option value="8:00">8:00 am</option>
+            <option value="9:00">9:00 am — Late starter</option>
+            <option value="10:00">10:00 am or later</option>
+          </select>
+        </div>
+        <div class="context-field">
+          <label>Typical day type</label>
+          <select name="schedule_type" class="select-input">
+            <option value="flexible">Flexible / work from home</option>
+            <option value="office">Office schedule (9–5)</option>
+            <option value="shift">Shift work</option>
+            <option value="student">Student</option>
+          </select>
+        </div>
+      </div>
+      <label class="checkbox-row">
+        <input type="checkbox" name="night_owl">
+        <span>I'm a night owl — include late night options on weekends</span>
+      </label>
+    </section>
+
+    <!-- Step 3: Tag selection -->
+    <section class="ob-section">
+      <h2>What are you into?</h2>
+      <p class="section-hint">Pick everything that sounds like you — the app learns from these over time.</p>
+
+      {% for category, tags in tag_categories.items() %}
+      <div class="tag-group">
+        <div class="tag-group-label">{{ category }}</div>
+        <div class="tag-cloud">
+          {% for tag in tags %}
+          <label class="tag-chip">
+            <input type="checkbox" name="tags" value="{{ tag }}">
+            <span>{{ tag_display.get(tag, tag) }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+
+    <div class="ob-submit">
+      <button type="submit" class="btn-primary btn-large">Build my first itinerary →</button>
+    </div>
+
+  </form>
+</div>
+{% endblock %}
