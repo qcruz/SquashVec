@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Governance — Strategy Card Game</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- Header -->
+  <header id="header">
+    <div>
+      <div class="game-title">Governance</div>
+      <div class="game-subtitle">Solo Mode · Build Your Civilization</div>
+    </div>
+    <div id="deck-count">Deck: — | Discard: —</div>
+  </header>
+
+  <!-- Main: categories + log -->
+  <div id="main">
+    <div id="categories">
+      <!-- rendered by game.js -->
+    </div>
+    <aside id="log">
+      <div class="log-title">Game Log</div>
+      <!-- rendered by game.js -->
+    </aside>
+  </div>
+
+  <!-- Hand -->
+  <div id="hand-area">
+    <div id="hand">
+      <!-- rendered by game.js -->
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal overlay -->
+<div id="modal-overlay" class="hidden">
+  <div id="modal-content">
+    <!-- injected by game.js -->
+  </div>
+</div>
+
+<script src="js/cards.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
