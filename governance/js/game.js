@@ -136,6 +136,13 @@ function togglePanel(contentId, sectionId) {
   if (sectionId) document.getElementById(sectionId).classList.toggle('section-collapsed', collapsed);
 }
 
+function togglePanelMinimize() {
+  const panel = document.getElementById('right-panel');
+  const minimized = panel.classList.toggle('panel-minimized');
+  const btn = document.getElementById('panel-minimize-btn');
+  if (btn) btn.textContent = minimized ? '▲' : '▼';
+}
+
 // Inspect a card that is in play (active slot, stack, or instability)
 function viewCard(card, location) {
   G.selectedCardIndex = null;
@@ -179,6 +186,17 @@ function confirmPlay() {
 
   G.selectedOption = 0;
   afterCardResolved();
+}
+
+function discardUnplayable(i) {
+  const card = G.hand[i];
+  if (!card || canPlayCard(card)) return;
+  G.hand.splice(i, 1);
+  G.discard.push(card);
+  G.selectedCardIndex = null;
+  G.selectedOption = 0;
+  addLog(`${card.name} discarded — requirements not met.`);
+  render();
 }
 
 function meetsRequirements(card) {
@@ -776,7 +794,7 @@ function renderHand() {
       <div class="hc-art"></div>
       <div class="hc-effects">${effectSummary}</div>
       ${card.requires ? `<div class="hc-req-tag">${buildReqText(card)}</div>` : ''}
-      ${!playable ? '<div class="hc-unplayable">Requirements not met</div>' : ''}
+      ${!playable ? '<div class="hc-unplayable">Select to discard</div>' : ''}
       <div class="hc-flavor">${card.flavorText || ''}</div>
       <div class="hc-opt-btns">${optBtns}</div>
     `;
@@ -816,13 +834,19 @@ function renderCardDetail() {
     const color = card.category ? CAT_COLORS[card.category] : '#888';
     const playable = canPlayCard(card);
     body.innerHTML = renderDetailFrame(card, color, 'In your hand', /*readonly*/false);
-    actions.innerHTML = `
-      <button class="confirm-btn${!playable ? ' confirm-disabled' : ''}" onclick="confirmPlay()" ${!playable ? 'disabled' : ''}>
-        Confirm Play
-      </button>
-      <button class="deselect-btn" onclick="deselectCard()">Deselect</button>
-      ${passBtn}
-    `;
+    if (playable) {
+      actions.innerHTML = `
+        <button class="confirm-btn" onclick="confirmPlay()">Confirm Play</button>
+        <button class="deselect-btn" onclick="deselectCard()">Deselect</button>
+        ${passBtn}
+      `;
+    } else {
+      actions.innerHTML = `
+        <button class="confirm-btn confirm-disabled" onclick="discardUnplayable(${i})">Discard</button>
+        <button class="deselect-btn" onclick="deselectCard()">Deselect</button>
+        ${passBtn}
+      `;
+    }
     return;
   }
 
@@ -918,8 +942,10 @@ function closeModal() {
 
 // ─── Global onclick bridges (for inline onclick in innerHTML) ─────────────────
 
+window.discardUnplayable = discardUnplayable;
 window.passTurn = passTurn;
 window.togglePanel = togglePanel;
+window.togglePanelMinimize = togglePanelMinimize;
 window.selectCardWithOption = selectCardWithOption;
 
 window.viewCard_global = function(type, cat) {

@@ -79,7 +79,7 @@ html, body {
 
 #main {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr;
   overflow: hidden;
 }
 
@@ -425,13 +425,63 @@ html, body {
   margin-top: auto;
 }
 
-/* ─── Right panel — full height ──────────────────────────────────────────────── */
+/* ─── Right panel — floating overlay, bottom-right ──────────────────────────── */
 
 #right-panel {
+  position: fixed;
+  bottom: 0;
+  right: 16px;
+  width: 340px;
+  max-height: 75vh;
   display: flex;
   flex-direction: column;
-  border-left: 1px solid var(--border);
+  z-index: 100;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  box-shadow: -2px -6px 28px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
   overflow: hidden;
+}
+
+#panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 14px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.panel-header-title {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.panel-minimize-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 2px;
+  line-height: 1;
+  font-family: var(--font-mono);
+}
+.panel-minimize-btn:hover { color: var(--text); }
+
+/* Minimized: hide log and card detail body/title, show only header + actions */
+#right-panel.panel-minimized #log-section,
+#right-panel.panel-minimized #card-detail .panel-title,
+#right-panel.panel-minimized #card-detail-body {
+  display: none !important;
+}
+
+#right-panel.panel-minimized #card-detail-actions {
+  border-top: none;
 }
 
 .panel-title {
@@ -450,8 +500,7 @@ html, body {
   flex-direction: column;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
-  flex: 0 0 220px;
-  transition: flex-basis 0.15s;
+  flex: 0 0 180px;
 }
 
 #log-section.section-collapsed {
@@ -693,9 +742,14 @@ html, body {
 
 .confirm-btn.confirm-disabled,
 .confirm-btn:disabled {
-  background: var(--surface3);
-  color: var(--text-dim);
-  cursor: not-allowed;
+  background: rgba(231,76,60,0.15);
+  color: var(--danger);
+  border: 1px solid rgba(231,76,60,0.3);
+  cursor: pointer;
+}
+
+.confirm-btn.confirm-disabled:hover {
+  background: rgba(231,76,60,0.25);
 }
 
 .deselect-btn {
