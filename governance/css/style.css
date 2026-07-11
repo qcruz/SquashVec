@@ -250,23 +250,23 @@ html, body {
 /* Instability */
 .cat-instability {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 3px;
 }
 
-.instab-chip {
-  background: rgba(231,76,60,0.15);
-  border: 1px solid rgba(231,76,60,0.35);
-  color: var(--danger);
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  cursor: pointer;
-  transition: background 0.1s;
+.instab-card {
+  border-left-color: var(--danger) !important;
+  background: rgba(231,76,60,0.07);
 }
 
-.instab-chip:hover { background: rgba(231,76,60,0.28); }
+.instab-card:hover {
+  background: rgba(231,76,60,0.15);
+  border-color: var(--danger) !important;
+}
+
+.instab-value {
+  color: var(--danger);
+}
 
 .instab-empty {
   color: var(--text-dim);

@@ -638,8 +638,10 @@ function renderCategories() {
     let instabHTML = `<div class="instab-empty">No instability</div>`;
     if (s.instability.length) {
       instabHTML = s.instability.map((c, i) => `
-        <div class="instab-chip" onclick="viewCard_instab('${cat}',${i})" title="${c.name}">−${c.value}</div>
-      `).join('');
+        <div class="in-play-card instab-card" onclick="viewCard_instab('${cat}',${i})">
+          <div class="ipc-name">${c.name}</div>
+          <div class="ipc-value instab-value">−${c.value}</div>
+        </div>`).join('');
     }
 
     col.innerHTML = `
