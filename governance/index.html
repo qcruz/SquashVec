@@ -18,19 +18,32 @@
     <div id="deck-count">Deck: — | Discard: —</div>
   </header>
 
-  <!-- Main: categories + log -->
+  <!-- Main: categories + right panel -->
   <div id="main">
     <div id="categories">
       <!-- rendered by game.js -->
     </div>
-    <aside id="log">
-      <div class="log-title">Game Log</div>
-      <!-- rendered by game.js -->
+
+    <aside id="right-panel">
+      <!-- Game Log (top) -->
+      <div id="log-section">
+        <div class="panel-title">Game Log</div>
+        <div id="log"><!-- rendered by game.js --></div>
+      </div>
+
+      <!-- Card Detail (bottom) -->
+      <div id="card-detail">
+        <div class="panel-title">Selected Card</div>
+        <div id="card-detail-body">
+          <div class="detail-empty">Click a card in your hand to inspect it.</div>
+        </div>
+      </div>
     </aside>
   </div>
 
   <!-- Hand -->
   <div id="hand-area">
+    <div id="hand-label"></div>
     <div id="hand">
       <!-- rendered by game.js -->
     </div>
@@ -38,7 +51,7 @@
 
 </div>
 
-<!-- Modal overlay -->
+<!-- Modal overlay (post-play choices only) -->
 <div id="modal-overlay" class="hidden">
   <div id="modal-content">
     <!-- injected by game.js -->
