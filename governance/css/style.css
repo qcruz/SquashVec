@@ -415,6 +415,13 @@ html, body {
   letter-spacing: 0.1em;
 }
 
+.hc-must-play {
+  font-size: 9px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 .hc-flavor {
   font-size: 9px;
   color: var(--text-dim);

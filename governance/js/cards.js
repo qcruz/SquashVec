@@ -30,13 +30,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Peaceful Transition',
-        description: 'Requires active Culture card to be Freedom. Replace Governance and shuffle the replaced card back into the draw deck instead.',
-        effect: 'replace',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'governance',
-        oldCardDest: 'shuffle_if',
-        condition: { activeCard: { category: 'culture', name: 'Freedom' } },
-        fallbackOldCardDest: 'discard_flow',
       },
     ],
     discardTo: [
@@ -63,13 +60,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Holy Mandate',
-        description: 'Requires active Culture card to be Zealotry. Replace Governance and shuffle the replaced card back into the draw deck.',
-        effect: 'replace',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'governance',
-        oldCardDest: 'shuffle_if',
-        condition: { activeCard: { category: 'culture', name: 'Zealotry' } },
-        fallbackOldCardDest: 'discard_flow',
       },
     ],
     discardTo: [
@@ -96,13 +90,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Mutual Defense',
-        description: 'Replace your current Governance and add a +2 bonus to your Military stack. The replaced card is discarded using its own discard options.',
-        effect: 'replace_plus_stack_bonus',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'governance',
-        oldCardDest: 'discard_flow',
-        bonusCategory: 'military',
-        bonusValue: 2,
       },
     ],
     discardTo: [
@@ -128,12 +119,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Democratic Renewal',
-        description: 'Replace Democracy. Shuffle Democracy into the draw deck AND remove one Culture Instability card (shuffle it into the deck).',
-        effect: 'replace_plus_remove_instability',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'governance',
-        oldCardDest: 'shuffle',
-        removeInstabilityFrom: 'culture',
       },
     ],
     discardTo: [
@@ -163,13 +152,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Deregulate',
-        description: 'Replace your current Economy and shuffle it back into the draw deck instead. Requires: Economy Instability pile is empty.',
-        effect: 'replace',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'economy',
-        oldCardDest: 'shuffle_if',
-        condition: { instabilityEmpty: 'economy' },
-        fallbackOldCardDest: 'discard_flow',
       },
     ],
     discardTo: [
@@ -195,11 +181,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Consume the Land',
-        description: 'Move your active Environment card to the Economy event stack as a bonus. Replace your current Economy. The replaced card is discarded using its own discard options.',
-        effect: 'replace_consume_env',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'economy',
-        oldCardDest: 'discard_flow',
       },
     ],
     discardTo: [
@@ -226,12 +211,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Green Recovery',
-        description: 'Replace your current Economy and shuffle it back into the draw deck. Remove one Economy Instability card (shuffle it into the deck).',
-        effect: 'replace_plus_remove_instability',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'economy',
-        oldCardDest: 'shuffle',
-        removeInstabilityFrom: 'economy',
       },
     ],
     discardTo: [
@@ -261,13 +244,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Embrace the Past',
-        description: 'Replace your current Culture and shuffle it back into the draw deck instead. Requires: Military score is 12 or lower (peaceful society).',
-        effect: 'replace',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'culture',
-        oldCardDest: 'shuffle_if',
-        condition: { categoryScoreMax: { category: 'military', max: 12 } },
-        fallbackOldCardDest: 'discard_flow',
       },
     ],
     discardTo: [
@@ -293,13 +273,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Military Backing',
-        description: 'Requires Military score ≥ 12. Replace current Culture and shuffle it back into the draw deck instead.',
-        effect: 'replace',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'culture',
-        oldCardDest: 'shuffle_if',
-        condition: { categoryScore: { category: 'military', min: 12 } },
-        fallbackOldCardDest: 'discard_flow',
       },
     ],
     discardTo: [
@@ -325,12 +302,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Research Surge',
-        description: 'Replace your current Culture. The replaced card is discarded using its own discard options. Draw 2 cards immediately.',
-        effect: 'replace_plus_draw',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'culture',
-        oldCardDest: 'discard_flow',
-        drawCount: 2,
       },
     ],
     discardTo: [
@@ -357,12 +332,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Renaissance',
-        description: 'Replace your current Culture, shuffling it back into the draw deck. Remove one Culture Instability card (shuffle it into the deck).',
-        effect: 'replace_plus_remove_instability',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'culture',
-        oldCardDest: 'shuffle',
-        removeInstabilityFrom: 'culture',
       },
     ],
     discardTo: [
@@ -392,9 +365,9 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Reinforce',
-        description: 'Stack this card on your active Military as a bonus (+1) without replacing it. Useful when your active Military card is already strong.',
-        effect: 'stack_bonus',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'military',
       },
     ],
@@ -421,13 +394,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Martial Code',
-        description: 'Requires Governance ≥ 12. Replace current Military and shuffle it back into the draw deck instead.',
-        effect: 'replace',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'military',
-        oldCardDest: 'shuffle_if',
-        condition: { categoryScore: { category: 'governance', min: 12 } },
-        fallbackOldCardDest: 'discard_flow',
       },
     ],
     discardTo: [
@@ -457,10 +427,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Versatile Application',
-        description: 'Stack this card as a +1 bonus on any one of your category stacks instead of replacing Technology. Choose which category when confirming.',
-        effect: 'stack_bonus_any',
-        targetCategory: null,
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'technology',
       },
     ],
     discardTo: [
@@ -486,13 +456,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Academic Partnership',
-        description: 'Requires Culture ≥ 12. Replace current Technology and shuffle it back into the draw deck instead.',
-        effect: 'replace',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'technology',
-        oldCardDest: 'shuffle_if',
-        condition: { categoryScore: { category: 'culture', min: 12 } },
-        fallbackOldCardDest: 'discard_flow',
       },
     ],
     discardTo: [
@@ -522,13 +489,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Military Expansion',
-        description: 'Requires Military ≥ 12. Claim the territory and shuffle the replaced Environment into the deck instead. The military secures the difficult terrain.',
-        effect: 'replace',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'environment',
-        oldCardDest: 'shuffle_if',
-        condition: { categoryScore: { category: 'military', min: 12 } },
-        fallbackOldCardDest: 'discard_flow',
       },
     ],
     discardTo: [
@@ -554,13 +518,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Fortify',
-        description: 'Claim The Highlands and add a +2 bonus to your Military stack (the terrain provides natural defense). The replaced Environment is discarded using its own discard options.',
-        effect: 'replace_plus_stack_bonus',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'environment',
-        oldCardDest: 'discard_flow',
-        bonusCategory: 'military',
-        bonusValue: 2,
       },
     ],
     discardTo: [
@@ -586,13 +547,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Trade Routes',
-        description: 'Requires Economy ≥ 12. Claim the territory and shuffle the replaced Environment into the draw deck. The waterways open trade.',
-        effect: 'replace',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'environment',
-        oldCardDest: 'shuffle_if',
-        condition: { categoryScore: { category: 'economy', min: 12 } },
-        fallbackOldCardDest: 'discard_flow',
       },
     ],
     discardTo: [
@@ -619,12 +577,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Federal Trade',
-        description: 'Claim The Union and remove one Economy Instability card (shuffle it into the deck). The Union enables trade across the heartland.',
-        effect: 'replace_plus_remove_instability',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'environment',
-        oldCardDest: 'discard_flow',
-        removeInstabilityFrom: 'economy',
       },
     ],
     discardTo: [
@@ -650,13 +606,10 @@ const CARDS = [
         oldCardDest: 'discard_flow',
       },
       {
-        label: 'Option 2 — Maritime Trade',
-        description: 'Claim Oceana and add a +3 bonus to your Economy stack (maritime trade routes open). The replaced Environment is discarded using its own discard options.',
-        effect: 'replace_plus_stack_bonus',
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'environment',
-        oldCardDest: 'discard_flow',
-        bonusCategory: 'economy',
-        bonusValue: 3,
       },
     ],
     discardTo: [
@@ -946,6 +899,37 @@ const CARDS = [
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
+  // MUST-PLAY EVENT CARDS — resolve immediately when drawn
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  {
+    id: 'indecisiveness',
+    name: 'Indecisiveness',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 1,
+    mustPlayWhenDrawn: true,
+    flavorText: 'A civilization paralyzed by its own choices.',
+    options: [
+      {
+        label: 'Option 1 — Analysis Paralysis',
+        description: 'If you have more than 5 cards in hand (including this one), choose 2 to discard.',
+        effect: 'discard_from_hand_modal',
+        count: 2,
+        condition: { handMoreThan: 5 },
+      },
+      {
+        label: 'Option 2 — Draw from Doubt',
+        description: 'If you have fewer than 3 cards in hand (including this one), draw 1 card.',
+        effect: 'draw_if_hand_small',
+        condition: { handLessThan: 3 },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // UTILITY EVENT CARDS — special effects, recovery, and disruption
   // ═══════════════════════════════════════════════════════════════════════════
 
@@ -1094,6 +1078,8 @@ const STARTER_DECK = [
   'cultural_festival', 'military_campaign',
   'scientific_breakthrough', 'abundant_harvest', 'abundant_harvest',
   'inspiring_speech', 'inspiring_speech',
+  // Must-play events (4)
+  'indecisiveness', 'indecisiveness', 'indecisiveness', 'indecisiveness',
   // Hazard events (6)
   'worker_strike', 'worker_strike',
   'political_assassination',

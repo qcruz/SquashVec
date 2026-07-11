@@ -83,7 +83,7 @@ function checkEndConditions() {
 
 function drawCard() {
   if (!G.deck.length) {
-    if (!G.discard.length) { addLog('No cards remain anywhere.'); return; }
+    if (!G.discard.length) { addLog('No cards remain anywhere.'); return null; }
     G.deck = buildDeck(G.discard.map(c => c.id));
     G.discard = [];
     addLog('Draw pile empty — discard reshuffled into deck.');
@@ -91,6 +91,13 @@ function drawCard() {
   const card = G.deck.shift();
   G.hand.push(card);
   addLog(`Drew: ${card.name}`);
+  if (card.mustPlayWhenDrawn) {
+    G.mustPlayEventId = card.instanceId;
+    G.selectedCardIndex = G.hand.length - 1;
+    G.selectedOption = 0;
+    addLog(`${card.name} — must be played immediately.`);
+  }
+  return card;
 }
 
 // ─── Selection ────────────────────────────────────────────────────────────────
@@ -234,6 +241,15 @@ function canPlayCard(card) {
 
 function applyCategoryCard(card, opt) {
   const cat = opt.targetCategory || card.category;
+
+  // Draw a card and discard this category card without replacing the active
+  if (opt.effect === 'draw_and_discard_self') {
+    const cat = opt.targetCategory || card.category;
+    drawCard();
+    addLog(`${card.name}: drew 1 card. Discarding ${card.name}.`);
+    triggerOldCardDiscard(card, cat);
+    return;
+  }
 
   // Stack bonus (no replacement)
   if (opt.effect === 'stack_bonus') {
@@ -407,6 +423,30 @@ function resolveEventCard(card, opt) {
       addLog(`${card.name}: Drew a card. ${card.name} shuffled back into the deck.`);
       break;
 
+    case 'discard_from_hand_modal': {
+      const condMet = opt.condition ? checkCondition(opt.condition) : true;
+      if (!condMet) {
+        addLog(`${card.name}: Condition not met — no effect.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      const count = opt.count || 1;
+      G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
+      render(); showDiscardHandModal(card, count); return;
+    }
+
+    case 'draw_if_hand_small': {
+      const condMet = opt.condition ? checkCondition(opt.condition) : true;
+      if (condMet) {
+        drawCard();
+        addLog(`${card.name}: Drew 1 card.`);
+      } else {
+        addLog(`${card.name}: Condition not met — no effect.`);
+      }
+      applyCardSelfDiscard(card);
+      break;
+    }
+
     default:
       G.discard.push(card);
       addLog(`${card.name} discarded.`);
@@ -573,6 +613,45 @@ function resolveStackOnAny(cat) {
   afterCardResolved();
 }
 
+function applyCardSelfDiscard(card) {
+  const opts = card.discardTo || [{ target: 'discard_pile' }];
+  if (opts.length === 1) {
+    applyDiscardDest(card, opts[0].target, opts[0].bonus);
+  } else {
+    G.pendingAction = { type: 'discard_replaced_card', card, fromCat: card.category };
+    render(); showDiscardReplacedModal(card);
+  }
+}
+
+function showDiscardHandModal(card, remaining) {
+  const btns = G.hand.map((c, i) => {
+    const color = c.category ? CAT_COLORS[c.category] : '#777';
+    const typeLabel = c.type === 'category' ? cap(c.category) : `${cap(c.subtype || 'event')} event`;
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="pickDiscardHand(${i})">
+      <strong style="color:${color}">${c.name}</strong>
+      <small>${typeLabel}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose ${remaining} card${remaining > 1 ? 's' : ''} from your hand to discard.</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function pickDiscardHand(i) {
+  const action = G.pendingAction;
+  const discarded = G.hand.splice(i, 1)[0];
+  G.discard.push(discarded);
+  addLog(`${discarded.name} discarded from hand.`);
+  action.remaining--;
+  if (action.remaining > 0) { showDiscardHandModal(action.card, action.remaining); return; }
+  closeModal();
+  G.pendingAction = null;
+  applyCardSelfDiscard(action.card);
+  afterCardResolved();
+}
+
 function showEndModal(end) {
   const won = end.result === 'won';
   openModal(`
@@ -611,6 +690,13 @@ function checkCondition(cond) {
   if (cond.instabilityEmpty) {
     return G.categories[cond.instabilityEmpty].instability.length === 0;
   }
+  // Hand size checks: card already removed from hand, +1 accounts for the played card
+  if (cond.handMoreThan !== undefined) {
+    return (G.hand.length + 1) > cond.handMoreThan;
+  }
+  if (cond.handLessThan !== undefined) {
+    return (G.hand.length + 1) < cond.handLessThan;
+  }
   return false;
 }
 
@@ -621,8 +707,6 @@ function addLog(msg) {
 
 function afterCardResolved() {
   if (G.pendingAction) return;
-  G.selectedCardIndex = null;
-  G.selectedOption = 0;
   G.viewingCard = null;
 
   const end = checkEndConditions();
@@ -632,6 +716,12 @@ function afterCardResolved() {
     G.endTurnAfterResolve = false;
     endTurn();
     return;
+  }
+
+  // If a must-play card is waiting (drawn mid-effect), preserve its selection
+  if (G.mustPlayEventId == null) {
+    G.selectedCardIndex = null;
+    G.selectedOption = 0;
   }
 
   render();
@@ -651,24 +741,20 @@ function endTurn() {
 
 function passTurn() {
   if (G.pendingAction) return;
-  if (G.mustPlayEventId != null) return; // must play drawn event first
+  if (G.mustPlayEventId != null) return;
 
-  // Draw a card
-  if (!G.deck.length) {
-    if (!G.discard.length) { addLog('No cards remain anywhere. Turn ends.'); endTurn(); return; }
-    G.deck = buildDeck(G.discard.map(c => c.id));
-    G.discard = [];
-    addLog('Draw pile empty — discard reshuffled into deck.');
-  }
-  const drawn = G.deck.shift();
-  G.hand.push(drawn);
-  addLog(`Pass: Drew ${drawn.name}.`);
+  addLog('Pass.');
+  const drawn = drawCard();
+  if (!drawn) { endTurn(); return; }
 
-  if (drawn.type === 'event') {
+  if (drawn.mustPlayWhenDrawn) {
+    // drawCard() already set mustPlayEventId + selectedCardIndex
+    render();
+  } else if (drawn.type === 'event') {
     G.mustPlayEventId = drawn.instanceId;
     G.selectedCardIndex = G.hand.length - 1;
     G.selectedOption = 0;
-    addLog(`${drawn.name} is an event card — you must play it before the turn ends.`);
+    addLog(`${drawn.name} is an event — must be played before turn ends.`);
     render();
   } else {
     endTurn();
@@ -794,6 +880,7 @@ function renderHand() {
       <div class="hc-art"></div>
       <div class="hc-effects">${effectSummary}</div>
       ${card.requires ? `<div class="hc-req-tag">${buildReqText(card)}</div>` : ''}
+      ${card.mustPlayWhenDrawn ? '<div class="hc-must-play">⚠ Must play when drawn</div>' : ''}
       ${!playable ? '<div class="hc-unplayable">Select to discard</div>' : ''}
       <div class="hc-flavor">${card.flavorText || ''}</div>
       <div class="hc-opt-btns">${optBtns}</div>
@@ -943,6 +1030,7 @@ function closeModal() {
 // ─── Global onclick bridges (for inline onclick in innerHTML) ─────────────────
 
 window.discardUnplayable = discardUnplayable;
+window.pickDiscardHand = pickDiscardHand;
 window.passTurn = passTurn;
 window.togglePanel = togglePanel;
 window.togglePanelMinimize = togglePanelMinimize;
