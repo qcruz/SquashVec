@@ -108,6 +108,8 @@ function deselectCard() {
 }
 
 function setSelectedOption(i) {
+  const card = G.selectedCardIndex !== null ? G.hand[G.selectedCardIndex] : null;
+  if (card && card.options[i]?.effect === 'multiplayer_only') return;
   G.selectedOption = i;
   renderCardDetail();
 }
@@ -135,7 +137,11 @@ function confirmPlay() {
   G.hand.splice(i, 1);
   G.selectedCardIndex = null;
 
-  const opt = card.options[G.selectedOption] || card.options[0];
+  let opt = card.options[G.selectedOption] || card.options[0];
+  // If the chosen option is multiplayer-only, find the first non-multiplayer option
+  if (opt.effect === 'multiplayer_only') {
+    opt = card.options.find(o => o.effect !== 'multiplayer_only') || opt;
+  }
 
   if (card.type === 'category') {
     applyCategoryCard(card, opt);
@@ -187,7 +193,6 @@ function applyCategoryCard(card, opt) {
   if (opt.effect === 'stack_bonus') {
     G.categories[cat].stack.push(card);
     addLog(`${card.name} (+${card.value}) stacked on ${cat} as bonus.`);
-    if (opt.soloBonus) { triggerSoloBonusModal(card.name, opt.soloBonus); return; }
     return;
   }
 
@@ -236,13 +241,6 @@ function applyCategoryCard(card, opt) {
   // Replace active
   catState.active = card;
   addLog(`${card.name} (+${card.value}) is now your active ${cat} card.`);
-
-  // Handle solo bonus for Alliance opt 1
-  if (opt.effect === 'replace_plus_solo_bonus') {
-    handleOldCard(prev, cat, opt);
-    G.pendingAction = { type: 'solo_bonus', card, bonusValue: opt.soloBonus || 1 };
-    render(); showSoloBonusModal(card.name, opt.soloBonus || 1); return;
-  }
 
   handleOldCard(prev, cat, opt);
 }
@@ -352,41 +350,16 @@ function resolveEventCard(card, opt) {
       G.pendingAction = { type: 'remove_two_instability', card, picked: [] };
       render(); showTwoInstabilityModal(card); return;
 
-    case 'remove_instability_if': {
-      const condMet = opt.condition ? checkCondition(opt.condition) : true;
-      if (condMet) {
-        const pile = G.categories[opt.instabilityCategory].instability;
-        if (pile.length) {
-          const removed = pile.shift();
-          G.deck.push(removed); shuffle(G.deck);
-          addLog(`${card.name}: ${removed.name} removed from ${opt.instabilityCategory} instability → deck.`);
-        } else {
-          addLog(`${card.name}: No ${opt.instabilityCategory} instability to remove.`);
-        }
-      } else {
-        addLog(`${card.name}: Condition not met — no effect.`);
-      }
-      applyEventDiscard(card);
+    case 'multiplayer_only':
+      addLog(`${card.name}: Multiplayer option — not available in solo play. Card discarded.`);
+      G.discard.push(card);
       break;
-    }
 
-    case 'solo_draw_to_stack': {
-      const drawn = G.deck.shift();
-      if (drawn) {
-        G.categories[opt.targetCategory].stack.push(drawn);
-        addLog(`Occupation: ${drawn.name} added to ${opt.targetCategory} stack.`);
-      }
-      applyEventDiscard(card);
+    case 'draw_and_shuffle_self':
+      drawCard();
+      G.deck.push(card); shuffle(G.deck);
+      addLog(`${card.name}: Drew a card. ${card.name} shuffled back into the deck.`);
       break;
-    }
-
-    case 'add_instability_pressure': {
-      const m = makeMarker('External Pressure', opt.pressureValue || 1);
-      G.categories[opt.targetInstability].instability.push(m);
-      addLog(`Incursion: ${opt.targetInstability} −${opt.pressureValue}.`);
-      applyEventDiscard(card);
-      break;
-    }
 
     default:
       G.discard.push(card);
@@ -552,37 +525,6 @@ function resolveStackOnAny(cat) {
   addLog(`${card.name} (+${val}) stacked on ${cat}.`);
   G.pendingAction = null;
   afterCardResolved();
-}
-
-function showSoloBonusModal(sourceName, bonusValue) {
-  const btns = CATEGORIES.map(cat => {
-    const color = CAT_COLORS[cat];
-    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveSoloBonus('${cat}')">
-      <strong style="color:${color}">${cap(cat)}</strong>
-      <small>Current score: ${categoryScore(cat)}</small>
-    </button>`;
-  }).join('');
-  openModal(`
-    <div class="modal-card-name">${sourceName} — Solo Bonus</div>
-    <p class="modal-sub">Add +${bonusValue} bonus to which category?</p>
-    <div class="opt-list">${btns}</div>
-  `);
-}
-
-function resolveSoloBonus(cat) {
-  closeModal();
-  const { card, bonusValue } = G.pendingAction;
-  const val = bonusValue || 1;
-  const m = makeMarker(`${card.name} Bonus`, val);
-  G.categories[cat].stack.push(m);
-  addLog(`${card.name}: +${val} bonus added to ${cat}.`);
-  G.pendingAction = null;
-  afterCardResolved();
-}
-
-function triggerSoloBonusModal(name, val) {
-  G.pendingAction = { type: 'solo_bonus', bonusValue: val };
-  render(); showSoloBonusModal(name, val);
 }
 
 function showEndModal(end) {
@@ -818,16 +760,19 @@ function renderDetailFrame(card, color, location, readonly) {
   if (card.options?.length) {
     optionsHTML = `<div class="detail-section-label">Play Options</div><div class="detail-opts">`;
     card.options.forEach((opt, oi) => {
+      const isMultiplayerOnly = opt.effect === 'multiplayer_only';
       const condMet = opt.condition ? checkCondition(opt.condition) : true;
-      const isSelected = !readonly && G.selectedOption === oi;
+      const isSelected = !readonly && !isMultiplayerOnly && G.selectedOption === oi;
       const unmetNote = opt.condition && !condMet
         ? `<span class="opt-cond-unmet">Condition not currently met — will apply fallback.</span>` : '';
+      const multiplayerNote = isMultiplayerOnly
+        ? `<span class="opt-multiplayer-tag">Multiplayer only — not available in solo play</span>` : '';
       optionsHTML += `
-        <div class="detail-opt${isSelected ? ' detail-opt-selected' : ''}${!condMet && opt.condition ? ' detail-opt-dimmed' : ''}"
+        <div class="detail-opt${isSelected ? ' detail-opt-selected' : ''}${isMultiplayerOnly ? ' detail-opt-multiplayer' : (!condMet && opt.condition ? ' detail-opt-dimmed' : '')}"
              style="${isSelected ? `border-color:${color}` : ''}"
-             ${readonly ? '' : `onclick="setSelectedOption(${oi})"`}>
+             ${readonly || isMultiplayerOnly ? '' : `onclick="setSelectedOption(${oi})"`}>
           <div class="detail-opt-label">${opt.label}</div>
-          <div class="detail-opt-desc">${opt.description} ${unmetNote}</div>
+          <div class="detail-opt-desc">${opt.description} ${unmetNote}${multiplayerNote}</div>
         </div>`;
     });
     optionsHTML += `</div>`;
@@ -908,7 +853,6 @@ window.confirmPlay = confirmPlay;
 window.resolveDiscardReplaced = resolveDiscardReplaced;
 window.resolveRemoveInstability = resolveRemoveInstability;
 window.resolveStackOnAny = resolveStackOnAny;
-window.resolveSoloBonus = resolveSoloBonus;
 window.pickTwoInstability = pickTwoInstability;
 window.startGame = startGame;
 

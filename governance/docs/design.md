@@ -137,8 +137,9 @@ This applies to both category cards being replaced AND event cards being removed
 ## Solo Mode
 
 In single-player mode:
-- Event cards that reference "another player" or "an allied player" use the solo adaptation printed in the card's description.
-- Typical solo adaptations: draw top card of deck as a substitute for a stolen card, add instability pressure instead of disrupting a player, etc.
+- Each card is designed with at least one option that is always available in solo play.
+- Options that reference "another player" or "an allied player" **cannot be used** in solo play and are clearly marked as multiplayer only.
+- If no viable option exists for a card, the card has no effect and is discarded.
 
 ---
 
@@ -152,8 +153,7 @@ When designing new cards, follow these rules:
 4. **Discard destinations are on the card.** The card tells you where it can go when removed.
 5. **Every decision creates tradeoffs.** High-value cards should cost something (requires, instability, losing a different card).
 6. **Category cards are the foundation; event cards are the texture.** A civilization's identity is its active category cards.
-7. **Environment cards are named as territories**, not specific resources. They feel geographic and large-scale.
-8. **Winning should be difficult.** Cards with high values should have high requirements or significant costs.
+7. **Winning should be difficult.** Cards with high values should have high requirements or significant costs.
 
 ---
 

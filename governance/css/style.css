@@ -593,6 +593,21 @@ html, body {
   margin-top: 3px;
 }
 
+.detail-opt-multiplayer {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.detail-opt-multiplayer:hover { background: var(--surface3); }
+
+.opt-multiplayer-tag {
+  color: var(--text-dim);
+  font-size: 10px;
+  font-style: italic;
+  display: block;
+  margin-top: 3px;
+}
+
 .detail-auto-eff {
   font-size: 12px;
   color: var(--text-muted);
