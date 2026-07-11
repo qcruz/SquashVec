@@ -31,11 +31,11 @@
     <!-- Right panel: full height — log top, card detail bottom -->
     <aside id="right-panel">
       <div id="log-section">
-        <div class="panel-title">Game Log</div>
+        <div class="panel-title">Game Log <button class="panel-toggle" onclick="togglePanel('log','log-section')">▾</button></div>
         <div id="log"><!-- rendered by game.js --></div>
       </div>
       <div id="card-detail">
-        <div class="panel-title">Card Detail</div>
+        <div class="panel-title">Card Detail <button class="panel-toggle" onclick="togglePanel('card-detail-body',null)">▾</button></div>
         <div id="card-detail-body">
           <div class="detail-empty">Click any card to inspect it here.</div>
         </div>

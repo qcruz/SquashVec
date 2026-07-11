@@ -39,9 +39,11 @@ function newGameState() {
     turn: 1,
     log: [],
     pendingAction: null,
-    selectedCardIndex: null,  // index into G.hand (play mode)
+    selectedCardIndex: null,   // index into G.hand (play mode)
     selectedOption: 0,
-    viewingCard: null,        // { card, location } for inspecting in-play cards
+    viewingCard: null,         // { card, location } for inspecting in-play cards
+    mustPlayEventId: null,     // instanceId of event drawn on pass — must play before turn ends
+    endTurnAfterResolve: false,// set when an option that ends the turn was played
   };
 }
 
@@ -114,6 +116,26 @@ function setSelectedOption(i) {
   renderCardDetail();
 }
 
+function selectCardWithOption(i, optIdx) {
+  if (G.pendingAction) return;
+  const card = G.hand[i];
+  if (!card) return;
+  if (card.options[optIdx]?.effect === 'multiplayer_only') return;
+  G.viewingCard = null;
+  G.selectedCardIndex = i;
+  G.selectedOption = optIdx;
+  render();
+}
+
+function togglePanel(contentId, sectionId) {
+  const content = document.getElementById(contentId);
+  if (!content) return;
+  const collapsed = content.classList.toggle('panel-collapsed');
+  const btn = content.parentElement.querySelector('.panel-toggle');
+  if (btn) btn.textContent = collapsed ? '▸' : '▾';
+  if (sectionId) document.getElementById(sectionId).classList.toggle('section-collapsed', collapsed);
+}
+
 // Inspect a card that is in play (active slot, stack, or instability)
 function viewCard(card, location) {
   G.selectedCardIndex = null;
@@ -134,11 +156,12 @@ function confirmPlay() {
   const card = G.hand[i];
   if (!card || !meetsRequirements(card)) return;
 
+  const isRequiredEvent = G.mustPlayEventId != null && card.instanceId === G.mustPlayEventId;
+
   G.hand.splice(i, 1);
   G.selectedCardIndex = null;
 
   let opt = card.options[G.selectedOption] || card.options[0];
-  // If the chosen option is multiplayer-only, find the first non-multiplayer option
   if (opt.effect === 'multiplayer_only') {
     opt = card.options.find(o => o.effect !== 'multiplayer_only') || opt;
   }
@@ -147,6 +170,11 @@ function confirmPlay() {
     applyCategoryCard(card, opt);
   } else {
     resolveEventCard(card, opt);
+  }
+
+  if (isRequiredEvent || opt.endsTurn) {
+    G.mustPlayEventId = null;
+    G.endTurnAfterResolve = true;
   }
 
   G.selectedOption = 0;
@@ -582,9 +610,51 @@ function afterCardResolved() {
   const end = checkEndConditions();
   if (end) { G.phase = end.result; render(); showEndModal(end); return; }
 
-  G.turn++;
-  drawCard();
+  if (G.endTurnAfterResolve) {
+    G.endTurnAfterResolve = false;
+    endTurn();
+    return;
+  }
+
   render();
+}
+
+function endTurn() {
+  G.mustPlayEventId = null;
+  G.endTurnAfterResolve = false;
+  G.selectedCardIndex = null;
+  G.selectedOption = 0;
+  G.viewingCard = null;
+  G.turn++;
+  const end = checkEndConditions();
+  if (end) { G.phase = end.result; render(); showEndModal(end); return; }
+  render();
+}
+
+function passTurn() {
+  if (G.pendingAction) return;
+  if (G.mustPlayEventId != null) return; // must play drawn event first
+
+  // Draw a card
+  if (!G.deck.length) {
+    if (!G.discard.length) { addLog('No cards remain anywhere. Turn ends.'); endTurn(); return; }
+    G.deck = buildDeck(G.discard.map(c => c.id));
+    G.discard = [];
+    addLog('Draw pile empty — discard reshuffled into deck.');
+  }
+  const drawn = G.deck.shift();
+  G.hand.push(drawn);
+  addLog(`Pass: Drew ${drawn.name}.`);
+
+  if (drawn.type === 'event') {
+    G.mustPlayEventId = drawn.instanceId;
+    G.selectedCardIndex = G.hand.length - 1;
+    G.selectedOption = 0;
+    addLog(`${drawn.name} is an event card — you must play it before the turn ends.`);
+    render();
+  } else {
+    endTurn();
+  }
 }
 
 // ─── Render ───────────────────────────────────────────────────────────────────
@@ -638,9 +708,9 @@ function renderCategories() {
     let instabHTML = `<div class="instab-empty">No instability</div>`;
     if (s.instability.length) {
       instabHTML = s.instability.map((c, i) => `
-        <div class="in-play-card instab-card" onclick="viewCard_instab('${cat}',${i})">
-          <div class="ipc-name">${c.name}</div>
-          <div class="ipc-value instab-value">−${c.value}</div>
+        <div class="stack-chip instab-chip" onclick="viewCard_instab('${cat}',${i})" title="${c.name}">
+          <span class="instab-chip-val">−${c.value}</span>
+          <span class="chip-name">${c.name}</span>
         </div>`).join('');
     }
 
@@ -689,6 +759,14 @@ function renderHand() {
       `<div class="hc-opt"><span class="hc-opt-label">${o.label}:</span> ${o.description}</div>`
     ).join('');
 
+    const optBtns = (card.options || []).map((opt, oi) => {
+      const isMpOnly = opt.effect === 'multiplayer_only';
+      const isActive = selected && G.selectedOption === oi;
+      return `<button class="hc-opt-btn${isActive ? ' hc-opt-btn-active' : ''}${isMpOnly ? ' hc-opt-btn-disabled' : ''}"
+        ${isMpOnly ? 'disabled' : ''}
+        onclick="event.stopPropagation(); selectCardWithOption(${i}, ${oi})">Opt ${oi + 1}</button>`;
+    }).join('');
+
     el.innerHTML = `
       <div class="hc-header">
         <span class="hc-type">${typeLabel}</span>
@@ -700,6 +778,7 @@ function renderHand() {
       ${card.requires ? `<div class="hc-req-tag">${buildReqText(card)}</div>` : ''}
       ${!playable ? '<div class="hc-unplayable">Requirements not met</div>' : ''}
       <div class="hc-flavor">${card.flavorText || ''}</div>
+      <div class="hc-opt-btns">${optBtns}</div>
     `;
 
     el.addEventListener('click', () => selectCard(i));
@@ -716,12 +795,17 @@ function renderCardDetail() {
   const body = document.getElementById('card-detail-body');
   const actions = document.getElementById('card-detail-actions');
 
+  const mustPlay = G.mustPlayEventId != null;
+  const passDisabled = !!G.pendingAction || mustPlay;
+  const passLabel = mustPlay ? '⚠ Play drawn event first' : 'Pass Turn';
+  const passBtn = `<button class="pass-btn${passDisabled ? ' pass-btn-disabled' : ''}" onclick="passTurn()" ${passDisabled ? 'disabled' : ''}>${passLabel}</button>`;
+
   // View mode: inspecting an in-play card
   if (G.viewingCard) {
     const { card, location } = G.viewingCard;
     const color = card.category ? CAT_COLORS[card.category] : '#888';
     body.innerHTML = renderDetailFrame(card, color, location, /*readonly*/true);
-    actions.innerHTML = `<button class="deselect-btn" onclick="clearView()">Close</button>`;
+    actions.innerHTML = `<button class="deselect-btn" onclick="clearView()">Close</button>${passBtn}`;
     return;
   }
 
@@ -737,13 +821,14 @@ function renderCardDetail() {
         Confirm Play
       </button>
       <button class="deselect-btn" onclick="deselectCard()">Deselect</button>
+      ${passBtn}
     `;
     return;
   }
 
   // Idle
   body.innerHTML = `<div class="detail-empty">Click any card — in your hand or in play — to inspect it here.</div>`;
-  actions.innerHTML = '';
+  actions.innerHTML = passBtn;
 }
 
 function renderDetailFrame(card, color, location, readonly) {
@@ -833,6 +918,10 @@ function closeModal() {
 
 // ─── Global onclick bridges (for inline onclick in innerHTML) ─────────────────
 
+window.passTurn = passTurn;
+window.togglePanel = togglePanel;
+window.selectCardWithOption = selectCardWithOption;
+
 window.viewCard_global = function(type, cat) {
   if (type === 'active') {
     const c = G.categories[cat].active;
@@ -863,7 +952,7 @@ window.startGame = startGame;
 function startGame() {
   closeModal();
   G = newGameState();
-  addLog('Game started. Select a card from your hand to begin.');
+  addLog('Game started. Play cards freely — use Pass Turn to draw and end your turn.');
   render();
 }
 

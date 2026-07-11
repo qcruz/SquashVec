@@ -254,18 +254,17 @@ html, body {
   gap: 3px;
 }
 
-.instab-card {
-  border-left-color: var(--danger) !important;
-  background: rgba(231,76,60,0.07);
+.instab-chip {
+  background: rgba(231,76,60,0.08);
+  border-color: rgba(231,76,60,0.25);
 }
 
-.instab-card:hover {
-  background: rgba(231,76,60,0.15);
-  border-color: var(--danger) !important;
-}
+.instab-chip:hover { background: rgba(231,76,60,0.18); }
 
-.instab-value {
+.instab-chip-val {
   color: var(--danger);
+  font-family: var(--font-mono);
+  font-size: 10px;
 }
 
 .instab-empty {
@@ -296,7 +295,9 @@ html, body {
   gap: 9px;
   overflow-x: auto;
   align-items: stretch;
-  padding-bottom: 3px;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
 /* ─── Hand Cards ─────────────────────────────────────────────────────────────── */
@@ -427,8 +428,8 @@ html, body {
 /* ─── Right panel — full height ──────────────────────────────────────────────── */
 
 #right-panel {
-  display: grid;
-  grid-template-rows: 220px 1fr;
+  display: flex;
+  flex-direction: column;
   border-left: 1px solid var(--border);
   overflow: hidden;
 }
@@ -449,6 +450,12 @@ html, body {
   flex-direction: column;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
+  flex: 0 0 220px;
+  transition: flex-basis 0.15s;
+}
+
+#log-section.section-collapsed {
+  flex: 0 0 auto;
 }
 
 #log {
@@ -456,6 +463,21 @@ html, body {
   overflow-y: auto;
   padding: 6px 14px 8px;
 }
+
+.panel-collapsed { display: none !important; }
+
+.panel-toggle {
+  float: right;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 11px;
+  padding: 0 2px;
+  line-height: 1;
+  font-family: var(--font-mono);
+}
+.panel-toggle:hover { color: var(--text); }
 
 .log-entry {
   font-size: 10px;
@@ -473,6 +495,7 @@ html, body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  flex: 1;
 }
 
 #card-detail-body {
@@ -689,6 +712,69 @@ html, body {
 }
 
 .deselect-btn:hover { color: var(--text); border-color: var(--text-muted); }
+
+.pass-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-family: var(--font-serif);
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s;
+  white-space: nowrap;
+}
+
+.pass-btn:hover:not(:disabled) { color: var(--text); border-color: var(--text-muted); }
+
+.pass-btn.pass-btn-disabled,
+.pass-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Hand card quick-select option buttons */
+.hc-opt-btns {
+  display: flex;
+  gap: 4px;
+  margin-top: auto;
+  padding-top: 5px;
+  border-top: 1px solid #2a2a3a;
+}
+
+.hc-opt-btn {
+  flex: 1;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: 3px;
+  padding: 4px 4px;
+  font-size: 9px;
+  font-family: var(--font-serif);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+
+.hc-opt-btn:hover:not(:disabled) {
+  background: #2e2e40;
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.hc-opt-btn-active {
+  background: #1c1c30;
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.hc-opt-btn-disabled,
+.hc-opt-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
 
 /* ─── Modals ─────────────────────────────────────────────────────────────────── */
 
