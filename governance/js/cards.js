@@ -3120,7 +3120,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Full Survey',
-        description: 'Draw 2 cards. Shuffle this card into the deck.',
+        description: 'Draw 2 cards. Discard this card.',
         effect: 'draw_if_hand_small',
       },
       {
@@ -3129,7 +3129,10 @@ const CARDS = [
         effect: 'draw_and_shuffle_self',
       },
     ],
-    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
   },
 
   {
