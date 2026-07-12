@@ -1499,10 +1499,9 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Galvanize',
-        description: 'Stack on Culture or Governance as a +1 bonus.',
+        description: 'Stack on any one category of your choice as a +1 bonus.',
         effect: 'stack_on_any_modal',
         bonusValue: 1,
-        choices: ['culture', 'governance'],
       },
       {
         label: 'Option 2 — Clear the Air',
