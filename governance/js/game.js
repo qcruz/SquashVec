@@ -106,7 +106,7 @@ function selectCard(i) {
   if (G.pendingAction) return;
   G.viewingCard = null;
   G.selectedCardIndex = (G.selectedCardIndex === i) ? null : i;
-  G.selectedOption = 0;
+  G.selectedOption = G.selectedCardIndex !== null ? firstEligibleOption(G.hand[G.selectedCardIndex]) : 0;
   render();
 }
 
@@ -118,7 +118,7 @@ function deselectCard() {
 
 function setSelectedOption(i) {
   const card = G.selectedCardIndex !== null ? G.hand[G.selectedCardIndex] : null;
-  if (card && card.options[i]?.effect === 'multiplayer_only') return;
+  if (!card || !canPlayOption(card, card.options[i])) return;
   G.selectedOption = i;
   renderCardDetail();
 }
@@ -126,8 +126,7 @@ function setSelectedOption(i) {
 function selectCardWithOption(i, optIdx) {
   if (G.pendingAction) return;
   const card = G.hand[i];
-  if (!card) return;
-  if (card.options[optIdx]?.effect === 'multiplayer_only') return;
+  if (!card || !canPlayOption(card, card.options[optIdx])) return;
   G.viewingCard = null;
   G.selectedCardIndex = i;
   G.selectedOption = optIdx;
@@ -176,8 +175,8 @@ function confirmPlay() {
   G.selectedCardIndex = null;
 
   let opt = card.options[G.selectedOption] || card.options[0];
-  if (opt.effect === 'multiplayer_only') {
-    opt = card.options.find(o => o.effect !== 'multiplayer_only') || opt;
+  if (!canPlayOption(card, opt)) {
+    opt = card.options.find(o => canPlayOption(card, o)) || opt;
   }
 
   if (card.type === 'category') {
@@ -226,7 +225,12 @@ function meetsRequirements(card) {
   return true;
 }
 
+function handHasPlayableCard() {
+  return G.hand.some(c => canPlayCard(c));
+}
+
 function canPlayCard(card) {
+  if (card.options?.length && !card.options.some(o => canPlayOption(card, o))) return false;
   if (!card.requires) return true;
   const r = card.requires;
   if (r.activeCardName) {
@@ -251,6 +255,14 @@ function applyCategoryCard(card, opt) {
     return;
   }
 
+  // Draw a card and shuffle this category card back into the deck
+  if (opt.effect === 'draw_and_shuffle_self') {
+    drawCard();
+    G.deck.push(card); shuffle(G.deck);
+    addLog(`${card.name}: drew 1 card. ${card.name} shuffled into deck.`);
+    return;
+  }
+
   // Stack bonus (no replacement)
   if (opt.effect === 'stack_bonus') {
     G.categories[cat].stack.push(card);
@@ -266,6 +278,20 @@ function applyCategoryCard(card, opt) {
 
   const catState = G.categories[cat];
   const prev = catState.active;
+
+  // Resource cost: remove stacked card(s) from costCategory, then replace or stack active
+  if (opt.effect === 'replace_plus_stack_cost') {
+    const costCat = opt.costCategory;
+    const costAmount = opt.costAmount || 1;
+    const costStack = G.categories[costCat].stack;
+    if (costStack.length < costAmount) {
+      addLog(`${card.name}: Need ${costAmount} resource(s) in ${cap(costCat)} stack to play — cannot play.`);
+      applyCardSelfDiscard(card);
+      return;
+    }
+    G.pendingAction = { type: 'replace_with_stack_cost', card, sourceCategory: costCat, targetCategory: cat, costRemaining: costAmount, bonusInstabilityRemoval: true };
+    render(); showRemoveStackModal(card, costCat, null); return;
+  }
 
   // Special pre-replacement side effects
   if (opt.effect === 'replace_consume_env') {
@@ -302,7 +328,7 @@ function applyCategoryCard(card, opt) {
 
   // Replace active
   catState.active = card;
-  addLog(`${card.name} (+${card.value}) is now your active ${cat} card.`);
+  addLog(`${card.name} (+${card.value}) is now your active ${cat} identity.`);
 
   handleOldCard(prev, cat, opt);
 }
@@ -343,6 +369,7 @@ function triggerOldCardDiscard(card, fromCat) {
     showDiscardReplacedModal(card);
   } else {
     applyDiscardDest(card, opts[0].target, opts[0].bonus);
+    afterCardResolved();
   }
 }
 
@@ -379,21 +406,104 @@ function resolveEventCard(card, opt) {
 
   switch (opt.effect) {
 
-    case 'stack_on_category':
+    case 'stack_on_category': {
+      const condMet = opt.condition ? checkCondition(opt.condition) : true;
+      if (!condMet) {
+        addLog(`${card.name}: Condition not met — discarding.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
       G.categories[opt.targetCategory].stack.push(card);
       addLog(`${card.name} (+${card.value}) stacked on ${opt.targetCategory}.`);
       applyEventDiscard(card);
       break;
+    }
 
     case 'stack_on_any_modal':
       G.pendingAction = { type: 'stack_self_on_any', card, bonusValue: opt.bonusValue };
       render(); showStackOnAnyModal(card, opt.bonusValue); return;
+
+    case 'pay_own_stack_then_stack_on_any': {
+      const ownCat = opt.ownCategory;
+      const stack = G.categories[ownCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No ${cap(ownCat)} resources to spend — cannot redirect.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'pay_stack_stack_on_any', card, sourceCategory: ownCat };
+      render(); showRemoveStackModal(card, ownCat, null); return;
+    }
 
     case 'place_self_to_instability': {
       const cat = opt.targetInstability;
       G.categories[cat].instability.push(card);
       addLog(`${card.name} → ${cat} instability (−${card.value}).`);
       break;
+    }
+
+    case 'remove_two_military_then_discard_three_hand': {
+      if (G.categories.military.stack.length < 2) {
+        addLog(`${card.name}: Need 2 Military resources — cannot play.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'military_exercise_cost', card, sourceCategory: 'military', costRemaining: 2, afterEffect: 'discard_three' };
+      render(); showRemoveStackModal(card, 'military', null); return;
+    }
+
+    case 'remove_two_military_then_draw_two': {
+      if (G.categories.military.stack.length < 2) {
+        addLog(`${card.name}: Need 2 Military resources — cannot play.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'military_exercise_cost', card, sourceCategory: 'military', costRemaining: 2, afterEffect: 'draw_two' };
+      render(); showRemoveStackModal(card, 'military', null); return;
+    }
+
+    case 'remove_military_then_discard_hand_self_discard': {
+      if (!G.categories.military.stack.length) {
+        addLog(`${card.name}: No Military resources to pay cost.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'remove_stack_then_hand_discard', card, sourceCategory: 'military' };
+      render(); showRemoveStackModal(card, 'military', null); return;
+    }
+
+    case 'discard_hand_then_self': {
+      const afterInstab = opt.afterInstability || null;
+      if (!G.hand.length) {
+        addLog(`${card.name}: No cards in hand to discard — skipping.`);
+        if (afterInstab) {
+          G.categories[afterInstab].instability.push(card);
+          addLog(`${card.name} → ${cap(afterInstab)} instability.`);
+          afterCardResolved();
+        } else {
+          applyCardSelfDiscard(card);
+          afterCardResolved();
+        }
+        break;
+      }
+      G.pendingAction = { type: 'discard_hand_cards', card, remaining: 1, afterInstability: afterInstab };
+      render(); showDiscardHandModal(card, 1); return;
+    }
+
+    case 'take_resource_to_economy': {
+      const srcCats = opt.sourceCategories || ['technology', 'economy'];
+      const afterEffect = opt.afterEffect;
+      if (afterEffect === 'remove_military_discard_self' && !G.categories.military.stack.length) {
+        addLog(`${card.name}: No Military resources to pay cost.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      const hasResources = srcCats.some(cat => G.categories[cat].stack.length > 0);
+      if (!hasResources) {
+        addLog(`${card.name}: No resources available to take — skipping.`);
+        resolveAfterTake(card, afterEffect);
+        return;
+      }
+      G.pendingAction = { type: 'take_resource_to_economy', card, sourceCategories: srcCats, afterEffect };
+      render(); showTakeResourceModal(card, srcCats); return;
     }
 
     case 'suppress_hazard': {
@@ -405,8 +515,16 @@ function resolveEventCard(card, opt) {
     }
 
     case 'remove_instability_modal':
-      G.pendingAction = { type: 'remove_instability', card, maxRemove: opt.maxRemove || 1, filter: opt.targetCategory || null };
+      G.pendingAction = { type: 'remove_instability', card, maxRemove: opt.maxRemove || 1, filter: opt.targetCategory || null, selfDiscardFlow: !!opt.selfDiscardFlow };
       render(); showInstabilityModal(card, opt.maxRemove || 1, opt.targetCategory || null); return;
+
+    case 'remove_lowest_instability_modal':
+      G.pendingAction = { type: 'remove_lowest_instability', card, selfDiscardFlow: !!opt.selfDiscardFlow };
+      render(); showRemoveLowestInstabilityModal(card); return;
+
+    case 'move_instability_modal':
+      G.pendingAction = { type: 'move_instability_src', card, selfDiscardFlow: !!opt.selfDiscardFlow };
+      render(); showMoveInstabilitySrcModal(card); return;
 
     case 'remove_two_instability_modal':
       G.pendingAction = { type: 'remove_two_instability', card, picked: [] };
@@ -426,20 +544,78 @@ function resolveEventCard(card, opt) {
     case 'discard_from_hand_modal': {
       const condMet = opt.condition ? checkCondition(opt.condition) : true;
       if (!condMet) {
-        addLog(`${card.name}: Condition not met — no effect.`);
+        addLog(`${card.name}: Condition not met — no effect. (Hand size: ${G.hand.length + 1})`);
         applyCardSelfDiscard(card);
         break;
       }
-      const count = opt.count || 1;
+      const count = Math.min(opt.count || 1, G.hand.length);
+      if (count <= 0) {
+        addLog(`${card.name}: No cards in hand to discard — no effect.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
       G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
       render(); showDiscardHandModal(card, count); return;
+    }
+
+    case 'remove_stack_card_and_optionally_place_self': {
+      const srcCat = opt.sourceCategory;
+      const tgtCat = opt.targetCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to remove.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'remove_stack_place_self', card, sourceCategory: srcCat, targetCategory: tgtCat };
+      render(); showRemoveStackModal(card, srcCat, tgtCat); return;
+    }
+
+    case 'remove_stack_card_then_shuffle_self': {
+      const srcCat = opt.sourceCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to remove.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'remove_stack_shuffle_self', card, sourceCategory: srcCat, targetCategory: null };
+      render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
+    case 'remove_stack_card_then_remove_instability': {
+      const srcCat = opt.sourceCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to pay the cost — cannot play.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'remove_stack_then_instability', card, sourceCategory: srcCat, maxRemove: opt.maxRemove || 1, selfDiscardFlow: !!opt.selfDiscardFlow };
+      render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
+    case 'discard_self':
+      applyCardSelfDiscard(card);
+      break;
+
+    case 'remove_stack_card_then_discard_self': {
+      const srcCat = opt.sourceCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to remove.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'remove_stack_place_self', card, sourceCategory: srcCat, targetCategory: null };
+      render(); showRemoveStackModal(card, srcCat, null); return;
     }
 
     case 'draw_if_hand_small': {
       const condMet = opt.condition ? checkCondition(opt.condition) : true;
       if (condMet) {
-        drawCard();
-        addLog(`${card.name}: Drew 1 card.`);
+        drawCard(); drawCard();
+        addLog(`${card.name}: Drew 2 cards.`);
       } else {
         addLog(`${card.name}: Condition not met — no effect.`);
       }
@@ -575,15 +751,19 @@ function pickTwoInstability(cat) {
 
 function resolveRemoveInstability(cat, maxRemove) {
   closeModal();
-  const { card } = G.pendingAction;
+  const { card, selfDiscardFlow } = G.pendingAction;
   const pile = G.categories[cat].instability;
   const removed = [];
   for (let i = 0; i < maxRemove && pile.length; i++) removed.push(pile.shift());
   removed.forEach(c => { G.deck.push(c); });
   shuffle(G.deck);
   addLog(`${removed.map(c => c.name).join(', ')} removed from ${cat} instability → deck.`);
-  G.discard.push(card);
   G.pendingAction = null;
+  if (selfDiscardFlow) {
+    applyCardSelfDiscard(card);
+  } else {
+    G.discard.push(card);
+  }
   afterCardResolved();
 }
 
@@ -614,7 +794,7 @@ function resolveStackOnAny(cat) {
 }
 
 function applyCardSelfDiscard(card) {
-  const opts = card.discardTo || [{ target: 'discard_pile' }];
+  const opts = card.discardTo || [{ target: 'shuffle_to_deck' }];
   if (opts.length === 1) {
     applyDiscardDest(card, opts[0].target, opts[0].bonus);
   } else {
@@ -626,7 +806,7 @@ function applyCardSelfDiscard(card) {
 function showDiscardHandModal(card, remaining) {
   const btns = G.hand.map((c, i) => {
     const color = c.category ? CAT_COLORS[c.category] : '#777';
-    const typeLabel = c.type === 'category' ? cap(c.category) : `${cap(c.subtype || 'event')} event`;
+    const typeLabel = c.type === 'category' ? `${cap(c.category)} Identity` : `${cap(c.subtype || 'event')} event`;
     return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="pickDiscardHand(${i})">
       <strong style="color:${color}">${c.name}</strong>
       <small>${typeLabel}</small>
@@ -648,8 +828,342 @@ function pickDiscardHand(i) {
   if (action.remaining > 0) { showDiscardHandModal(action.card, action.remaining); return; }
   closeModal();
   G.pendingAction = null;
-  applyCardSelfDiscard(action.card);
+  if (action.afterInstability) {
+    G.categories[action.afterInstability].instability.push(action.card);
+    addLog(`${action.card.name} → ${cap(action.afterInstability)} instability.`);
+    afterCardResolved();
+  } else {
+    applyCardSelfDiscard(action.card);
+    afterCardResolved();
+  }
+}
+
+function showRemoveStackModal(card, srcCat, tgtCat) {
+  const stack = G.categories[srcCat].stack;
+  if (!stack.length) {
+    addLog(`${card.name}: No cards in ${cap(srcCat)} stack.`);
+    G.pendingAction = null;
+    applyCardSelfDiscard(card);
+    afterCardResolved();
+    return;
+  }
+  const srcColor = CAT_COLORS[srcCat];
+  const btns = stack.map((c, i) => {
+    const color = CAT_COLORS[c.category] || srcColor;
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveRemoveStackCard(${i})">
+      <strong>${c.name}</strong>
+      <small>+${c.value} · ${cap(srcCat)} Stack</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose a card to remove from the ${cap(srcCat)} Stack and shuffle into the draw deck:</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveRemoveStackCard(idx) {
+  closeModal();
+  const { card, sourceCategory, targetCategory, type } = G.pendingAction;
+  const removed = G.categories[sourceCategory].stack.splice(idx, 1)[0];
+  G.deck.push(removed); shuffle(G.deck);
+  addLog(`${removed.name} removed from ${sourceCategory} stack → deck.`);
+  if (type === 'pay_stack_stack_on_any') {
+    G.pendingAction = { type: 'stack_self_on_any', card, bonusValue: card.value };
+    render(); showStackOnAnyModal(card, card.value); return;
+  } else if (type === 'remove_stack_then_instability') {
+    const { maxRemove, selfDiscardFlow } = G.pendingAction;
+    G.pendingAction = { type: 'remove_instability', card, maxRemove, selfDiscardFlow };
+    render(); showInstabilityModal(card, maxRemove, null); return;
+  } else if (type === 'remove_stack_shuffle_self') {
+    G.pendingAction = null;
+    G.deck.push(card); shuffle(G.deck);
+    addLog(`${card.name} shuffled into the draw deck.`);
+    afterCardResolved();
+  } else if (type === 'remove_stack_then_hand_discard') {
+    const count = Math.min(1, G.hand.length);
+    if (count <= 0) {
+      G.pendingAction = null;
+      addLog(`${card.name}: No cards in hand to discard — skipping.`);
+      applyCardSelfDiscard(card);
+      afterCardResolved();
+      return;
+    }
+    G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
+    render(); showDiscardHandModal(card, count); return;
+  } else if (type === 'military_exercise_cost') {
+    const costRemaining = G.pendingAction.costRemaining - 1;
+    if (costRemaining > 0) {
+      G.pendingAction = { ...G.pendingAction, costRemaining };
+      render(); showRemoveStackModal(card, 'military', null); return;
+    }
+    const { afterEffect } = G.pendingAction;
+    G.pendingAction = null;
+    if (afterEffect === 'discard_three') {
+      const count = Math.min(3, G.hand.length);
+      if (count <= 0) { applyCardSelfDiscard(card); afterCardResolved(); return; }
+      G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
+      render(); showDiscardHandModal(card, count); return;
+    } else if (afterEffect === 'draw_two') {
+      drawCard(); drawCard();
+      addLog(`${card.name}: Drew 2 cards.`);
+      applyCardSelfDiscard(card); afterCardResolved();
+    }
+    return;
+  } else if (type === 'replace_with_stack_cost') {
+    const costRemaining = G.pendingAction.costRemaining - 1;
+    if (costRemaining > 0) {
+      G.pendingAction = { ...G.pendingAction, costRemaining };
+      render(); showRemoveStackModal(card, sourceCategory, null); return;
+    }
+    G.pendingAction = { type: 'replace_or_stack', card, targetCategory, bonusInstabilityRemoval: G.pendingAction.bonusInstabilityRemoval };
+    render(); showReplaceOrStackModal(card, targetCategory); return;
+  } else if (targetCategory) {
+    G.pendingAction = null;
+    G.categories[targetCategory].stack.push(card);
+    addLog(`${card.name} (+${card.value}) placed on ${cap(targetCategory)} stack.`);
+    afterCardResolved();
+  } else {
+    G.pendingAction = null;
+    applyCardSelfDiscard(card);
+    afterCardResolved();
+  }
+}
+
+function showPlaceSelfModal(card, tgtCat) {
+  const color = CAT_COLORS[tgtCat];
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Place this card in your ${cap(tgtCat)} Stack?</p>
+    <div class="opt-list">
+      <button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolvePlaceSelf(true)">
+        <strong style="color:${color}">Yes — Stack on ${cap(tgtCat)}</strong>
+        <small>+${card.value} to ${cap(tgtCat)} score</small>
+      </button>
+      <button class="opt-btn" onclick="resolvePlaceSelf(false)">
+        <strong>No — Shuffle into deck</strong>
+        <small>Card returns to draw deck</small>
+      </button>
+    </div>
+  `);
+}
+
+function resolvePlaceSelf(place) {
+  closeModal();
+  const { card, targetCategory } = G.pendingAction;
+  G.pendingAction = null;
+  if (place) {
+    G.categories[targetCategory].stack.push(card);
+    addLog(`${card.name} (+${card.value}) placed on ${targetCategory} stack.`);
+  } else {
+    applyCardSelfDiscard(card);
+  }
   afterCardResolved();
+}
+
+function showRemoveLowestInstabilityModal(card) {
+  const cats = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+  if (!cats.length) {
+    addLog(`${card.name}: No instability anywhere — no effect.`);
+    G.pendingAction = null;
+    applyCardSelfDiscard(card);
+    afterCardResolved(); return;
+  }
+  const btns = cats.map(cat => {
+    const pile = G.categories[cat].instability;
+    const lowest = [...pile].sort((a, b) => (a.value || 0) - (b.value || 0))[0];
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveRemoveLowestInstability('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>${pile.length} card(s) — lowest: ${lowest.name} (−${lowest.value})</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose a category — lowest instability card will be shuffled into deck.</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveRemoveLowestInstability(cat) {
+  closeModal();
+  const { card, selfDiscardFlow } = G.pendingAction;
+  G.pendingAction = null;
+  const pile = G.categories[cat].instability;
+  if (!pile.length) { applyCardSelfDiscard(card); afterCardResolved(); return; }
+  const lowestIdx = pile.reduce((best, c, i) => (c.value || 0) < (pile[best].value || 0) ? i : best, 0);
+  const removed = pile.splice(lowestIdx, 1)[0];
+  G.deck.push(removed); shuffle(G.deck);
+  addLog(`${removed.name} (lowest instability) removed from ${cat} → deck.`);
+  if (selfDiscardFlow) { applyCardSelfDiscard(card); } else { G.discard.push(card); }
+  afterCardResolved();
+}
+
+function showMoveInstabilitySrcModal(card) {
+  const cats = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+  if (!cats.length) {
+    addLog(`${card.name}: No instability to move — no effect.`);
+    G.pendingAction = null;
+    applyCardSelfDiscard(card);
+    afterCardResolved(); return;
+  }
+  const btns = cats.map(cat => {
+    const pile = G.categories[cat].instability;
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMoveInstabilitySrc('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>${pile.map(c => c.name).join(', ')}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Move instability from which category?</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveMoveInstabilitySrc(srcCat) {
+  closeModal();
+  const pile = G.categories[srcCat].instability;
+  if (!pile.length) { applyCardSelfDiscard(G.pendingAction.card); afterCardResolved(); return; }
+  G.pendingAction = { ...G.pendingAction, type: 'move_instability_dest', srcCat, instCard: pile[0] };
+  const destCats = CATEGORIES.filter(c => c !== srcCat);
+  const btns = destCats.map(cat => {
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMoveInstabilityDest('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>Move ${G.pendingAction.instCard.name} here</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${G.pendingAction.card.name}</div>
+    <p class="modal-sub">Move <strong>${G.pendingAction.instCard.name}</strong> (from ${cap(srcCat)}) to which category?</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveMoveInstabilityDest(destCat) {
+  closeModal();
+  const { card, srcCat, instCard, selfDiscardFlow } = G.pendingAction;
+  G.pendingAction = null;
+  const srcPile = G.categories[srcCat].instability;
+  const idx = srcPile.indexOf(instCard);
+  if (idx !== -1) srcPile.splice(idx, 1);
+  G.categories[destCat].instability.push(instCard);
+  addLog(`${instCard.name} moved from ${srcCat} instability → ${destCat} instability.`);
+  if (selfDiscardFlow) { applyCardSelfDiscard(card); } else { G.discard.push(card); }
+  afterCardResolved();
+}
+
+function showReplaceOrStackModal(card, cat) {
+  const color = CAT_COLORS[cat];
+  const hasCurrent = !!G.categories[cat].active;
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">How do you want to place this ${cap(cat)} identity?</p>
+    <div class="opt-list">
+      <button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveReplaceOrStack('replace')">
+        <strong style="color:${color}">Replace</strong>
+        <small>${hasCurrent ? 'Remove current active identity (it gets discarded)' : 'Set as active ' + cap(cat) + ' identity'}</small>
+      </button>
+      <button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveReplaceOrStack('stack')">
+        <strong style="color:${color}">Stack</strong>
+        <small>Add to ${cap(cat)} stack (+${card.value} to score, current identity stays active)</small>
+      </button>
+    </div>
+  `);
+}
+
+function applyIdentityBenefit(card) {
+  if (!card.benefit) return;
+  const { resourceCategory, count } = card.benefit;
+  const found = [];
+  const rest = [];
+  for (const c of G.deck) {
+    if (found.length < count && c.type === 'event' && c.subtype === 'stacking' && c.category === resourceCategory) {
+      found.push(c);
+    } else {
+      rest.push(c);
+    }
+  }
+  G.deck = rest;
+  shuffle(G.deck);
+  found.forEach(c => G.hand.push(c));
+  if (found.length > 0) {
+    addLog(`${card.name} benefit: ${found.map(c => c.name).join(', ')} added to hand.`);
+  } else {
+    addLog(`${card.name} benefit: No ${cap(resourceCategory)} resources found in deck.`);
+  }
+}
+
+function resolveReplaceOrStack(choice) {
+  closeModal();
+  const { card, targetCategory, bonusInstabilityRemoval } = G.pendingAction;
+  G.pendingAction = null;
+  const cat = targetCategory;
+
+  // Bonus fires first — before old card is discarded — so order never affects the reward
+  if (bonusInstabilityRemoval && G.categories[cat].instability.length > 0) {
+    const oldest = G.categories[cat].instability.shift();
+    G.deck.push(oldest); shuffle(G.deck);
+    addLog(`Bonus: ${oldest.name} removed from ${cap(cat)} instability → deck.`);
+  }
+
+  // Identity benefit: search deck for matching resources
+  applyIdentityBenefit(card);
+
+  if (choice === 'replace') {
+    const catState = G.categories[cat];
+    const prev = catState.active;
+    catState.active = card;
+    addLog(`${card.name} (+${card.value}) is now your active ${cap(cat)} identity.`);
+    if (prev) { triggerOldCardDiscard(prev, cat); }
+    else { afterCardResolved(); }
+  } else {
+    G.categories[cat].stack.push(card);
+    addLog(`${card.name} (+${card.value}) stacked on ${cap(cat)}.`);
+    afterCardResolved();
+  }
+}
+
+function showTakeResourceModal(card, cats) {
+  const entries = [];
+  cats.forEach(cat => {
+    G.categories[cat].stack.forEach((c, idx) => entries.push({ c, cat, idx }));
+  });
+  const btns = entries.map(({ c, cat, idx }) => {
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveTakeResource('${cat}',${idx})">
+      <strong style="color:${color}">${c.name}</strong>
+      <small>+${c.value} · ${cap(cat)} Stack → Economy</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose a resource to move to your Economy stack:</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveTakeResource(cat, idx) {
+  closeModal();
+  const { card, afterEffect } = G.pendingAction;
+  const taken = G.categories[cat].stack.splice(idx, 1)[0];
+  G.categories.economy.stack.push(taken);
+  addLog(`${taken.name} moved from ${cap(cat)} stack → Economy stack.`);
+  resolveAfterTake(card, afterEffect);
+}
+
+function resolveAfterTake(card, afterEffect) {
+  G.pendingAction = null;
+  if (afterEffect === 'remove_military_discard_self') {
+    G.pendingAction = { type: 'remove_stack_place_self', card, sourceCategory: 'military', targetCategory: null };
+    render(); showRemoveStackModal(card, 'military', null);
+  } else if (afterEffect === 'place_military_instability') {
+    G.categories.military.instability.push(card);
+    addLog(`${card.name} → Military instability (−${card.value}).`);
+    afterCardResolved();
+  }
 }
 
 function showEndModal(end) {
@@ -675,6 +1189,49 @@ function showEndModal(end) {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+function canPlayOption(card, opt) {
+  if (opt.effect === 'multiplayer_only') return false;
+  if (opt.condition && !checkConditionDisplay(opt.condition)) return false;
+  switch (opt.effect) {
+    case 'replace_plus_stack_cost':
+      return G.categories[opt.costCategory].stack.length >= (opt.costAmount || 1);
+    case 'remove_stack_card_and_optionally_place_self':
+    case 'remove_stack_card_then_shuffle_self':
+    case 'remove_stack_card_then_remove_instability':
+    case 'remove_stack_card_then_discard_self':
+      return G.categories[opt.sourceCategory].stack.length >= 1;
+    case 'pay_own_stack_then_stack_on_any':
+      return G.categories[opt.ownCategory].stack.length >= 1;
+    case 'take_resource_to_economy':
+      if (opt.afterEffect === 'remove_military_discard_self') {
+        return G.categories.military.stack.length >= 1;
+      }
+      return true;
+    case 'remove_two_military_then_discard_three_hand':
+    case 'remove_two_military_then_draw_two':
+      return G.categories.military.stack.length >= 2;
+    case 'remove_military_then_discard_hand_self_discard':
+      return G.categories.military.stack.length >= 1;
+    case 'discard_hand_then_self':
+      return true;
+    default:
+      return true;
+  }
+}
+
+function firstEligibleOption(card) {
+  const idx = (card.options || []).findIndex(o => canPlayOption(card, o));
+  return idx >= 0 ? idx : 0;
+}
+
+function checkConditionDisplay(cond) {
+  if (!cond) return true;
+  // At render time the card is still in hand — check hand size directly, no +1 offset
+  if (cond.handMoreThan !== undefined) return G.hand.length > cond.handMoreThan;
+  if (cond.handLessThan !== undefined) return G.hand.length < cond.handLessThan;
+  return checkCondition(cond);
+}
+
 function checkCondition(cond) {
   if (!cond) return true;
   if (cond.activeCard) {
@@ -689,6 +1246,9 @@ function checkCondition(cond) {
   }
   if (cond.instabilityEmpty) {
     return G.categories[cond.instabilityEmpty].instability.length === 0;
+  }
+  if (cond.instabilityExists !== undefined) {
+    return G.categories[cond.instabilityExists].instability.length > 0;
   }
   // Hand size checks: card already removed from hand, +1 accounts for the played card
   if (cond.handMoreThan !== undefined) {
@@ -741,7 +1301,11 @@ function endTurn() {
 
 function passTurn() {
   if (G.pendingAction) return;
-  if (G.mustPlayEventId != null) return;
+  if (G.mustPlayEventId != null && handHasPlayableCard()) return;
+  if (G.mustPlayEventId != null) {
+    addLog('No eligible options — forfeiting must-play event.');
+    G.mustPlayEventId = null;
+  }
 
   addLog('Pass.');
   const drawn = drawCard();
@@ -750,11 +1314,11 @@ function passTurn() {
   if (drawn.mustPlayWhenDrawn) {
     // drawCard() already set mustPlayEventId + selectedCardIndex
     render();
-  } else if (drawn.type === 'event') {
+  } else if (drawn.type === 'event' && drawn.subtype === 'hazard') {
     G.mustPlayEventId = drawn.instanceId;
     G.selectedCardIndex = G.hand.length - 1;
-    G.selectedOption = 0;
-    addLog(`${drawn.name} is an event — must be played before turn ends.`);
+    G.selectedOption = firstEligibleOption(drawn);
+    addLog(`${drawn.name} is a hazard — must be resolved before turn ends.`);
     render();
   } else {
     endTurn();
@@ -791,7 +1355,7 @@ function renderCategories() {
     if (s.active) {
       activeHTML = `<div class="in-play-card" style="border-left-color:${color}" onclick="viewCard_global('active','${cat}')">
         <div class="ipc-name">${s.active.name}</div>
-        <div class="ipc-value" style="color:${color}">+${s.active.value}</div>
+        <div class="ipc-value">+${s.active.value}</div>
         ${s.active.passiveEffect ? '<div class="ipc-passive">Passive</div>' : ''}
       </div>`;
     }
@@ -802,8 +1366,8 @@ function renderCategories() {
       stackHTML = `<div class="cat-section-label">Event Stack</div>
         <div class="cat-stack">
           ${s.stack.map((c, i) => `
-            <div class="stack-chip" style="color:${color}" onclick="viewCard_stack('${cat}',${i})" title="${c.name}">
-              +${c.value} <span class="chip-name">${c.name}</span>
+            <div class="stack-chip" onclick="viewCard_stack('${cat}',${i})" title="${c.name}">
+              <span class="chip-val">+${c.value}</span> <span class="chip-name">${c.name}</span>
             </div>`).join('')}
         </div>`;
     }
@@ -828,7 +1392,7 @@ function renderCategories() {
         <div class="score-bar-fill" style="width:${pct}%;background:${color}"></div>
         <div class="score-bar-markers"><span>0</span><span>20</span></div>
       </div>
-      <div class="cat-section-label">Active Card</div>
+      <div class="cat-section-label">Identity</div>
       <div class="cat-active-slot">${activeHTML}</div>
       ${stackHTML}
       <div class="cat-section-label instab-section-label">Instability</div>
@@ -857,24 +1421,24 @@ function renderHand() {
     const subtypeLabel = card.subtype ? ` · ${cap(card.subtype)}` : '';
     const typeLabel = card.type === 'event'
       ? `Event${subtypeLabel}`
-      : `${cap(card.category || '')} Card`;
+      : `${cap(card.category || '')} Identity`;
 
     const effectSummary = (card.options || []).map(o =>
       `<div class="hc-opt"><span class="hc-opt-label">${o.label}:</span> ${o.description}</div>`
     ).join('');
 
     const optBtns = (card.options || []).map((opt, oi) => {
-      const isMpOnly = opt.effect === 'multiplayer_only';
+      const disabled = !canPlayOption(card, opt);
       const isActive = selected && G.selectedOption === oi;
-      return `<button class="hc-opt-btn${isActive ? ' hc-opt-btn-active' : ''}${isMpOnly ? ' hc-opt-btn-disabled' : ''}"
-        ${isMpOnly ? 'disabled' : ''}
+      return `<button class="hc-opt-btn${isActive ? ' hc-opt-btn-active' : ''}${disabled ? ' hc-opt-btn-disabled' : ''}"
+        ${disabled ? 'disabled' : ''}
         onclick="event.stopPropagation(); selectCardWithOption(${i}, ${oi})">Opt ${oi + 1}</button>`;
     }).join('');
 
     el.innerHTML = `
       <div class="hc-header">
         <span class="hc-type">${typeLabel}</span>
-        ${card.value > 0 ? `<span class="hc-val-badge" style="background:${color}22;color:${color};border-color:${color}55">+${card.value}</span>` : ''}
+        ${card.value > 0 ? `<span class="hc-val-badge">+${card.value}</span>` : ''}
       </div>
       <div class="hc-name">${card.name}</div>
       <div class="hc-art"></div>
@@ -901,8 +1465,9 @@ function renderCardDetail() {
   const actions = document.getElementById('card-detail-actions');
 
   const mustPlay = G.mustPlayEventId != null;
-  const passDisabled = !!G.pendingAction || mustPlay;
-  const passLabel = mustPlay ? '⚠ Play drawn event first' : 'Pass Turn';
+  const handPlayable = handHasPlayableCard();
+  const passDisabled = !!G.pendingAction || (mustPlay && handPlayable);
+  const passLabel = mustPlay && handPlayable ? '⚠ Play drawn event first' : 'Pass Turn';
   const passBtn = `<button class="pass-btn${passDisabled ? ' pass-btn-disabled' : ''}" onclick="passTurn()" ${passDisabled ? 'disabled' : ''}>${passLabel}</button>`;
 
   // View mode: inspecting an in-play card
@@ -946,7 +1511,13 @@ function renderDetailFrame(card, color, location, readonly) {
   const subtypeLabel = card.subtype ? ` · ${cap(card.subtype)}` : '';
   const typeStr = card.type === 'event'
     ? `Event Card${subtypeLabel}`
-    : `${cap(card.category || '')} Card`;
+    : `${cap(card.category || '')} Identity`;
+
+  const benefitHTML = card.benefit ? `
+    <div class="detail-benefit">
+      <span class="detail-section-label">Benefit When Played</span>
+      <div class="detail-benefit-text">${card.benefit.description}</div>
+    </div>` : '';
 
   const reqHTML = card.requires ? `
     <div class="detail-requires ${canPlayCard(card) ? 'req-met' : 'req-unmet'}">
@@ -959,18 +1530,22 @@ function renderDetailFrame(card, color, location, readonly) {
     optionsHTML = `<div class="detail-section-label">Play Options</div><div class="detail-opts">`;
     card.options.forEach((opt, oi) => {
       const isMultiplayerOnly = opt.effect === 'multiplayer_only';
+      const eligible = !readonly && canPlayOption(card, opt);
       const condMet = opt.condition ? checkCondition(opt.condition) : true;
-      const isSelected = !readonly && !isMultiplayerOnly && G.selectedOption === oi;
-      const unmetNote = opt.condition && !condMet
+      const isSelected = eligible && G.selectedOption === oi;
+      const ineligibleNote = !isMultiplayerOnly && !eligible
+        ? `<span class="opt-cond-unmet">Not enough resources to play this option.</span>` : '';
+      const unmetNote = eligible && opt.condition && !condMet
         ? `<span class="opt-cond-unmet">Condition not currently met — will apply fallback.</span>` : '';
       const multiplayerNote = isMultiplayerOnly
         ? `<span class="opt-multiplayer-tag">Multiplayer only — not available in solo play</span>` : '';
+      const dimmedClass = isMultiplayerOnly ? ' detail-opt-multiplayer' : (!eligible ? ' detail-opt-dimmed' : '');
       optionsHTML += `
-        <div class="detail-opt${isSelected ? ' detail-opt-selected' : ''}${isMultiplayerOnly ? ' detail-opt-multiplayer' : (!condMet && opt.condition ? ' detail-opt-dimmed' : '')}"
+        <div class="detail-opt${isSelected ? ' detail-opt-selected' : ''}${dimmedClass}"
              style="${isSelected ? `border-color:${color}` : ''}"
-             ${readonly || isMultiplayerOnly ? '' : `onclick="setSelectedOption(${oi})"`}>
+             ${readonly || !eligible ? '' : `onclick="setSelectedOption(${oi})"`}>
           <div class="detail-opt-label">${opt.label}</div>
-          <div class="detail-opt-desc">${opt.description} ${unmetNote}${multiplayerNote}</div>
+          <div class="detail-opt-desc">${opt.description}${opt.effect === 'replace_plus_stack_cost' ? ' <em>Bonus: removes the oldest instability from this category (if any).</em>' : ''} ${ineligibleNote}${unmetNote}${multiplayerNote}</div>
         </div>`;
     });
     optionsHTML += `</div>`;
@@ -994,6 +1569,7 @@ function renderDetailFrame(card, color, location, readonly) {
         </div>
         ${card.value > 0 ? `<div class="detail-value" style="color:${color}">+${card.value}</div>` : ''}
       </div>
+      ${benefitHTML}
       ${reqHTML}
       ${optionsHTML}
       ${discardHTML}
@@ -1059,6 +1635,13 @@ window.resolveDiscardReplaced = resolveDiscardReplaced;
 window.resolveRemoveInstability = resolveRemoveInstability;
 window.resolveStackOnAny = resolveStackOnAny;
 window.pickTwoInstability = pickTwoInstability;
+window.resolveRemoveStackCard = resolveRemoveStackCard;
+window.resolvePlaceSelf = resolvePlaceSelf;
+window.resolveReplaceOrStack = resolveReplaceOrStack;
+window.resolveTakeResource = resolveTakeResource;
+window.resolveRemoveLowestInstability = resolveRemoveLowestInstability;
+window.resolveMoveInstabilitySrc = resolveMoveInstabilitySrc;
+window.resolveMoveInstabilityDest = resolveMoveInstabilityDest;
 window.startGame = startGame;
 
 // ─── Init ─────────────────────────────────────────────────────────────────────

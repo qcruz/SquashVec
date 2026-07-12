@@ -13,6 +13,9 @@ Verify that any proposed change is consistent with both documents before writing
 
 ## Rules for Adding Cards
 
+> **No card may be added to or modified in `js/cards.js` without explicit owner confirmation.**
+> New card ideas go to `docs/planned-cards.md` first. Cards are reviewed and approved before implementation.
+
 All new cards must conform to the following (from `docs/design.md`):
 
 - **All cards have exactly two play options.** No card may have one or zero options. Both options must be meaningfully different.
