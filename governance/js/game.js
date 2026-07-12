@@ -623,6 +623,16 @@ function resolveEventCard(card, opt) {
       break;
     }
 
+    case 'remove_stack_card_then_remove_or_identity_then_stack': {
+      const srcCat = opt.sourceCategory;
+      if (!G.categories[srcCat].stack.length) {
+        addLog(`${card.name}: No ${cap(srcCat)} resources to pay cost.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'remove_stack_then_remove_or_identity_stack', card, sourceCategory: srcCat, removeCategory: opt.removeCategory, targetCategory: opt.targetCategory };
+      render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
     case 'remove_stack_card_then_discard_hand_then_stack': {
       const srcCat = opt.sourceCategory;
       const tgtCat = opt.targetCategory;
@@ -992,6 +1002,27 @@ function resolveRemoveStackCard(idx) {
     }
     G.pendingAction = { type: 'replace_or_stack', card, targetCategory, bonusInstabilityRemoval: G.pendingAction.bonusInstabilityRemoval };
     render(); showReplaceOrStackModal(card, targetCategory); return;
+  } else if (type === 'remove_stack_then_remove_or_identity_stack') {
+    const { removeCategory, targetCategory } = G.pendingAction;
+    G.pendingAction = null;
+    const removeStack = G.categories[removeCategory].stack;
+    if (removeStack.length > 0) {
+      const removed2 = removeStack.splice(0, 1)[0];
+      G.deck.push(removed2); shuffle(G.deck);
+      addLog(`${removed2.name} removed from ${cap(removeCategory)} stack → deck.`);
+    } else {
+      const identity = G.categories[removeCategory].active;
+      if (identity) {
+        G.categories[removeCategory].active = null;
+        G.categories[removeCategory].instability.push(identity);
+        addLog(`${identity.name} (active ${cap(removeCategory)} identity) removed → ${cap(removeCategory)} instability.`);
+      } else {
+        addLog(`${card.name}: No ${cap(removeCategory)} resources or identity to remove.`);
+      }
+    }
+    G.categories[targetCategory].stack.push(card);
+    addLog(`${card.name} (+${card.value}) placed on ${cap(targetCategory)} stack.`);
+    afterCardResolved();
   } else if (type === 'remove_stack_discard_hand_stack') {
     const count = Math.min(1, G.hand.length);
     if (!count) {
@@ -1169,22 +1200,8 @@ function resolveMoveInstabilityDest(destCat) {
 }
 
 function showReplaceOrStackModal(card, cat) {
-  const color = CAT_COLORS[cat];
-  const hasCurrent = !!G.categories[cat].active;
-  openModal(`
-    <div class="modal-card-name">${card.name}</div>
-    <p class="modal-sub">How do you want to place this ${cap(cat)} identity?</p>
-    <div class="opt-list">
-      <button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveReplaceOrStack('replace')">
-        <strong style="color:${color}">Replace</strong>
-        <small>${hasCurrent ? 'Remove current active identity (it gets discarded)' : 'Set as active ' + cap(cat) + ' identity'}</small>
-      </button>
-      <button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveReplaceOrStack('stack')">
-        <strong style="color:${color}">Stack</strong>
-        <small>Add to ${cap(cat)} stack (+${card.value} to score, current identity stays active)</small>
-      </button>
-    </div>
-  `);
+  // Always replace automatically — no modal needed
+  resolveReplaceOrStack('replace');
 }
 
 function applyIdentityBenefit(card) {
@@ -1316,6 +1333,7 @@ function canPlayOption(card, opt) {
     case 'remove_stack_card_then_remove_n_from_stack':
     case 'remove_stack_card_then_place_in_instability':
     case 'remove_stack_card_then_discard_hand_then_stack':
+    case 'remove_stack_card_then_remove_or_identity_then_stack':
       return G.categories[opt.sourceCategory].stack.length >= 1;
     case 'remove_instability_then_discard_hand_then_stack': {
       const fc = opt.instabilityCategory;

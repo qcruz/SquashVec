@@ -4,6 +4,26 @@
 
 ---
 
+## Session 4 — 2026-07-12
+
+**Focus:** New stacking cards, identity auto-replace
+
+### Changes
+- **Direct Attack** (+3, military stacking): Opt 1 — pay 2 Military resources (or 1 Military + active Military identity if stack empty) → +3 Governance. Opt 2 — pay 1 Military + 1 Governance resource (or Governance identity if empty) → +3 Military. New effect: `remove_stack_card_then_remove_or_identity_then_stack`
+- **Arms Package** (+2, economy stacking): Same dual-cost mechanic as Sanctions but +2. Uses existing effects.
+- **Identity cards now auto-replace** — removed the "Replace or Stack?" modal; playing an identity always replaces the current active. `showReplaceOrStackModal` now auto-invokes replace without showing UI.
+- Both new cards added ×2 to STARTER_DECK (210 total)
+
+### Deck State
+210 cards total — 59 identities, 84 stacking, 46 hazards, 21 utility
+
+### Next Steps Flagged
+- Consider whether Technology category needs more stacking variety (currently thin vs. Environment)
+- Governance utility pool is strong — may not need more recovery cards for now
+- Scientific Breakthrough Opt 2 (culture cost → military) still flagged for redesign
+
+---
+
 ## Session 3 — 2026-07-12
 
 **Focus:** Full card review, new cards, engine effects, Sanctions redesign, docs sync

@@ -1,6 +1,6 @@
 # Governance — Full Card List
 *Complete reference for all cards in the starter deck. Update this file whenever cards.js changes.*
-*Last updated: 206 cards total.*
+*Last updated: 210 cards total.*
 
 ---
 
@@ -107,6 +107,7 @@
 | Surplus Goods  | +1    | Stack on Economy (free)                    | Pay Economy → stack anywhere      |
 | Trade Surplus  | +2    | Stack on Economy (free)                    | Pay Economy → stack anywhere      |
 | Sanctions      | +1    | Pay Governance + discard 1 hand card → +1 Economy | Remove 1 Culture instability + discard 1 hand card → +1 Economy |
+| Arms Package   | +2    | Pay Governance + discard 1 hand card → +2 Economy | Remove 1 Culture instability + discard 1 hand card → +2 Economy |
 
 ### Culture Resources
 | Name             | Value | Option 1                               | Option 2                               |
@@ -125,6 +126,7 @@
 | Battle Hardened       | +1    | Stack on Military (free)               | Pay Military → stack anywhere     |
 | Scientific Breakthrough| +2   | Pay Economy → +2 Technology           | Pay Culture → +2 Military         |
 | Destabilization       | +3    | Pay Military → place in Culture instability (−3) | Pay Governance → +3 Culture |
+| Direct Attack         | +3    | Pay 2 Military (or 1 Military + identity) → +3 Governance | Pay Military + 1 Governance (or Governance identity) → +3 Military |
 
 ### Technology Resources
 | Name               | Value | Option 1                               | Option 2                          |
@@ -277,25 +279,25 @@
 | Type                          | Unique Cards | Copies in Deck |
 |-------------------------------|-------------|----------------|
 | Identity (category) cards     | 54          | 59             |
-| Stacking events               | 39          | 80             |
+| Stacking events               | 41          | 84             |
 | Hazard events (incl. must-play)| 34         | 46             |
 | Utility events                | 21          | 21             |
-| **Total**                     | **—**       | **206**        |
+| **Total**                     | **—**       | **210**        |
 
 ### By Category
 | Category    | Identities | Stacking | Hazards | Utility | **Total** |
 |-------------|-----------|---------|---------|---------|-----------|
 | Governance  | 10        | 19      | 4       | 10 †    | **43**    |
-| Economy     | 10        | 7 §     | 6       | —       | **23**    |
+| Economy     | 10        | 9 §     | 6       | —       | **25**    |
 | Culture     | 11        | 4       | 5       | 1       | **21**    |
-| Military    | 9         | 7 ‡     | 4       | 3       | **23**    |
+| Military    | 9         | 9 ‡     | 4       | 3       | **25**    |
 | Technology  | 9         | 7       | 6       | —       | **22**    |
 | Environment | 10        | 32      | 4       | —       | **46**    |
 | Neutral/Any | —         | 3       | 13 ★    | 7       | **23**    |
 | Must-Play   | —         | —       | 4       | —       | **4**     |
-| **Total**   | **59**    | **80**  | **46**  | **21**  | **206**   |
+| **Total**   | **59**    | **84**  | **46**  | **21**  | **210**   |
 
 *† 10 management philosophy cards, all Governance utility.*
-*‡ Includes Destabilization ×2 (stacking, military category).*
-*§ Includes Sanctions ×1 (now a stacking event, economy category).*
+*‡ Includes Destabilization ×2 + Direct Attack ×2 (stacking, military category).*
+*§ Includes Sanctions ×1 + Arms Package ×2 (stacking, economy category).*
 *★ Includes Social Upheaval ×2.*

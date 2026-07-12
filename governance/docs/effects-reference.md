@@ -66,6 +66,13 @@ Take the oldest resource from `sourceCategory` stack → deck. Discard this card
 - `sourceCategory: string`
 - *Requires: `G.categories[sourceCategory].stack.length >= 1`*
 
+**`remove_stack_card_then_remove_or_identity_then_stack`**
+Take the oldest resource from `sourceCategory` stack → deck. Then remove the oldest resource from `removeCategory` stack → deck. If `removeCategory` stack is empty, removes the active `removeCategory` identity card → that category's instability instead. Place this card on `targetCategory` stack.
+- `sourceCategory: string`
+- `removeCategory: string`
+- `targetCategory: string`
+- *Requires: `G.categories[sourceCategory].stack.length >= 1`*
+
 **`remove_stack_card_then_discard_hand_then_stack`**
 Take the oldest resource from `sourceCategory` stack → deck. Player discards 1 hand card. Place this card on `targetCategory` stack.
 - `sourceCategory: string`
@@ -213,6 +220,7 @@ These effects are **disabled** (grayed out) when requirements aren't met:
 | `remove_stack_card_then_stack_on_category` | `sourceCategory` stack ≥ 1 |
 | `remove_stack_card_then_remove_n_from_stack` | `sourceCategory` stack ≥ 1 |
 | `remove_stack_card_then_place_in_instability` | `sourceCategory` stack ≥ 1 |
+| `remove_stack_card_then_remove_or_identity_then_stack` | `sourceCategory` stack ≥ 1 |
 | `remove_stack_card_then_discard_hand_then_stack` | `sourceCategory` stack ≥ 1 |
 | `remove_instability_then_discard_hand_then_stack` | `instabilityCategory` pile ≥ 1 card |
 | `pay_own_stack_then_stack_on_any` | `ownCategory` stack ≥ 1 |

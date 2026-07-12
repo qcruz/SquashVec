@@ -3530,6 +3530,71 @@ const CARDS = [
   },
 
   {
+    id: 'direct_attack',
+    name: 'Direct Attack',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 3,
+    flavorText: 'Strike precisely. Strike decisively.',
+    options: [
+      {
+        label: 'Option 1 — Seize Governance',
+        description: 'Remove 1 Military resource. Remove 1 more Military resource (or your active Military identity if none remain). Place this card on your Governance stack (+3).',
+        effect: 'remove_stack_card_then_remove_or_identity_then_stack',
+        sourceCategory: 'military',
+        removeCategory: 'military',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Military Supremacy',
+        description: 'Remove 1 Military resource. Remove 1 Governance resource (or your active Governance identity if none remain). Place this card on your Military stack (+3).',
+        effect: 'remove_stack_card_then_remove_or_identity_then_stack',
+        sourceCategory: 'military',
+        removeCategory: 'governance',
+        targetCategory: 'military',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+  },
+
+  {
+    id: 'arms_package',
+    name: 'Arms Package',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 2,
+    flavorText: 'Weapons are just another form of trade.',
+    options: [
+      {
+        label: 'Option 1 — Government Contract',
+        description: 'Remove 1 Governance resource. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Cultural Goodwill',
+        description: 'Remove 1 Culture instability. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        effect: 'remove_instability_then_discard_hand_then_stack',
+        instabilityCategory: 'culture',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+  },
+
+  {
     id: 'census',
     name: 'Census',
     type: 'event',
@@ -3625,6 +3690,7 @@ const STARTER_DECK = [
   'occupation', 'incursion', 'sanctions', 'military_exercise', 'cultural_exchange',
   'peace_treaty', 'diplomatic_mission', 'census',
   'disarmament', 'destabilization', 'destabilization',
+  'direct_attack', 'direct_attack', 'arms_package', 'arms_package',
   // Hazard events (new)
   'social_upheaval', 'social_upheaval',
   // Management philosophy
