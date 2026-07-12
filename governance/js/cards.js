@@ -3090,7 +3090,7 @@ const CARDS = [
         effect: 'remove_lowest_instability_modal', selfDiscardFlow: true,
       },
     ],
-    discardTo: [{ target: 'discard_pile', label: 'Discard' }],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
   },
 
   {

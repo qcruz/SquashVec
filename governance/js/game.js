@@ -35,7 +35,7 @@ function newGameState() {
   });
 
   return {
-    deck, discard: [], hand, categories,
+    deck, hand, categories,
     turn: 1,
     log: [],
     pendingAction: null,
@@ -83,10 +83,8 @@ function checkEndConditions() {
 
 function drawCard() {
   if (!G.deck.length) {
-    if (!G.discard.length) { addLog('No cards remain anywhere.'); return null; }
-    G.deck = buildDeck(G.discard.map(c => c.id));
-    G.discard = [];
-    addLog('Draw pile empty — discard reshuffled into deck.');
+    addLog('No cards remain in the deck.');
+    return null;
   }
   const card = G.deck.shift();
   G.hand.push(card);
@@ -198,10 +196,10 @@ function discardUnplayable(i) {
   const card = G.hand[i];
   if (!card || canPlayCard(card)) return;
   G.hand.splice(i, 1);
-  G.discard.push(card);
   G.selectedCardIndex = null;
   G.selectedOption = 0;
-  addLog(`${card.name} discarded — requirements not met.`);
+  addLog(`${card.name} removed from hand — requirements not met.`);
+  applyCardSelfDiscard(card);
   render();
 }
 
@@ -377,15 +375,13 @@ function applyDiscardDest(card, target, bonus) {
   if (target === 'shuffle_to_deck') {
     G.deck.push(card); shuffle(G.deck);
     addLog(`${card.name} shuffled into deck.`);
-  } else if (target === 'discard_pile') {
-    G.discard.push(card);
-    addLog(`${card.name} discarded.`);
   } else if (target.endsWith('_instability')) {
     const cat = target.replace('_instability', '');
     G.categories[cat].instability.push(card);
     addLog(`${card.name} → ${cat} instability.`);
   } else {
-    G.discard.push(card);
+    G.deck.push(card); shuffle(G.deck);
+    addLog(`${card.name} shuffled into deck.`);
   }
   if (bonus === 'draw_1') { drawCard(); addLog('Bonus: drew a card.'); }
 }
@@ -509,8 +505,8 @@ function resolveEventCard(card, opt) {
     case 'suppress_hazard': {
       const marker = makeMarker(`${card.name} Suppressed`, opt.altValue || 1);
       G.categories[opt.altInstability].instability.push(marker);
-      G.discard.push(card);
       addLog(`${card.name} suppressed — ${opt.altInstability} −${opt.altValue}.`);
+      applyCardSelfDiscard(card);
       break;
     }
 
@@ -531,8 +527,8 @@ function resolveEventCard(card, opt) {
       render(); showTwoInstabilityModal(card); return;
 
     case 'multiplayer_only':
-      addLog(`${card.name}: Multiplayer option — not available in solo play. Card discarded.`);
-      G.discard.push(card);
+      addLog(`${card.name}: Multiplayer option — not available in solo play.`);
+      applyCardSelfDiscard(card);
       break;
 
     case 'draw_and_shuffle_self':
@@ -702,8 +698,7 @@ function resolveEventCard(card, opt) {
     }
 
     default:
-      G.discard.push(card);
-      addLog(`${card.name} discarded.`);
+      applyCardSelfDiscard(card);
   }
 }
 
@@ -749,8 +744,8 @@ function showInstabilityModal(card, maxRemove, filterCat) {
 
   if (!cats.length) {
     addLog(`${card.name}: No instability to remove.`);
-    G.discard.push(card);
     G.pendingAction = null;
+    applyCardSelfDiscard(card);
     afterCardResolved();
     return;
   }
@@ -781,8 +776,8 @@ function showTwoInstabilityModal(card) {
       G.deck.push(removed); shuffle(G.deck);
       addLog(`${removed.name} removed from ${cats[0]} instability → deck.`);
     }
-    G.discard.push(card);
     G.pendingAction = null;
+    applyCardSelfDiscard(card);
     afterCardResolved();
     return;
   }
@@ -822,8 +817,8 @@ function pickTwoInstability(cat) {
       addLog(`${removed.name} removed from ${c} instability → deck.`);
     }
   });
-  G.discard.push(action.card);
   G.pendingAction = null;
+  applyCardSelfDiscard(action.card);
   afterCardResolved();
 }
 
@@ -846,10 +841,8 @@ function resolveRemoveInstability(cat, maxRemove) {
     }
     G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, afterStackOn };
     render(); showDiscardHandModal(card, count); return;
-  } else if (selfDiscardFlow) {
-    applyCardSelfDiscard(card);
   } else {
-    G.discard.push(card);
+    applyCardSelfDiscard(card);
   }
   afterCardResolved();
 }
@@ -909,15 +902,50 @@ function showDiscardHandModal(card, remaining) {
 function pickDiscardHand(i) {
   const action = G.pendingAction;
   const discarded = G.hand.splice(i, 1)[0];
-  const handDiscardDest = discarded.discardTo?.[0];
-  if (handDiscardDest) {
-    applyDiscardDest(discarded, handDiscardDest.target, handDiscardDest.bonus);
-  } else {
-    G.discard.push(discarded);
-    addLog(`${discarded.name} discarded from hand.`);
-  }
   action.remaining--;
-  if (action.remaining > 0) { showDiscardHandModal(action.card, action.remaining); return; }
+  const dest = discarded.discardTo;
+  if (!dest || dest.length === 0) {
+    G.deck.push(discarded); shuffle(G.deck);
+    addLog(`${discarded.name} shuffled into deck.`);
+    continueHandDiscardChain();
+  } else if (dest.length === 1) {
+    applyDiscardDest(discarded, dest[0].target, dest[0].bonus);
+    continueHandDiscardChain();
+  } else {
+    G.pendingAction = { ...action, routingCard: discarded };
+    render(); showHandDiscardDestModal(discarded, action.card);
+  }
+}
+
+function showHandDiscardDestModal(discardedCard, mainCard) {
+  const btns = discardedCard.discardTo.map(d => `
+    <button class="opt-btn" onclick="resolveHandDiscardDest('${d.target}')">
+      <strong>${d.label}</strong>
+    </button>`).join('');
+  openModal(`
+    <div class="modal-card-name">${mainCard.name}</div>
+    <p class="modal-sub">Where does <strong>${discardedCard.name}</strong> go?</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveHandDiscardDest(target) {
+  closeModal();
+  const action = G.pendingAction;
+  const { routingCard } = action;
+  const dest = routingCard.discardTo?.find(d => d.target === target);
+  applyDiscardDest(routingCard, target, dest?.bonus);
+  delete action.routingCard;
+  G.pendingAction = action;
+  continueHandDiscardChain();
+}
+
+function continueHandDiscardChain() {
+  const action = G.pendingAction;
+  if (action.remaining > 0) {
+    showDiscardHandModal(action.card, action.remaining);
+    return;
+  }
   closeModal();
   G.pendingAction = null;
   if (action.afterStackOn) {
@@ -1144,7 +1172,7 @@ function resolveRemoveLowestInstability(cat) {
   const removed = pile.splice(lowestIdx, 1)[0];
   G.deck.push(removed); shuffle(G.deck);
   addLog(`${removed.name} (lowest instability) removed from ${cat} → deck.`);
-  if (selfDiscardFlow) { applyCardSelfDiscard(card); } else { G.discard.push(card); }
+  applyCardSelfDiscard(card);
   afterCardResolved();
 }
 
@@ -1200,7 +1228,7 @@ function resolveMoveInstabilityDest(destCat) {
   if (idx !== -1) srcPile.splice(idx, 1);
   G.categories[destCat].instability.push(instCard);
   addLog(`${instCard.name} moved from ${srcCat} instability → ${destCat} instability.`);
-  if (selfDiscardFlow) { applyCardSelfDiscard(card); } else { G.discard.push(card); }
+  applyCardSelfDiscard(card);
   afterCardResolved();
 }
 
@@ -1736,7 +1764,7 @@ function renderDetailFrame(card, color, location, readonly) {
 
 function renderDeckCount() {
   const el = document.getElementById('deck-count');
-  if (el) el.textContent = `Turn ${G.turn} · Deck: ${G.deck.length} · Discard: ${G.discard.length}`;
+  if (el) el.textContent = `Turn ${G.turn} · Deck: ${G.deck.length}`;
 }
 
 function buildReqText(card) {
