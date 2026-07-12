@@ -3010,6 +3010,208 @@ const CARDS = [
   // UTILITY EVENT CARDS — special effects, recovery, and disruption
   // ═══════════════════════════════════════════════════════════════════════════
 
+  // ─── Management Philosophy — Governance Utility Cards ──────────────────────
+
+  {
+    id: 'consolidation',
+    name: 'Consolidation',
+    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    flavorText: 'Strength comes from focus, not breadth.',
+    options: [
+      {
+        label: 'Option 1 — Full Consolidation',
+        description: 'Choose a category. Take the oldest 2 instability cards from that pile and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_instability_modal', maxRemove: 2, selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Broad Consolidation',
+        description: 'Take the oldest instability card from each of 2 different categories and shuffle them into the deck.',
+        effect: 'remove_two_instability_modal',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'structural_consolidation',
+    name: 'Structural Consolidation',
+    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    flavorText: 'True reform costs something. The question is what you are willing to pay.',
+    options: [
+      {
+        label: 'Option 1 — Resource Investment',
+        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'governance', maxRemove: 2, selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Redistribution',
+        description: 'Move the oldest instability card from one category to another. Shuffle this card into the deck.',
+        effect: 'move_instability_modal', selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'managed_decline',
+    name: 'Managed Decline',
+    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    flavorText: 'Not every battle can be won. Choose where to concede and where to hold.',
+    options: [
+      {
+        label: 'Option 1 — Strategic Sacrifice',
+        description: 'Discard 2 cards from your hand. Shuffle this card into the deck.',
+        effect: 'discard_from_hand_modal', count: 2,
+      },
+      {
+        label: 'Option 2 — Focused Relief',
+        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Take the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'governance', maxRemove: 1, selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'rationalization',
+    name: 'Rationalization',
+    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    flavorText: 'What cannot be justified cannot be sustained.',
+    options: [
+      {
+        label: 'Option 1 — Draw Down',
+        description: 'Draw 2 cards. Discard this card.',
+        effect: 'draw_if_hand_small',
+      },
+      {
+        label: 'Option 2 — Trim the Worst',
+        description: 'Take the lowest-value instability card from any category and shuffle it into the deck. Discard this card.',
+        effect: 'remove_lowest_instability_modal', selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'discard_pile', label: 'Discard' }],
+  },
+
+  {
+    id: 'austerity',
+    name: 'Austerity',
+    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    flavorText: 'Short-term pain for long-term stability.',
+    options: [
+      {
+        label: 'Option 1 — Fiscal Cuts',
+        description: 'Take the oldest resource from your Economy stack and shuffle it into the deck. Take the oldest 3 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'economy', maxRemove: 3, selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Administrative Cuts',
+        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'governance', maxRemove: 2, selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'preparedness',
+    name: 'Preparedness',
+    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    flavorText: 'The time to repair the roof is when the sun is shining.',
+    options: [
+      {
+        label: 'Option 1 — Full Survey',
+        description: 'Draw 2 cards. Shuffle this card into the deck.',
+        effect: 'draw_if_hand_small',
+      },
+      {
+        label: 'Option 2 — Quick Assessment',
+        description: 'Draw 1 card. Shuffle this card into the deck.',
+        effect: 'draw_and_shuffle_self',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'crisis_protocol',
+    name: 'Crisis Protocol',
+    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    flavorText: 'When the system breaks, the response must be immediate.',
+    options: [
+      {
+        label: 'Option 1 — Emergency Response',
+        description: 'Take the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
+        effect: 'remove_instability_modal', maxRemove: 1, selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Rapid Deployment',
+        description: 'Take the oldest instability from each of 2 different categories and shuffle them into the deck.',
+        effect: 'remove_two_instability_modal',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'grand_strategy',
+    name: 'Grand Strategy',
+    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    flavorText: 'Tactics win battles. Strategy wins civilizations.',
+    options: [
+      {
+        label: 'Option 1 — Long View',
+        description: 'Draw 2 cards. Shuffle this card into the deck.',
+        effect: 'draw_if_hand_small',
+      },
+      {
+        label: 'Option 2 — Resource Allocation',
+        description: 'Take the oldest resource from your Military stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'military', maxRemove: 2, selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'redundancy_systems',
+    name: 'Redundancy Systems',
+    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    flavorText: 'A civilization without backups is one crisis from collapse.',
+    options: [
+      {
+        label: 'Option 1 — Build Redundancy',
+        description: 'Discard 1 card from your hand. Shuffle this card into the deck.',
+        effect: 'discard_from_hand_modal', count: 1,
+      },
+      {
+        label: 'Option 2 — Failsafe',
+        description: 'Take the oldest resource from your Technology stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'technology', maxRemove: 2, selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'adaptive_management',
+    name: 'Adaptive Management',
+    type: 'event', subtype: 'utility', category: 'governance', value: 2,
+    flavorText: 'The strongest civilizations are those that learn while moving.',
+    options: [
+      {
+        label: 'Option 1 — Adaptive Response',
+        description: 'Take the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
+        effect: 'remove_instability_modal', maxRemove: 1, selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Strategic Investment',
+        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Stack +2 on any category.',
+        effect: 'pay_own_stack_then_stack_on_any', ownCategory: 'governance',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
   {
     id: 'revisionist_history',
     name: 'Revisionist History',
@@ -3311,9 +3513,13 @@ const STARTER_DECK = [
   'youthful_dissent', 'cultural_suppression', 'generational_divide', 'loss_of_faith', 'brain_drain',
   'stalled_research', 'adverse_side_effects', 'remote_attack', 'failed_experiment', 'obsolescence', 'record_breach',
   'mutiny', 'desertion', 'border_skirmish', 'arms_shortage',
-  // Utility events (8)
+  // Utility events
   'revisionist_history', 'revisionist_history',
   'contingency_planning',
   'occupation', 'incursion', 'sanctions', 'military_exercise', 'cultural_exchange',
   'peace_treaty', 'diplomatic_mission', 'census',
+  // Management philosophy
+  'consolidation', 'structural_consolidation', 'managed_decline', 'rationalization',
+  'austerity', 'preparedness', 'crisis_protocol', 'grand_strategy',
+  'redundancy_systems', 'adaptive_management',
 ];

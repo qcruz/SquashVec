@@ -136,9 +136,17 @@ html, body {
 .cat-name { flex: 1; }
 
 .cat-score {
-  font-size: 19px;
+  font-size: 15px;
   font-weight: bold;
   font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  flex-shrink: 0;
 }
 
 .score-bar-bg {
@@ -356,6 +364,27 @@ html, body {
   background: linear-gradient(175deg, #1a1820 0%, #100e18 100%);
 }
 
+.hand-card.card-tint-green {
+  background:
+    linear-gradient(175deg, rgba(50,220,100,0.30) 0%, rgba(50,220,100,0.12) 100%),
+    linear-gradient(175deg, #1a1820 0%, #100e18 100%);
+  border-color: rgba(50,220,100,0.55);
+}
+
+.hand-card.card-tint-red {
+  background:
+    linear-gradient(175deg, rgba(230,70,55,0.30) 0%, rgba(230,70,55,0.12) 100%),
+    linear-gradient(175deg, #1a1820 0%, #100e18 100%);
+  border-color: rgba(230,70,55,0.55);
+}
+
+.hand-card.card-tint-gold {
+  background:
+    linear-gradient(175deg, rgba(220,175,0,0.30) 0%, rgba(220,175,0,0.12) 100%),
+    linear-gradient(175deg, #1e1e2c 0%, #14141e 55%, #0e0e17 100%);
+  border-color: rgba(220,175,0,0.55);
+}
+
 .hand-card.unplayable {
   opacity: 0.38;
   cursor: default;
@@ -372,6 +401,12 @@ html, body {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-dim);
+}
+
+.card-tint-green .hc-type,
+.card-tint-red .hc-type,
+.card-tint-gold .hc-type {
+  color: rgba(0,0,0,0.55);
 }
 
 .hc-val-badge {
@@ -442,6 +477,19 @@ html, body {
   color: var(--gold);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.hc-must-play-banner {
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.65);
+  background: rgba(231,76,60,0.55);
+  border-left: 2px solid rgba(231,76,60,0.9);
+  padding: 4px 7px;
+  border-radius: 2px;
+  margin-bottom: 4px;
 }
 
 .hc-flavor {

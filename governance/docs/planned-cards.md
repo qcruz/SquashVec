@@ -102,6 +102,32 @@ Status tags: `[idea]` `[draft]` `[ready]` `✅ Approved` `✅ Implemented`
 
 ---
 
+## Management Philosophy — Governance Utility Cards
+
+Cards representing civilization-level problem-solving doctrines. All are Governance-category utility events unless noted.
+
+### Consolidation Family
+
+| # | Name | Status | Concept |
+|---|------|--------|---------|
+| 1 | Consolidation | `✅ Implemented` | Opt 1: Take oldest 2 instability from one category → deck. Opt 2: Take oldest instability from each of 2 categories → deck. |
+| 2 | Structural Consolidation | `✅ Implemented` | Opt 1: Pay 1 Governance resource, take oldest 2 instability from any category. Opt 2: Move oldest instability from one category to another. |
+| 3 | Managed Decline | `✅ Implemented` | Opt 1: Discard 2 hand cards, shuffle self. Opt 2: Pay 1 Governance resource, take oldest 1 instability from any category. |
+| 4 | Rationalization | `✅ Implemented` | Opt 1: Draw 2 cards, discard self. Opt 2: Take lowest-value instability from any category, discard self. |
+| 5 | Austerity | `✅ Implemented` | Opt 1: Pay 1 Economy resource, take oldest 3 instability from any category. Opt 2: Pay 1 Governance resource, take oldest 2 instability. |
+
+### Contingency Planning Family
+
+| # | Name | Status | Concept |
+|---|------|--------|---------|
+| 6 | Preparedness | `✅ Implemented` | (Contingency Planning already exists; this variant.) Opt 1: Draw 2. Opt 2: Draw 1. Both shuffle self into deck. |
+| 7 | Crisis Protocol | `✅ Implemented` | Opt 1: Take oldest instability from any category. Opt 2: Take oldest instability from each of 2 categories. Both shuffle self. |
+| 8 | Grand Strategy | `✅ Implemented` | Opt 1: Draw 2. Opt 2: Pay 1 Military resource, take oldest 2 instability from any category. Both shuffle self. |
+| 9 | Redundancy Systems | `✅ Implemented` | Opt 1: Discard 1 hand card, shuffle self. Opt 2: Pay 1 Technology resource, take oldest 2 instability from any category. |
+| 10 | Adaptive Management | `✅ Implemented` | Opt 1: Take oldest instability from any category. Opt 2: Pay 1 Governance resource, stack +2 on any category. Both shuffle self. |
+
+---
+
 ## New Subtypes / Mechanics (Requires Design Confirmation)
 
 These require mechanical design work before any cards can be drafted.
@@ -131,3 +157,13 @@ Cards that have been approved and added to cards.js. Kept here for reference.
 | Rich Soil | Environment | Stacking resource +1. |
 | Natural Springs | Environment | Stacking resource +1. |
 | Coastal Fisheries | Environment | Stacking resource +1. |
+| Consolidation | Governance | Utility. Take oldest instability from one or two category piles. Shuffles to deck. |
+| Structural Consolidation | Governance | Utility. Pay Governance resource to remove instability, or move instability between categories. |
+| Managed Decline | Governance | Utility. Discard 2 hand cards, or pay Governance resource to remove instability. |
+| Rationalization | Governance | Utility. Draw 2 cards, or remove lowest-value instability. Single-use (goes to discard). |
+| Austerity | Governance | Utility. Pay Economy (remove 3 instability) or Governance (remove 2 instability). |
+| Preparedness | Governance | Utility. Draw 2 or Draw 1. Always shuffles back to deck. |
+| Crisis Protocol | Governance | Utility. Remove 1 instability (shuffle self), or remove 1 from each of 2 categories. |
+| Grand Strategy | Governance | Utility. Draw 2, or pay Military resource to remove 2 instability. |
+| Redundancy Systems | Governance | Utility. Discard 1 hand card (shuffle self), or pay Technology resource to remove 2 instability. |
+| Adaptive Management | Governance | Utility. Remove 1 instability (shuffle self), or pay Governance to stack +2 on any category. |

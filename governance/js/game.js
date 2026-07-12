@@ -91,7 +91,7 @@ function drawCard() {
   const card = G.deck.shift();
   G.hand.push(card);
   addLog(`Drew: ${card.name}`);
-  if (card.mustPlayWhenDrawn) {
+  if (card.mustPlayWhenDrawn || card.subtype === 'hazard') {
     G.mustPlayEventId = card.instanceId;
     G.selectedCardIndex = G.hand.length - 1;
     G.selectedOption = 0;
@@ -847,19 +847,8 @@ function showRemoveStackModal(card, srcCat, tgtCat) {
     afterCardResolved();
     return;
   }
-  const srcColor = CAT_COLORS[srcCat];
-  const btns = stack.map((c, i) => {
-    const color = CAT_COLORS[c.category] || srcColor;
-    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveRemoveStackCard(${i})">
-      <strong>${c.name}</strong>
-      <small>+${c.value} · ${cap(srcCat)} Stack</small>
-    </button>`;
-  }).join('');
-  openModal(`
-    <div class="modal-card-name">${card.name}</div>
-    <p class="modal-sub">Choose a card to remove from the ${cap(srcCat)} Stack and shuffle into the draw deck:</p>
-    <div class="opt-list">${btns}</div>
-  `);
+  // Always take the oldest (first) resource — no player choice
+  resolveRemoveStackCard(0);
 }
 
 function resolveRemoveStackCard(idx) {
@@ -1414,8 +1403,13 @@ function renderHand() {
     const playable = canPlayCard(card);
     const selected = G.selectedCardIndex === i;
 
+    const tintClass = card.type === 'category' ? 'card-tint-gold'
+      : card.subtype === 'stacking' ? 'card-tint-green'
+      : card.subtype === 'hazard' ? 'card-tint-red'
+      : '';
+
     const el = document.createElement('div');
-    el.className = ['hand-card', card.type === 'event' ? 'event-card' : '', !playable ? 'unplayable' : '', selected ? 'selected' : ''].filter(Boolean).join(' ');
+    el.className = ['hand-card', card.type === 'event' ? 'event-card' : '', tintClass, !playable ? 'unplayable' : '', selected ? 'selected' : ''].filter(Boolean).join(' ');
     el.style.setProperty('--cat-color', color);
 
     const subtypeLabel = card.subtype ? ` · ${cap(card.subtype)}` : '';
@@ -1435,7 +1429,9 @@ function renderHand() {
         onclick="event.stopPropagation(); selectCardWithOption(${i}, ${oi})">Opt ${oi + 1}</button>`;
     }).join('');
 
+    const isMustPlay = card.mustPlayWhenDrawn || card.subtype === 'hazard';
     el.innerHTML = `
+      ${isMustPlay ? '<div class="hc-must-play-banner">Must be played when drawn</div>' : ''}
       <div class="hc-header">
         <span class="hc-type">${typeLabel}</span>
         ${card.value > 0 ? `<span class="hc-val-badge">+${card.value}</span>` : ''}
