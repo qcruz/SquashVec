@@ -1643,10 +1643,10 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Enforce the Charter',
-        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. Place this card in your Governance Stack (+2).',
+        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. Place this card in your Economy Stack (+2).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'governance',
-        targetCategory: 'governance',
+        targetCategory: 'economy',
       },
     ],
     discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
