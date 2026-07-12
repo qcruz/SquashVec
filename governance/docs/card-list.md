@@ -106,6 +106,7 @@
 | Market Expansion| +1   | Stack on Economy (free)                    | Pay Economy → stack anywhere      |
 | Surplus Goods  | +1    | Stack on Economy (free)                    | Pay Economy → stack anywhere      |
 | Trade Surplus  | +2    | Stack on Economy (free)                    | Pay Economy → stack anywhere      |
+| Sanctions      | +1    | Pay Governance + discard 1 hand card → +1 Economy | Remove 1 Culture instability + discard 1 hand card → +1 Economy |
 
 ### Culture Resources
 | Name             | Value | Option 1                               | Option 2                               |
@@ -241,7 +242,6 @@
 | Incursion             | —     | Take Tech/Economy resource → own Economy. Pay Military. Discard self.| Take Tech/Economy resource → own Economy. Place in Military instability. | — |
 | Occupation            | —     | Take Env/Culture resource → own Economy. Pay Military. Discard self. | Take Env/Culture resource → own Economy. Place in Military instability.  | — |
 | Military Exercise     | —     | Pay 2 Military → discard 3 hand cards.                               | Pay 2 Military → draw 2 cards.             | Discard                 |
-| Sanctions             | —     | Pay Military → remove 1 instability (any). Shuffle self.             | Discard 1 hand card. Place in Military instability. | Shuffle to deck  |
 | Revisionist History   | —     | Pay Governance → remove 1 instability. Discard self.                 | Draw 1, shuffle self.                      | Culture · Tech Instab.  |
 | Contingency Planning  | —     | Remove lowest instability from chosen category. Discard self.        | Move 1 instability between categories. Discard self. | Gov · Culture Instab.|
 | Cultural Exchange     | —     | Remove 1 Culture instability. Discard self.                          | Stack on Culture (+1).                     | Culture Instability     |
@@ -277,24 +277,25 @@
 | Type                          | Unique Cards | Copies in Deck |
 |-------------------------------|-------------|----------------|
 | Identity (category) cards     | 54          | 59             |
-| Stacking events               | 38          | 79             |
+| Stacking events               | 39          | 80             |
 | Hazard events (incl. must-play)| 34         | 46             |
-| Utility events                | 22          | 22             |
+| Utility events                | 21          | 21             |
 | **Total**                     | **—**       | **206**        |
 
 ### By Category
 | Category    | Identities | Stacking | Hazards | Utility | **Total** |
 |-------------|-----------|---------|---------|---------|-----------|
 | Governance  | 10        | 19      | 4       | 10 †    | **43**    |
-| Economy     | 10        | 6       | 6       | —       | **22**    |
+| Economy     | 10        | 7 §     | 6       | —       | **23**    |
 | Culture     | 11        | 4       | 5       | 1       | **21**    |
-| Military    | 9         | 7 ‡     | 4       | 4       | **24**    |
+| Military    | 9         | 7 ‡     | 4       | 3       | **23**    |
 | Technology  | 9         | 7       | 6       | —       | **22**    |
 | Environment | 10        | 32      | 4       | —       | **46**    |
 | Neutral/Any | —         | 3       | 13 ★    | 7       | **23**    |
 | Must-Play   | —         | —       | 4       | —       | **4**     |
-| **Total**   | **59**    | **79**  | **46**  | **22**  | **206**   |
+| **Total**   | **59**    | **80**  | **46**  | **21**  | **206**   |
 
 *† 10 management philosophy cards, all Governance utility.*
 *‡ Includes Destabilization ×2 (stacking, military category).*
+*§ Includes Sanctions ×1 (now a stacking event, economy category).*
 *★ Includes Social Upheaval ×2.*

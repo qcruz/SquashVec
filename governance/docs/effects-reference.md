@@ -66,6 +66,18 @@ Take the oldest resource from `sourceCategory` stack → deck. Discard this card
 - `sourceCategory: string`
 - *Requires: `G.categories[sourceCategory].stack.length >= 1`*
 
+**`remove_stack_card_then_discard_hand_then_stack`**
+Take the oldest resource from `sourceCategory` stack → deck. Player discards 1 hand card. Place this card on `targetCategory` stack.
+- `sourceCategory: string`
+- `targetCategory: string`
+- *Requires: `G.categories[sourceCategory].stack.length >= 1`*
+
+**`remove_instability_then_discard_hand_then_stack`**
+Player chooses (optionally filtered) instability pile; removes oldest card → deck. Player discards 1 hand card. Place this card on `targetCategory` stack.
+- `instabilityCategory?: string` — if set, restricts which instability pile can be chosen
+- `targetCategory: string`
+- *Requires: matching instability pile has ≥ 1 card*
+
 **`remove_stack_card_then_stack_on_category`**
 Take the oldest resource from `sourceCategory` stack → deck. Place this card on `targetCategory` stack.
 - `sourceCategory: string`
@@ -201,6 +213,8 @@ These effects are **disabled** (grayed out) when requirements aren't met:
 | `remove_stack_card_then_stack_on_category` | `sourceCategory` stack ≥ 1 |
 | `remove_stack_card_then_remove_n_from_stack` | `sourceCategory` stack ≥ 1 |
 | `remove_stack_card_then_place_in_instability` | `sourceCategory` stack ≥ 1 |
+| `remove_stack_card_then_discard_hand_then_stack` | `sourceCategory` stack ≥ 1 |
+| `remove_instability_then_discard_hand_then_stack` | `instabilityCategory` pile ≥ 1 card |
 | `pay_own_stack_then_stack_on_any` | `ownCategory` stack ≥ 1 |
 | `remove_two_military_then_*` | Military stack ≥ 2 |
 | `remove_military_then_*` | Military stack ≥ 1 |
