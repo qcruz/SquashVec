@@ -3509,7 +3509,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Undermine',
-        description: 'Pay 1 Military resource. Place this card in Culture instability (−3 to Culture).',
+        description: 'Pay 1 Military resource. Place this card in any Culture instability stack on the board (−3 to Culture).',
         effect: 'remove_stack_card_then_place_in_instability',
         sourceCategory: 'military',
         targetInstability: 'culture',
