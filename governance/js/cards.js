@@ -1282,14 +1282,14 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Streamline Technology',
-        description: 'Remove a resource from your Technology stack and shuffle it into the draw deck. Place this card in your Governance Stack (+1).',
+        description: 'Remove the oldest Technology resource from your stack and shuffle it into the draw deck. Place this card in your Governance Stack (+1).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'technology',
         targetCategory: 'governance',
       },
       {
         label: 'Option 2 — Streamline Culture',
-        description: 'Remove a resource from your Culture stack and shuffle it into the draw deck. Place this card in your Governance Stack (+1).',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Place this card in your Governance Stack (+1).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'culture',
         targetCategory: 'governance',
@@ -1309,14 +1309,14 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Collect from Culture',
-        description: 'Remove a resource from your Culture stack and shuffle it into the draw deck. Place this card in your Economy Stack (+2).',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Place this card in your Economy Stack (+2).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'culture',
         targetCategory: 'economy',
       },
       {
         label: 'Option 2 — Reinvest',
-        description: 'Remove a resource from your Economy stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
         effect: 'remove_stack_card_then_shuffle_self',
         sourceCategory: 'economy',
       },
@@ -1444,14 +1444,14 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Advance the Field',
-        description: 'Remove a resource from your Economy stack and shuffle it into the draw deck. Place this card in your Technology Stack (+2).',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Place this card in your Technology Stack (+2).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'economy',
         targetCategory: 'technology',
       },
       {
         label: 'Option 2 — Share the Discovery',
-        description: 'Remove a resource from your Culture stack and shuffle it into the draw deck. Place this card in your Military Stack (+2).',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Place this card in your Military Stack (+2).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'culture',
         targetCategory: 'military',
@@ -1584,14 +1584,14 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Cultural Loyalty',
-        description: 'Remove a resource from your Culture stack and shuffle it into the draw deck. Place this card in your Governance Stack (+1).',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Place this card in your Governance Stack (+1).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'culture',
         targetCategory: 'governance',
       },
       {
         label: 'Option 2 — Political Enforcement',
-        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. Place this card in your Military Stack (+1).',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Place this card in your Military Stack (+1).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'governance',
         targetCategory: 'military',
@@ -1613,7 +1613,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Fund the Works',
-        description: 'Remove a resource from your Economy stack and shuffle it into the draw deck. Place this card in your Governance Stack (+2).',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Place this card in your Governance Stack (+2).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'economy',
         targetCategory: 'governance',
@@ -1640,14 +1640,14 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Codify Rights',
-        description: 'Remove a resource from your Culture stack and shuffle it into the draw deck. Place this card in your Governance Stack (+2).',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Place this card in your Governance Stack (+2).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'culture',
         targetCategory: 'governance',
       },
       {
         label: 'Option 2 — Enforce the Charter',
-        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. Place this card in your Economy Stack (+2).',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Place this card in your Economy Stack (+2).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'governance',
         targetCategory: 'economy',
@@ -1723,14 +1723,14 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — State Patronage',
-        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. Place this card in your Culture Stack (+2).',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Place this card in your Culture Stack (+2).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'governance',
         targetCategory: 'culture',
       },
       {
         label: 'Option 2 — Cultural Reform',
-        description: 'Remove a Governance instability card and shuffle it into the draw deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest Governance instability card and shuffle it into the draw deck. Shuffle this card into the deck.',
         effect: 'remove_instability_modal',
         maxRemove: 1,
         targetCategory: 'governance',
@@ -1804,7 +1804,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Fund the Campaign',
-        description: 'Remove a resource from your Economy stack and shuffle it into the draw deck. Place this card in your Military Stack (+2).',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Place this card in your Military Stack (+2).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'economy',
         targetCategory: 'military',
@@ -1858,7 +1858,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Allocate Funding',
-        description: 'Remove a resource from your Economy stack and shuffle it into the draw deck. Place this card in your Technology Stack (+2).',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Place this card in your Technology Stack (+2).',
         effect: 'remove_stack_card_and_optionally_place_self',
         sourceCategory: 'economy',
         targetCategory: 'technology',
@@ -2510,7 +2510,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Emergency Response',
-        description: 'Remove a resource from your Economy stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
         effect: 'remove_stack_card_then_shuffle_self',
         sourceCategory: 'economy',
       },
@@ -2559,7 +2559,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Suppress the Uprising',
-        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
         effect: 'remove_stack_card_then_shuffle_self',
         sourceCategory: 'governance',
       },
@@ -2587,7 +2587,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Suppress the Coup',
-        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
         effect: 'remove_stack_card_then_shuffle_self',
         sourceCategory: 'governance',
       },
@@ -3310,7 +3310,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Seize and Advance',
-        description: 'Choose an available environment or culture resource in play and add it to your own Economy stack. Remove a resource from your Military stack and shuffle it into the draw deck. Discard this card.',
+        description: 'Choose an available environment or culture resource in play and add it to your own Economy stack. Remove the oldest Military resource from your stack and shuffle it into the draw deck. Discard this card.',
         effect: 'take_resource_to_economy',
         sourceCategories: ['environment', 'culture'],
         afterEffect: 'remove_military_discard_self',
@@ -3337,7 +3337,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Strike and Withdraw',
-        description: 'Choose an available technology or economy resource in play and add it to your own Economy stack. Remove a resource from your Military stack and shuffle it into the draw deck. Discard this card.',
+        description: 'Choose an available technology or economy resource in play and add it to your own Economy stack. Remove the oldest Military resource from your stack and shuffle it into the draw deck. Discard this card.',
         effect: 'take_resource_to_economy',
         sourceCategories: ['technology', 'economy'],
         afterEffect: 'remove_military_discard_self',
