@@ -14,13 +14,27 @@ Stack this card's value on a specific category's event stack.
 - `condition?: object` — if provided, card discards itself when condition is not met
 
 **`stack_on_any_modal`**
-Player chooses which category to stack this card's value on.
+Player chooses which category to stack this card's value on, constrained to a specific set of choices.
 - `bonusValue: number` — value to add (overrides card's own value)
+- `choices: string[]` — **required** — 2 category names the player may choose between. Design rule: all cards must specify choices; open "any category" is not permitted for balance.
 
 **`pay_own_stack_then_stack_on_any`**
-Take the oldest resource from own category stack, then stack this card's value on any category.
+Take the oldest resource from own category stack, then stack this card's value on a player-chosen category.
 - `ownCategory: string` — category to take resource from
+- `choices: string[]` — **required** — 2 category names the player may choose between. Design rule: all cards must specify choices; open "any category" is not permitted.
 - *(stack value comes from the card's `value` field)*
+
+**Design rule — stack destination choices:**
+All stacking cards that redirect to another category must declare exactly 2 choices from the following pairings. The player picks one:
+
+| Own Category | Choices |
+|---|---|
+| Economy | Governance, Military |
+| Culture | Governance, Environment |
+| Military | Economy, Governance |
+| Technology | Economy, Environment |
+| Environment | Culture, Technology |
+| Governance | Economy, Military |
 
 ---
 
