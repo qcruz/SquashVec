@@ -416,8 +416,8 @@ function resolveEventCard(card, opt) {
     }
 
     case 'stack_on_any_modal':
-      G.pendingAction = { type: 'stack_self_on_any', card, bonusValue: opt.bonusValue };
-      render(); showStackOnAnyModal(card, opt.bonusValue); return;
+      G.pendingAction = { type: 'stack_self_on_any', card, bonusValue: opt.bonusValue, choices: opt.choices || null };
+      render(); showStackOnAnyModal(card, opt.bonusValue, opt.choices || null); return;
 
     case 'pay_own_stack_then_stack_on_any': {
       const ownCat = opt.ownCategory;
@@ -427,7 +427,7 @@ function resolveEventCard(card, opt) {
         applyCardSelfDiscard(card);
         break;
       }
-      G.pendingAction = { type: 'pay_stack_stack_on_any', card, sourceCategory: ownCat };
+      G.pendingAction = { type: 'pay_stack_stack_on_any', card, sourceCategory: ownCat, choices: opt.choices || null };
       render(); showRemoveStackModal(card, ownCat, null); return;
     }
 
@@ -847,8 +847,10 @@ function resolveRemoveInstability(cat, maxRemove) {
   afterCardResolved();
 }
 
-function showStackOnAnyModal(card, bonusValue) {
-  const btns = CATEGORIES.map(cat => {
+function showStackOnAnyModal(card, bonusValue, choices = null) {
+  const cats = choices || CATEGORIES;
+  if (cats.length === 1) { resolveStackOnAny(cats[0]); return; }
+  const btns = cats.map(cat => {
     const color = CAT_COLORS[cat];
     return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveStackOnAny('${cat}')">
       <strong style="color:${color}">${cap(cat)}</strong>
@@ -986,8 +988,9 @@ function resolveRemoveStackCard(idx) {
   G.deck.push(removed); shuffle(G.deck);
   addLog(`${removed.name} removed from ${sourceCategory} stack → deck.`);
   if (type === 'pay_stack_stack_on_any') {
-    G.pendingAction = { type: 'stack_self_on_any', card, bonusValue: card.value };
-    render(); showStackOnAnyModal(card, card.value); return;
+    const choices = G.pendingAction.choices;
+    G.pendingAction = { type: 'stack_self_on_any', card, bonusValue: card.value, choices };
+    render(); showStackOnAnyModal(card, card.value, choices); return;
   } else if (type === 'remove_stack_then_instability') {
     const { maxRemove, selfDiscardFlow } = G.pendingAction;
     G.pendingAction = { type: 'remove_instability', card, maxRemove, selfDiscardFlow };
