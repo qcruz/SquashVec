@@ -25,7 +25,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Reform',
-        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'culture',
       },
@@ -55,7 +55,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Decree',
-        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'culture',
       },
@@ -85,7 +85,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Form Alliance',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'military',
       },
@@ -114,7 +114,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Establish the Republic',
-        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'culture',
       },
@@ -144,7 +144,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Consolidate Power',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -174,7 +174,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Ratify the Constitution',
-        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'culture',
       },
@@ -203,7 +203,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Seize Control',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'military',
       },
@@ -232,7 +232,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Rise of the People',
-        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'culture',
       },
@@ -264,7 +264,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Open Markets',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'environment',
       },
@@ -324,7 +324,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Sustainable Growth',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'environment',
       },
@@ -353,7 +353,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Work the Land',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'environment',
       },
@@ -383,7 +383,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Central Planning',
-        description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'governance',
       },
@@ -413,7 +413,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Charter the Banks',
-        description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'governance',
       },
@@ -446,7 +446,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Establish',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -475,7 +475,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Assert Order',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -504,7 +504,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Found Institutions',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -564,7 +564,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Preserve the Stories',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -593,7 +593,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Found the Order',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -623,7 +623,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Rise of Commerce',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -687,7 +687,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Conscript',
-        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'culture',
       },
@@ -716,7 +716,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Honor the Tradition',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -745,7 +745,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Hold the Line',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -774,7 +774,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Launch the Fleet',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -804,7 +804,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Commission the Army',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -868,7 +868,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Apply What Works',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -896,7 +896,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Push the Frontier',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -925,7 +925,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Steady Advance',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -953,7 +953,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Establish the Method',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -982,7 +982,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Push Without Limits',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'military',
       },
@@ -1011,7 +1011,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Build the Framework',
-        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Technology with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'culture',
       },
@@ -1043,7 +1043,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Settle',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'military',
       },
@@ -1072,7 +1072,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Claim',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'military',
       },
@@ -1101,7 +1101,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Settle',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -1131,7 +1131,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Unify',
-        description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'governance',
       },
@@ -1160,7 +1160,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Coastal Claim',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'military',
       },
@@ -1190,7 +1190,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Settle the Plains',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -1220,7 +1220,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Endure the Waste',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'military',
       },
@@ -1249,7 +1249,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Settle the Delta',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
         effect: 'replace_plus_stack_cost',
         costCategory: 'economy',
       },
@@ -1343,7 +1343,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Fund the State',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Military as a +2 resource.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Military as a +2 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'economy',
         choices: ['governance', 'military'],
@@ -1394,7 +1394,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Environment as a +2 resource.',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Environment as a +2 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'culture',
         choices: ['governance', 'environment'],
@@ -1422,7 +1422,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Governance as a +2 resource.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Governance as a +2 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'military',
         choices: ['economy', 'governance'],
@@ -1477,7 +1477,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
@@ -1669,7 +1669,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Open the Routes',
-        description: 'Pay 1 Economy resource. Stack this card as a +2 bonus on Culture.',
+        description: 'Remove the oldest Economy resource from your stack. Stack this card as a +2 bonus on Culture.',
         effect: 'remove_stack_card_then_stack_on_category',
         sourceCategory: 'economy',
         targetCategory: 'culture',
@@ -1701,7 +1701,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Military as a +1 resource.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Military as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'economy',
         choices: ['governance', 'military'],
@@ -1757,7 +1757,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Environment as a +1 resource.',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Environment as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'culture',
         choices: ['governance', 'environment'],
@@ -1836,7 +1836,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Governance as a +1 resource.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Governance as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'military',
         choices: ['economy', 'governance'],
@@ -1890,7 +1890,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Environment as a +1 resource.',
+        description: 'Remove the oldest Technology resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Environment as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'technology',
         choices: ['economy', 'environment'],
@@ -1918,7 +1918,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
@@ -1944,7 +1944,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
@@ -1972,7 +1972,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Military as a +1 resource.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Military as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'governance',
         choices: ['economy', 'military'],
@@ -1998,7 +1998,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Military as a +2 resource.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Military as a +2 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'governance',
         choices: ['economy', 'military'],
@@ -2026,7 +2026,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Military as a +1 resource.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Military as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'economy',
         choices: ['governance', 'military'],
@@ -2052,7 +2052,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Military as a +2 resource.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Military as a +2 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'economy',
         choices: ['governance', 'military'],
@@ -2080,7 +2080,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Environment as a +1 resource.',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Environment as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'culture',
         choices: ['governance', 'environment'],
@@ -2108,7 +2108,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Governance as a +1 resource.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Governance as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'military',
         choices: ['economy', 'governance'],
@@ -2136,7 +2136,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Environment as a +1 resource.',
+        description: 'Remove the oldest Technology resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Environment as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'technology',
         choices: ['economy', 'environment'],
@@ -2162,7 +2162,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Environment as a +2 resource.',
+        description: 'Remove the oldest Technology resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Environment as a +2 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'technology',
         choices: ['economy', 'environment'],
@@ -2190,7 +2190,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
@@ -2216,7 +2216,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +2 resource.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +2 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
@@ -2242,7 +2242,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +2 resource.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +2 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
@@ -2268,7 +2268,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
@@ -2294,7 +2294,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
@@ -2320,7 +2320,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
@@ -2346,7 +2346,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
@@ -2402,7 +2402,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Meet Their Demands',
-        description: 'Remove 1 resource from your Economy stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
         effect: 'remove_stack_card_then_shuffle_self',
         sourceCategory: 'economy',
       },
@@ -2429,7 +2429,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Foil the Plot',
-        description: 'Remove 1 resource from your Military stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
         effect: 'remove_stack_card_then_shuffle_self',
         sourceCategory: 'military',
       },
@@ -2456,7 +2456,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Emergency Response',
-        description: 'Remove 1 resource from your Economy stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
         effect: 'remove_stack_card_then_shuffle_self',
         sourceCategory: 'economy',
       },
@@ -2483,7 +2483,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Root Out Corruption',
-        description: 'Remove 1 resource from your Governance stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
         effect: 'remove_stack_card_then_shuffle_self',
         sourceCategory: 'governance',
       },
@@ -2537,7 +2537,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Import Supplies',
-        description: 'Remove 1 resource from your Economy stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
         effect: 'remove_stack_card_then_shuffle_self',
         sourceCategory: 'economy',
       },
@@ -2617,7 +2617,7 @@ const CARDS = [
     flavorText: 'The ground beneath certainty gives way.',
     options: [
       { label: 'Option 1 — Struck', description: 'Send to Environment instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Prepare', description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
+      { label: 'Option 2 — Prepare', description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
     ],
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
   },
@@ -2632,7 +2632,7 @@ const CARDS = [
     flavorText: "Nature's indifferent fury leaves little standing.",
     options: [
       { label: 'Option 1 — Swept Away', description: 'Send to Environment instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Shelter In Place', description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'technology' },
+      { label: 'Option 2 — Shelter In Place', description: 'Remove the oldest Technology resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'technology' },
     ],
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
   },
@@ -2647,7 +2647,7 @@ const CARDS = [
     flavorText: 'Cold that does not relent. Supplies that do not last.',
     options: [
       { label: 'Option 1 — Endure the Cold', description: 'Send to Environment instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Emergency Reserves', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+      { label: 'Option 2 — Emergency Reserves', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
     ],
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
   },
@@ -2662,7 +2662,7 @@ const CARDS = [
     flavorText: 'The heat does not break. Crops wither. Tempers rise.',
     options: [
       { label: 'Option 1 — Suffer the Heat', description: 'Send to Environment instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Emergency Rationing', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+      { label: 'Option 2 — Emergency Rationing', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
     ],
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
   },
@@ -2677,7 +2677,7 @@ const CARDS = [
     flavorText: 'Factions fracture the halls of power.',
     options: [
       { label: 'Option 1 — Gridlock', description: 'Send to Governance instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Appease', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+      { label: 'Option 2 — Appease', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
     ],
     discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
   },
@@ -2692,7 +2692,7 @@ const CARDS = [
     flavorText: 'Markets contract. Belts tighten.',
     options: [
       { label: 'Option 1 — Downturn', description: 'Send to Economy instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Stimulus', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+      { label: 'Option 2 — Stimulus', description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
     ],
     discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
   },
@@ -2707,7 +2707,7 @@ const CARDS = [
     flavorText: 'Borrowed prosperity has a due date.',
     options: [
       { label: 'Option 1 — Borrowed Time', description: 'Send to Economy instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Austerity', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+      { label: 'Option 2 — Austerity', description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
     ],
     discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
   },
@@ -2722,7 +2722,7 @@ const CARDS = [
     flavorText: 'When order fails, chaos fills the vacuum.',
     options: [
       { label: 'Option 1 — Uncontrolled', description: 'Send to Governance instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Crackdown', description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
+      { label: 'Option 2 — Crackdown', description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
     ],
     discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
   },
@@ -2737,7 +2737,7 @@ const CARDS = [
     flavorText: 'A generation questions everything it was taught.',
     options: [
       { label: 'Option 1 — Rising Tension', description: 'Send to Culture instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Channel the Energy', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+      { label: 'Option 2 — Channel the Energy', description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
     ],
     discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
   },
@@ -2752,7 +2752,7 @@ const CARDS = [
     flavorText: 'The path forward goes dark.',
     options: [
       { label: 'Option 1 — Dead End', description: 'Send to Technology instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Pivot Funding', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+      { label: 'Option 2 — Pivot Funding', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
     ],
     discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
   },
@@ -2767,7 +2767,7 @@ const CARDS = [
     flavorText: 'The people make their displeasure known.',
     options: [
       { label: 'Option 1 — Popular Anger', description: 'Send to Governance instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Reform', description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
+      { label: 'Option 2 — Reform', description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
     ],
     discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
   },
@@ -2782,7 +2782,7 @@ const CARDS = [
     flavorText: 'Progress brings unintended consequences.',
     options: [
       { label: 'Option 1 — Fallout', description: 'Send to Technology instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Contain the Damage', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+      { label: 'Option 2 — Contain the Damage', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
     ],
     discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
   },
@@ -2797,7 +2797,7 @@ const CARDS = [
     flavorText: 'Secrets rarely stay secret.',
     options: [
       { label: 'Option 1 — Exposed', description: 'Send to Governance instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Spin It', description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
+      { label: 'Option 2 — Spin It', description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
     ],
     discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
   },
@@ -2811,7 +2811,7 @@ const CARDS = [
     flavorText: 'Confidence evaporates. Overnight, everything is worth less.',
     options: [
       { label: 'Option 1 — Freefall', description: 'Send to Economy instability.', effect: 'discard_self' },
-      { label: 'Option 2 — State Intervention', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+      { label: 'Option 2 — State Intervention', description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
     ],
     discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
   },
@@ -2823,7 +2823,7 @@ const CARDS = [
     flavorText: 'Tariffs answered with tariffs. No one wins.',
     options: [
       { label: 'Option 1 — Absorb the Costs', description: 'Send to Economy instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Show of Force', description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
+      { label: 'Option 2 — Show of Force', description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
     ],
     discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
   },
@@ -2835,7 +2835,7 @@ const CARDS = [
     flavorText: 'The shelves empty before anyone sees it coming.',
     options: [
       { label: 'Option 1 — Accept the Scarcity', description: 'Send to Economy instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Innovate Around It', description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'technology' },
+      { label: 'Option 2 — Innovate Around It', description: 'Remove the oldest Technology resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'technology' },
     ],
     discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
   },
@@ -2847,7 +2847,7 @@ const CARDS = [
     flavorText: 'When money loses meaning, so does everything built on it.',
     options: [
       { label: 'Option 1 — Collapse', description: 'Send to Economy instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Austerity Measures', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+      { label: 'Option 2 — Austerity Measures', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
     ],
     discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
   },
@@ -2861,7 +2861,7 @@ const CARDS = [
     flavorText: 'What cannot be expressed festers into resentment.',
     options: [
       { label: 'Option 1 — Silence Prevails', description: 'Send to Culture instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Reform from Above', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+      { label: 'Option 2 — Reform from Above', description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
     ],
     discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
   },
@@ -2873,7 +2873,7 @@ const CARDS = [
     flavorText: 'The old and the young no longer speak the same language.',
     options: [
       { label: 'Option 1 — Let It Fracture', description: 'Send to Culture instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Shared Story', description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
+      { label: 'Option 2 — Shared Story', description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
     ],
     discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
   },
@@ -2885,7 +2885,7 @@ const CARDS = [
     flavorText: 'When belief collapses, the structures built on it follow.',
     options: [
       { label: 'Option 1 — Drift', description: 'Send to Culture instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Cultural Renewal', description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
+      { label: 'Option 2 — Cultural Renewal', description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
     ],
     discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
   },
@@ -2897,7 +2897,7 @@ const CARDS = [
     flavorText: 'The best leave for somewhere they are valued.',
     options: [
       { label: 'Option 1 — Accept the Loss', description: 'Send to Culture instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Incentivize Return', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+      { label: 'Option 2 — Incentivize Return', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
     ],
     discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
   },
@@ -2911,7 +2911,7 @@ const CARDS = [
     flavorText: 'When those who carry arms turn them inward.',
     options: [
       { label: 'Option 1 — Lose Control', description: 'Send to Military instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Restore Order', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+      { label: 'Option 2 — Restore Order', description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
     ],
     discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
   },
@@ -2923,7 +2923,7 @@ const CARDS = [
     flavorText: 'Soldiers vote with their feet.',
     options: [
       { label: 'Option 1 — Suffer the Losses', description: 'Send to Military instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Pay for Loyalty', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+      { label: 'Option 2 — Pay for Loyalty', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
     ],
     discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
   },
@@ -2935,7 +2935,7 @@ const CARDS = [
     flavorText: 'A small conflict that threatens to become something larger.',
     options: [
       { label: 'Option 1 — Absorb the Blow', description: 'Send to Military instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Show of Strength', description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
+      { label: 'Option 2 — Show of Strength', description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
     ],
     discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
   },
@@ -2947,7 +2947,7 @@ const CARDS = [
     flavorText: 'A force without equipment is no force at all.',
     options: [
       { label: 'Option 1 — Go Without', description: 'Send to Military instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Emergency Procurement', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+      { label: 'Option 2 — Emergency Procurement', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
     ],
     discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
   },
@@ -2961,7 +2961,7 @@ const CARDS = [
     flavorText: 'The enemy strikes without a face or a border.',
     options: [
       { label: 'Option 1 — Absorb the Breach', description: 'Send to Technology instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Counter Response', description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
+      { label: 'Option 2 — Counter Response', description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
     ],
     discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
   },
@@ -2973,7 +2973,7 @@ const CARDS = [
     flavorText: 'Not all progress goes forward.',
     options: [
       { label: 'Option 1 — Write It Off', description: 'Send to Technology instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Redirect Funding', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+      { label: 'Option 2 — Redirect Funding', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
     ],
     discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
   },
@@ -2985,7 +2985,7 @@ const CARDS = [
     flavorText: 'What led yesterday falls behind today.',
     options: [
       { label: 'Option 1 — Fall Behind', description: 'Send to Technology instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Reinvest', description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'technology' },
+      { label: 'Option 2 — Reinvest', description: 'Remove the oldest Technology resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'technology' },
     ],
     discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
   },
@@ -2997,7 +2997,7 @@ const CARDS = [
     flavorText: 'Private knowledge made public. Trust, once broken, is slow to rebuild.',
     options: [
       { label: 'Option 1 — Exposed', description: 'Send to Technology instability.', effect: 'discard_self' },
-      { label: 'Option 2 — Contain the Fallout', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+      { label: 'Option 2 — Contain the Fallout', description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
     ],
     discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
   },
@@ -3047,12 +3047,12 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Full Consolidation',
-        description: 'Choose a category. Take the oldest 2 instability cards from that pile and shuffle them into the deck. Shuffle this card into the deck.',
+        description: 'Choose a category. Remove the oldest 2 instability cards from that pile and shuffle them into the deck. Shuffle this card into the deck.',
         effect: 'remove_instability_modal', maxRemove: 2, selfDiscardFlow: true,
       },
       {
         label: 'Option 2 — Broad Consolidation',
-        description: 'Take the oldest instability card from each of 2 different categories and shuffle them into the deck.',
+        description: 'Remove the oldest instability card from each of 2 different categories and shuffle them into the deck.',
         effect: 'remove_two_instability_modal',
       },
     ],
@@ -3067,7 +3067,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Resource Investment',
-        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the deck. Remove the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
         effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'governance', maxRemove: 2, selfDiscardFlow: true,
       },
       {
@@ -3092,7 +3092,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Focused Relief',
-        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Take the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the deck. Remove the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
         effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'governance', maxRemove: 1, selfDiscardFlow: true,
       },
     ],
@@ -3127,12 +3127,12 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Fiscal Cuts',
-        description: 'Take the oldest resource from your Economy stack and shuffle it into the deck. Take the oldest 3 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the deck. Remove the oldest 3 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
         effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'economy', maxRemove: 3, selfDiscardFlow: true,
       },
       {
         label: 'Option 2 — Administrative Cuts',
-        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the deck. Remove the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
         effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'governance', maxRemove: 2, selfDiscardFlow: true,
       },
     ],
@@ -3170,12 +3170,12 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Emergency Response',
-        description: 'Take the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
         effect: 'remove_instability_modal', maxRemove: 1, selfDiscardFlow: true,
       },
       {
         label: 'Option 2 — Rapid Deployment',
-        description: 'Take the oldest instability from each of 2 different categories and shuffle them into the deck.',
+        description: 'Remove the oldest instability from each of 2 different categories and shuffle them into the deck.',
         effect: 'remove_two_instability_modal',
       },
     ],
@@ -3195,7 +3195,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Resource Allocation',
-        description: 'Take the oldest resource from your Military stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the deck. Remove the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
         effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'military', maxRemove: 2, selfDiscardFlow: true,
       },
     ],
@@ -3215,7 +3215,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Failsafe',
-        description: 'Take the oldest resource from your Technology stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest Technology resource from your stack and shuffle it into the deck. Remove the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
         effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'technology', maxRemove: 2, selfDiscardFlow: true,
       },
     ],
@@ -3230,12 +3230,12 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Adaptive Response',
-        description: 'Take the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
         effect: 'remove_instability_modal', maxRemove: 1, selfDiscardFlow: true,
       },
       {
         label: 'Option 2 — Strategic Investment',
-        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Stack +2 on Economy or Military.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the deck. Stack +2 on Economy or Military.',
         effect: 'pay_own_stack_then_stack_on_any', ownCategory: 'governance', choices: ['economy', 'military'],
       },
     ],
@@ -3253,7 +3253,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Rewrite',
-        description: 'Remove 1 resource from your Governance stack and shuffle it into the draw deck. Then choose one Instability pile — remove the oldest card from it and shuffle it into the draw deck. Discard this card.',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Then choose one Instability pile — remove the oldest card from it and shuffle it into the draw deck. Discard this card.',
         effect: 'remove_stack_card_then_remove_instability',
         sourceCategory: 'governance',
         maxRemove: 1,
@@ -3364,14 +3364,14 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Economic Pressure',
-        description: 'Remove 1 Governance resource. Discard 1 card from your hand. Place this card on your Economy stack (+1).',
+        description: 'Remove the oldest Governance resource from your stack. Discard 1 card from your hand. Place this card on your Economy stack (+1).',
         effect: 'remove_stack_card_then_discard_hand_then_stack',
         sourceCategory: 'governance',
         targetCategory: 'economy',
       },
       {
         label: 'Option 2 — Cultural Leverage',
-        description: 'Remove 1 Culture instability. Discard 1 card from your hand. Place this card on your Economy stack (+1).',
+        description: 'Remove the oldest Culture instability. Discard 1 card from your hand. Place this card on your Economy stack (+1).',
         effect: 'remove_instability_then_discard_hand_then_stack',
         instabilityCategory: 'culture',
         targetCategory: 'economy',
@@ -3474,7 +3474,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Demilitarize',
-        description: 'Pay 1 Governance resource. Remove up to 3 Military resources from your stack, shuffling them into the deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest Governance resource from your stack. Remove up to 3 Military resources from your stack, shuffling them into the deck. Shuffle this card into the deck.',
         effect: 'remove_stack_card_then_remove_n_from_stack',
         sourceCategory: 'governance',
         targetCategory: 'military',
@@ -3483,7 +3483,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Convert Assets',
-        description: 'Pay 1 Military resource. Stack this card as a +1 bonus on Technology.',
+        description: 'Remove the oldest Military resource from your stack. Stack this card as a +1 bonus on Technology.',
         effect: 'remove_stack_card_then_stack_on_category',
         sourceCategory: 'military',
         targetCategory: 'technology',
@@ -3513,7 +3513,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Concede Ground',
-        description: 'Pay 1 Culture resource. Send this card to Governance or Culture instability.',
+        description: 'Remove the oldest Culture resource from your stack. Send this card to Governance or Culture instability.',
         effect: 'remove_stack_card_then_discard_self',
         sourceCategory: 'culture',
       },
@@ -3535,14 +3535,14 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Undermine',
-        description: 'Pay 1 Military resource. Place this card in any Culture instability stack on the board (−3 to Culture).',
+        description: 'Remove the oldest Military resource from your stack. Place this card in any Culture instability stack on the board (−3 to Culture).',
         effect: 'remove_stack_card_then_place_in_instability',
         sourceCategory: 'military',
         targetInstability: 'culture',
       },
       {
         label: 'Option 2 — Convert Resources',
-        description: 'Pay 1 Governance resource. Stack this card as a +3 bonus on Culture.',
+        description: 'Remove the oldest Governance resource from your stack. Stack this card as a +3 bonus on Culture.',
         effect: 'remove_stack_card_then_stack_on_category',
         sourceCategory: 'governance',
         targetCategory: 'culture',
@@ -3566,7 +3566,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Seize Governance',
-        description: 'Remove 1 Military resource. Remove 1 more Military resource (or your active Military identity if none remain). Place this card on your Governance stack (+3).',
+        description: 'Remove the oldest Military resource from your stack. Remove the oldest Military resource (or your active Military identity if stack is empty). Place this card on your Governance stack (+3).',
         effect: 'remove_stack_card_then_remove_or_identity_then_stack',
         sourceCategory: 'military',
         removeCategory: 'military',
@@ -3574,7 +3574,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Military Supremacy',
-        description: 'Remove 1 Military resource. Remove 1 Governance resource (or your active Governance identity if none remain). Place this card on your Military stack (+3).',
+        description: 'Remove the oldest Military resource from your stack. Remove the oldest Governance resource (or your active Governance identity if stack is empty). Place this card on your Military stack (+3).',
         effect: 'remove_stack_card_then_remove_or_identity_then_stack',
         sourceCategory: 'military',
         removeCategory: 'governance',
@@ -3600,14 +3600,14 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Government Contract',
-        description: 'Remove 1 Governance resource. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        description: 'Remove the oldest Governance resource from your stack. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
         effect: 'remove_stack_card_then_discard_hand_then_stack',
         sourceCategory: 'governance',
         targetCategory: 'economy',
       },
       {
         label: 'Option 2 — Cultural Goodwill',
-        description: 'Remove 1 Culture instability. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        description: 'Remove the oldest Culture instability. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
         effect: 'remove_instability_then_discard_hand_then_stack',
         instabilityCategory: 'culture',
         targetCategory: 'economy',
