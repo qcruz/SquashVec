@@ -3266,7 +3266,10 @@ const CARDS = [
         selfDiscardFlow: true,
       },
     ],
-    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
   },
 
   {
