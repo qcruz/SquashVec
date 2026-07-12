@@ -1429,9 +1429,7 @@ function renderHand() {
         onclick="event.stopPropagation(); selectCardWithOption(${i}, ${oi})">Opt ${oi + 1}</button>`;
     }).join('');
 
-    const isMustPlay = card.mustPlayWhenDrawn || card.subtype === 'hazard';
     el.innerHTML = `
-      ${isMustPlay ? '<div class="hc-must-play-banner">Must be played when drawn</div>' : ''}
       <div class="hc-header">
         <span class="hc-type">${typeLabel}</span>
         ${card.value > 0 ? `<span class="hc-val-badge">+${card.value}</span>` : ''}
@@ -1509,6 +1507,12 @@ function renderDetailFrame(card, color, location, readonly) {
     ? `Event Card${subtypeLabel}`
     : `${cap(card.category || '')} Identity`;
 
+  const isMustPlay = card.mustPlayWhenDrawn || card.subtype === 'hazard';
+  const mustPlayHTML = isMustPlay ? `
+    <div class="detail-must-play">
+      <span class="detail-section-label">Must Be Played When Drawn</span>
+    </div>` : '';
+
   const benefitHTML = card.benefit ? `
     <div class="detail-benefit">
       <span class="detail-section-label">Benefit When Played</span>
@@ -1565,6 +1569,7 @@ function renderDetailFrame(card, color, location, readonly) {
         </div>
         ${card.value > 0 ? `<div class="detail-value" style="color:${color}">+${card.value}</div>` : ''}
       </div>
+      ${mustPlayHTML}
       ${benefitHTML}
       ${reqHTML}
       ${optionsHTML}
