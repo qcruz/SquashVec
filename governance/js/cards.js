@@ -1642,9 +1642,10 @@ const CARDS = [
         targetCategory: 'governance',
       },
       {
-        label: 'Option 2 — Stack on Governance',
-        description: 'Stack on your active Governance card. Adds +2 to Governance score.',
-        effect: 'stack_on_category',
+        label: 'Option 2 — Enforce the Charter',
+        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. Place this card in your Governance Stack (+2).',
+        effect: 'remove_stack_card_and_optionally_place_self',
+        sourceCategory: 'governance',
         targetCategory: 'governance',
       },
     ],
