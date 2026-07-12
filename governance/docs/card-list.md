@@ -1,5 +1,6 @@
 # Governance — Full Card List
-*For balancing reference. Updated manually as cards change.*
+*Complete reference for all cards in the starter deck. Update this file whenever cards.js changes.*
+*Last updated: 206 cards total.*
 
 ---
 
@@ -101,7 +102,7 @@
 | Tax Collection | +2    | Pay Culture → +2 Economy                  | Pay Economy → shuffle self        |
 | Tax Increase   | +2    | Stack on Economy (free)                    | Pay Economy → stack anywhere      |
 | Tax Decrease   | +1    | Stack on Governance (free)                 | Stack on Economy (free)           |
-| Trade Routes   | +2    | Pay Environment → +2 Economy              | Stack on Economy (free)           |
+| Trade Routes   | +2    | Pay Economy → +2 Culture                  | Stack on Economy (free)           |
 | Market Expansion| +1   | Stack on Economy (free)                    | Pay Economy → stack anywhere      |
 | Surplus Goods  | +1    | Stack on Economy (free)                    | Pay Economy → stack anywhere      |
 | Trade Surplus  | +2    | Stack on Economy (free)                    | Pay Economy → stack anywhere      |
@@ -122,6 +123,7 @@
 | Border Fortification  | +1    | Stack on Military (free)               | Pay Military → stack anywhere     |
 | Battle Hardened       | +1    | Stack on Military (free)               | Pay Military → stack anywhere     |
 | Scientific Breakthrough| +2   | Pay Economy → +2 Technology           | Pay Culture → +2 Military         |
+| Destabilization       | +3    | Pay Military → place in Culture instability (−3) | Pay Governance → +3 Culture |
 
 ### Technology Resources
 | Name               | Value | Option 1                               | Option 2                          |
@@ -151,16 +153,17 @@
 *Drawn as hazards. Option 1 sends to an instability pile (−value to score). Option 2 pays a resource to shuffle the card back into the deck instead.*
 
 ### General / Multi-Category
-| Name                  | Value | Instability Dest.             | Mitigate By        |
-|-----------------------|-------|-------------------------------|--------------------|
-| Worker Strike         | −2    | Economy · Governance          | Pay Economy        |
-| Political Assassination| −2   | Governance · Military         | Pay Military       |
-| Flood                 | −2    | Environment · Economy         | Pay Economy        |
-| Corruption            | −2    | Governance · Economy          | Pay Governance     |
-| Epidemic              | −2    | Culture · Governance          | Pay Economy        |
-| Drought               | −2    | Environment · Economy         | Pay Economy        |
-| Rebellion             | −3    | Governance · Military · Culture| Pay Governance    |
-| Coup Attempt          | −2    | Governance · Culture          | Pay Governance     |
+| Name                  | Value | Instability Dest.             | Opt 1 (avoid)        | Opt 2 (suffer)        |
+|-----------------------|-------|-------------------------------|----------------------|-----------------------|
+| Worker Strike         | −2    | Economy · Governance          | Pay Economy          | Go to instability     |
+| Political Assassination| −2   | Governance · Military         | Pay Military         | Go to instability     |
+| Flood                 | −2    | Environment · Economy         | Pay Economy          | Go to instability     |
+| Corruption            | −2    | Governance · Economy          | Pay Governance       | Go to instability     |
+| Epidemic              | −2    | Culture · Governance          | Pay Economy          | Go to instability     |
+| Drought               | −2    | Environment · Economy         | Pay Economy          | Go to instability     |
+| Rebellion             | −3    | Governance · Military · Culture| Pay Governance      | Go to instability     |
+| Coup Attempt          | −2    | Governance · Culture          | Pay Governance       | Go to instability     |
+| Social Upheaval ★     | −1    | Governance · Culture          | Discard 3 hand cards, shuffle self | Pay Culture → go to instability |
 
 ### Environment Instabilities
 | Name           | Value | Instability Dest. | Mitigate By    |
@@ -218,43 +221,80 @@
 ---
 
 ## EVENT CARDS — MUST-PLAY
-*Drawn immediately and resolved before any other action.*
+*All hazard subtype cards are must-play when drawn — resolved immediately before any other action. The cards below are additionally flagged must-play, or are noted here for reference.*
 
 | Name          | Value | Condition          | Effect                                  |
 |---------------|-------|--------------------|-----------------------------------------|
 | Indecisiveness| −1    | Hand > 5 cards     | Discard 1 card from hand, shuffle self  |
 |               |       | Hand ≤ 5 cards     | Draw 2 cards, shuffle self              |
 
+*Note: All hazard cards listed above (Worker Strike, Flood, etc.) are also must-play when drawn.*
+
 ---
 
-## EVENT CARDS — MILITARY ACTIONS & UTILITY
+## EVENT CARDS — UTILITY
 *Special effects: instability removal, resource transfer, disruption.*
 
-| Name                  | Value | Option 1                                                              | Option 2                                   |
-|-----------------------|-------|-----------------------------------------------------------------------|--------------------------------------------|
-| Incursion             | +1    | Take Tech/Economy resource → own Economy. Pay Military. Discard self.| Take Tech/Economy resource → own Economy. Place in Military instability. |
-| Occupation            | +1    | Take Env/Culture resource → own Economy. Pay Military. Discard self. | Take Env/Culture resource → own Economy. Place in Military instability.  |
-| Sanctions             | +1    | Pay Military resource. Discard 1 hand card. Discard self.            | Discard 1 hand card. Place in Military instability.                      |
-| Revisionist History   | +1    | Pay Governance resource. Remove 1 instability. Discard self.         | Draw 1, shuffle self.                      |
-| Contingency Planning  | +1    | Remove lowest instability from chosen category. Discard self.        | Move 1 instability card between categories. Discard self. |
-| Cultural Exchange     | +1    | Remove 1 Culture instability. Discard self.                          | Stack on Culture (+1).                     |
-| Peace Treaty          | +1    | Remove up to 2 instability from any pile.                            | Draw 1, shuffle self.                      |
-| Diplomatic Mission    | +1    | Remove up to 2 instability from chosen pile. Discard self.           | Draw 1, shuffle self.                      |
-| Census                | +1    | Remove 1 instability from any pile. Discard self.                    | Draw 1, shuffle self.                      |
+### General Utility
+| Name                  | Value | Option 1                                                              | Option 2                                   | Discard To              |
+|-----------------------|-------|-----------------------------------------------------------------------|--------------------------------------------|-------------------------|
+| Incursion             | —     | Take Tech/Economy resource → own Economy. Pay Military. Discard self.| Take Tech/Economy resource → own Economy. Place in Military instability. | — |
+| Occupation            | —     | Take Env/Culture resource → own Economy. Pay Military. Discard self. | Take Env/Culture resource → own Economy. Place in Military instability.  | — |
+| Military Exercise     | —     | Pay 2 Military → discard 3 hand cards.                               | Pay 2 Military → draw 2 cards.             | Discard                 |
+| Sanctions             | —     | Pay Military → remove 1 instability (any). Shuffle self.             | Discard 1 hand card. Place in Military instability. | Shuffle to deck  |
+| Revisionist History   | —     | Pay Governance → remove 1 instability. Discard self.                 | Draw 1, shuffle self.                      | Culture · Tech Instab.  |
+| Contingency Planning  | —     | Remove lowest instability from chosen category. Discard self.        | Move 1 instability between categories. Discard self. | Gov · Culture Instab.|
+| Cultural Exchange     | —     | Remove 1 Culture instability. Discard self.                          | Stack on Culture (+1).                     | Culture Instability     |
+| Peace Treaty          | —     | Remove up to 2 instability from any pile.                            | Draw 1, shuffle self.                      | Shuffle to deck         |
+| Diplomatic Mission    | —     | Remove up to 2 instability from chosen pile. Discard self.           | Draw 1, shuffle self.                      | Gov · Culture Instab.   |
+| Census                | —     | Remove 1 instability from any pile. Discard self.                    | Draw 1, shuffle self.                      | Gov · Economy Instab.   |
+| Disarmament           | —     | Pay Governance → remove 3 Military stack resources. Shuffle self.    | Pay Military → stack +1 on Technology.     | Gov · Military Instab.  |
+
+### Management Philosophy (Governance Utility)
+*All shuffle back to deck unless noted. Category: Governance.*
+
+| Name                    | Option 1                                                        | Option 2                                                           |
+|-------------------------|------------------------------------------------------------------|---------------------------------------------------------------------|
+| Consolidation           | Remove 2 oldest instability from any 1 category.                | Remove 1 oldest from each of 2 different categories.               |
+| Structural Consolidation| Pay Governance → remove 2 instability from any category.        | Move 1 instability from one category to another.                   |
+| Managed Decline         | Discard 2 hand cards.                                           | Pay Governance → remove 1 instability from any category.           |
+| Rationalization †       | Draw 2 cards. Discard self.                                     | Remove lowest instability from any category. Discard self.         |
+| Austerity               | Pay Economy → remove 3 instability from any category.           | Pay Governance → remove 2 instability from any category.           |
+| Preparedness ‡          | Draw 2 cards. Send to Governance or Culture instability.        | Draw 1 card. Shuffle self.                                         |
+| Crisis Protocol         | Remove 1 instability from any category. Shuffle self.           | Remove 1 oldest from each of 2 different categories.               |
+| Grand Strategy          | Draw 2 cards. Shuffle self.                                     | Pay Military → remove 2 instability from any category.             |
+| Redundancy Systems      | Discard 1 hand card. Shuffle self.                              | Pay Technology → remove 2 instability from any category.           |
+| Adaptive Management     | Remove 1 instability from any category. Shuffle self.           | Pay Governance → stack +2 on any category.                         |
+
+*† Rationalization goes to discard pile (not deck).*
+*‡ Preparedness Opt 1 sends card to Governance or Culture instability.*
 
 ---
 
 ## DECK COMPOSITION SUMMARY
-*Approximate counts in the starter deck.*
+*Exact counts in the starter deck.*
 
-| Category          | Identity | Resources | Instabilities | Utility/Action | Total |
-|-------------------|----------|-----------|---------------|----------------|-------|
-| Governance        | 10       | 16        | 4             | —              | 30    |
-| Economy           | 10       | 14        | 6             | —              | 30    |
-| Culture           | 11       | 8         | 5             | 1              | 25    |
-| Military          | 9        | 8         | 4             | 3              | 24    |
-| Technology        | 9        | 8         | 6             | —              | 23    |
-| Environment       | 10       | 26        | 4             | —              | 40    |
-| General / Multi   | —        | 4         | 8             | 8              | 20    |
-| Must-Play         | —        | —         | 4             | —              | 4     |
-| **Total**         | **59**   | **84**    | **41**        | **12**         | **196**|
+| Type                          | Unique Cards | Copies in Deck |
+|-------------------------------|-------------|----------------|
+| Identity (category) cards     | 54          | 59             |
+| Stacking events               | 38          | 79             |
+| Hazard events (incl. must-play)| 34         | 46             |
+| Utility events                | 22          | 22             |
+| **Total**                     | **—**       | **206**        |
+
+### By Category
+| Category    | Identities | Stacking | Hazards | Utility | **Total** |
+|-------------|-----------|---------|---------|---------|-----------|
+| Governance  | 10        | 19      | 4       | 10 †    | **43**    |
+| Economy     | 10        | 6       | 6       | —       | **22**    |
+| Culture     | 11        | 4       | 5       | 1       | **21**    |
+| Military    | 9         | 7 ‡     | 4       | 4       | **24**    |
+| Technology  | 9         | 7       | 6       | —       | **22**    |
+| Environment | 10        | 32      | 4       | —       | **46**    |
+| Neutral/Any | —         | 3       | 13 ★    | 7       | **23**    |
+| Must-Play   | —         | —       | 4       | —       | **4**     |
+| **Total**   | **59**    | **79**  | **46**  | **22**  | **206**   |
+
+*† 10 management philosophy cards, all Governance utility.*
+*‡ Includes Destabilization ×2 (stacking, military category).*
+*★ Includes Social Upheaval ×2.*

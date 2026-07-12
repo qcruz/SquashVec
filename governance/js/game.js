@@ -623,6 +623,49 @@ function resolveEventCard(card, opt) {
       break;
     }
 
+    case 'remove_stack_card_then_stack_on_category': {
+      const srcCat = opt.sourceCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to pay the cost.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'remove_stack_place_on_category', card, sourceCategory: srcCat, targetCategory: opt.targetCategory, bonusValue: opt.bonusValue };
+      render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
+    case 'discard_from_hand_then_shuffle_self': {
+      const count = Math.min(opt.count || 1, G.hand.length);
+      if (count <= 0) {
+        addLog(`${card.name}: No cards in hand to discard — shuffling self into deck.`);
+        G.deck.push(card); shuffle(G.deck); break;
+      }
+      G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, shuffleSelf: true };
+      render(); showDiscardHandModal(card, count); return;
+    }
+
+    case 'remove_stack_card_then_remove_n_from_stack': {
+      const srcCat = opt.sourceCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to pay the cost.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'remove_stack_then_remove_target_stack', card, sourceCategory: srcCat, targetCategory: opt.targetCategory, removeCount: opt.removeCount || 1, selfDiscardFlow: !!opt.selfDiscardFlow };
+      render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
+    case 'remove_stack_card_then_place_in_instability': {
+      const srcCat = opt.sourceCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to pay the cost.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'remove_stack_place_in_instability', card, sourceCategory: srcCat, targetInstability: opt.targetInstability };
+      render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
     default:
       G.discard.push(card);
       addLog(`${card.name} discarded.`);
@@ -828,7 +871,11 @@ function pickDiscardHand(i) {
   if (action.remaining > 0) { showDiscardHandModal(action.card, action.remaining); return; }
   closeModal();
   G.pendingAction = null;
-  if (action.afterInstability) {
+  if (action.shuffleSelf) {
+    G.deck.push(action.card); shuffle(G.deck);
+    addLog(`${action.card.name} shuffled into the deck.`);
+    afterCardResolved();
+  } else if (action.afterInstability) {
     G.categories[action.afterInstability].instability.push(action.card);
     addLog(`${action.card.name} → ${cap(action.afterInstability)} instability.`);
     afterCardResolved();
@@ -907,6 +954,35 @@ function resolveRemoveStackCard(idx) {
     }
     G.pendingAction = { type: 'replace_or_stack', card, targetCategory, bonusInstabilityRemoval: G.pendingAction.bonusInstabilityRemoval };
     render(); showReplaceOrStackModal(card, targetCategory); return;
+  } else if (type === 'remove_stack_place_on_category') {
+    const tgtCat = G.pendingAction.targetCategory;
+    const val = G.pendingAction.bonusValue !== undefined ? G.pendingAction.bonusValue : card.value;
+    const stackedCard = val !== card.value ? { ...card, value: val } : card;
+    G.pendingAction = null;
+    G.categories[tgtCat].stack.push(stackedCard);
+    addLog(`${card.name} (+${val}) placed on ${cap(tgtCat)} stack.`);
+    afterCardResolved();
+  } else if (type === 'remove_stack_then_remove_target_stack') {
+    const { targetCategory: tgtCat, removeCount, selfDiscardFlow } = G.pendingAction;
+    const tgtStack = G.categories[tgtCat].stack;
+    const toRemove = Math.min(removeCount, tgtStack.length);
+    if (toRemove > 0) {
+      const removed2 = tgtStack.splice(0, toRemove);
+      removed2.forEach(c => { G.deck.push(c); });
+      shuffle(G.deck);
+      addLog(`${removed2.map(c => c.name).join(', ')} removed from ${cap(tgtCat)} stack → deck.`);
+    } else {
+      addLog(`${card.name}: No ${cap(tgtCat)} resources to remove.`);
+    }
+    G.pendingAction = null;
+    if (selfDiscardFlow) { applyCardSelfDiscard(card); } else { G.deck.push(card); shuffle(G.deck); }
+    afterCardResolved();
+  } else if (type === 'remove_stack_place_in_instability') {
+    const tgtInstab = G.pendingAction.targetInstability;
+    G.pendingAction = null;
+    G.categories[tgtInstab].instability.push(card);
+    addLog(`${card.name} → ${cap(tgtInstab)} instability (−${card.value}).`);
+    afterCardResolved();
   } else if (targetCategory) {
     G.pendingAction = null;
     G.categories[targetCategory].stack.push(card);
@@ -1188,6 +1264,9 @@ function canPlayOption(card, opt) {
     case 'remove_stack_card_then_shuffle_self':
     case 'remove_stack_card_then_remove_instability':
     case 'remove_stack_card_then_discard_self':
+    case 'remove_stack_card_then_stack_on_category':
+    case 'remove_stack_card_then_remove_n_from_stack':
+    case 'remove_stack_card_then_place_in_instability':
       return G.categories[opt.sourceCategory].stack.length >= 1;
     case 'pay_own_stack_then_stack_on_any':
       return G.categories[opt.ownCategory].stack.length >= 1;

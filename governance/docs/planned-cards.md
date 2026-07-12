@@ -149,6 +149,9 @@ Cards that have been approved and added to cards.js. Kept here for reference.
 | Name | Category | Notes |
 |------|----------|-------|
 | Military Exercise | Military | Utility. Remove 2 Military resources → discard 3 hand cards OR draw 2. |
+| Disarmament | Military | Utility. Pay Governance → remove 3 Military stack cards; OR pay Military → stack +1 on Technology. |
+| Social Upheaval | — | Hazard (must-play). Discard 3 hand cards to shuffle self; OR pay Culture to go to instability. |
+| Destabilization | Military | Stacking +3. Pay Military → place in Culture instability; OR pay Governance → stack +3 on Culture. |
 | Harsh Winter | Environment | Hazard −2. Mitigate with Economy. |
 | Scorched Summer | Environment | Hazard −2. Mitigate with Economy. |
 | Dense Forests | Environment | Stacking resource +2. |

@@ -1665,10 +1665,10 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Open the Routes',
-        description: 'Remove a resource from your Environment stack and shuffle it into the draw deck. Place this card in your Economy Stack (+2).',
-        effect: 'remove_stack_card_and_optionally_place_self',
-        sourceCategory: 'environment',
-        targetCategory: 'economy',
+        description: 'Pay 1 Economy resource. Stack this card as a +2 bonus on Culture.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'economy',
+        targetCategory: 'culture',
       },
       {
         label: 'Option 2 — Stack on Economy',
@@ -1728,7 +1728,7 @@ const CARDS = [
         description: 'Remove a Governance instability card and shuffle it into the draw deck. Shuffle this card into the deck.',
         effect: 'remove_instability_modal',
         maxRemove: 1,
-        sourceCategory: 'governance',
+        targetCategory: 'governance',
         selfDiscardFlow: true,
       },
     ],
@@ -3121,7 +3121,7 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Full Survey',
-        description: 'Draw 2 cards. Discard this card.',
+        description: 'Draw 2 cards. Send this card to Governance or Culture instability.',
         effect: 'draw_if_hand_small',
       },
       {
@@ -3337,13 +3337,16 @@ const CARDS = [
     flavorText: 'Power does not always wear armor.',
     options: [
       {
-        label: 'Option 1 — Economic Pressure',
-        description: 'Remove a resource from your Military stack and shuffle it into the draw deck. Choose any card in your hand — it must be discarded. Discard this card.',
-        effect: 'remove_military_then_discard_hand_self_discard',
+        label: 'Option 1 — Leverage',
+        description: 'Remove 1 Military resource from your stack. Remove 1 instability from any category. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability',
+        sourceCategory: 'military',
+        maxRemove: 1,
+        selfDiscardFlow: true,
       },
       {
-        label: 'Option 2 — Hold the Line',
-        description: 'Choose any card in your hand — it must be discarded. Place this card in your Military Instability.',
+        label: 'Option 2 — Accept the Strain',
+        description: 'Discard 1 card from your hand. Place this card in Military instability.',
         effect: 'discard_hand_then_self',
         afterInstability: 'military',
       },
@@ -3427,6 +3430,98 @@ const CARDS = [
     discardTo: [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  {
+    id: 'disarmament',
+    name: 'Disarmament',
+    type: 'event',
+    subtype: 'utility',
+    category: 'military',
+    value: 0,
+    flavorText: 'What is laid down cannot be turned against you.',
+    options: [
+      {
+        label: 'Option 1 — Demilitarize',
+        description: 'Pay 1 Governance resource. Remove up to 3 Military resources from your stack, shuffling them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_n_from_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'military',
+        removeCount: 3,
+        selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Convert Assets',
+        description: 'Pay 1 Military resource. Stack this card as a +1 bonus on Technology.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'military',
+        targetCategory: 'technology',
+        bonusValue: 1,
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+  },
+
+  {
+    id: 'social_upheaval',
+    name: 'Social Upheaval',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 1,
+    flavorText: 'When the people move, institutions shake.',
+    options: [
+      {
+        label: 'Option 1 — Weather the Storm',
+        description: 'Discard 3 cards from your hand. Shuffle this card into the deck.',
+        effect: 'discard_from_hand_then_shuffle_self',
+        count: 3,
+      },
+      {
+        label: 'Option 2 — Concede Ground',
+        description: 'Pay 1 Culture resource. Send this card to Governance or Culture instability.',
+        effect: 'remove_stack_card_then_discard_self',
+        sourceCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  {
+    id: 'destabilization',
+    name: 'Destabilization',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 3,
+    flavorText: 'Force projected outward reshapes the world within.',
+    options: [
+      {
+        label: 'Option 1 — Undermine',
+        description: 'Pay 1 Military resource. Place this card in Culture instability (−3 to Culture).',
+        effect: 'remove_stack_card_then_place_in_instability',
+        sourceCategory: 'military',
+        targetInstability: 'culture',
+      },
+      {
+        label: 'Option 2 — Convert Resources',
+        description: 'Pay 1 Governance resource. Stack this card as a +3 bonus on Culture.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'governance',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
     ],
   },
 
@@ -3525,6 +3620,9 @@ const STARTER_DECK = [
   'contingency_planning',
   'occupation', 'incursion', 'sanctions', 'military_exercise', 'cultural_exchange',
   'peace_treaty', 'diplomatic_mission', 'census',
+  'disarmament', 'destabilization', 'destabilization',
+  // Hazard events (new)
+  'social_upheaval', 'social_upheaval',
   // Management philosophy
   'consolidation', 'structural_consolidation', 'managed_decline', 'rationalization',
   'austerity', 'preparedness', 'crisis_protocol', 'grand_strategy',

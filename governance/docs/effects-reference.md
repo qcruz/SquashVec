@@ -66,6 +66,27 @@ Take the oldest resource from `sourceCategory` stack → deck. Discard this card
 - `sourceCategory: string`
 - *Requires: `G.categories[sourceCategory].stack.length >= 1`*
 
+**`remove_stack_card_then_stack_on_category`**
+Take the oldest resource from `sourceCategory` stack → deck. Place this card on `targetCategory` stack.
+- `sourceCategory: string`
+- `targetCategory: string`
+- `bonusValue?: number` — if set, overrides card's own value when placed on the stack
+- *Requires: `G.categories[sourceCategory].stack.length >= 1`*
+
+**`remove_stack_card_then_remove_n_from_stack`**
+Take the oldest resource from `sourceCategory` stack → deck. Remove up to `removeCount` oldest resources from `targetCategory` stack → deck.
+- `sourceCategory: string`
+- `targetCategory: string`
+- `removeCount: number`
+- `selfDiscardFlow?: boolean`
+- *Requires: `G.categories[sourceCategory].stack.length >= 1`*
+
+**`remove_stack_card_then_place_in_instability`**
+Take the oldest resource from `sourceCategory` stack → deck. Place this card in `targetInstability` pile.
+- `sourceCategory: string`
+- `targetInstability: string` — e.g. `'culture'`, `'military'`
+- *Requires: `G.categories[sourceCategory].stack.length >= 1`*
+
 **`remove_stack_card_and_optionally_place_self`**
 Take the oldest resource from `sourceCategory` stack → deck. Player chooses to place this card on `targetCategory` stack or shuffle it back.
 - `sourceCategory: string`
@@ -91,6 +112,10 @@ Take the oldest resource from Military stack → deck. Discard 1 card from hand.
 ---
 
 ### Hand / Draw
+
+**`discard_from_hand_then_shuffle_self`**
+Player picks N cards from hand to discard. Then shuffles this card into the deck (ignores `discardTo`).
+- `count?: number` (default 1)
 
 **`draw_and_shuffle_self`**
 Draw 1 card. Shuffle this card into the deck.
@@ -173,6 +198,9 @@ These effects are **disabled** (grayed out) when requirements aren't met:
 |--------|-------------|
 | `replace_plus_stack_cost` | `costCategory` stack ≥ `costAmount` |
 | `remove_stack_card_*` | `sourceCategory` stack ≥ 1 |
+| `remove_stack_card_then_stack_on_category` | `sourceCategory` stack ≥ 1 |
+| `remove_stack_card_then_remove_n_from_stack` | `sourceCategory` stack ≥ 1 |
+| `remove_stack_card_then_place_in_instability` | `sourceCategory` stack ≥ 1 |
 | `pay_own_stack_then_stack_on_any` | `ownCategory` stack ≥ 1 |
 | `remove_two_military_then_*` | Military stack ≥ 2 |
 | `remove_military_then_*` | Military stack ≥ 1 |
