@@ -1639,7 +1639,7 @@ function renderCardDetail() {
       `;
     } else {
       actions.innerHTML = `
-        <button class="confirm-btn confirm-disabled" onclick="discardUnplayable(${i})">Discard</button>
+        <span class="confirm-disabled" style="font-size:12px;color:var(--muted);padding:0 8px">Requirements not met</span>
         <button class="deselect-btn" onclick="deselectCard()">Deselect</button>
         ${passBtn}
       `;

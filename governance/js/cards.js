@@ -3692,7 +3692,7 @@ const STARTER_DECK = [
   'disarmament', 'destabilization', 'destabilization',
   'direct_attack', 'direct_attack', 'arms_package', 'arms_package',
   // Hazard events (new)
-  'social_upheaval', 'social_upheaval',
+  'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval',
   // Management philosophy
   'consolidation', 'structural_consolidation', 'managed_decline', 'rationalization',
   'austerity', 'preparedness', 'crisis_protocol', 'grand_strategy',
