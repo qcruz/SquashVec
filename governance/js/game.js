@@ -909,8 +909,13 @@ function showDiscardHandModal(card, remaining) {
 function pickDiscardHand(i) {
   const action = G.pendingAction;
   const discarded = G.hand.splice(i, 1)[0];
-  G.discard.push(discarded);
-  addLog(`${discarded.name} discarded from hand.`);
+  const handDiscardDest = discarded.discardTo?.[0];
+  if (handDiscardDest) {
+    applyDiscardDest(discarded, handDiscardDest.target, handDiscardDest.bonus);
+  } else {
+    G.discard.push(discarded);
+    addLog(`${discarded.name} discarded from hand.`);
+  }
   action.remaining--;
   if (action.remaining > 0) { showDiscardHandModal(action.card, action.remaining); return; }
   closeModal();
