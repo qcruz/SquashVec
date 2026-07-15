@@ -3,7 +3,7 @@
 
 const CATEGORIES = ['governance', 'economy', 'culture', 'military', 'technology', 'environment'];
 const BASE_SCORE = 10;
-const WIN_SCORE = 20;
+const WIN_SCORE = 16;
 const LOSE_SCORE = 0;
 const HAND_SIZE = 5;
 
@@ -147,6 +147,7 @@ function togglePanelMinimize() {
   if (btn) btn.textContent = minimized ? '▲' : '▼';
 }
 
+
 // Inspect a card that is in play (active slot, stack, or instability)
 function viewCard(card, location) {
   G.selectedCardIndex = null;
@@ -203,6 +204,7 @@ function discardUnplayable(i) {
   render();
 }
 
+
 function meetsRequirements(card) {
   if (!card.requires) return true;
   const r = card.requires;
@@ -256,8 +258,25 @@ function applyCategoryCard(card, opt) {
   // Draw a card and shuffle this category card back into the deck
   if (opt.effect === 'draw_and_shuffle_self') {
     drawCard();
-    G.deck.push(card); shuffle(G.deck);
-    addLog(`${card.name}: drew 1 card. ${card.name} shuffled into deck.`);
+    G.deck.push(card);
+    addLog(`${card.name}: drew 1 card. ${card.name} placed at bottom of deck.`);
+    return;
+  }
+
+  // Draw a card and shuffle this category card back into the deck
+  if (opt.effect === 'draw_and_shuffle_self') {
+    drawCard();
+    G.deck.push(card);
+    addLog(`${card.name}: drew 1 card. ${card.name} placed at bottom of deck.`);
+    return;
+  }
+
+  // Draw a card and discard this category card without replacing the active
+  if (opt.effect === 'draw_and_discard_self') {
+    const cat = opt.targetCategory || card.category;
+    drawCard();
+    addLog(`${card.name}: drew 1 card. Discarding ${card.name}.`);
+    triggerOldCardDiscard(card, cat);
     return;
   }
 
@@ -339,7 +358,7 @@ function handleOldCard(prev, cat, opt) {
 
   if (dest === 'shuffle') {
     G.deck.push(prev); shuffle(G.deck);
-    addLog(`${prev.name} shuffled back into the draw deck.`);
+    addLog(`${prev.name} placed at bottom of deck.`);
     return;
   }
 
@@ -502,6 +521,70 @@ function resolveEventCard(card, opt) {
       render(); showTakeResourceModal(card, srcCats); return;
     }
 
+    case 'remove_two_military_then_discard_three_hand': {
+      if (G.categories.military.stack.length < 2) {
+        addLog(`${card.name}: Need 2 Military resources — cannot play.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'military_exercise_cost', card, sourceCategory: 'military', costRemaining: 2, afterEffect: 'discard_three' };
+      render(); showRemoveStackModal(card, 'military', null); return;
+    }
+
+    case 'remove_two_military_then_draw_two': {
+      if (G.categories.military.stack.length < 2) {
+        addLog(`${card.name}: Need 2 Military resources — cannot play.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'military_exercise_cost', card, sourceCategory: 'military', costRemaining: 2, afterEffect: 'draw_two' };
+      render(); showRemoveStackModal(card, 'military', null); return;
+    }
+
+    case 'remove_military_then_discard_hand_self_discard': {
+      if (!G.categories.military.stack.length) {
+        addLog(`${card.name}: No Military resources to pay cost.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'remove_stack_then_hand_discard', card, sourceCategory: 'military' };
+      render(); showRemoveStackModal(card, 'military', null); return;
+    }
+
+    case 'discard_hand_then_self': {
+      const afterInstab = opt.afterInstability || null;
+      if (!G.hand.length) {
+        addLog(`${card.name}: No cards in hand to discard — skipping.`);
+        if (afterInstab) {
+          G.categories[afterInstab].instability.push(card);
+          addLog(`${card.name} → ${cap(afterInstab)} instability.`);
+          afterCardResolved();
+        } else {
+          applyCardSelfDiscard(card);
+          afterCardResolved();
+        }
+        break;
+      }
+      G.pendingAction = { type: 'discard_hand_cards', card, remaining: 1, afterInstability: afterInstab };
+      render(); showDiscardHandModal(card, 1); return;
+    }
+
+    case 'take_resource_to_economy': {
+      const srcCats = opt.sourceCategories || ['technology', 'economy'];
+      const afterEffect = opt.afterEffect;
+      if (afterEffect === 'remove_military_discard_self' && !G.categories.military.stack.length) {
+        addLog(`${card.name}: No Military resources to pay cost.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      const hasResources = srcCats.some(cat => G.categories[cat].stack.length > 0);
+      if (!hasResources) {
+        addLog(`${card.name}: No resources available to take — skipping.`);
+        resolveAfterTake(card, afterEffect);
+        return;
+      }
+      G.pendingAction = { type: 'take_resource_to_economy', card, sourceCategories: srcCats, afterEffect };
+      render(); showTakeResourceModal(card, srcCats); return;
+    }
+
     case 'suppress_hazard': {
       const marker = makeMarker(`${card.name} Suppressed`, opt.altValue || 1);
       G.categories[opt.altInstability].instability.push(marker);
@@ -513,6 +596,54 @@ function resolveEventCard(card, opt) {
     case 'remove_instability_modal':
       G.pendingAction = { type: 'remove_instability', card, maxRemove: opt.maxRemove || 1, filter: opt.targetCategory || null, selfDiscardFlow: !!opt.selfDiscardFlow };
       render(); showInstabilityModal(card, opt.maxRemove || 1, opt.targetCategory || null); return;
+
+    case 'remove_lowest_instability_modal':
+      G.pendingAction = { type: 'remove_lowest_instability', card, selfDiscardFlow: !!opt.selfDiscardFlow };
+      render(); showRemoveLowestInstabilityModal(card); return;
+
+    case 'move_instability_modal':
+      G.pendingAction = { type: 'move_instability_src', card, selfDiscardFlow: !!opt.selfDiscardFlow };
+      render(); showMoveInstabilitySrcModal(card); return;
+
+    case 'move_newest_resource_to_sparse_stack':
+      G.pendingAction = { type: 'move_resource_pick_source', card };
+      render(); showMoveResourceSrcModal(card); return;
+
+    case 'move_newest_resource_any':
+      G.pendingAction = { type: 'move_newest_res_any_src', card };
+      render(); showMoveNewestResSrcModal(card); return;
+
+    case 'move_newest_instability_any':
+      G.pendingAction = { type: 'move_newest_instab_src', card };
+      render(); showMoveNewestInstabSrcModal(card); return;
+
+    case 'move_newest_resource_then_move_newest_instability':
+      G.pendingAction = { type: 'mvr_instab__res_src', card };
+      render(); showMvrInstabResSrcModal(card); return;
+
+    case 'remove_newest_resource_then_remove_newest_instability':
+      G.pendingAction = { type: 'rmr_instab__res_src', card };
+      render(); showRmrInstabResSrcModal(card); return;
+
+    case 'move_newest_resource_to_sparse_stack':
+      G.pendingAction = { type: 'move_resource_pick_source', card };
+      render(); showMoveResourceSrcModal(card); return;
+
+    case 'move_newest_resource_any':
+      G.pendingAction = { type: 'move_newest_res_any_src', card };
+      render(); showMoveNewestResSrcModal(card); return;
+
+    case 'move_newest_instability_any':
+      G.pendingAction = { type: 'move_newest_instab_src', card };
+      render(); showMoveNewestInstabSrcModal(card); return;
+
+    case 'move_newest_resource_then_move_newest_instability':
+      G.pendingAction = { type: 'mvr_instab__res_src', card };
+      render(); showMvrInstabResSrcModal(card); return;
+
+    case 'remove_newest_resource_then_remove_newest_instability':
+      G.pendingAction = { type: 'rmr_instab__res_src', card };
+      render(); showRmrInstabResSrcModal(card); return;
 
     case 'remove_lowest_instability_modal':
       G.pendingAction = { type: 'remove_lowest_instability', card, selfDiscardFlow: !!opt.selfDiscardFlow };
@@ -607,6 +738,59 @@ function resolveEventCard(card, opt) {
       render(); showRemoveStackModal(card, srcCat, null); return;
     }
 
+    case 'remove_stack_card_then_shuffle_self': {
+      const srcCat = opt.sourceCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to remove.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'remove_stack_shuffle_self', card, sourceCategory: srcCat, targetCategory: null };
+      render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
+    case 'remove_stack_card_then_remove_instability': {
+      const srcCat = opt.sourceCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to pay the cost — cannot play.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'remove_stack_then_instability', card, sourceCategory: srcCat, maxRemove: opt.maxRemove || 1, selfDiscardFlow: !!opt.selfDiscardFlow };
+      render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
+    case 'discard_self':
+      applyCardSelfDiscard(card);
+      break;
+
+    case 'remove_stack_card_then_discard_self': {
+      const srcCat = opt.sourceCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to remove.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'remove_stack_place_self', card, sourceCategory: srcCat, targetCategory: null };
+      render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
+    case 'remove_stack_card_and_optionally_place_self': {
+      const srcCat = opt.sourceCategory;
+      const tgtCat = opt.targetCategory;
+      const stack = G.categories[srcCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to remove.`);
+        applyCardSelfDiscard(card);
+        break;
+      }
+      G.pendingAction = { type: 'remove_stack_place_self', card, sourceCategory: srcCat, targetCategory: tgtCat };
+      render(); showRemoveStackModal(card, srcCat, tgtCat); return;
+    }
+
     case 'draw_if_hand_small': {
       const condMet = opt.condition ? checkCondition(opt.condition) : true;
       if (condMet) {
@@ -617,6 +801,16 @@ function resolveEventCard(card, opt) {
       }
       applyCardSelfDiscard(card);
       break;
+    }
+
+    case 'remove_stack_card_then_remove_or_identity_then_stack': {
+      const srcCat = opt.sourceCategory;
+      if (!G.categories[srcCat].stack.length) {
+        addLog(`${card.name}: No ${cap(srcCat)} resources to pay cost.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'remove_stack_then_remove_or_identity_stack', card, sourceCategory: srcCat, removeCategory: opt.removeCategory, targetCategory: opt.targetCategory };
+      render(); showRemoveStackModal(card, srcCat, null); return;
     }
 
     case 'remove_stack_card_then_remove_or_identity_then_stack': {
@@ -654,6 +848,31 @@ function resolveEventCard(card, opt) {
       render(); showInstabilityModal(card, 1, filterCat); return;
     }
 
+    case 'remove_stack_card_then_discard_hand_then_stack': {
+      const srcCat = opt.sourceCategory;
+      const tgtCat = opt.targetCategory;
+      if (!G.categories[srcCat].stack.length) {
+        addLog(`${card.name}: No ${cap(srcCat)} resources to pay cost.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'remove_stack_discard_hand_stack', card, sourceCategory: srcCat, targetCategory: tgtCat };
+      render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
+    case 'remove_instability_then_discard_hand_then_stack': {
+      const filterCat = opt.instabilityCategory || null;
+      const tgtCat = opt.targetCategory;
+      const cats = filterCat
+        ? [filterCat].filter(c => G.categories[c]?.instability.length > 0)
+        : CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+      if (!cats.length) {
+        addLog(`${card.name}: No ${filterCat ? cap(filterCat) + ' ' : ''}instability to remove.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'remove_instability', card, maxRemove: 1, selfDiscardFlow: false, afterStackOn: tgtCat, filter: filterCat };
+      render(); showInstabilityModal(card, 1, filterCat); return;
+    }
+
     case 'remove_stack_card_then_stack_on_category': {
       const srcCat = opt.sourceCategory;
       const stack = G.categories[srcCat].stack;
@@ -661,7 +880,7 @@ function resolveEventCard(card, opt) {
         addLog(`${card.name}: No cards in ${cap(srcCat)} stack to pay the cost.`);
         applyCardSelfDiscard(card); break;
       }
-      G.pendingAction = { type: 'remove_stack_place_on_category', card, sourceCategory: srcCat, targetCategory: opt.targetCategory, bonusValue: opt.bonusValue };
+      G.pendingAction = { type: 'remove_stack_place_on_category', card, sourceCategory: srcCat, targetCategory: opt.targetCategory, bonusValue: opt.bonusValue, stackEnd: opt.stackEnd };
       render(); showRemoveStackModal(card, srcCat, null); return;
     }
 
@@ -695,6 +914,350 @@ function resolveEventCard(card, opt) {
       }
       G.pendingAction = { type: 'remove_stack_place_in_instability', card, sourceCategory: srcCat, targetInstability: opt.targetInstability };
       render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
+    case 'remove_all_from_stack_shuffle_self': {
+      const tgtCat = opt.targetCategory;
+      const stack = G.categories[tgtCat].stack;
+      const count = stack.length;
+      if (count > 0) {
+        stack.forEach(c => G.deck.push(c));
+        G.categories[tgtCat].stack = [];
+        addLog(`${card.name}: All ${count} ${cap(tgtCat)} resource(s) cleared → placed at bottom of deck.`);
+      } else {
+        addLog(`${card.name}: ${cap(tgtCat)} stack already empty — no effect.`);
+      }
+      G.deck.push(card); shuffle(G.deck);
+      addLog(`${card.name} shuffled into deck.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_all_from_stack_place_in_instability': {
+      const tgtCat = opt.targetCategory;
+      const tgtInstab = opt.targetInstability;
+      const stack = G.categories[tgtCat].stack;
+      const count = stack.length;
+      if (count > 0) {
+        stack.forEach(c => G.deck.push(c));
+        G.categories[tgtCat].stack = [];
+        addLog(`${card.name}: All ${count} ${cap(tgtCat)} resource(s) cleared → placed at bottom of deck.`);
+      } else {
+        addLog(`${card.name}: ${cap(tgtCat)} stack already empty — no effect.`);
+      }
+      G.categories[tgtInstab].instability.push(card);
+      addLog(`${card.name} placed in ${cap(tgtInstab)} Instability.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_all_from_stack_place_in_instability': {
+      const tgtCat = opt.targetCategory;
+      const tgtInstab = opt.targetInstability;
+      const stack = G.categories[tgtCat].stack;
+      const count = stack.length;
+      if (count > 0) {
+        stack.forEach(c => G.deck.push(c));
+        G.categories[tgtCat].stack = [];
+        addLog(`${card.name}: All ${count} ${cap(tgtCat)} resource(s) cleared → placed at bottom of deck.`);
+      } else {
+        addLog(`${card.name}: ${cap(tgtCat)} stack already empty — no effect.`);
+      }
+      G.categories[tgtInstab].instability.push(card);
+      addLog(`${card.name} placed in ${cap(tgtInstab)} Instability.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_one_from_each_stack': {
+      let removed = 0;
+      CATEGORIES.forEach(cat => {
+        const stack = G.categories[cat].stack;
+        if (stack.length > 0) {
+          const c = stack.splice(0, 1)[0];
+          G.deck.push(c);
+          removed++;
+          addLog(`${c.name} removed from ${cap(cat)} stack → deck.`);
+        }
+      });
+      if (removed === 0) addLog(`${card.name}: No resources on any stack — no effect.`);
+      applyCardSelfDiscard(card);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_three_stack_cards_then_bottom': {
+      const cats = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3];
+      cats.forEach(cat => {
+        const r = G.categories[cat].stack.splice(0, 1)[0];
+        G.deck.push(r);
+        addLog(`${r.name} removed from ${cap(cat)} stack → bottom of deck.`);
+      });
+      G.deck.push(card);
+      addLog(`${card.name} placed at bottom of deck.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_four_stack_cards_then_bottom': {
+      const cats = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3, opt.sourceCategory4];
+      cats.forEach(cat => {
+        const r = G.categories[cat].stack.splice(0, 1)[0];
+        G.deck.push(r);
+        addLog(`${r.name} removed from ${cap(cat)} stack → bottom of deck.`);
+      });
+      G.deck.push(card);
+      addLog(`${card.name} placed at bottom of deck.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_four_stack_cards_then_bottom': {
+      const cats = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3, opt.sourceCategory4];
+      cats.forEach(cat => {
+        const r = G.categories[cat].stack.splice(0, 1)[0];
+        G.deck.push(r);
+        addLog(`${r.name} removed from ${cap(cat)} stack → bottom of deck.`);
+      });
+      G.deck.push(card);
+      addLog(`${card.name} placed at bottom of deck.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_three_stack_cards_then_bottom': {
+      const cats = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3];
+      cats.forEach(cat => {
+        const r = G.categories[cat].stack.splice(0, 1)[0];
+        G.deck.push(r);
+        addLog(`${r.name} removed from ${cap(cat)} stack → bottom of deck.`);
+      });
+      G.deck.push(card);
+      addLog(`${card.name} placed at bottom of deck.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_two_stack_cards_then_bottom': {
+      const cat1 = opt.sourceCategory1;
+      const cat2 = opt.sourceCategory2;
+      const r1 = G.categories[cat1].stack.splice(0, 1)[0];
+      G.deck.push(r1);
+      addLog(`${r1.name} removed from ${cap(cat1)} stack → bottom of deck.`);
+      const r2 = G.categories[cat2].stack.splice(0, 1)[0];
+      G.deck.push(r2);
+      addLog(`${r2.name} removed from ${cap(cat2)} stack → bottom of deck.`);
+      G.deck.push(card);
+      addLog(`${card.name} placed at bottom of deck.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'stack_on_category_then_discard_hand': {
+      const tgtCat = opt.targetCategory;
+      const stackCard = { ...card, instanceId: Math.random() };
+      G.categories[tgtCat].stack.push(stackCard);
+      addLog(`${card.name} (+${card.value}) stacked on ${cap(tgtCat)}.`);
+      const count = Math.min(1, G.hand.length);
+      if (count <= 0) {
+        addLog(`${card.name}: No cards in hand to discard — skipping.`);
+        afterCardResolved(); return;
+      }
+      G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, alreadyPlaced: true };
+      render(); showDiscardHandModal(card, count); return;
+    }
+
+    case 'remove_two_stack_cards_then_bottom': {
+      const cat1 = opt.sourceCategory1;
+      const cat2 = opt.sourceCategory2;
+      const r1 = G.categories[cat1].stack.splice(0, 1)[0];
+      G.deck.push(r1);
+      addLog(`${r1.name} removed from ${cap(cat1)} stack → bottom of deck.`);
+      const r2 = G.categories[cat2].stack.splice(0, 1)[0];
+      G.deck.push(r2);
+      addLog(`${r2.name} removed from ${cap(cat2)} stack → bottom of deck.`);
+      G.deck.push(card);
+      addLog(`${card.name} placed at bottom of deck.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'stack_on_category_then_discard_hand': {
+      const tgtCat = opt.targetCategory;
+      const stackCard = { ...card, instanceId: Math.random() };
+      G.categories[tgtCat].stack.push(stackCard);
+      addLog(`${card.name} (+${card.value}) stacked on ${cap(tgtCat)}.`);
+      const count = Math.min(1, G.hand.length);
+      if (count <= 0) {
+        addLog(`${card.name}: No cards in hand to discard — skipping.`);
+        afterCardResolved(); return;
+      }
+      G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, alreadyPlaced: true };
+      render(); showDiscardHandModal(card, count); return;
+    }
+
+    case 'remove_two_resources_remove_instability_shuffle_self': {
+      G.pendingAction = { type: 'restitution_pick_resource', card, remaining: 2, afterShuffle: true };
+      render(); showPickAnyResourceModal(card, 2); return;
+    }
+
+    case 'remove_one_resource_remove_instability_discard_self': {
+      G.pendingAction = { type: 'restitution_pick_resource', card, remaining: 1, afterShuffle: false };
+      render(); showPickAnyResourceModal(card, 1); return;
+    }
+
+    case 'remove_two_newest_resources_remove_instability': {
+      G.pendingAction = { type: 'managed_pick_newest_res', card, remaining: 2 };
+      render(); showPickNewestResourceModal(card, 2); return;
+    }
+
+    case 'remove_all_oldest_then_remove_two_instability': {
+      CATEGORIES.forEach(cat => {
+        const stack = G.categories[cat].stack;
+        if (stack.length > 0) {
+          const c = stack.splice(0, 1)[0];
+          G.deck.push(c);
+          addLog(`${c.name} removed from ${cap(cat)} stack (oldest) → bottom of deck.`);
+        }
+      });
+      G.pendingAction = { type: 'managed_pick_instab', card, remaining: 2 };
+      render(); showManagedInstabModal(card, 2); return;
+    }
+
+    case 'strip_stack_to_oldest_and_instab': {
+      G.pendingAction = { type: 'rationalize_strip_pick', card };
+      render(); showStripStackModal(card); return;
+    }
+
+    case 'remove_three_from_stack_remove_two_instab': {
+      G.pendingAction = { type: 'rationalize_res_pick', card };
+      render(); showRationalizeResModal(card); return;
+    }
+
+    case 'remove_one_from_each_stack_and_each_instab': {
+      CATEGORIES.forEach(cat => {
+        const stack = G.categories[cat].stack;
+        if (stack.length > 0) {
+          const c = stack.splice(0, 1)[0];
+          G.deck.push(c);
+          addLog(`${c.name} removed from ${cap(cat)} stack → bottom of deck.`);
+        }
+        const pile = G.categories[cat].instability;
+        if (pile.length > 0) {
+          const c = pile.shift();
+          G.deck.push(c);
+          addLog(`${c.name} removed from ${cat} instability → bottom of deck.`);
+        }
+      });
+      G.pendingAction = null;
+      G.deck.push(card);
+      addLog(`${card.name} placed at bottom of deck.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_three_resources_clear_one_pile': {
+      G.pendingAction = { type: 'austerity_pick_res', card, remaining: 3 };
+      render(); showAusterityResModal(card, 3); return;
+    }
+
+    case 'remove_all_from_stack_shuffle_self': {
+      const tgtCat = opt.targetCategory;
+      const stack = G.categories[tgtCat].stack;
+      const count = stack.length;
+      if (count > 0) {
+        stack.forEach(c => G.deck.push(c));
+        G.categories[tgtCat].stack = [];
+        addLog(`${card.name}: All ${count} ${cap(tgtCat)} resource(s) cleared → placed at bottom of deck.`);
+      } else {
+        addLog(`${card.name}: ${cap(tgtCat)} stack already empty — no effect.`);
+      }
+      G.deck.push(card); shuffle(G.deck);
+      addLog(`${card.name} shuffled into deck.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_one_from_each_stack': {
+      let removed = 0;
+      CATEGORIES.forEach(cat => {
+        const stack = G.categories[cat].stack;
+        if (stack.length > 0) {
+          const c = stack.splice(0, 1)[0];
+          G.deck.push(c);
+          removed++;
+          addLog(`${c.name} removed from ${cap(cat)} stack → deck.`);
+        }
+      });
+      if (removed === 0) addLog(`${card.name}: No resources on any stack — no effect.`);
+      applyCardSelfDiscard(card);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_two_resources_remove_instability_shuffle_self': {
+      G.pendingAction = { type: 'restitution_pick_resource', card, remaining: 2, afterShuffle: true };
+      render(); showPickAnyResourceModal(card, 2); return;
+    }
+
+    case 'remove_one_resource_remove_instability_discard_self': {
+      G.pendingAction = { type: 'restitution_pick_resource', card, remaining: 1, afterShuffle: false };
+      render(); showPickAnyResourceModal(card, 1); return;
+    }
+
+    case 'remove_two_newest_resources_remove_instability': {
+      G.pendingAction = { type: 'managed_pick_newest_res', card, remaining: 2 };
+      render(); showPickNewestResourceModal(card, 2); return;
+    }
+
+    case 'remove_all_oldest_then_remove_two_instability': {
+      CATEGORIES.forEach(cat => {
+        const stack = G.categories[cat].stack;
+        if (stack.length > 0) {
+          const c = stack.splice(0, 1)[0];
+          G.deck.push(c);
+          addLog(`${c.name} removed from ${cap(cat)} stack (oldest) → bottom of deck.`);
+        }
+      });
+      G.pendingAction = { type: 'managed_pick_instab', card, remaining: 2 };
+      render(); showManagedInstabModal(card, 2); return;
+    }
+
+    case 'strip_stack_to_oldest_and_instab': {
+      G.pendingAction = { type: 'rationalize_strip_pick', card };
+      render(); showStripStackModal(card); return;
+    }
+
+    case 'remove_three_from_stack_remove_two_instab': {
+      G.pendingAction = { type: 'rationalize_res_pick', card };
+      render(); showRationalizeResModal(card); return;
+    }
+
+    case 'remove_one_from_each_stack_and_each_instab': {
+      CATEGORIES.forEach(cat => {
+        const stack = G.categories[cat].stack;
+        if (stack.length > 0) {
+          const c = stack.splice(0, 1)[0];
+          G.deck.push(c);
+          addLog(`${c.name} removed from ${cap(cat)} stack → bottom of deck.`);
+        }
+        const pile = G.categories[cat].instability;
+        if (pile.length > 0) {
+          const c = pile.shift();
+          G.deck.push(c);
+          addLog(`${c.name} removed from ${cat} instability → bottom of deck.`);
+        }
+      });
+      G.pendingAction = null;
+      G.deck.push(card);
+      addLog(`${card.name} placed at bottom of deck.`);
+      afterCardResolved();
+      break;
+    }
+
+    case 'remove_three_resources_clear_one_pile': {
+      G.pendingAction = { type: 'austerity_pick_res', card, remaining: 3 };
+      render(); showAusterityResModal(card, 3); return;
     }
 
     default:
@@ -744,8 +1307,14 @@ function showInstabilityModal(card, maxRemove, filterCat) {
 
   if (!cats.length) {
     addLog(`${card.name}: No instability to remove.`);
+    const { afterShuffle } = G.pendingAction || {};
     G.pendingAction = null;
-    applyCardSelfDiscard(card);
+    if (afterShuffle) {
+      G.deck.push(card); shuffle(G.deck);
+      addLog(`${card.name} shuffled into deck.`);
+    } else {
+      applyCardSelfDiscard(card);
+    }
     afterCardResolved();
     return;
   }
@@ -761,7 +1330,7 @@ function showInstabilityModal(card, maxRemove, filterCat) {
 
   openModal(`
     <div class="modal-card-name">${card.name}</div>
-    <p class="modal-sub">Choose an Instability pile — removes ${maxRemove > 1 ? `up to ${maxRemove}` : '1'} oldest card${maxRemove > 1 ? 's' : ''}, shuffled back into deck.</p>
+    <p class="modal-sub">Choose an Instability pile — removes ${maxRemove > 1 ? `up to ${maxRemove}` : '1'} oldest card${maxRemove > 1 ? 's' : ''}, placed at bottom of deck.</p>
     <div class="opt-list">${btns}</div>
   `);
 }
@@ -824,13 +1393,12 @@ function pickTwoInstability(cat) {
 
 function resolveRemoveInstability(cat, maxRemove) {
   closeModal();
-  const { card, selfDiscardFlow, afterStackOn } = G.pendingAction;
+  const { card, selfDiscardFlow, afterStackOn, afterShuffle } = G.pendingAction;
   const pile = G.categories[cat].instability;
   const removed = [];
   for (let i = 0; i < maxRemove && pile.length; i++) removed.push(pile.shift());
   removed.forEach(c => { G.deck.push(c); });
-  shuffle(G.deck);
-  addLog(`${removed.map(c => c.name).join(', ')} removed from ${cat} instability → deck.`);
+  addLog(`${removed.map(c => c.name).join(', ')} removed from ${cat} instability → bottom of deck.`);
   G.pendingAction = null;
   if (afterStackOn) {
     const count = Math.min(1, G.hand.length);
@@ -841,11 +1409,371 @@ function resolveRemoveInstability(cat, maxRemove) {
     }
     G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, afterStackOn };
     render(); showDiscardHandModal(card, count); return;
+  } else if (afterShuffle) {
+    G.deck.push(card); shuffle(G.deck);
+    addLog(`${card.name} shuffled into deck.`);
   } else {
     applyCardSelfDiscard(card);
   }
   afterCardResolved();
 }
+
+function showPickAnyResourceModal(card, remaining) {
+  const eligible = CATEGORIES.filter(c => G.categories[c].stack.length > 0);
+  if (!eligible.length) {
+    addLog(`${card.name}: No resources to remove — skipping.`);
+    proceedToRestitutionInstability();
+    return;
+  }
+  const btns = eligible.map(cat => {
+    const stack = G.categories[cat].stack;
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolvePickAnyResource('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>${stack.length} card${stack.length > 1 ? 's' : ''}: ${stack.map(c => c.name).join(', ')}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose a stack — removes the oldest resource. (${remaining} to remove)</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolvePickAnyResource(cat) {
+  closeModal();
+  const action = G.pendingAction;
+  const stack = G.categories[cat].stack;
+  if (stack.length > 0) {
+    const removed = stack.splice(0, 1)[0];
+    G.deck.push(removed); shuffle(G.deck);
+    addLog(`${removed.name} removed from ${cap(cat)} stack → deck.`);
+  }
+  action.remaining -= 1;
+  if (action.remaining > 0) {
+    render(); showPickAnyResourceModal(action.card, action.remaining); return;
+  }
+  proceedToRestitutionInstability();
+}
+
+function proceedToRestitutionInstability() {
+  const { card, afterShuffle } = G.pendingAction;
+  G.pendingAction = { type: 'remove_instability', card, maxRemove: 1, filter: null, afterShuffle };
+  render(); showInstabilityModal(card, 1, null);
+}
+
+// ── Managed Decline: newest resource picker ───────────────────────────────────
+
+function showPickNewestResourceModal(card, remaining) {
+  const eligible = CATEGORIES.filter(c => G.categories[c].stack.length > 0);
+  if (!eligible.length) {
+    addLog(`${card.name}: No resources to remove — skipping.`);
+    G.pendingAction = { type: 'managed_pick_instab', card, remaining: 1 };
+    render(); showManagedInstabModal(card, 1); return;
+  }
+  const btns = eligible.map(cat => {
+    const stack = G.categories[cat].stack;
+    const newest = stack[stack.length - 1];
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolvePickNewestResource('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>Newest: ${newest.name}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose a stack — removes the newest resource. (${remaining} to remove)</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolvePickNewestResource(cat) {
+  closeModal();
+  const action = G.pendingAction;
+  const stack = G.categories[cat].stack;
+  if (stack.length > 0) {
+    const removed = stack.splice(stack.length - 1, 1)[0];
+    G.deck.push(removed);
+    addLog(`${removed.name} removed from ${cap(cat)} stack (newest) → bottom of deck.`);
+  }
+  action.remaining -= 1;
+  if (action.remaining > 0) {
+    render(); showPickNewestResourceModal(action.card, action.remaining); return;
+  }
+  G.pendingAction = { type: 'managed_pick_instab', card: action.card, remaining: 1 };
+  render(); showManagedInstabModal(action.card, 1);
+}
+
+// ── Managed Decline: instability picker (chains to deck placement) ────────────
+
+function showManagedInstabModal(card, remaining) {
+  const cats = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+  if (!cats.length) {
+    addLog(`${card.name}: No instability to remove — skipping.`);
+    G.pendingAction = null;
+    G.deck.push(card);
+    addLog(`${card.name} placed at bottom of deck.`);
+    afterCardResolved(); return;
+  }
+  const btns = cats.map(cat => {
+    const pile = G.categories[cat].instability;
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveManagedInstab('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>${pile.length} card${pile.length > 1 ? 's' : ''} — oldest: ${pile[0].name}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose an Instability pile — removes oldest card → bottom of deck. (${remaining} to remove)</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveManagedInstab(cat) {
+  closeModal();
+  const action = G.pendingAction;
+  const pile = G.categories[cat].instability;
+  if (pile.length > 0) {
+    const removed = pile.shift();
+    G.deck.push(removed);
+    addLog(`${removed.name} removed from ${cat} instability → bottom of deck.`);
+  }
+  action.remaining -= 1;
+  if (action.remaining > 0) {
+    render(); showManagedInstabModal(action.card, action.remaining); return;
+  }
+  G.pendingAction = null;
+  G.deck.push(action.card);
+  addLog(`${action.card.name} placed at bottom of deck.`);
+  afterCardResolved();
+}
+
+// ── Rationalization: strip stack to oldest + clear instability pile ────────────
+
+function showStripStackModal(card) {
+  const eligible = CATEGORIES.filter(c => G.categories[c].stack.length >= 2);
+  if (!eligible.length) {
+    addLog(`${card.name}: No stack has 2+ resources — skipping.`);
+    G.pendingAction = null;
+    G.deck.push(card);
+    addLog(`${card.name} placed at bottom of deck.`);
+    afterCardResolved(); return;
+  }
+  const btns = eligible.map(cat => {
+    const stack = G.categories[cat].stack;
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveStripStack('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>${stack.length} resources — keeps: ${stack[0].name}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose a stack — all resources except the oldest are removed. All instabilities in that category except one are also removed.</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveStripStack(cat) {
+  closeModal();
+  const { card } = G.pendingAction;
+  const stack = G.categories[cat].stack;
+  // Remove all resources except index 0 (oldest)
+  const removed = stack.splice(1);
+  removed.forEach(c => { G.deck.push(c); });
+  if (removed.length) addLog(`${removed.map(c => c.name).join(', ')} removed from ${cap(cat)} stack (all but oldest) → bottom of deck.`);
+  // Remove all instabilities except index 0 (oldest)
+  const pile = G.categories[cat].instability;
+  const removedInstab = pile.splice(1);
+  removedInstab.forEach(c => { G.deck.push(c); });
+  if (removedInstab.length) addLog(`${removedInstab.map(c => c.name).join(', ')} removed from ${cap(cat)} instability (all but oldest) → bottom of deck.`);
+  G.pendingAction = null;
+  G.deck.push(card);
+  addLog(`${card.name} placed at bottom of deck.`);
+  afterCardResolved();
+}
+
+// ── Rationalization: remove 3 from one stack + 2 instability from one pile ───
+
+function showRationalizeResModal(card) {
+  const eligible = CATEGORIES.filter(c => G.categories[c].stack.length > 0);
+  if (!eligible.length) {
+    addLog(`${card.name}: No resources to remove — skipping to instability.`);
+    G.pendingAction = { type: 'rationalize_instab_pick', card };
+    render(); showRationalizeInstabModal(card); return;
+  }
+  const btns = eligible.map(cat => {
+    const stack = G.categories[cat].stack;
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveRationalizeRes('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>${stack.length} resource${stack.length > 1 ? 's' : ''}: ${stack.map(c => c.name).join(', ')}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose a stack — removes up to 3 oldest resources → bottom of deck.</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveRationalizeRes(cat) {
+  closeModal();
+  const { card } = G.pendingAction;
+  const stack = G.categories[cat].stack;
+  const count = Math.min(3, stack.length);
+  const removed = stack.splice(0, count);
+  removed.forEach(c => { G.deck.push(c); });
+  if (removed.length) addLog(`${removed.map(c => c.name).join(', ')} removed from ${cap(cat)} stack → bottom of deck.`);
+  G.pendingAction = { type: 'rationalize_instab_pick', card };
+  render(); showRationalizeInstabModal(card);
+}
+
+function showRationalizeInstabModal(card) {
+  const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+  if (!eligible.length) {
+    addLog(`${card.name}: No instability to remove — skipping.`);
+    G.pendingAction = null;
+    G.deck.push(card);
+    addLog(`${card.name} placed at bottom of deck.`);
+    afterCardResolved(); return;
+  }
+  const btns = eligible.map(cat => {
+    const pile = G.categories[cat].instability;
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveRationalizeInstab('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>${pile.length} card${pile.length > 1 ? 's' : ''} — oldest: ${pile[0].name}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose an Instability pile — removes up to 2 oldest cards → bottom of deck.</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveRationalizeInstab(cat) {
+  closeModal();
+  const { card } = G.pendingAction;
+  const pile = G.categories[cat].instability;
+  const count = Math.min(2, pile.length);
+  const removed = [];
+  for (let i = 0; i < count; i++) removed.push(pile.shift());
+  removed.forEach(c => { G.deck.push(c); });
+  if (removed.length) addLog(`${removed.map(c => c.name).join(', ')} removed from ${cat} instability → bottom of deck.`);
+  G.pendingAction = null;
+  G.deck.push(card);
+  addLog(`${card.name} placed at bottom of deck.`);
+  afterCardResolved();
+}
+
+// ── Austerity: pick 3 resources then clear one pile ───────────────────────────
+
+function showAusterityResModal(card, remaining) {
+  const eligible = CATEGORIES.filter(c => G.categories[c].stack.length > 0);
+  if (!eligible.length) {
+    addLog(`${card.name}: No resources to remove — skipping to pile clearance.`);
+    G.pendingAction = { type: 'austerity_pick_pile', card };
+    render(); showAusterityClearPileModal(card); return;
+  }
+  const btns = eligible.map(cat => {
+    const stack = G.categories[cat].stack;
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveAusterityRes('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>Newest: ${stack[stack.length - 1].name}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose a stack — removes the newest resource → bottom of deck. (${remaining} to remove)</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveAusterityRes(cat) {
+  closeModal();
+  const action = G.pendingAction;
+  const stack = G.categories[cat].stack;
+  if (stack.length > 0) {
+    const removed = stack.splice(stack.length - 1, 1)[0];
+    G.deck.push(removed);
+    addLog(`${removed.name} removed from ${cap(cat)} stack (newest) → bottom of deck.`);
+  }
+  action.remaining -= 1;
+  if (action.remaining > 0) {
+    render(); showAusterityResModal(action.card, action.remaining); return;
+  }
+  G.pendingAction = { type: 'austerity_pick_pile', card: action.card };
+  render(); showAusterityClearPileModal(action.card);
+}
+
+function showAusterityClearPileModal(card) {
+  const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+  if (!eligible.length) {
+    addLog(`${card.name}: No instability to clear — skipping.`);
+    G.pendingAction = null;
+    G.deck.push(card);
+    addLog(`${card.name} placed at bottom of deck.`);
+    afterCardResolved(); return;
+  }
+  const btns = eligible.map(cat => {
+    const pile = G.categories[cat].instability;
+    const color = CAT_COLORS[cat];
+    const total = pile.reduce((n, c) => n + (c.value || 0), 0);
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveAusterityClearPile('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>${pile.length} card${pile.length > 1 ? 's' : ''} — total value: ${total}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose an Instability pile — ALL cards removed → bottom of deck.</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
+function resolveAusterityClearPile(cat) {
+  closeModal();
+  const { card } = G.pendingAction;
+  const pile = G.categories[cat].instability;
+  const removed = pile.splice(0);
+  removed.forEach(c => { G.deck.push(c); });
+  addLog(`${removed.map(c => c.name).join(', ')} — all ${cat} instability cleared → bottom of deck.`);
+  G.pendingAction = null;
+  G.deck.push(card);
+  addLog(`${card.name} placed at bottom of deck.`);
+  afterCardResolved();
+}
+
+
+
+
+// ── Managed Decline: newest resource picker ───────────────────────────────────
+
+
+
+// ── Managed Decline: instability picker (chains to deck placement) ────────────
+
+
+
+// ── Rationalization: strip stack to oldest + clear instability pile ────────────
+
+
+
+// ── Rationalization: remove 3 from one stack + 2 instability from one pile ───
+
+
+
+
+
+// ── Austerity: pick 3 resources then clear one pile ───────────────────────────
+
+
+
+
 
 function showStackOnAnyModal(card, bonusValue, choices = null) {
   const cats = choices || CATEGORIES;
@@ -962,6 +1890,8 @@ function continueHandDiscardChain() {
     G.categories[action.afterInstability].instability.push(action.card);
     addLog(`${action.card.name} → ${cap(action.afterInstability)} instability.`);
     afterCardResolved();
+  } else if (action.alreadyPlaced) {
+    afterCardResolved();
   } else {
     applyCardSelfDiscard(action.card);
     afterCardResolved();
@@ -977,8 +1907,9 @@ function showRemoveStackModal(card, srcCat, tgtCat) {
     afterCardResolved();
     return;
   }
-  // Always take the oldest (first) resource — no player choice
-  resolveRemoveStackCard(0);
+  // Take oldest (first) or newest (last) resource depending on stackEnd — no player choice
+  const idx = G.pendingAction.stackEnd === 'newest' ? stack.length - 1 : 0;
+  resolveRemoveStackCard(idx);
 }
 
 function resolveRemoveStackCard(idx) {
@@ -1011,6 +1942,36 @@ function resolveRemoveStackCard(idx) {
     }
     G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
     render(); showDiscardHandModal(card, count); return;
+  } else if (type === 'remove_stack_then_hand_discard') {
+    const count = Math.min(1, G.hand.length);
+    if (count <= 0) {
+      G.pendingAction = null;
+      addLog(`${card.name}: No cards in hand to discard — skipping.`);
+      applyCardSelfDiscard(card);
+      afterCardResolved();
+      return;
+    }
+    G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
+    render(); showDiscardHandModal(card, count); return;
+  } else if (type === 'military_exercise_cost') {
+    const costRemaining = G.pendingAction.costRemaining - 1;
+    if (costRemaining > 0) {
+      G.pendingAction = { ...G.pendingAction, costRemaining };
+      render(); showRemoveStackModal(card, 'military', null); return;
+    }
+    const { afterEffect } = G.pendingAction;
+    G.pendingAction = null;
+    if (afterEffect === 'discard_three') {
+      const count = Math.min(3, G.hand.length);
+      if (count <= 0) { applyCardSelfDiscard(card); afterCardResolved(); return; }
+      G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
+      render(); showDiscardHandModal(card, count); return;
+    } else if (afterEffect === 'draw_two') {
+      drawCard(); drawCard();
+      addLog(`${card.name}: Drew 2 cards.`);
+      applyCardSelfDiscard(card); afterCardResolved();
+    }
+    return;
   } else if (type === 'military_exercise_cost') {
     const costRemaining = G.pendingAction.costRemaining - 1;
     if (costRemaining > 0) {
@@ -1059,6 +2020,37 @@ function resolveRemoveStackCard(idx) {
     G.categories[targetCategory].stack.push(card);
     addLog(`${card.name} (+${card.value}) placed on ${cap(targetCategory)} stack.`);
     afterCardResolved();
+  } else if (type === 'remove_stack_then_remove_or_identity_stack') {
+    const { removeCategory, targetCategory } = G.pendingAction;
+    G.pendingAction = null;
+    const removeStack = G.categories[removeCategory].stack;
+    if (removeStack.length > 0) {
+      const removed2 = removeStack.splice(0, 1)[0];
+      G.deck.push(removed2); shuffle(G.deck);
+      addLog(`${removed2.name} removed from ${cap(removeCategory)} stack → deck.`);
+    } else {
+      const identity = G.categories[removeCategory].active;
+      if (identity) {
+        G.categories[removeCategory].active = null;
+        G.categories[removeCategory].instability.push(identity);
+        addLog(`${identity.name} (active ${cap(removeCategory)} identity) removed → ${cap(removeCategory)} instability.`);
+      } else {
+        addLog(`${card.name}: No ${cap(removeCategory)} resources or identity to remove.`);
+      }
+    }
+    G.categories[targetCategory].stack.push(card);
+    addLog(`${card.name} (+${card.value}) placed on ${cap(targetCategory)} stack.`);
+    afterCardResolved();
+  } else if (type === 'remove_stack_discard_hand_stack') {
+    const count = Math.min(1, G.hand.length);
+    if (!count) {
+      G.pendingAction = null;
+      G.categories[targetCategory].stack.push(card);
+      addLog(`${card.name} (+${card.value}) placed on ${cap(targetCategory)} stack.`);
+      afterCardResolved(); return;
+    }
+    G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, afterStackOn: targetCategory };
+    render(); showDiscardHandModal(card, count); return;
   } else if (type === 'remove_stack_discard_hand_stack') {
     const count = Math.min(1, G.hand.length);
     if (!count) {
@@ -1084,8 +2076,35 @@ function resolveRemoveStackCard(idx) {
     if (toRemove > 0) {
       const removed2 = tgtStack.splice(0, toRemove);
       removed2.forEach(c => { G.deck.push(c); });
-      shuffle(G.deck);
-      addLog(`${removed2.map(c => c.name).join(', ')} removed from ${cap(tgtCat)} stack → deck.`);
+      addLog(`${removed2.map(c => c.name).join(', ')} removed from ${cap(tgtCat)} stack → bottom of deck.`);
+    } else {
+      addLog(`${card.name}: No ${cap(tgtCat)} resources to remove.`);
+    }
+    G.pendingAction = null;
+    if (selfDiscardFlow) { applyCardSelfDiscard(card); } else { G.deck.push(card); shuffle(G.deck); }
+    afterCardResolved();
+  } else if (type === 'remove_stack_place_in_instability') {
+    const tgtInstab = G.pendingAction.targetInstability;
+    G.pendingAction = null;
+    G.categories[tgtInstab].instability.push(card);
+    addLog(`${card.name} → ${cap(tgtInstab)} instability (−${card.value}).`);
+    afterCardResolved();
+  } else if (type === 'remove_stack_place_on_category') {
+    const tgtCat = G.pendingAction.targetCategory;
+    const val = G.pendingAction.bonusValue !== undefined ? G.pendingAction.bonusValue : card.value;
+    const stackedCard = val !== card.value ? { ...card, value: val } : card;
+    G.pendingAction = null;
+    G.categories[tgtCat].stack.push(stackedCard);
+    addLog(`${card.name} (+${val}) placed on ${cap(tgtCat)} stack.`);
+    afterCardResolved();
+  } else if (type === 'remove_stack_then_remove_target_stack') {
+    const { targetCategory: tgtCat, removeCount, selfDiscardFlow } = G.pendingAction;
+    const tgtStack = G.categories[tgtCat].stack;
+    const toRemove = Math.min(removeCount, tgtStack.length);
+    if (toRemove > 0) {
+      const removed2 = tgtStack.splice(0, toRemove);
+      removed2.forEach(c => { G.deck.push(c); });
+      addLog(`${removed2.map(c => c.name).join(', ')} removed from ${cap(tgtCat)} stack → bottom of deck.`);
     } else {
       addLog(`${card.name}: No ${cap(tgtCat)} resources to remove.`);
     }
@@ -1235,6 +2254,279 @@ function resolveMoveInstabilityDest(destCat) {
   afterCardResolved();
 }
 
+
+
+
+
+
+function showMoveResourceSrcModal(card) {
+  const sparseTargets = CATEGORIES.filter(c => G.categories[c].stack.length === 1);
+  const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1 && sparseTargets.some(t => t !== c));
+  const btns = srcs.map(cat => {
+    const newest = G.categories[cat].stack[G.categories[cat].stack.length - 1];
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMoveResourceSrc('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>Move ${newest.name} (+${newest.value})</small>
+    </button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Move the newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
+}
+
+function resolveMoveResourceSrc(srcCat) {
+  closeModal();
+  const stack = G.categories[srcCat].stack;
+  const movedCard = stack[stack.length - 1];
+  G.pendingAction = { ...G.pendingAction, type: 'move_resource_pick_target', srcCat, movedCard };
+  const tgts = CATEGORIES.filter(c => c !== srcCat && G.categories[c].stack.length === 1);
+  const btns = tgts.map(cat => {
+    const existing = G.categories[cat].stack[0];
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMoveResourceTgt('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>Alongside ${existing.name} (+${existing.value})</small>
+    </button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Move <strong>${movedCard.name} (+${movedCard.value})</strong> to which stack?</p><div class="opt-list">${btns}</div>`);
+}
+
+function resolveMoveResourceTgt(tgtCat) {
+  closeModal();
+  const { card, srcCat, movedCard } = G.pendingAction;
+  G.pendingAction = null;
+  const srcStack = G.categories[srcCat].stack;
+  const idx = srcStack.lastIndexOf(movedCard);
+  if (idx !== -1) srcStack.splice(idx, 1);
+  G.categories[tgtCat].stack.push(movedCard);
+  addLog(`${movedCard.name} (+${movedCard.value}) moved from ${cap(srcCat)} → ${cap(tgtCat)} stack.`);
+  G.deck.push(card);
+  addLog(`${card.name} placed at bottom of deck.`);
+  afterCardResolved();
+}
+
+function showMoveNewestResSrcModal(card) {
+  const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
+  const btns = srcs.map(cat => {
+    const newest = G.categories[cat].stack[G.categories[cat].stack.length - 1];
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMoveNewestResSrc('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>Move ${newest.name} (+${newest.value})</small>
+    </button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Move the newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
+}
+
+function resolveMoveNewestResSrc(srcCat) {
+  closeModal();
+  const stack = G.categories[srcCat].stack;
+  const movedCard = stack[stack.length - 1];
+  G.pendingAction = { ...G.pendingAction, type: 'move_newest_res_any_tgt', srcCat, movedCard };
+  const tgts = CATEGORIES.filter(c => c !== srcCat);
+  const btns = tgts.map(cat => {
+    const color = CAT_COLORS[cat];
+    const stackInfo = G.categories[cat].stack.length
+      ? G.categories[cat].stack[G.categories[cat].stack.length - 1].name
+      : 'empty';
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMoveNewestResTgt('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>${stackInfo}</small>
+    </button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Move <strong>${movedCard.name} (+${movedCard.value})</strong> to which stack?</p><div class="opt-list">${btns}</div>`);
+}
+
+function resolveMoveNewestResTgt(tgtCat) {
+  closeModal();
+  const { card, srcCat, movedCard } = G.pendingAction;
+  G.pendingAction = null;
+  const srcStack = G.categories[srcCat].stack;
+  const idx = srcStack.lastIndexOf(movedCard);
+  if (idx !== -1) srcStack.splice(idx, 1);
+  G.categories[tgtCat].stack.push(movedCard);
+  addLog(`${movedCard.name} (+${movedCard.value}) moved from ${cap(srcCat)} → ${cap(tgtCat)} stack.`);
+  G.deck.push(card);
+  addLog(`${card.name} placed at bottom of deck.`);
+  afterCardResolved();
+}
+
+function showMoveNewestInstabSrcModal(card) {
+  const srcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
+  const btns = srcs.map(cat => {
+    const newest = G.categories[cat].instability[G.categories[cat].instability.length - 1];
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMoveNewestInstabSrc('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+      <small>Move ${newest.name} (−${newest.value})</small>
+    </button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Move the newest instability from which pile?</p><div class="opt-list">${btns}</div>`);
+}
+
+function resolveMoveNewestInstabSrc(srcCat) {
+  closeModal();
+  const pile = G.categories[srcCat].instability;
+  const movedCard = pile[pile.length - 1];
+  G.pendingAction = { ...G.pendingAction, type: 'move_newest_instab_tgt', srcCat, movedCard };
+  const tgts = CATEGORIES.filter(c => c !== srcCat);
+  const btns = tgts.map(cat => {
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMoveNewestInstabTgt('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong>
+    </button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Move <strong>${movedCard.name} (−${movedCard.value})</strong> to which instability pile?</p><div class="opt-list">${btns}</div>`);
+}
+
+function resolveMoveNewestInstabTgt(tgtCat) {
+  closeModal();
+  const { card, srcCat, movedCard } = G.pendingAction;
+  G.pendingAction = null;
+  const srcPile = G.categories[srcCat].instability;
+  const idx = srcPile.lastIndexOf(movedCard);
+  if (idx !== -1) srcPile.splice(idx, 1);
+  G.categories[tgtCat].instability.push(movedCard);
+  addLog(`${movedCard.name} (−${movedCard.value}) moved from ${cap(srcCat)} → ${cap(tgtCat)} instability.`);
+  G.deck.push(card);
+  addLog(`${card.name} placed at bottom of deck.`);
+  afterCardResolved();
+}
+
+// ── Chain: move newest resource → move newest instability ────────────────────
+function showMvrInstabResSrcModal(card) {
+  const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
+  const btns = srcs.map(cat => {
+    const newest = G.categories[cat].stack[G.categories[cat].stack.length - 1];
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMvrInstabResSrc('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong><small>Move ${newest.name} (+${newest.value})</small></button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Move newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
+}
+function resolveMvrInstabResSrc(srcCat) {
+  closeModal();
+  const movedCard = G.categories[srcCat].stack[G.categories[srcCat].stack.length - 1];
+  G.pendingAction = { ...G.pendingAction, type: 'mvr_instab__res_tgt', srcCat, movedCard };
+  const tgts = CATEGORIES.filter(c => c !== srcCat);
+  const btns = tgts.map(cat => {
+    const color = CAT_COLORS[cat];
+    const top = G.categories[cat].stack[G.categories[cat].stack.length - 1];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMvrInstabResTgt('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong><small>${top ? top.name : 'empty'}</small></button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Move <strong>${movedCard.name} (+${movedCard.value})</strong> to which stack?</p><div class="opt-list">${btns}</div>`);
+}
+function resolveMvrInstabResTgt(tgtCat) {
+  closeModal();
+  const { card, srcCat, movedCard } = G.pendingAction;
+  const srcStack = G.categories[srcCat].stack;
+  const idx = srcStack.lastIndexOf(movedCard);
+  if (idx !== -1) srcStack.splice(idx, 1);
+  G.categories[tgtCat].stack.push(movedCard);
+  addLog(`${movedCard.name} (+${movedCard.value}) moved ${cap(srcCat)} → ${cap(tgtCat)} stack.`);
+  G.pendingAction = { ...G.pendingAction, type: 'mvr_instab__instab_src' };
+  const instabSrcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
+  if (!instabSrcs.length) {
+    G.pendingAction = null;
+    G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); return;
+  }
+  render(); showMvrInstabInstabSrcModal();
+}
+function showMvrInstabInstabSrcModal() {
+  const srcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
+  const btns = srcs.map(cat => {
+    const newest = G.categories[cat].instability[G.categories[cat].instability.length - 1];
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMvrInstabInstabSrc('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong><small>Move ${newest.name} (−${newest.value})</small></button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Move newest instability from which pile?</p><div class="opt-list">${btns}</div>`);
+}
+function resolveMvrInstabInstabSrc(srcCat) {
+  closeModal();
+  const movedInstab = G.categories[srcCat].instability[G.categories[srcCat].instability.length - 1];
+  G.pendingAction = { ...G.pendingAction, type: 'mvr_instab__instab_tgt', instabSrcCat: srcCat, movedInstab };
+  const tgts = CATEGORIES.filter(c => c !== srcCat);
+  const btns = tgts.map(cat => {
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMvrInstabInstabTgt('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong></button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Move <strong>${movedInstab.name} (−${movedInstab.value})</strong> to which pile?</p><div class="opt-list">${btns}</div>`);
+}
+function resolveMvrInstabInstabTgt(tgtCat) {
+  closeModal();
+  const { card, instabSrcCat, movedInstab } = G.pendingAction;
+  G.pendingAction = null;
+  const srcPile = G.categories[instabSrcCat].instability;
+  const idx = srcPile.lastIndexOf(movedInstab);
+  if (idx !== -1) srcPile.splice(idx, 1);
+  G.categories[tgtCat].instability.push(movedInstab);
+  addLog(`${movedInstab.name} moved ${cap(instabSrcCat)} → ${cap(tgtCat)} instability.`);
+  G.deck.push(card);
+  addLog(`${card.name} placed at bottom of deck.`);
+  afterCardResolved();
+}
+
+// ── Chain: remove newest resource → remove newest instability ────────────────
+function showRmrInstabResSrcModal(card) {
+  const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
+  const btns = srcs.map(cat => {
+    const newest = G.categories[cat].stack[G.categories[cat].stack.length - 1];
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveRmrInstabResSrc('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong><small>Remove ${newest.name} (+${newest.value})</small></button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Remove newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
+}
+function resolveRmrInstabResSrc(srcCat) {
+  closeModal();
+  const stack = G.categories[srcCat].stack;
+  const removed = stack.splice(stack.length - 1, 1)[0];
+  G.deck.push(removed);
+  addLog(`${removed.name} (+${removed.value}) removed from ${cap(srcCat)} stack → deck.`);
+  G.pendingAction = { ...G.pendingAction, type: 'rmr_instab__instab_src' };
+  const instabSrcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
+  if (!instabSrcs.length) {
+    const card = G.pendingAction.card; G.pendingAction = null;
+    G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); return;
+  }
+  render(); showRmrInstabInstabSrcModal();
+}
+function showRmrInstabInstabSrcModal() {
+  const srcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
+  const btns = srcs.map(cat => {
+    const newest = G.categories[cat].instability[G.categories[cat].instability.length - 1];
+    const color = CAT_COLORS[cat];
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveRmrInstabInstabSrc('${cat}')">
+      <strong style="color:${color}">${cap(cat)}</strong><small>Remove ${newest.name} (−${newest.value})</small></button>`;
+  }).join('');
+  showModal(`<p class="modal-sub">Remove newest instability from which pile?</p><div class="opt-list">${btns}</div>`);
+}
+function resolveRmrInstabInstabSrc(srcCat) {
+  closeModal();
+  const pile = G.categories[srcCat].instability;
+  const removed = pile.splice(pile.length - 1, 1)[0];
+  G.deck.push(removed);
+  addLog(`${removed.name} (−${removed.value}) removed from ${cap(srcCat)} instability → deck.`);
+  const card = G.pendingAction.card; G.pendingAction = null;
+  G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`);
+  afterCardResolved();
+}
+
+
+
+
+
+
+
+
+
+
+// ── Chain: move newest resource → move newest instability ────────────────────
+
+// ── Chain: remove newest resource → remove newest instability ────────────────
+
 function showReplaceOrStackModal(card, cat) {
   // Always replace automatically — no modal needed
   resolveReplaceOrStack('replace');
@@ -1261,6 +2553,7 @@ function applyIdentityBenefit(card) {
     addLog(`${card.name} benefit: No ${cap(resourceCategory)} resources found in deck.`);
   }
 }
+
 
 function resolveReplaceOrStack(choice) {
   closeModal();
@@ -1332,6 +2625,8 @@ function resolveAfterTake(card, afterEffect) {
   }
 }
 
+
+
 function showEndModal(end) {
   const won = end.result === 'won';
   openModal(`
@@ -1361,6 +2656,34 @@ function canPlayOption(card, opt) {
   switch (opt.effect) {
     case 'replace_plus_stack_cost':
       return G.categories[opt.costCategory].stack.length >= (opt.costAmount || 1);
+    case 'remove_four_stack_cards_then_bottom': {
+      // Count how many times each category is referenced; require that many cards in the stack
+      const _cats4 = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3, opt.sourceCategory4];
+      const _req4 = {};
+      _cats4.forEach(c => _req4[c] = (_req4[c] || 0) + 1);
+      return Object.entries(_req4).every(([c, n]) => G.categories[c].stack.length >= n);
+    }
+    case 'remove_four_stack_cards_then_bottom': {
+      // Count how many times each category is referenced; require that many cards in the stack
+      const _cats4 = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3, opt.sourceCategory4];
+      const _req4 = {};
+      _cats4.forEach(c => _req4[c] = (_req4[c] || 0) + 1);
+      return Object.entries(_req4).every(([c, n]) => G.categories[c].stack.length >= n);
+    }
+    case 'remove_three_stack_cards_then_bottom':
+      return G.categories[opt.sourceCategory1].stack.length >= 1 &&
+             G.categories[opt.sourceCategory2].stack.length >= 1 &&
+             G.categories[opt.sourceCategory3].stack.length >= 1;
+    case 'remove_three_stack_cards_then_bottom':
+      return G.categories[opt.sourceCategory1].stack.length >= 1 &&
+             G.categories[opt.sourceCategory2].stack.length >= 1 &&
+             G.categories[opt.sourceCategory3].stack.length >= 1;
+    case 'remove_two_stack_cards_then_bottom':
+      return G.categories[opt.sourceCategory1].stack.length >= 1 &&
+             G.categories[opt.sourceCategory2].stack.length >= 1;
+    case 'remove_two_stack_cards_then_bottom':
+      return G.categories[opt.sourceCategory1].stack.length >= 1 &&
+             G.categories[opt.sourceCategory2].stack.length >= 1;
     case 'remove_stack_card_and_optionally_place_self':
     case 'remove_stack_card_then_shuffle_self':
     case 'remove_stack_card_then_remove_instability':
@@ -1390,6 +2713,47 @@ function canPlayOption(card, opt) {
       return G.categories.military.stack.length >= 1;
     case 'discard_hand_then_self':
       return true;
+    case 'remove_two_military_then_discard_three_hand':
+    case 'remove_two_military_then_draw_two':
+      return G.categories.military.stack.length >= 2;
+    case 'remove_military_then_discard_hand_self_discard':
+      return G.categories.military.stack.length >= 1;
+    case 'discard_hand_then_self':
+      return true;
+    case 'move_newest_resource_to_sparse_stack': {
+      const sparseTargets = CATEGORIES.filter(c => G.categories[c].stack.length === 1);
+      const validSources = CATEGORIES.filter(c => G.categories[c].stack.length >= 1 && sparseTargets.some(t => t !== c));
+      return validSources.length > 0;
+    }
+    case 'move_newest_resource_any':
+      return CATEGORIES.some(c => G.categories[c].stack.length >= 1);
+    case 'move_newest_instability_any':
+      return CATEGORIES.some(c => G.categories[c].instability.length >= 1);
+    case 'move_newest_resource_then_move_newest_instability':
+    case 'remove_newest_resource_then_remove_newest_instability':
+      return CATEGORIES.some(c => G.categories[c].stack.length >= 1);
+    case 'move_newest_resource_any':
+      return CATEGORIES.some(c => G.categories[c].stack.length >= 1);
+    case 'move_newest_instability_any':
+      return CATEGORIES.some(c => G.categories[c].instability.length >= 1);
+    case 'move_newest_resource_then_move_newest_instability':
+    case 'remove_newest_resource_then_remove_newest_instability':
+      return CATEGORIES.some(c => G.categories[c].stack.length >= 1);
+    case 'remove_two_newest_resources_remove_instability':
+    case 'remove_all_oldest_then_remove_two_instability':
+      return true;
+    case 'strip_stack_to_oldest_and_instab':
+      return CATEGORIES.some(c => G.categories[c].stack.length >= 2);
+    case 'remove_three_from_stack_remove_two_instab':
+      return true;
+    case 'remove_one_from_each_stack_and_each_instab':
+      return true;
+    case 'remove_three_resources_clear_one_pile':
+      return true;
+    case 'remove_one_from_each_stack_and_each_instab':
+      return true;
+    case 'remove_three_resources_clear_one_pile':
+      return true;
     default:
       return true;
   }
@@ -1408,8 +2772,12 @@ function checkConditionDisplay(cond) {
   return checkCondition(cond);
 }
 
+
 function checkCondition(cond) {
   if (!cond) return true;
+  if (cond.allIdentitiesActive) {
+    return CATEGORIES.every(c => G.categories[c].active !== null);
+  }
   if (cond.activeCard) {
     const a = G.categories[cond.activeCard.category]?.active;
     return a && a.name === cond.activeCard.name;
@@ -1426,12 +2794,53 @@ function checkCondition(cond) {
   if (cond.instabilityExists !== undefined) {
     return G.categories[cond.instabilityExists].instability.length > 0;
   }
+  if (cond.instabilityExists !== undefined) {
+    return G.categories[cond.instabilityExists].instability.length > 0;
+  }
   // Hand size checks: card already removed from hand, +1 accounts for the played card
   if (cond.handMoreThan !== undefined) {
     return (G.hand.length + 1) > cond.handMoreThan;
   }
   if (cond.handLessThan !== undefined) {
     return (G.hand.length + 1) < cond.handLessThan;
+  }
+  if (cond.card_in_instability) {
+    const { id, category } = cond.card_in_instability;
+    const cats = category ? [category] : CATEGORIES;
+    return cats.some(c => G.categories[c].instability.some(card => card.id === id));
+  }
+  if (cond.card_not_in_instability) {
+    const { id, category } = cond.card_not_in_instability;
+    const cats = category ? [category] : CATEGORIES;
+    return !cats.some(c => G.categories[c].instability.some(card => card.id === id));
+  }
+  if (cond.active_identity_is) {
+    const { category, id } = cond.active_identity_is;
+    return G.categories[category]?.active?.id === id;
+  }
+  if (cond.active_identity_is_not) {
+    const { category, id } = cond.active_identity_is_not;
+    return G.categories[category]?.active?.id !== id;
+  }
+  if (cond.stack_size_gte) {
+    const { category, value } = cond.stack_size_gte;
+    return G.categories[category].stack.length >= value;
+  }
+  if (cond.score_gte) {
+    const { category, value } = cond.score_gte;
+    return categoryScore(category) >= value;
+  }
+  if (cond.score_lte) {
+    const { category, value } = cond.score_lte;
+    return categoryScore(category) <= value;
+  }
+  if (cond.score_is_highest) {
+    // In solo, always true (no opponents)
+    return true;
+  }
+  if (cond.score_is_lowest) {
+    // In solo, always false (no opponents to be lower than)
+    return false;
   }
   return false;
 }
@@ -1509,6 +2918,7 @@ function render() {
   renderLog();
   renderCardDetail();
   renderDeckCount();
+  saveGame();
 }
 
 function renderCategories() {
@@ -1532,7 +2942,6 @@ function renderCategories() {
       activeHTML = `<div class="in-play-card" style="border-left-color:${color}" onclick="viewCard_global('active','${cat}')">
         <div class="ipc-name">${s.active.name}</div>
         <div class="ipc-value">+${s.active.value}</div>
-        ${s.active.passiveEffect ? '<div class="ipc-passive">Passive</div>' : ''}
       </div>`;
     }
 
@@ -1578,9 +2987,18 @@ function renderCategories() {
   });
 }
 
+function toggleHandMinimize() {
+  const area = document.getElementById('hand-area');
+  area.classList.toggle('hand-minimized');
+  renderHand(); // re-render label to update button text
+}
+
 function renderHand() {
+  const area = document.getElementById('hand-area');
+  const minimized = area.classList.contains('hand-minimized');
   const label = document.getElementById('hand-label');
-  label.textContent = `Your Hand (${G.hand.length}) — Click to inspect · Confirm to play`;
+  label.innerHTML = `<button class="hand-minimize-btn" onclick="toggleHandMinimize()">${minimized ? '▲ Show' : '▼ Hide'}</button>
+    <span>Your Hand (${G.hand.length}) — Click to inspect · Confirm to play</span>`;
 
   const hand = document.getElementById('hand');
   hand.innerHTML = '';
@@ -1625,6 +3043,7 @@ function renderHand() {
       <div class="hc-art"></div>
       <div class="hc-effects">${effectSummary}</div>
       ${card.requires ? `<div class="hc-req-tag">${buildReqText(card)}</div>` : ''}
+      ${card.mustPlayWhenDrawn ? '<div class="hc-must-play">⚠ Must play when drawn</div>' : ''}
       ${card.mustPlayWhenDrawn ? '<div class="hc-must-play">⚠ Must play when drawn</div>' : ''}
       ${!playable ? '<div class="hc-unplayable">Select to discard</div>' : ''}
       <div class="hc-flavor">${card.flavorText || ''}</div>
@@ -1700,11 +3119,6 @@ function renderDetailFrame(card, color, location, readonly) {
       <span class="detail-section-label">Must Be Played When Drawn</span>
     </div>` : '';
 
-  const benefitHTML = card.benefit ? `
-    <div class="detail-benefit">
-      <span class="detail-section-label">Benefit When Played</span>
-      <div class="detail-benefit-text">${card.benefit.description}</div>
-    </div>` : '';
 
   const reqHTML = card.requires ? `
     <div class="detail-requires ${canPlayCard(card) ? 'req-met' : 'req-unmet'}">
@@ -1758,6 +3172,8 @@ function renderDetailFrame(card, color, location, readonly) {
       </div>
       ${mustPlayHTML}
       ${benefitHTML}
+      ${mustPlayHTML}
+      ${benefitHTML}
       ${reqHTML}
       ${optionsHTML}
       ${discardHTML}
@@ -1767,7 +3183,10 @@ function renderDetailFrame(card, color, location, readonly) {
 
 function renderDeckCount() {
   const el = document.getElementById('deck-count');
-  if (el) el.textContent = `Turn ${G.turn} · Deck: ${G.deck.length}`;
+  if (!el) return;
+  el.textContent = `Turn ${G.turn} · Deck: ${G.deck.length}`;
+  el.onclick = showLibrary;
+  el.title = 'Click to browse all cards in the deck';
 }
 
 function buildReqText(card) {
@@ -1791,10 +3210,644 @@ function closeModal() {
   document.getElementById('modal-overlay').classList.add('hidden');
 }
 
+// ─── Autoplay ─────────────────────────────────────────────────────────────────
+
+function blankModeStat() {
+  return { games: 0, wins: 0, losses: 0, turnHistory: [], scoreSpread: [], cardPlays: {}, optionPlays: {}, winCats: {}, loseCats: {} };
+}
+
+const AUTO = {
+  running: false,
+  interval: null,
+  speed: 200,
+  mode: 'random',
+  batch: { active: false, target: 0 },
+  stats: { random: blankModeStat(), maximize: blankModeStat() },
+};
+
+function randFrom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function toggleAutoplay() {
+  if (AUTO.running) {
+    AUTO.running = false;
+    clearInterval(AUTO.interval);
+    AUTO.interval = null;
+    document.getElementById('autoplay-btn').textContent = '▶ Auto';
+    document.getElementById('autoplay-btn').classList.remove('auto-active');
+    document.getElementById('autoplay-controls').classList.add('hidden');
+  } else {
+    AUTO.running = true;
+    document.getElementById('autoplay-btn').textContent = '⏸ Pause';
+    document.getElementById('autoplay-btn').classList.add('auto-active');
+    document.getElementById('autoplay-controls').classList.remove('hidden');
+    AUTO.interval = setInterval(autoPlayStep, AUTO.speed);
+  }
+}
+
+function setAutoSpeed(ms) {
+  AUTO.speed = ms;
+  document.querySelectorAll('.auto-speed-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.speed === String(ms));
+  });
+  if (AUTO.running) {
+    clearInterval(AUTO.interval);
+    AUTO.interval = setInterval(autoPlayStep, ms);
+  }
+}
+
+function resetAutoStats() {
+  AUTO.stats = { random: blankModeStat(), maximize: blankModeStat() };
+  updateAutoStatsDisplay();
+}
+
+function recordAutoGameResult(result, cat) {
+  const s = AUTO.stats[AUTO.mode];
+  s.games++;
+  if (result === 'won') { s.wins++; s.winCats[cat] = (s.winCats[cat] || 0) + 1; }
+  else { s.losses++; s.loseCats[cat] = (s.loseCats[cat] || 0) + 1; }
+  s.turnHistory.push(G.turn);
+  const scores = CATEGORIES.map(c => categoryScore(c));
+  s.scoreSpread.push(Math.max(...scores) - Math.min(...scores));
+
+  if (AUTO.batch.active) {
+    const totalGames = AUTO.stats.random.games + AUTO.stats.maximize.games;
+    const batchStart = AUTO.batch.startGames;
+    if (totalGames - batchStart >= AUTO.batch.target) {
+      AUTO.batch.active = false;
+      if (AUTO.running) toggleAutoplay();
+      addLog(`Batch complete: ${AUTO.batch.target} games finished.`);
+    }
+  }
+  updateAutoStatsDisplay();
+}
+
+function startBatchRun(n) {
+  if (!n || n < 1) return;
+  AUTO.batch.active = true;
+  AUTO.batch.target = n;
+  AUTO.batch.startGames = AUTO.stats.random.games + AUTO.stats.maximize.games;
+  const prevSpeed = AUTO.speed;
+  setAutoSpeed(20);
+  if (!AUTO.running) toggleAutoplay();
+  addLog(`Batch started: running ${n} games at max speed (${AUTO.mode} mode).`);
+}
+
+function exportAutoStats() {
+  const data = {
+    exportedAt: new Date().toISOString(),
+    random: AUTO.stats.random,
+    maximize: AUTO.stats.maximize,
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `governance-autoplay-stats-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function renderModeStats(s, modeName) {
+  if (s.games === 0) return `<div class="astat-mode-empty">${modeName}: no data</div>`;
+
+  const wr = ((s.wins / s.games) * 100).toFixed(1) + '%';
+  const avg = s.turnHistory.length
+    ? (s.turnHistory.reduce((a, b) => a + b, 0) / s.turnHistory.length).toFixed(1) : '—';
+  const avgSpread = s.scoreSpread.length
+    ? (s.scoreSpread.reduce((a, b) => a + b, 0) / s.scoreSpread.length).toFixed(1) : '—';
+
+  const winEntries = Object.entries(s.winCats).sort((a, b) => b[1] - a[1]);
+  const loseEntries = Object.entries(s.loseCats).sort((a, b) => b[1] - a[1]);
+  const topCards = Object.entries(s.cardPlays).sort((a, b) => b[1] - a[1]).slice(0, 10);
+
+  const optionsByCard = {};
+  Object.entries(s.optionPlays).forEach(([key, n]) => {
+    const [id, oi] = key.split(':');
+    if (!optionsByCard[id]) optionsByCard[id] = [];
+    optionsByCard[id].push({ oi: parseInt(oi), n });
+  });
+
+  const winChips = winEntries.map(([cat, n]) =>
+    `<span class="astat-cat-chip chip-win">${cap(cat)} ×${n}</span>`).join('');
+  const loseChips = loseEntries.map(([cat, n]) =>
+    `<span class="astat-cat-chip chip-lose">${cap(cat)} ×${n}</span>`).join('');
+  const cardRows = topCards.map(([id, n]) => {
+    const c = CARDS.find(c => c.id === id);
+    const pct = ((n / s.games) * 100).toFixed(0);
+    const opts = (optionsByCard[id] || []).sort((a, b) => a.oi - b.oi);
+    const optStr = opts.map(({ oi, n: on }) => {
+      const label = c?.options?.[oi]?.label?.match(/Option \d+/)?.[0] || `Opt${oi + 1}`;
+      return `${label}: ${on}`;
+    }).join(' / ');
+    return `<div class="astat-row"><span class="astat-label">${c ? c.name : id}</span><span class="astat-value">${n} (${pct}%/g)${optStr ? ' — ' + optStr : ''}</span></div>`;
+  }).join('');
+
+  return `
+    <div class="astat-mode-header">${modeName}</div>
+    <div class="astat-row"><span class="astat-label">Games</span><span class="astat-value">${s.games}</span></div>
+    <div class="astat-row"><span class="astat-label">Wins / Losses</span><span class="astat-value">${s.wins} / ${s.losses} &nbsp;(${wr} win rate)</span></div>
+    <div class="astat-row"><span class="astat-label">Avg turns/game</span><span class="astat-value">${avg}</span></div>
+    <div class="astat-row"><span class="astat-label">Avg score spread</span><span class="astat-value">${avgSpread} &nbsp;<span class="astat-muted">(max−min cat score at game end)</span></span></div>
+    <div class="astat-section">
+      <div class="astat-section-title">Win by category</div>
+      <div class="astat-cat-row">${winChips || '<span class="astat-muted">—</span>'}</div>
+    </div>
+    <div class="astat-section">
+      <div class="astat-section-title">Lose by category</div>
+      <div class="astat-cat-row">${loseChips || '<span class="astat-muted">—</span>'}</div>
+    </div>
+    <div class="astat-section">
+      <div class="astat-section-title">Top cards played (option breakdown)</div>
+      ${cardRows}
+    </div>
+  `;
+}
+
+function updateAutoStatsDisplay() {
+  const sr = AUTO.stats.random;
+  const sm = AUTO.stats.maximize;
+  const totalGames = sr.games + sm.games;
+
+  const bar = document.getElementById('autoplay-bar');
+  const statsSection = document.getElementById('auto-stats-section');
+  if (totalGames === 0) {
+    bar.classList.add('hidden');
+    statsSection.classList.add('hidden');
+    return;
+  }
+  bar.classList.remove('hidden');
+  statsSection.classList.remove('hidden');
+
+  // Header bar — combined summary
+  const activeS = AUTO.stats[AUTO.mode];
+  const wr = activeS.games ? ((activeS.wins / activeS.games) * 100).toFixed(1) + '%' : '—';
+  const avg = activeS.turnHistory.length
+    ? (activeS.turnHistory.reduce((a, b) => a + b, 0) / activeS.turnHistory.length).toFixed(1) : '—';
+
+  document.getElementById('auto-games').textContent = activeS.games;
+  document.getElementById('auto-wins').textContent = activeS.wins;
+  document.getElementById('auto-losses').textContent = activeS.losses;
+  document.getElementById('auto-winrate').textContent = wr;
+  document.getElementById('auto-turns').textContent = avg;
+
+  const topEntries = Object.entries(activeS.cardPlays).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const topEl = document.getElementById('auto-topcards');
+  topEl.textContent = topEntries.length
+    ? 'Top: ' + topEntries.map(([id, n]) => { const c = CARDS.find(c => c.id === id); return `${c ? c.name : id} (${n})`; }).join(' · ')
+    : '';
+
+  // Detailed panel — two sections side by side
+  document.getElementById('auto-stats-body').innerHTML = `
+    <div class="astat-two-col">
+      <div class="astat-col">${renderModeStats(sr, 'Random')}</div>
+      <div class="astat-col">${renderModeStats(sm, 'Maximize')}</div>
+    </div>
+  `;
+}
+
+function autoPlayStep() {
+  if (!G || G.phase === 'won' || G.phase === 'lost') {
+    const end = checkEndConditions();
+    const result = G.phase;
+    const cat = end ? end.category : 'unknown';
+    recordAutoGameResult(result, cat);
+    closeModal();
+    startGame();
+    return;
+  }
+
+  if (G.pendingAction) {
+    resolveAutoPendingAction();
+    return;
+  }
+
+  // Must-play card waiting
+  if (G.mustPlayEventId != null) {
+    const mustIdx = G.hand.findIndex(c => c.instanceId === G.mustPlayEventId);
+    if (mustIdx >= 0 && canPlayCard(G.hand[mustIdx])) {
+      autoSelectAndPlay(mustIdx);
+      return;
+    }
+    // Can't play it — pass (which handles the forfeit)
+    passTurn();
+    return;
+  }
+
+  // Choose a card to play, or pass
+  const playable = G.hand
+    .map((card, i) => ({ card, i }))
+    .filter(({ card }) => canPlayCard(card));
+
+  if (!playable.length) {
+    passTurn();
+    return;
+  }
+
+  if (AUTO.mode === 'maximize') {
+    // Score each card by its best eligible option's estimated delta
+    let bestEntry = null;
+    let bestDelta = -Infinity;
+    for (const entry of playable) {
+      const eligibleOpts = (entry.card.options || [])
+        .map((opt, oi) => ({ opt, oi }))
+        .filter(({ opt }) => canPlayOption(entry.card, opt));
+      if (!eligibleOpts.length) continue;
+      const delta = Math.max(...eligibleOpts.map(({ opt }) => estimateOptionDelta(entry.card, opt)));
+      if (delta > bestDelta) { bestDelta = delta; bestEntry = entry; }
+    }
+    // Only pass if every playable option would hurt us (delta < -1) — otherwise play best
+    if (!bestEntry || bestDelta < -1) {
+      passTurn();
+      return;
+    }
+    autoSelectAndPlay(bestEntry.i);
+  } else {
+    if (Math.random() < 0.12) { passTurn(); return; }
+    autoSelectAndPlay(randFrom(playable).i);
+  }
+}
+
+function autoSelectAndPlay(handIdx) {
+  const card = G.hand[handIdx];
+  G.selectedCardIndex = handIdx;
+
+  const eligible = (card.options || [])
+    .map((opt, oi) => ({ opt, oi }))
+    .filter(({ opt }) => canPlayOption(card, opt));
+
+  let chosen;
+  if (AUTO.mode === 'maximize' && eligible.length) {
+    chosen = eligible.reduce((best, e) =>
+      estimateOptionDelta(card, e.opt) >= estimateOptionDelta(card, best.opt) ? e : best
+    );
+  } else {
+    chosen = eligible.length ? randFrom(eligible) : { oi: 0 };
+  }
+  G.selectedOption = chosen.oi;
+
+  // Track card and option play (per mode)
+  const ms = AUTO.stats[AUTO.mode];
+  ms.cardPlays[card.id] = (ms.cardPlays[card.id] || 0) + 1;
+  const optKey = `${card.id}:${chosen.oi}`;
+  ms.optionPlays[optKey] = (ms.optionPlays[optKey] || 0) + 1;
+
+  confirmPlay();
+}
+
+function resolveAutoPendingAction() {
+  const action = G.pendingAction;
+  const { type, card } = action;
+
+  const maximize = AUTO.mode === 'maximize';
+
+  // Helper: category with highest score (most buffer, best candidate to absorb instability)
+  const highestScoreCat = cats => cats.reduce((a, b) => categoryScore(b) > categoryScore(a) ? b : a);
+  // Helper: category with lowest score (most at risk — instability should be removed from here first)
+  const lowestScoreCat = cats => cats.reduce((a, b) => categoryScore(b) < categoryScore(a) ? b : a);
+  // Helper: instability pile with highest total value (remove from here first)
+  const mostInstabCat = cats => cats.reduce((a, b) => {
+    const sum = c => G.categories[c].instability.reduce((n, x) => n + (x.value || 0), 0);
+    return sum(b) > sum(a) ? b : a;
+  });
+
+  // Hand discard routing (multi-discardTo modal)
+  if (action.routingCard) {
+    const dests = action.routingCard.discardTo;
+    let dest;
+    if (maximize && dests && dests.length) {
+      // Prefer shuffle_to_deck; among instability targets pick highest-score category (most buffer)
+      const shuffleDest = dests.find(d => d.target === 'shuffle_to_deck');
+      if (shuffleDest) {
+        dest = shuffleDest;
+      } else {
+        const instabDests = dests.filter(d => d.target.endsWith('_instability'));
+        if (instabDests.length) {
+          dest = instabDests.reduce((best, d) => {
+            const cat = d.target.replace('_instability', '');
+            const bestCat = best.target.replace('_instability', '');
+            return categoryScore(cat) > categoryScore(bestCat) ? d : best;
+          });
+        } else {
+          dest = randFrom(dests);
+        }
+      }
+    } else {
+      dest = dests && dests.length ? randFrom(dests) : { target: 'shuffle_to_deck' };
+    }
+    resolveHandDiscardDest(dest.target);
+    return;
+  }
+
+  switch (type) {
+    case 'stack_self_on_any': {
+      const cats = action.choices || CATEGORIES;
+      if (maximize) {
+        // Push highest-score category toward WIN_SCORE
+        const best = cats.reduce((a, b) => categoryScore(b) > categoryScore(a) ? b : a);
+        resolveStackOnAny(best);
+      } else {
+        resolveStackOnAny(randFrom(cats));
+      }
+      break;
+    }
+    case 'replace_or_stack': {
+      resolveReplaceOrStack('replace');
+      break;
+    }
+    case 'discard_replaced_card': {
+      const dests = card.discardTo;
+      let dest;
+      if (maximize && dests && dests.length) {
+        const shuffleDest = dests.find(d => d.target === 'shuffle_to_deck');
+        if (shuffleDest) {
+          dest = shuffleDest;
+        } else {
+          const instabDests = dests.filter(d => d.target.endsWith('_instability'));
+          dest = instabDests.length ? instabDests.reduce((best, d) => {
+            const cat = d.target.replace('_instability', '');
+            const bestCat = best.target.replace('_instability', '');
+            return categoryScore(cat) > categoryScore(bestCat) ? d : best;
+          }) : randFrom(dests);
+        }
+      } else {
+        dest = dests && dests.length ? randFrom(dests) : { target: 'shuffle_to_deck' };
+      }
+      resolveDiscardReplaced(dest.target);
+      break;
+    }
+    case 'discard_hand_cards': {
+      if (!G.hand.length) {
+        // Nothing left to discard — force chain to continue
+        action.remaining = 0;
+        continueHandDiscardChain();
+        break;
+      }
+      if (maximize) {
+        // Discard the hand card with the lowest estimated value (hazards > resources)
+        let worstIdx = 0;
+        let worstDelta = Infinity;
+        G.hand.forEach((hc, i) => {
+          const hasInstab = (hc.discardTo || []).some(d => d.target.endsWith('_instability'));
+          const delta = hasInstab ? -(hc.value || 0) * 2.5 : (hc.value || 0);
+          if (delta < worstDelta) { worstDelta = delta; worstIdx = i; }
+        });
+        pickDiscardHand(worstIdx);
+      } else {
+        pickDiscardHand(Math.floor(Math.random() * G.hand.length));
+      }
+      break;
+    }
+    case 'remove_instability': {
+      const filter = action.filter;
+      const eligible = filter
+        ? (G.categories[filter].instability.length ? [filter] : [])
+        : CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+      if (!eligible.length) {
+        G.pendingAction = null;
+        applyCardSelfDiscard(card);
+        afterCardResolved();
+        break;
+      }
+      // Maximize: remove from the most dangerous pile (lowest score = most at risk)
+      const target = maximize ? lowestScoreCat(eligible) : randFrom(eligible);
+      resolveRemoveInstability(target, action.maxRemove);
+      break;
+    }
+    case 'remove_lowest_instability': {
+      const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+      if (!eligible.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
+      resolveRemoveLowestInstability(maximize ? lowestScoreCat(eligible) : randFrom(eligible));
+      break;
+    }
+    case 'move_instability_src': {
+      const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+      if (!eligible.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
+      // Maximize: move FROM the category with highest total instability (relieve most pressure)
+      resolveMoveInstabilitySrc(maximize ? mostInstabCat(eligible) : randFrom(eligible));
+      break;
+    }
+    case 'move_instability_dest': {
+      const opts = CATEGORIES.filter(c => c !== action.srcCat);
+      // Maximize: dump into category with most buffer (highest score)
+      resolveMoveInstabilityDest(maximize ? highestScoreCat(opts) : randFrom(opts));
+      break;
+    }
+    case 'remove_two_instability': {
+      const picked = action.picked || [];
+      const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0 && !picked.includes(c));
+      if (!eligible.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
+      pickTwoInstability(maximize ? lowestScoreCat(eligible) : randFrom(eligible));
+      break;
+    }
+    case 'take_resource_to_economy': {
+      const cats = action.sourceCategories.filter(c => G.categories[c].stack.length > 0);
+      if (!cats.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
+      // Maximize: take from the highest-score category (can afford to lose it)
+      const cat = maximize ? highestScoreCat(cats) : randFrom(cats);
+      const idx = Math.floor(Math.random() * G.categories[cat].stack.length);
+      resolveTakeResource(cat, idx);
+      break;
+    }
+    case 'restitution_pick_resource': {
+      const eligible = CATEGORIES.filter(c => G.categories[c].stack.length > 0);
+      if (!eligible.length) { proceedToRestitutionInstability(); break; }
+      // Maximize: take from the highest-score category (least harmful loss)
+      resolvePickAnyResource(maximize ? highestScoreCat(eligible) : randFrom(eligible));
+      break;
+    }
+    case 'managed_pick_newest_res': {
+      const eligible = CATEGORIES.filter(c => G.categories[c].stack.length > 0);
+      if (!eligible.length) {
+        G.pendingAction = { type: 'managed_pick_instab', card, remaining: 1 };
+        render(); showManagedInstabModal(card, 1); break;
+      }
+      // Maximize: take newest from highest-score stack (least important to lose)
+      resolvePickNewestResource(maximize ? highestScoreCat(eligible) : randFrom(eligible));
+      break;
+    }
+    case 'managed_pick_instab': {
+      const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+      if (!eligible.length) {
+        G.pendingAction = null;
+        G.deck.push(card);
+        addLog(`${card.name} placed at bottom of deck.`);
+        afterCardResolved(); break;
+      }
+      // Maximize: remove from the most dangerous pile (lowest score)
+      resolveManagedInstab(maximize ? lowestScoreCat(eligible) : randFrom(eligible));
+      break;
+    }
+    case 'rationalize_strip_pick': {
+      const eligible = CATEGORIES.filter(c => G.categories[c].stack.length >= 2);
+      if (!eligible.length) { showStripStackModal(card); break; }
+      // Maximize: strip the category with highest score (most redundant resources, least harm to lose)
+      resolveStripStack(maximize ? highestScoreCat(eligible) : randFrom(eligible));
+      break;
+    }
+    case 'rationalize_res_pick': {
+      const eligible = CATEGORIES.filter(c => G.categories[c].stack.length > 0);
+      if (!eligible.length) {
+        G.pendingAction = { type: 'rationalize_instab_pick', card };
+        render(); showRationalizeInstabModal(card); break;
+      }
+      // Maximize: remove from the highest-score stack (least valuable to lose)
+      resolveRationalizeRes(maximize ? highestScoreCat(eligible) : randFrom(eligible));
+      break;
+    }
+    case 'rationalize_instab_pick': {
+      const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+      if (!eligible.length) {
+        G.pendingAction = null;
+        G.deck.push(card);
+        addLog(`${card.name} placed at bottom of deck.`);
+        afterCardResolved(); break;
+      }
+      // Maximize: remove from the most dangerous pile (lowest score)
+      resolveRationalizeInstab(maximize ? lowestScoreCat(eligible) : randFrom(eligible));
+      break;
+    }
+    case 'austerity_pick_res': {
+      const eligible = CATEGORIES.filter(c => G.categories[c].stack.length > 0);
+      if (!eligible.length) {
+        G.pendingAction = { type: 'austerity_pick_pile', card };
+        render(); showAusterityClearPileModal(card); break;
+      }
+      // Maximize: take from highest-score stack (can afford the loss most)
+      resolveAusterityRes(maximize ? highestScoreCat(eligible) : randFrom(eligible));
+      break;
+    }
+    case 'austerity_pick_pile': {
+      const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
+      if (!eligible.length) {
+        G.pendingAction = null;
+        G.deck.push(card);
+        addLog(`${card.name} placed at bottom of deck.`);
+        afterCardResolved(); break;
+      }
+      // Maximize: clear the pile with the highest total instability value
+      const pileVal = c => G.categories[c].instability.reduce((n, rc) => n + (rc.value || 0), 0);
+      const bestPile = maximize
+        ? eligible.reduce((a, b) => pileVal(b) > pileVal(a) ? b : a)
+        : randFrom(eligible);
+      resolveAusterityClearPile(bestPile);
+      break;
+    }
+    default: {
+      // All remove_stack_* types auto-resolve through showRemoveStackModal
+      if (action.sourceCategory) {
+        showRemoveStackModal(card, action.sourceCategory, action.targetCategory || null);
+      } else {
+        G.pendingAction = null;
+        applyCardSelfDiscard(card);
+        afterCardResolved();
+      }
+      break;
+    }
+  }
+}
+
+// ─── Card Library ─────────────────────────────────────────────────────────────
+
+function showLibrary() {
+  // Build sorted unique card list from STARTER_DECK
+  const seen = new Set();
+  const counts = {};
+  STARTER_DECK.forEach(id => { counts[id] = (counts[id] || 0) + 1; });
+  const uniqueIds = STARTER_DECK.filter(id => { if (seen.has(id)) return false; seen.add(id); return true; });
+  const cards = uniqueIds
+    .map(id => CARDS.find(c => c.id === id))
+    .filter(Boolean)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const subtitle = document.getElementById('library-subtitle');
+  subtitle.textContent = `${cards.length} unique cards · ${STARTER_DECK.length} total in deck`;
+
+  const ROW_SIZE = 8;
+  let html = '';
+  for (let r = 0; r < cards.length; r += ROW_SIZE) {
+    const row = cards.slice(r, r + ROW_SIZE);
+    html += `<div class="lib-row">`;
+    row.forEach(card => {
+      const color = card.category ? CAT_COLORS[card.category] : '#777';
+      const tintClass = card.type === 'category' ? 'card-tint-gold'
+        : card.subtype === 'stacking' ? 'card-tint-green'
+        : card.subtype === 'hazard' ? 'card-tint-red'
+        : '';
+      const subtypeLabel = card.subtype ? ` · ${cap(card.subtype)}` : '';
+      const typeLabel = card.type === 'event'
+        ? `Event${subtypeLabel}`
+        : `${cap(card.category || '')} Identity`;
+      const effectSummary = (card.options || []).map(o =>
+        `<div class="hc-opt"><span class="hc-opt-label">${o.label}:</span> ${o.description}</div>`
+      ).join('');
+      const copiesBadge = counts[card.id] > 1
+        ? `<div class="lib-copies-badge">×${counts[card.id]}</div>` : '';
+      html += `
+        <div class="hand-card ${card.type === 'event' ? 'event-card' : ''} ${tintClass} lib-hand-card"
+             style="--cat-color:${color}"
+             onclick="selectLibraryCard('${card.id}')">
+          ${copiesBadge}
+          <div class="hc-header">
+            <span class="hc-type">${typeLabel}</span>
+            ${card.value > 0 ? `<span class="hc-val-badge">+${card.value}</span>` : ''}
+          </div>
+          <div class="hc-name">${card.name}</div>
+          <div class="hc-art"></div>
+          <div class="hc-effects">${effectSummary}</div>
+          ${card.requires ? `<div class="hc-req-tag">${buildReqText(card)}</div>` : ''}
+          ${card.mustPlayWhenDrawn || card.subtype === 'hazard' ? '<div class="hc-must-play">⚠ Must play when drawn</div>' : ''}
+          <div class="hc-flavor">${card.flavorText || ''}</div>
+        </div>`;
+    });
+    html += `</div>`;
+  }
+
+  document.getElementById('library-grid').innerHTML = html;
+  document.getElementById('library-overlay').classList.remove('hidden');
+  document.getElementById('lib-float').classList.add('hidden');
+}
+
+function selectLibraryCard(id) {
+  const card = CARDS.find(c => c.id === id);
+  if (!card) return;
+
+  document.querySelectorAll('.lib-hand-card').forEach(el => el.classList.remove('lib-selected'));
+  document.querySelectorAll(`.lib-hand-card[onclick="selectLibraryCard('${id}')"]`)
+    .forEach(el => el.classList.add('lib-selected'));
+
+  const color = card.category ? CAT_COLORS[card.category] : '#888';
+  document.getElementById('lib-float-detail').innerHTML =
+    renderDetailFrame(card, color, 'Card Library', /*readonly*/true);
+  document.getElementById('lib-float').classList.remove('hidden');
+}
+
+function closeLibraryFloat() {
+  document.getElementById('lib-float').classList.add('hidden');
+  document.querySelectorAll('.lib-hand-card').forEach(el => el.classList.remove('lib-selected'));
+}
+
+function closeLibrary() {
+  document.getElementById('library-overlay').classList.add('hidden');
+  document.getElementById('lib-float').classList.add('hidden');
+}
+
 // ─── Global onclick bridges (for inline onclick in innerHTML) ─────────────────
 
+window.resolvePickAnyResource = resolvePickAnyResource;
+window.resolvePickAnyResource = resolvePickAnyResource;
+window.toggleHandMinimize = toggleHandMinimize;
+window.toggleHandMinimize = toggleHandMinimize;
 window.discardUnplayable = discardUnplayable;
 window.pickDiscardHand = pickDiscardHand;
+window.pickDiscardHand = pickDiscardHand;
+window.discardUnplayable = discardUnplayable;
+window.passTurn = passTurn;
+window.togglePanel = togglePanel;
+window.togglePanelMinimize = togglePanelMinimize;
+window.selectCardWithOption = selectCardWithOption;
+
 window.passTurn = passTurn;
 window.togglePanel = togglePanel;
 window.togglePanelMinimize = togglePanelMinimize;
@@ -1823,6 +3876,27 @@ window.resolveDiscardReplaced = resolveDiscardReplaced;
 window.resolveRemoveInstability = resolveRemoveInstability;
 window.resolveStackOnAny = resolveStackOnAny;
 window.pickTwoInstability = pickTwoInstability;
+window.resolvePickNewestResource = resolvePickNewestResource;
+window.resolveManagedInstab = resolveManagedInstab;
+window.resolveStripStack = resolveStripStack;
+window.resolveRationalizeRes = resolveRationalizeRes;
+window.resolveRationalizeInstab = resolveRationalizeInstab;
+window.resolveAusterityRes = resolveAusterityRes;
+window.resolveAusterityClearPile = resolveAusterityClearPile;
+window.resolvePickNewestResource = resolvePickNewestResource;
+window.resolveManagedInstab = resolveManagedInstab;
+window.resolveStripStack = resolveStripStack;
+window.resolveRationalizeRes = resolveRationalizeRes;
+window.resolveRationalizeInstab = resolveRationalizeInstab;
+window.resolveAusterityRes = resolveAusterityRes;
+window.resolveAusterityClearPile = resolveAusterityClearPile;
+window.resolveRemoveStackCard = resolveRemoveStackCard;
+window.resolvePlaceSelf = resolvePlaceSelf;
+window.resolveReplaceOrStack = resolveReplaceOrStack;
+window.resolveTakeResource = resolveTakeResource;
+window.resolveRemoveLowestInstability = resolveRemoveLowestInstability;
+window.resolveMoveInstabilitySrc = resolveMoveInstabilitySrc;
+window.resolveMoveInstabilityDest = resolveMoveInstabilityDest;
 window.resolveRemoveStackCard = resolveRemoveStackCard;
 window.resolvePlaceSelf = resolvePlaceSelf;
 window.resolveReplaceOrStack = resolveReplaceOrStack;
@@ -1831,14 +3905,80 @@ window.resolveRemoveLowestInstability = resolveRemoveLowestInstability;
 window.resolveMoveInstabilitySrc = resolveMoveInstabilitySrc;
 window.resolveMoveInstabilityDest = resolveMoveInstabilityDest;
 window.startGame = startGame;
+window.toggleAutoplay = toggleAutoplay;
+window.setAutoSpeed = setAutoSpeed;
+window.setAutoMode = setAutoMode;
+window.resetAutoStats = resetAutoStats;
+window.startBatchRun = startBatchRun;
+window.exportAutoStats = exportAutoStats;
+window.startBatchRun = startBatchRun;
+window.exportAutoStats = exportAutoStats;
+window.showLibrary = showLibrary;
+window.selectLibraryCard = selectLibraryCard;
+window.closeLibraryFloat = closeLibraryFloat;
+window.closeLibrary = closeLibrary;
+
+// ─── Save / Load ──────────────────────────────────────────────────────────────
+
+const SAVE_KEY = 'governance_save';
+
+function saveGame() {
+  if (AUTO.running) return;
+  if (!G || G.log.length <= 1) return; // don't save a brand-new untouched game
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(G));
+  } catch (e) { console.warn('Save failed:', e); }
+}
+
+function clearSave() {
+  try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+}
+
+function loadSavedState() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+
+function resumeGame(saved) {
+  closeModal();
+  G = saved;
+  addLog('Session resumed.');
+  render();
+}
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 function startGame() {
   closeModal();
+  clearSave();
   G = newGameState();
   addLog('Game started. Play cards freely — use Pass Turn to draw and end your turn.');
   render();
 }
 
-document.addEventListener('DOMContentLoaded', startGame);
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = loadSavedState();
+  const hasProgress = saved && !saved.phase && (saved.log.length > 1 || saved.turn > 1);
+  if (hasProgress) {
+    G = saved;
+    render();
+    openModal(`
+      <div class="modal-card-name" style="margin-bottom:12px">Resume Session?</div>
+      <p class="modal-sub">Turn ${saved.turn} — ${saved.hand.length} cards in hand, ${saved.deck.length} in deck.</p>
+      <div class="opt-list" style="margin-top:14px">
+        <button class="opt-btn" onclick="closeModal()">
+          <strong>Resume</strong>
+          <small>Continue from where you left off</small>
+        </button>
+        <button class="opt-btn" onclick="startGame()">
+          <strong>New Game</strong>
+          <small>Discard saved session and start fresh</small>
+        </button>
+      </div>
+    `);
+  } else {
+    startGame();
+  }
+});

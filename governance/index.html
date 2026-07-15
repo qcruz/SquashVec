@@ -10,11 +10,40 @@
 <div id="app">
 
   <header id="header">
-    <div>
-      <div class="game-title">Governance</div>
-      <div class="game-subtitle">Solo Mode · Build Your Civilization</div>
+    <div id="header-main-row">
+      <div>
+        <div class="game-title">Governance</div>
+        <div class="game-subtitle">Solo Mode · Build Your Civilization</div>
+      </div>
+      <div id="header-controls">
+        <div id="autoplay-controls" class="hidden">
+          <button class="auto-speed-btn" onclick="setAutoSpeed(500)" data-speed="500">Slow</button>
+          <button class="auto-speed-btn active" onclick="setAutoSpeed(200)" data-speed="200">Normal</button>
+          <button class="auto-speed-btn" onclick="setAutoSpeed(50)" data-speed="50">Fast</button>
+          <span class="auto-sep">·</span>
+          <button class="auto-mode-btn active" id="auto-mode-random" onclick="setAutoMode('random')">Random</button>
+          <button class="auto-mode-btn" id="auto-mode-maximize" onclick="setAutoMode('maximize')">Maximize</button>
+          <span class="auto-sep">·</span>
+          <input id="auto-batch-n" class="auto-batch-input" type="number" value="20" min="1" max="500" title="Number of games to batch run">
+          <button class="auto-batch-btn" onclick="startBatchRun(parseInt(document.getElementById('auto-batch-n').value))">Run N</button>
+          <button class="auto-export-btn" onclick="exportAutoStats()">Export</button>
+          <button class="auto-reset-btn" onclick="resetAutoStats()">Reset</button>
+        </div>
+        <button id="autoplay-btn" onclick="toggleAutoplay()">▶ Auto</button>
+        <div id="deck-count">—</div>
+      </div>
     </div>
-    <div id="deck-count">—</div>
+    <div id="autoplay-bar" class="hidden">
+      <span class="auto-stat">Games: <strong id="auto-games">0</strong></span>
+      <span class="auto-sep">·</span>
+      <span class="auto-stat">Wins: <strong id="auto-wins" class="auto-win">0</strong></span>
+      <span class="auto-stat">Losses: <strong id="auto-losses" class="auto-lose">0</strong></span>
+      <span class="auto-sep">·</span>
+      <span class="auto-stat">Win Rate: <strong id="auto-winrate">—</strong></span>
+      <span class="auto-stat">Avg Turns: <strong id="auto-turns">—</strong></span>
+      <span class="auto-sep">·</span>
+      <span class="auto-stat auto-topcards" id="auto-topcards"></span>
+    </div>
   </header>
 
   <div id="main">
@@ -33,6 +62,10 @@
       <div id="panel-header">
         <span class="panel-header-title">Governance</span>
         <button class="panel-minimize-btn" id="panel-minimize-btn" onclick="togglePanelMinimize()">▼</button>
+      </div>
+      <div id="auto-stats-section" class="hidden">
+        <div class="panel-title">Autoplay Stats <button class="panel-toggle" onclick="togglePanel('auto-stats-body','auto-stats-section')">▾</button></div>
+        <div id="auto-stats-body"><!-- rendered by game.js --></div>
       </div>
       <div id="log-section">
         <div class="panel-title">Game Log <button class="panel-toggle" onclick="togglePanel('log','log-section')">▾</button></div>

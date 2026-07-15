@@ -248,6 +248,152 @@ const CARDS = [
     ],
   },
 
+  {
+    id: 'republic',
+    name: 'Republic',
+    type: 'category',
+    subtype: 'institution',
+    category: 'governance',
+    value: 2,
+    flavorText: 'Power through representation, not birth.',
+    benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Establish the Republic',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Shuffle this card into the draw deck.',
+        effect: 'draw_and_shuffle_self',
+        targetCategory: 'governance',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'oligarchy',
+    name: 'Oligarchy',
+    type: 'category',
+    subtype: 'institution',
+    category: 'governance',
+    value: 2,
+    flavorText: 'Power consolidated among the few.',
+    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Consolidate Power',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'governance',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'constitutional_monarchy',
+    name: 'Constitutional Monarchy',
+    type: 'category',
+    subtype: 'institution',
+    category: 'governance',
+    value: 3,
+    flavorText: 'A crown constrained by law.',
+    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Ratify the Constitution',
+        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'governance',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'dictatorship',
+    name: 'Dictatorship',
+    type: 'category',
+    subtype: 'institution',
+    category: 'governance',
+    value: 3,
+    flavorText: 'Order through absolute authority.',
+    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Seize Control',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Shuffle this card into the draw deck.',
+        effect: 'draw_and_shuffle_self',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'populist_governance',
+    name: 'Populist Governance',
+    type: 'category',
+    subtype: 'institution',
+    category: 'governance',
+    value: 2,
+    flavorText: 'Power drawn from the anger of the many.',
+    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Rise of the People',
+        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Shuffle this card into the draw deck.',
+        effect: 'draw_and_shuffle_self',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
   // ═══════════════════════════════════════════════════════════════════════════
   // ECONOMY — CATEGORY CARDS
   // ═══════════════════════════════════════════════════════════════════════════
@@ -430,6 +576,95 @@ const CARDS = [
     requires: null,
   },
 
+  {
+    id: 'agrarian_economy',
+    name: 'Agrarian Economy',
+    type: 'category',
+    subtype: 'institution',
+    category: 'economy',
+    value: 1,
+    flavorText: 'The earth sustains all.',
+    benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Work the Land',
+        description: 'Remove the oldest Environment resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'environment_instability', label: 'Environment Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'command_economy',
+    name: 'Command Economy',
+    type: 'category',
+    subtype: 'institution',
+    category: 'economy',
+    value: 2,
+    flavorText: 'Resources directed by the state.',
+    benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Central Planning',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'governance_instability', label: 'Governance Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'banking_system',
+    name: 'Banking System',
+    type: 'category',
+    subtype: 'institution',
+    category: 'economy',
+    value: 3,
+    flavorText: 'Capital creates capital.',
+    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Charter the Banks',
+        description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Replace or stack your current Economy with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
   // ═══════════════════════════════════════════════════════════════════════════
   // CULTURE — CATEGORY CARDS
   // ═══════════════════════════════════════════════════════════════════════════
@@ -519,7 +754,6 @@ const CARDS = [
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
     requires: null,
-    passiveEffect: 'economy_removes_tech_instability',
   },
 
   {
@@ -662,6 +896,125 @@ const CARDS = [
         label: 'Option 2 — Hold Off',
         description: 'Draw 1 card. Shuffle this card into the draw deck.',
         effect: 'draw_and_shuffle_self',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'oral_tradition',
+    name: 'Oral Tradition',
+    type: 'category',
+    subtype: 'institution',
+    category: 'culture',
+    value: 1,
+    flavorText: 'Knowledge passed by word of mouth.',
+    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Preserve the Stories',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'religious_order',
+    name: 'Religious Order',
+    type: 'category',
+    subtype: 'institution',
+    category: 'culture',
+    value: 2,
+    flavorText: 'Belief structures that outlast empires.',
+    benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Found the Order',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'governance_instability', label: 'Governance Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'merchant_class',
+    name: 'Merchant Class',
+    type: 'category',
+    subtype: 'institution',
+    category: 'culture',
+    value: 3,
+    flavorText: 'Wealth as social currency.',
+    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Rise of Commerce',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'enlightenment',
+    name: 'Enlightenment',
+    type: 'category',
+    subtype: 'institution',
+    category: 'culture',
+    value: 4,
+    flavorText: 'Reason as the highest authority.',
+    benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Age of Reason',
+        description: 'Remove 2 Technology resources from your stack and shuffle them into the draw deck. Replace or stack your current Culture with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'technology',
+        costAmount: 2,
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
         targetCategory: 'culture',
       },
     ],
@@ -852,6 +1205,125 @@ const CARDS = [
     requires: null,
   },
 
+  {
+    id: 'defensive_doctrine',
+    name: 'Defensive Doctrine',
+    type: 'category',
+    subtype: 'institution',
+    category: 'military',
+    value: 1,
+    flavorText: 'Hold the line. Let them come to us.',
+    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Hold the Line',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'military',
+      },
+    ],
+    discardTo: [
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'adaptable_force',
+    name: 'Adaptable Force',
+    type: 'category',
+    subtype: 'institution',
+    category: 'military',
+    value: 2,
+    flavorText: 'Neither sword nor shield — both, as the moment demands.',
+    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Launch the Fleet',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'military',
+      },
+    ],
+    discardTo: [
+      { target: 'military_instability', label: 'Military Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'proportional_response',
+    name: 'Proportional Response',
+    type: 'category',
+    subtype: 'institution',
+    category: 'military',
+    value: 3,
+    flavorText: 'Match every blow. No more, no less.',
+    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Commission the Army',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'military',
+      },
+    ],
+    discardTo: [
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'overwhelming_force',
+    name: 'Overwhelming Force',
+    type: 'category',
+    subtype: 'institution',
+    category: 'military',
+    value: 4,
+    flavorText: 'Bring enough, and leave no question unanswered.',
+    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Build the Corps',
+        description: 'Remove 2 Technology resources from your stack and shuffle them into the draw deck. Replace or stack your current Military with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'technology',
+        costAmount: 2,
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'military',
+      },
+    ],
+    discardTo: [
+      { target: 'military_instability', label: 'Military Instability' },
+      { target: 'technology_instability', label: 'Technology Instability' },
+    ],
+    requires: null,
+  },
+
   // ═══════════════════════════════════════════════════════════════════════════
   // TECHNOLOGY — CATEGORY CARDS
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1019,6 +1491,121 @@ const CARDS = [
         label: 'Option 2 — Hold Off',
         description: 'Draw 1 card. Shuffle this card into the draw deck.',
         effect: 'draw_and_shuffle_self',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'iron_working',
+    name: 'Iron Working',
+    type: 'category',
+    subtype: 'institution',
+    category: 'technology',
+    value: 2,
+    flavorText: 'Metal shaped to human will.',
+    options: [
+      {
+        label: 'Option 1 — Forge the Future',
+        description: 'Replace your current Technology. The replaced card is discarded using its own discard options.',
+        effect: 'replace',
+        targetCategory: 'technology',
+        oldCardDest: 'discard_flow',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'technology',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'written_records',
+    name: 'Written Records',
+    type: 'category',
+    subtype: 'institution',
+    category: 'technology',
+    value: 2,
+    flavorText: 'Knowledge preserved across generations.',
+    options: [
+      {
+        label: 'Option 1 — Codify',
+        description: 'Replace your current Technology. The replaced card is discarded using its own discard options.',
+        effect: 'replace',
+        targetCategory: 'technology',
+        oldCardDest: 'discard_flow',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'technology',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'advanced_engineering',
+    name: 'Advanced Engineering',
+    type: 'category',
+    subtype: 'institution',
+    category: 'technology',
+    value: 3,
+    flavorText: 'Building beyond the possible.',
+    options: [
+      {
+        label: 'Option 1 — Commission the Corps',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Replace your current Technology with Advanced Engineering.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'technology',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'mathematics',
+    name: 'Mathematics',
+    type: 'category',
+    subtype: 'institution',
+    category: 'technology',
+    value: 3,
+    flavorText: 'The language beneath all else.',
+    options: [
+      {
+        label: 'Option 1 — Abstract Thinking',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Replace your current Technology with Mathematics.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'technology',
       },
     ],
     discardTo: [
@@ -1267,6 +1854,95 @@ const CARDS = [
     requires: null,
   },
 
+  {
+    id: 'the_fertile_plains',
+    name: 'The Fertile Plains',
+    type: 'category',
+    subtype: 'territory',
+    category: 'environment',
+    value: 2,
+    flavorText: 'Grain and growth, season after season.',
+    benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Settle the Plains',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'environment',
+      },
+    ],
+    discardTo: [
+      { target: 'environment_instability', label: 'Environment Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'the_desert_wastes',
+    name: 'The Desert Wastes',
+    type: 'category',
+    subtype: 'territory',
+    category: 'environment',
+    value: 1,
+    flavorText: 'Harsh land builds harder people.',
+    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Endure the Waste',
+        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'environment',
+      },
+    ],
+    discardTo: [
+      { target: 'environment_instability', label: 'Environment Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'the_river_delta',
+    name: 'The River Delta',
+    type: 'category',
+    subtype: 'territory',
+    category: 'environment',
+    value: 3,
+    flavorText: 'Where rivers meet, civilizations flourish.',
+    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
+    options: [
+      {
+        label: 'Option 1 — Settle the Delta',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Replace or stack your current Territory with this card. Replaced cards get discarded.',
+        effect: 'replace_plus_stack_cost',
+        costCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hold Off',
+        description: 'Draw 1 card. Discard this card.',
+        effect: 'draw_and_discard_self',
+        targetCategory: 'environment',
+      },
+    ],
+    discardTo: [
+      { target: 'environment_instability', label: 'Environment Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
   // ═══════════════════════════════════════════════════════════════════════════
   // STACKING EVENT CARDS — stack on active category cards, adding to score
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1324,6 +2000,57 @@ const CARDS = [
     discardTo: [
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+  },
+
+  {
+    id: 'tax_increase',
+    name: 'Tax Increase',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 2,
+    flavorText: 'Revenue rises. So does resentment.',
+    options: [
+      {
+        label: 'Option 1 — Collect Revenue',
+        description: 'Stack on your active Economy card. Adds +2 to Economy score.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Fund the State',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Military as a +2 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'economy',
+        choices: ['governance', 'military'],
+      },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  {
+    id: 'tax_decrease',
+    name: 'Tax Decrease',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 1,
+    flavorText: 'Popular today. Costly tomorrow.',
+    options: [
+      {
+        label: 'Option 1 — Public Relief',
+        description: 'Stack on your active Governance card. Adds +1 to Governance score.',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Stimulate the Market',
+        description: 'Stack on your active Economy card. Adds +1 to Economy score.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
   },
 
   {
@@ -1730,7 +2457,7 @@ const CARDS = [
       },
       {
         label: 'Option 2 — Cultural Reform',
-        description: 'Remove the oldest Governance instability card and shuffle it into the draw deck. Shuffle this card into the deck.',
+        description: 'Remove the oldest Governance instability card and shuffle it into the draw deck. Place this card at the bottom of the deck.',
         effect: 'remove_instability_modal',
         maxRemove: 1,
         targetCategory: 'governance',
@@ -1764,6 +2491,31 @@ const CARDS = [
       },
     ],
     discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  // — Military utility events —
+
+  {
+    id: 'military_exercise',
+    name: 'Military Exercise',
+    type: 'event',
+    subtype: 'utility',
+    category: 'military',
+    value: 1,
+    flavorText: 'Strength forged through sacrifice and repetition.',
+    options: [
+      {
+        label: 'Option 1 — Full Drill',
+        description: 'Remove two resources from your Military stack and shuffle them into the draw deck. Choose any three cards from your hand and discard them.',
+        effect: 'remove_two_military_then_discard_three_hand',
+      },
+      {
+        label: 'Option 2 — Rapid Deployment',
+        description: 'Remove two resources from your Military stack and shuffle them into the draw deck. Draw two cards.',
+        effect: 'remove_two_military_then_draw_two',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
   },
 
   // — Military utility events —
@@ -2205,7 +2957,7 @@ const CARDS = [
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
-    value: 2,
+    value: 1,
     flavorText: 'Timber, shelter, shadow — the forest gives without asking.',
     options: [
       {
@@ -2231,7 +2983,7 @@ const CARDS = [
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
-    value: 2,
+    value: 1,
     flavorText: 'Wealth buried just beneath the surface.',
     options: [
       {
@@ -2350,6 +3102,751 @@ const CARDS = [
         effect: 'pay_own_stack_then_stack_on_any',
         ownCategory: 'environment',
         choices: ['culture', 'technology'],
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  // — Governance resource-focused stacking events —
+
+  {
+    id: 'civic_assembly',
+    name: 'Civic Assembly',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'governance',
+    value: 1,
+    flavorText: 'The people convene. Something shifts.',
+    options: [
+      {
+        label: 'Option 1 — Convene',
+        description: 'Stack on your active Governance card. Adds +1 to Governance score.',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Military as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'governance',
+        choices: ['economy', 'military'],
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'public_decree',
+    name: 'Public Decree',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'governance',
+    value: 2,
+    flavorText: 'The state speaks. What it says, holds.',
+    options: [
+      {
+        label: 'Option 1 — Issue the Decree',
+        description: 'Stack on your active Governance card. Adds +2 to Governance score.',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Military as a +2 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'governance',
+        choices: ['economy', 'military'],
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  // — Economy resource-focused stacking events —
+
+  {
+    id: 'surplus_goods',
+    name: 'Surplus Goods',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 1,
+    flavorText: 'More than needed. For now.',
+    options: [
+      {
+        label: 'Option 1 — Hold the Surplus',
+        description: 'Stack on your active Economy card. Adds +1 to Economy score.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Military as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'economy',
+        choices: ['governance', 'military'],
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'trade_surplus',
+    name: 'Trade Surplus',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 2,
+    flavorText: 'The ledger tips in our favor.',
+    options: [
+      {
+        label: 'Option 1 — Reinvest',
+        description: 'Stack on your active Economy card. Adds +2 to Economy score.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +2 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  // — Culture resource-focused stacking events —
+
+  {
+    id: 'oral_history',
+    name: 'Oral History',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'culture',
+    value: 1,
+    flavorText: 'Stories outlast stone.',
+    options: [
+      {
+        label: 'Option 1 — Preserve the Stories',
+        description: 'Stack on your active Culture card. Adds +1 to Culture score.',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Stack this card on Governance or Environment as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'culture',
+        choices: ['governance', 'environment'],
+      },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  // — Military resource-focused stacking events —
+
+  {
+    id: 'battle_hardened',
+    name: 'Battle Hardened',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 1,
+    flavorText: 'What does not break, tempers.',
+    options: [
+      {
+        label: 'Option 1 — Harden the Forces',
+        description: 'Stack on your active Military card. Adds +1 to Military score.',
+        effect: 'stack_on_category',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Governance as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'military',
+        choices: ['economy', 'governance'],
+      },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+
+  // — Technology resource-focused stacking events —
+
+  {
+    id: 'invention_workshop',
+    name: 'Invention Workshop',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'technology',
+    value: 1,
+    flavorText: 'Where tools are born.',
+    options: [
+      {
+        label: 'Option 1 — Tinker',
+        description: 'Stack on your active Technology card. Adds +1 to Technology score.',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove the oldest Technology resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Environment as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'technology',
+        choices: ['economy', 'environment'],
+      },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'applied_science',
+    name: 'Applied Science',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'technology',
+    value: 2,
+    flavorText: 'Theory put to work.',
+    options: [
+      {
+        label: 'Option 1 — Put It to Use',
+        description: 'Stack on your active Technology card. Adds +2 to Technology score.',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Environment as a +2 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'technology',
+        choices: ['economy', 'environment'],
+      },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  // — Environment resource-focused stacking events —
+
+  {
+    id: 'frozen_tundra',
+    name: 'Frozen Tundra',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 1,
+    flavorText: 'What the cold preserves, it preserves forever.',
+    options: [
+      {
+        label: 'Option 1 — Endure',
+        description: 'Stack on your active Environment card. Adds +1 to Environment score.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'environment',
+        choices: ['culture', 'technology'],
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'dense_forests',
+    name: 'Dense Forests',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 1,
+    flavorText: 'Timber, shelter, shadow — the forest gives without asking.',
+    options: [
+      {
+        label: 'Option 1 — Claim the Canopy',
+        description: 'Stack on your active Environment card. Adds +2 to Environment score.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on Culture or Technology as a +2 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'environment',
+        choices: ['culture', 'technology'],
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'mineral_deposits',
+    name: 'Mineral Deposits',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 1,
+    flavorText: 'Wealth buried just beneath the surface.',
+    options: [
+      {
+        label: 'Option 1 — Extract',
+        description: 'Stack on your active Environment card. Adds +2 to Environment score.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +2 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'rare_plants',
+    name: 'Rare Plants',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 1,
+    flavorText: 'Medicines, dyes, and poisons — all from the same root.',
+    options: [
+      {
+        label: 'Option 1 — Cultivate',
+        description: 'Stack on your active Environment card. Adds +1 to Environment score.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'rich_soil',
+    name: 'Rich Soil',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 1,
+    flavorText: 'The foundation of every great civilization.',
+    options: [
+      {
+        label: 'Option 1 — Till and Sow',
+        description: 'Stack on your active Environment card. Adds +1 to Environment score.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'natural_springs',
+    name: 'Natural Springs',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 1,
+    flavorText: 'Clean water is the oldest form of wealth.',
+    options: [
+      {
+        label: 'Option 1 — Protect the Source',
+        description: 'Stack on your active Environment card. Adds +1 to Environment score.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'coastal_fisheries',
+    name: 'Coastal Fisheries',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 1,
+    flavorText: 'The sea feeds those willing to brave it.',
+    options: [
+      {
+        label: 'Option 1 — Cast the Nets',
+        description: 'Stack on your active Environment card. Adds +1 to Environment score.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  // — General stacking events —
+
+  {
+    id: 'trade_delegation',
+    name: 'Trade Delegation',
+    type: 'event',
+    subtype: 'stacking',
+    category: null,
+    value: 1,
+    flavorText: 'Diplomacy and commerce, two faces of the same coin.',
+    options: [
+      {
+        label: 'Option 1 — Negotiate',
+        description: 'Stack on Economy or Governance as a +1 bonus.',
+        effect: 'stack_on_any_modal',
+        bonusValue: 1,
+        choices: ['economy', 'governance'],
+      },
+      {
+        label: 'Option 2 — Return Empty-Handed',
+        description: 'Shuffle this card into the draw deck and draw a card.',
+        effect: 'draw_and_shuffle_self',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // — Governance stacking events —
+
+  {
+    id: 'public_works',
+    name: 'Public Works',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'governance',
+    value: 2,
+    flavorText: 'Roads, aqueducts, walls — the skeleton of civilization.',
+    options: [
+      {
+        label: 'Option 1 — Fund the Works',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Place this card in your Governance Stack (+2).',
+        effect: 'remove_stack_card_and_optionally_place_self',
+        sourceCategory: 'economy',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Redirect Funds',
+        description: 'If you have instability in your Military stack, place this card in your Governance Stack (+2).',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+        condition: { instabilityExists: 'military' },
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'civic_charter',
+    name: 'Civic Charter',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'governance',
+    value: 2,
+    flavorText: 'Written rights outlast the rulers who grant them.',
+    options: [
+      {
+        label: 'Option 1 — Codify Rights',
+        description: 'Remove a resource from your Culture stack and shuffle it into the draw deck. You may place this card in your Governance Stack (+2).',
+        effect: 'remove_stack_card_and_optionally_place_self',
+        sourceCategory: 'culture',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Enforce the Charter',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Place this card in your Economy Stack (+2).',
+        effect: 'remove_stack_card_and_optionally_place_self',
+        sourceCategory: 'governance',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  // — Economy stacking events —
+
+  {
+    id: 'trade_routes',
+    name: 'Trade Routes',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 2,
+    flavorText: 'Goods flow where roads and rivers lead.',
+    options: [
+      {
+        label: 'Option 1 — Open the Routes',
+        description: 'Remove a resource from your Environment stack and shuffle it into the draw deck. You may place this card in your Economy Stack (+2).',
+        effect: 'remove_stack_card_and_optionally_place_self',
+        sourceCategory: 'environment',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Stack on Economy',
+        description: 'Stack on your active Economy card. Adds +2 to Economy score.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'market_expansion',
+    name: 'Market Expansion',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 1,
+    flavorText: 'A new stall, a new surplus.',
+    options: [
+      {
+        label: 'Option 1 — Grow the Market',
+        description: 'Stack on your active Economy card. Adds +1 to Economy score.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  // — Culture stacking events —
+
+  {
+    id: 'artistic_movement',
+    name: 'Artistic Movement',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'culture',
+    value: 2,
+    flavorText: 'When the people speak through art.',
+    options: [
+      {
+        label: 'Option 1 — State Patronage',
+        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. You may place this card in your Culture Stack (+2).',
+        effect: 'remove_stack_card_and_optionally_place_self',
+        sourceCategory: 'governance',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Cultural Reform',
+        description: 'Remove the oldest Governance instability card and shuffle it into the draw deck. Place this card at the bottom of the deck.',
+        effect: 'remove_instability_modal',
+        maxRemove: 1,
+        targetCategory: 'governance',
+        selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  {
+    id: 'folk_songs',
+    name: 'Folk Songs',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'culture',
+    value: 1,
+    flavorText: 'Memory and meaning carried in melody.',
+    options: [
+      {
+        label: 'Option 1 — Sing Together',
+        description: 'Stack on your active Culture card. Adds +1 to Culture score.',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'culture',
+      },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  // — Military stacking events —
+
+  {
+    id: 'war_council',
+    name: 'War Council',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 2,
+    flavorText: 'Strategy outlasts strength.',
+    options: [
+      {
+        label: 'Option 1 — Fund the Campaign',
+        description: 'Remove a resource from your Economy stack and shuffle it into the draw deck. You may place this card in your Military Stack (+2).',
+        effect: 'remove_stack_card_and_optionally_place_self',
+        sourceCategory: 'economy',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Stack on Military',
+        description: 'Stack on your active Military card. Adds +2 to Military score.',
+        effect: 'stack_on_category',
+        targetCategory: 'military',
+      },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+
+  {
+    id: 'border_fortification',
+    name: 'Border Fortification',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 1,
+    flavorText: 'Stone and timber between us and them.',
+    options: [
+      {
+        label: 'Option 1 — Fortify',
+        description: 'Stack on your active Military card. Adds +1 to Military score.',
+        effect: 'stack_on_category',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'military',
+      },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+
+  // — Technology stacking events —
+
+  {
+    id: 'research_grants',
+    name: 'Research Grants',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'technology',
+    value: 2,
+    flavorText: 'Discovery funded, discovery made.',
+    options: [
+      {
+        label: 'Option 1 — Allocate Funding',
+        description: 'Remove a resource from your Economy stack and shuffle it into the draw deck. You may place this card in your Technology Stack (+2).',
+        effect: 'remove_stack_card_and_optionally_place_self',
+        sourceCategory: 'economy',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Stack on Technology',
+        description: 'Stack on your active Technology card. Adds +2 to Technology score.',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'cartography',
+    name: 'Cartography',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'technology',
+    value: 1,
+    flavorText: 'To map the world is to begin to master it.',
+    options: [
+      {
+        label: 'Option 1 — Chart the Land',
+        description: 'Stack on your active Technology card. Adds +1 to Technology score.',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  // — Environment stacking events —
+
+  {
+    id: 'river_network',
+    name: 'River Network',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 1,
+    flavorText: 'Control the water, control the region.',
+    options: [
+      {
+        label: 'Option 1 — Manage the Rivers',
+        description: 'Stack on your active Environment card. Adds +1 to Environment score.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'land_survey',
+    name: 'Land Survey',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 1,
+    flavorText: 'Every boundary drawn begins a claim.',
+    options: [
+      {
+        label: 'Option 1 — Survey the Territory',
+        description: 'Stack on your active Environment card. Adds +1 to Environment score.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Focus Elsewhere',
+        description: 'Remove 1 Environment resource from your stack and shuffle it into the draw deck. Stack this card on any category as a +1 resource.',
+        effect: 'pay_own_stack_then_stack_on_any',
+        ownCategory: 'environment',
       },
     ],
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
@@ -2663,6 +4160,146 @@ const CARDS = [
     options: [
       { label: 'Option 1 — Suffer the Heat', description: 'Send to Environment instability.', effect: 'discard_self' },
       { label: 'Option 2 — Emergency Rationing', description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'harsh_winter',
+    name: 'Harsh Winter',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'environment',
+    value: 2,
+    flavorText: 'Cold that does not relent. Supplies that do not last.',
+    options: [
+      { label: 'Option 1 — Endure the Cold', description: 'Send to Environment instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Emergency Reserves', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'scorched_summer',
+    name: 'Scorched Summer',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'environment',
+    value: 2,
+    flavorText: 'The heat does not break. Crops wither. Tempers rise.',
+    options: [
+      { label: 'Option 1 — Suffer the Heat', description: 'Send to Environment instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Emergency Rationing', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'forest_fire',
+    name: 'Forest Fire',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'environment',
+    value: 3,
+    mustPlayWhenDrawn: true,
+    mustPlayWhenDrawn: true,
+    flavorText: 'What took centuries to grow is gone in a season.',
+    options: [
+      {
+        label: 'Option 1 — Uncontrolled Burn',
+        description: 'Place this card in Environment Instability.',
+        effect: 'discard_self',
+      },
+      {
+        label: 'Option 2 — Aerial Suppression',
+        description: 'Remove the oldest Technology resource → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'environmental_collapse',
+    name: 'Environmental Collapse',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'environment',
+    value: 4,
+    flavorText: 'When the systems that sustain life begin to fail, no policy can outrun the consequences.',
+    mustPlayWhenDrawn: true,
+    options: [
+      {
+        label: 'Option 1 — Emergency Intervention',
+        description: 'Remove 2 Economy AND 2 Technology resources → place this card at the bottom of the deck.',
+        effect: 'remove_four_stack_cards_then_bottom',
+        sourceCategory1: 'economy',
+        sourceCategory2: 'economy',
+        sourceCategory3: 'technology',
+        sourceCategory4: 'technology',
+      },
+      {
+        label: 'Option 2 — Ecological Ruin',
+        description: 'Remove ALL resources from your Environment stack → bottom of deck. Place this card in Environment Instability.',
+        effect: 'remove_all_from_stack_place_in_instability',
+        targetCategory: 'environment',
+        targetInstability: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'forest_fire',
+    name: 'Forest Fire',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'environment',
+    value: 3,
+    flavorText: 'What took centuries to grow is gone in a season.',
+    options: [
+      {
+        label: 'Option 1 — Uncontrolled Burn',
+        description: 'Place this card in Environment Instability.',
+        effect: 'discard_self',
+      },
+      {
+        label: 'Option 2 — Aerial Suppression',
+        description: 'Remove the oldest Technology resource → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'environmental_collapse',
+    name: 'Environmental Collapse',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'environment',
+    value: 4,
+    flavorText: 'When the systems that sustain life begin to fail, no policy can outrun the consequences.',
+    mustPlayWhenDrawn: true,
+    options: [
+      {
+        label: 'Option 1 — Emergency Intervention',
+        description: 'Remove 2 Economy AND 2 Technology resources → place this card at the bottom of the deck.',
+        effect: 'remove_four_stack_cards_then_bottom',
+        sourceCategory1: 'economy',
+        sourceCategory2: 'economy',
+        sourceCategory3: 'technology',
+        sourceCategory4: 'technology',
+      },
+      {
+        label: 'Option 2 — Ecological Ruin',
+        description: 'Remove ALL resources from your Environment stack → bottom of deck. Place this card in Environment Instability.',
+        effect: 'remove_all_from_stack_place_in_instability',
+        targetCategory: 'environment',
+        targetInstability: 'environment',
+      },
     ],
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
   },
@@ -3002,6 +4639,749 @@ const CARDS = [
     discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
   },
 
+  {
+    id: 'corruption',
+    name: 'Corruption',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 2,
+    flavorText: 'Power rots from the inside.',
+    options: [
+      {
+        label: 'Option 1 — Suffer the Scandal',
+        description: 'Discard this card to one of its instability destinations.',
+        effect: 'discard_self',
+      },
+      {
+        label: 'Option 2 — Root Out Corruption',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'governance',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+  },
+
+  {
+    id: 'epidemic',
+    name: 'Epidemic',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 2,
+    flavorText: 'Disease spreads where borders cannot.',
+    options: [
+      {
+        label: 'Option 1 — Suffer the Outbreak',
+        description: 'Place into Culture Instability (−2). The epidemic ravages your population.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'culture',
+      },
+      {
+        label: 'Option 2 — Quarantine',
+        description: 'Discard this card. Add −1 to Economy Instability instead (emergency medical spending).',
+        effect: 'suppress_hazard',
+        altInstability: 'economy',
+        altValue: 1,
+      },
+    ],
+    discardTo: [{ target: 'discard_pile', label: 'Discard Pile' }],
+  },
+
+  {
+    id: 'drought',
+    name: 'Drought',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 2,
+    flavorText: 'The sky withholds what the earth needs.',
+    options: [
+      {
+        label: 'Option 1 — Absorb the Famine',
+        description: 'Discard this card to one of its instability destinations.',
+        effect: 'discard_self',
+      },
+      {
+        label: 'Option 2 — Import Supplies',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'environment_instability', label: 'Environment Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+  },
+
+  {
+    id: 'rebellion',
+    name: 'Rebellion',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'The governed withdraw their consent.',
+    options: [
+      {
+        label: 'Option 1 — Suppress the Uprising',
+        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Lose Control',
+        description: 'Discard this card to one of its instability destinations.',
+        effect: 'discard_self',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  {
+    id: 'coup_attempt',
+    name: 'Coup Attempt',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 2,
+    flavorText: 'Power seized in darkness rarely holds in light.',
+    options: [
+      {
+        label: 'Option 1 — Suppress the Coup',
+        description: 'Remove a resource from your Governance stack and shuffle it into the draw deck. Shuffle this card into the draw deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Lose Control',
+        description: 'Discard this card to one of its instability destinations.',
+        effect: 'discard_self',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // INSTABILITY EVENTS — environmental, social, economic, and technological hazards
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  {
+    id: 'earthquake',
+    name: 'Earthquake',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'environment',
+    value: 2,
+    flavorText: 'The ground beneath certainty gives way.',
+    options: [
+      { label: 'Option 1 — Struck', description: 'Send to Environment instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Prepare', description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'tornado',
+    name: 'Tornado',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'environment',
+    value: 2,
+    flavorText: "Nature's indifferent fury leaves little standing.",
+    options: [
+      { label: 'Option 1 — Swept Away', description: 'Send to Environment instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Shelter In Place', description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'technology' },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'political_strife',
+    name: 'Political Strife',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'governance',
+    value: 2,
+    flavorText: 'Factions fracture the halls of power.',
+    options: [
+      { label: 'Option 1 — Gridlock', description: 'Send to Governance instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Appease', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'recession',
+    name: 'Recession',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'economy',
+    value: 2,
+    flavorText: 'Markets contract. Belts tighten.',
+    options: [
+      { label: 'Option 1 — Downturn', description: 'Send to Economy instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Stimulus', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'national_debt',
+    name: 'National Debt',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'economy',
+    value: 3,
+    flavorText: 'Borrowed prosperity has a due date.',
+    options: [
+      { label: 'Option 1 — Borrowed Time', description: 'Send to Economy instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Austerity', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'crime_wave',
+    name: 'Crime Wave',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'governance',
+    value: 1,
+    flavorText: 'When order fails, chaos fills the vacuum.',
+    options: [
+      { label: 'Option 1 — Uncontrolled', description: 'Send to Governance instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Crackdown', description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'youthful_dissent',
+    name: 'Youthful Dissent',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'culture',
+    value: 1,
+    flavorText: 'A generation questions everything it was taught.',
+    options: [
+      { label: 'Option 1 — Rising Tension', description: 'Send to Culture instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Channel the Energy', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  {
+    id: 'stalled_research',
+    name: 'Stalled Research',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 2,
+    flavorText: 'The path forward goes dark.',
+    options: [
+      { label: 'Option 1 — Dead End', description: 'Send to Technology instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Pivot Funding', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'public_backlash',
+    name: 'Public Backlash',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'governance',
+    value: 2,
+    flavorText: 'The people make their displeasure known.',
+    options: [
+      { label: 'Option 1 — Popular Anger', description: 'Send to Governance instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Reform', description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'adverse_side_effects',
+    name: 'Adverse Side Effects',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 2,
+    flavorText: 'Progress brings unintended consequences.',
+    options: [
+      { label: 'Option 1 — Fallout', description: 'Send to Technology instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Contain the Damage', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'leaked_report',
+    name: 'Leaked Report',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'governance',
+    value: 2,
+    flavorText: 'Secrets rarely stay secret.',
+    options: [
+      { label: 'Option 1 — Exposed', description: 'Send to Governance instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Spin It', description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  // — Economy hazards —
+
+  {
+    id: 'market_crash',
+    name: 'Market Crash',
+    type: 'event', subtype: 'hazard', category: 'economy', value: 3,
+    flavorText: 'Confidence evaporates. Overnight, everything is worth less.',
+    options: [
+      { label: 'Option 1 — Freefall', description: 'Send to Economy instability.', effect: 'discard_self' },
+      { label: 'Option 2 — State Intervention', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'trade_war',
+    name: 'Trade War',
+    type: 'event', subtype: 'hazard', category: 'economy', value: 2,
+    flavorText: 'Tariffs answered with tariffs. No one wins.',
+    options: [
+      { label: 'Option 1 — Absorb the Costs', description: 'Send to Economy instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Show of Force', description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'supply_shortage',
+    name: 'Supply Shortage',
+    type: 'event', subtype: 'hazard', category: 'economy', value: 2,
+    flavorText: 'The shelves empty before anyone sees it coming.',
+    options: [
+      { label: 'Option 1 — Accept the Scarcity', description: 'Send to Economy instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Innovate Around It', description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'technology' },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'hyperinflation',
+    name: 'Hyperinflation',
+    type: 'event', subtype: 'hazard', category: 'economy', value: 3,
+    flavorText: 'When money loses meaning, so does everything built on it.',
+    options: [
+      { label: 'Option 1 — Collapse', description: 'Send to Economy instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Austerity Measures', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  // — Culture hazards —
+
+  {
+    id: 'cultural_suppression',
+    name: 'Cultural Suppression',
+    type: 'event', subtype: 'hazard', category: 'culture', value: 2,
+    flavorText: 'What cannot be expressed festers into resentment.',
+    options: [
+      { label: 'Option 1 — Silence Prevails', description: 'Send to Culture instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Reform from Above', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  {
+    id: 'generational_divide',
+    name: 'Generational Divide',
+    type: 'event', subtype: 'hazard', category: 'culture', value: 2,
+    flavorText: 'The old and the young no longer speak the same language.',
+    options: [
+      { label: 'Option 1 — Let It Fracture', description: 'Send to Culture instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Shared Story', description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  {
+    id: 'loss_of_faith',
+    name: 'Loss of Faith',
+    type: 'event', subtype: 'hazard', category: 'culture', value: 2,
+    flavorText: 'When belief collapses, the structures built on it follow.',
+    options: [
+      { label: 'Option 1 — Drift', description: 'Send to Culture instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Cultural Renewal', description: 'Remove 1 Culture resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'culture' },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  {
+    id: 'brain_drain',
+    name: 'Brain Drain',
+    type: 'event', subtype: 'hazard', category: 'culture', value: 2,
+    flavorText: 'The best leave for somewhere they are valued.',
+    options: [
+      { label: 'Option 1 — Accept the Loss', description: 'Send to Culture instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Incentivize Return', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  // — Military hazards —
+
+  {
+    id: 'mutiny',
+    name: 'Mutiny',
+    type: 'event', subtype: 'hazard', category: 'military', value: 3,
+    flavorText: 'When those who carry arms turn them inward.',
+    options: [
+      { label: 'Option 1 — Lose Control', description: 'Send to Military instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Restore Order', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+
+  {
+    id: 'desertion',
+    name: 'Desertion',
+    type: 'event', subtype: 'hazard', category: 'military', value: 2,
+    flavorText: 'Soldiers vote with their feet.',
+    options: [
+      { label: 'Option 1 — Suffer the Losses', description: 'Send to Military instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Pay for Loyalty', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+
+  {
+    id: 'border_skirmish',
+    name: 'Border Skirmish',
+    type: 'event', subtype: 'hazard', category: 'military', value: 2,
+    flavorText: 'A small conflict that threatens to become something larger.',
+    options: [
+      { label: 'Option 1 — Absorb the Blow', description: 'Send to Military instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Show of Strength', description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+
+  {
+    id: 'arms_shortage',
+    name: 'Arms Shortage',
+    type: 'event', subtype: 'hazard', category: 'military', value: 2,
+    flavorText: 'A force without equipment is no force at all.',
+    options: [
+      { label: 'Option 1 — Go Without', description: 'Send to Military instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Emergency Procurement', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+
+  // — Technology hazards —
+
+  {
+    id: 'remote_attack',
+    name: 'Remote Attack',
+    type: 'event', subtype: 'hazard', category: 'technology', value: 2,
+    flavorText: 'The enemy strikes without a face or a border.',
+    options: [
+      { label: 'Option 1 — Absorb the Breach', description: 'Send to Technology instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Counter Response', description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'military' },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'failed_experiment',
+    name: 'Failed Experiment',
+    type: 'event', subtype: 'hazard', category: 'technology', value: 2,
+    flavorText: 'Not all progress goes forward.',
+    options: [
+      { label: 'Option 1 — Write It Off', description: 'Send to Technology instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Redirect Funding', description: 'Remove 1 Economy resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'economy' },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'obsolescence',
+    name: 'Obsolescence',
+    type: 'event', subtype: 'hazard', category: 'technology', value: 2,
+    flavorText: 'What led yesterday falls behind today.',
+    options: [
+      { label: 'Option 1 — Fall Behind', description: 'Send to Technology instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Reinvest', description: 'Remove 1 Technology resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'technology' },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'record_breach',
+    name: 'Record Breach',
+    type: 'event', subtype: 'hazard', category: 'technology', value: 2,
+    flavorText: 'Private knowledge made public. Trust, once broken, is slow to rebuild.',
+    options: [
+      { label: 'Option 1 — Exposed', description: 'Send to Technology instability.', effect: 'discard_self' },
+      { label: 'Option 2 — Contain the Fallout', description: 'Remove 1 Governance resource from your stack and shuffle it into the draw deck. Shuffle this card into the deck.', effect: 'remove_stack_card_then_shuffle_self', sourceCategory: 'governance' },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'misinformation',
+    name: 'Misinformation',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 2,
+    flavorText: 'Truth becomes a matter of who controls the signal.',
+    options: [
+      {
+        label: 'Option 1 — False Narrative Spreads',
+        description: 'Place this card in Culture Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'culture',
+      },
+      {
+        label: 'Option 2 — Platform Accountability',
+        description: 'Remove the oldest Technology resource → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  {
+    id: 'surveillance_state',
+    name: 'Surveillance State',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 3,
+    flavorText: 'Safety was the promise. Control is the result.',
+    options: [
+      {
+        label: 'Option 1 — Normalized Control',
+        description: 'Place this card in Economy Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'economy',
+      },
+      {
+        label: 'Option 2 — Oversight Commission',
+        description: 'Remove 1 Economy AND 1 Technology resource → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'economy',
+        sourceCategory2: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'cyber_warfare',
+    name: 'Cyber Warfare',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 3,
+    flavorText: 'The battlefield has no geography. The damage is invisible until it is not.',
+    options: [
+      {
+        label: 'Option 1 — Defenseless',
+        description: 'Place this card in Technology Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'technology',
+      },
+      {
+        label: 'Option 2 — Cyber Defense Operation',
+        description: 'Remove 1 Military AND 1 Technology resource → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'military',
+        sourceCategory2: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'technological_collapse',
+    name: 'Technological Collapse',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 4,
+    flavorText: 'When infrastructure fails, everything built on top of it fails with it.',
+    options: [
+      {
+        label: 'Option 1 — System Failure',
+        description: 'Place this card in Technology Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'technology',
+      },
+      {
+        label: 'Option 2 — Emergency Restoration',
+        description: 'Remove 1 Technology, 1 Economy, AND 1 Governance resource → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_three_stack_cards_then_bottom',
+        sourceCategory1: 'technology',
+        sourceCategory2: 'economy',
+        sourceCategory3: 'governance',
+      },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'misinformation',
+    name: 'Misinformation',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 2,
+    flavorText: 'Truth becomes a matter of who controls the signal.',
+    options: [
+      {
+        label: 'Option 1 — False Narrative Spreads',
+        description: 'Place this card in Culture Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'culture',
+      },
+      {
+        label: 'Option 2 — Platform Accountability',
+        description: 'Remove the oldest Technology resource → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  {
+    id: 'surveillance_state',
+    name: 'Surveillance State',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 3,
+    flavorText: 'Safety was the promise. Control is the result.',
+    options: [
+      {
+        label: 'Option 1 — Normalized Control',
+        description: 'Place this card in Economy Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'economy',
+      },
+      {
+        label: 'Option 2 — Oversight Commission',
+        description: 'Remove 1 Economy AND 1 Technology resource → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'economy',
+        sourceCategory2: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'cyber_warfare',
+    name: 'Cyber Warfare',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 3,
+    flavorText: 'The battlefield has no geography. The damage is invisible until it is not.',
+    options: [
+      {
+        label: 'Option 1 — Defenseless',
+        description: 'Place this card in Technology Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'technology',
+      },
+      {
+        label: 'Option 2 — Cyber Defense Operation',
+        description: 'Remove 1 Military AND 1 Technology resource → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'military',
+        sourceCategory2: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'technological_collapse',
+    name: 'Technological Collapse',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 4,
+    flavorText: 'When infrastructure fails, everything built on top of it fails with it.',
+    options: [
+      {
+        label: 'Option 1 — System Failure',
+        description: 'Place this card in Technology Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'technology',
+      },
+      {
+        label: 'Option 2 — Emergency Restoration',
+        description: 'Remove 1 Technology, 1 Economy, AND 1 Governance resource → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_three_stack_cards_then_bottom',
+        sourceCategory1: 'technology',
+        sourceCategory2: 'economy',
+        sourceCategory3: 'governance',
+      },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MUST-PLAY EVENT CARDS — resolve immediately when drawn
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  {
+    id: 'indecisiveness',
+    name: 'Indecisiveness',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 1,
+    mustPlayWhenDrawn: true,
+    flavorText: 'A civilization paralyzed by its own choices.',
+    options: [
+      {
+        label: 'Option 1 — Analysis Paralysis',
+        description: 'If you have more than 5 cards in hand (including this one), choose 1 to discard. Indecisiveness shuffles into the deck.',
+        effect: 'discard_from_hand_modal',
+        count: 1,
+        condition: { handMoreThan: 5 },
+      },
+      {
+        label: 'Option 2 — Draw from Doubt',
+        description: 'If you have 5 or fewer cards in hand (including this one), draw 2 cards. Indecisiveness shuffles into the deck.',
+        effect: 'draw_if_hand_small',
+        condition: { handLessThan: 6 },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
   // ═══════════════════════════════════════════════════════════════════════════
   // MUST-PLAY EVENT CARDS — resolve immediately when drawn
   // ═══════════════════════════════════════════════════════════════════════════
@@ -3042,7 +5422,7 @@ const CARDS = [
   {
     id: 'consolidation',
     name: 'Consolidation',
-    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
     flavorText: 'Strength comes from focus, not breadth.',
     options: [
       {
@@ -3056,13 +5436,13 @@ const CARDS = [
         effect: 'remove_two_instability_modal',
       },
     ],
-    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }, { target: 'governance_instability', label: 'Governance Instability' }],
   },
 
   {
     id: 'structural_consolidation',
     name: 'Structural Consolidation',
-    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
     flavorText: 'True reform costs something. The question is what you are willing to pay.',
     options: [
       {
@@ -3082,7 +5462,7 @@ const CARDS = [
   {
     id: 'managed_decline',
     name: 'Managed Decline',
-    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
     flavorText: 'Not every battle can be won. Choose where to concede and where to hold.',
     options: [
       {
@@ -3102,27 +5482,27 @@ const CARDS = [
   {
     id: 'rationalization',
     name: 'Rationalization',
-    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
     flavorText: 'What cannot be justified cannot be sustained.',
     options: [
       {
-        label: 'Option 1 — Draw Down',
-        description: 'Draw 2 cards. Discard this card.',
-        effect: 'draw_if_hand_small',
+        label: 'Option 1 — Strip to Core',
+        description: 'Choose a stack with 2+ resources. Remove all resources except the oldest → bottom of deck. Remove all instabilities from that category except one → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'strip_stack_to_oldest_and_instab',
       },
       {
-        label: 'Option 2 — Trim the Worst',
-        description: 'Take the lowest-value instability card from any category and shuffle it into the deck. Discard this card.',
-        effect: 'remove_lowest_instability_modal', selfDiscardFlow: true,
+        label: 'Option 2 — Aggressive Cuts',
+        description: 'Choose any stack — remove up to 3 oldest resources → bottom of deck. Choose any instability pile — remove up to 2 oldest cards → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_three_from_stack_remove_two_instab',
       },
     ],
-    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }, { target: 'governance_instability', label: 'Governance Instability' }],
   },
 
   {
     id: 'austerity',
     name: 'Austerity',
-    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
     flavorText: 'Short-term pain for long-term stability.',
     options: [
       {
@@ -3142,7 +5522,7 @@ const CARDS = [
   {
     id: 'preparedness',
     name: 'Preparedness',
-    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
     flavorText: 'The time to repair the roof is when the sun is shining.',
     options: [
       {
@@ -3165,7 +5545,7 @@ const CARDS = [
   {
     id: 'crisis_protocol',
     name: 'Crisis Protocol',
-    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
     flavorText: 'When the system breaks, the response must be immediate.',
     options: [
       {
@@ -3179,13 +5559,13 @@ const CARDS = [
         effect: 'remove_two_instability_modal',
       },
     ],
-    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }, { target: 'governance_instability', label: 'Governance Instability' }],
   },
 
   {
     id: 'grand_strategy',
     name: 'Grand Strategy',
-    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
     flavorText: 'Tactics win battles. Strategy wins civilizations.',
     options: [
       {
@@ -3205,7 +5585,7 @@ const CARDS = [
   {
     id: 'redundancy_systems',
     name: 'Redundancy Systems',
-    type: 'event', subtype: 'utility', category: 'governance', value: 0,
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
     flavorText: 'A civilization without backups is one crisis from collapse.',
     options: [
       {
@@ -3236,6 +5616,211 @@ const CARDS = [
       {
         label: 'Option 2 — Strategic Investment',
         description: 'Remove the oldest Governance resource from your stack and shuffle it into the deck. Stack +2 on Economy or Military.',
+        effect: 'pay_own_stack_then_stack_on_any', ownCategory: 'governance', choices: ['economy', 'military'],
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // ─── Management Philosophy — Governance Utility Cards ──────────────────────
+
+  {
+    id: 'consolidation',
+    name: 'Consolidation',
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
+    flavorText: 'Strength comes from focus, not breadth.',
+    options: [
+      {
+        label: 'Option 1 — Full Consolidation',
+        description: 'Choose a category. Remove the oldest 2 instability cards from that pile and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_instability_modal', maxRemove: 2, selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Broad Consolidation',
+        description: 'Remove the oldest instability card from each of 2 different categories and shuffle them into the deck.',
+        effect: 'remove_two_instability_modal',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }, { target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'structural_consolidation',
+    name: 'Structural Consolidation',
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
+    flavorText: 'True reform costs something. The question is what you are willing to pay.',
+    options: [
+      {
+        label: 'Option 1 — Resource Investment',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'governance', maxRemove: 2, selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Redistribution',
+        description: 'Move the oldest instability card from one category to another. Shuffle this card into the deck.',
+        effect: 'move_instability_modal', selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'managed_decline',
+    name: 'Managed Decline',
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
+    flavorText: 'Not every battle can be won. Choose where to concede and where to hold.',
+    options: [
+      {
+        label: 'Option 1 — Strategic Sacrifice',
+        description: 'Discard 2 cards from your hand. Shuffle this card into the deck.',
+        effect: 'discard_from_hand_modal', count: 2,
+      },
+      {
+        label: 'Option 2 — Focused Relief',
+        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Take the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'governance', maxRemove: 1, selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'rationalization',
+    name: 'Rationalization',
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
+    flavorText: 'What cannot be justified cannot be sustained.',
+    options: [
+      {
+        label: 'Option 1 — Strip to Core',
+        description: 'Choose a stack with 2+ resources. Remove all resources except the oldest → bottom of deck. Remove all instabilities from that category except one → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'strip_stack_to_oldest_and_instab',
+      },
+      {
+        label: 'Option 2 — Aggressive Cuts',
+        description: 'Choose any stack — remove up to 3 oldest resources → bottom of deck. Choose any instability pile — remove up to 2 oldest cards → bottom of deck. Place this card at the bottom of the deck.',
+        effect: 'remove_three_from_stack_remove_two_instab',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }, { target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'austerity',
+    name: 'Austerity',
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
+    flavorText: 'Short-term pain for long-term stability.',
+    options: [
+      {
+        label: 'Option 1 — Fiscal Cuts',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the deck. Remove the oldest 3 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'economy', maxRemove: 3, selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Administrative Cuts',
+        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'governance', maxRemove: 2, selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'preparedness',
+    name: 'Preparedness',
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
+    flavorText: 'The time to repair the roof is when the sun is shining.',
+    options: [
+      {
+        label: 'Option 1 — Full Survey',
+        description: 'Draw 2 cards. Send this card to Governance or Culture instability.',
+        effect: 'draw_if_hand_small',
+      },
+      {
+        label: 'Option 2 — Quick Assessment',
+        description: 'Draw 1 card. Shuffle this card into the deck.',
+        effect: 'draw_and_shuffle_self',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  {
+    id: 'crisis_protocol',
+    name: 'Crisis Protocol',
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
+    flavorText: 'When the system breaks, the response must be immediate.',
+    options: [
+      {
+        label: 'Option 1 — Emergency Response',
+        description: 'Take the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
+        effect: 'remove_instability_modal', maxRemove: 1, selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Rapid Deployment',
+        description: 'Take the oldest instability from each of 2 different categories and shuffle them into the deck.',
+        effect: 'remove_two_instability_modal',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'grand_strategy',
+    name: 'Grand Strategy',
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
+    flavorText: 'Tactics win battles. Strategy wins civilizations.',
+    options: [
+      {
+        label: 'Option 1 — Long View',
+        description: 'Draw 2 cards. Shuffle this card into the deck.',
+        effect: 'draw_if_hand_small',
+      },
+      {
+        label: 'Option 2 — Resource Allocation',
+        description: 'Remove the oldest Military resource from your stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'military', maxRemove: 2, selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'redundancy_systems',
+    name: 'Redundancy Systems',
+    type: 'event', subtype: 'utility', category: 'governance', value: 1,
+    flavorText: 'A civilization without backups is one crisis from collapse.',
+    options: [
+      {
+        label: 'Option 1 — Build Redundancy',
+        description: 'Discard 1 card from your hand. Shuffle this card into the deck.',
+        effect: 'discard_from_hand_modal', count: 1,
+      },
+      {
+        label: 'Option 2 — Failsafe',
+        description: 'Remove the oldest Technology resource from your stack and shuffle it into the deck. Take the oldest 2 instability from any category and shuffle them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'technology', maxRemove: 2, selfDiscardFlow: true,
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'adaptive_management',
+    name: 'Adaptive Management',
+    type: 'event', subtype: 'utility', category: 'governance', value: 2,
+    flavorText: 'The strongest civilizations are those that learn while moving.',
+    options: [
+      {
+        label: 'Option 1 — Adaptive Response',
+        description: 'Take the oldest instability from any category and shuffle it into the deck. Shuffle this card into the deck.',
+        effect: 'remove_instability_modal', maxRemove: 1, selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Strategic Investment',
+        description: 'Take the oldest resource from your Governance stack and shuffle it into the deck. Stack +2 on Economy or Military.',
         effect: 'pay_own_stack_then_stack_on_any', ownCategory: 'governance', choices: ['economy', 'military'],
       },
     ],
@@ -3385,6 +5970,37 @@ const CARDS = [
   },
 
   {
+    id: 'sanctions',
+    name: 'Sanctions',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 1,
+    flavorText: 'Power does not always wear armor.',
+    options: [
+      {
+        label: 'Option 1 — Economic Pressure',
+        description: 'Remove the oldest Governance resource from your stack. Discard 1 card from your hand. Place this card on your Economy stack (+1).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Cultural Leverage',
+        description: 'Remove the oldest Culture instability. Discard 1 card from your hand. Place this card on your Economy stack (+1).',
+        effect: 'remove_instability_then_discard_hand_then_stack',
+        instabilityCategory: 'culture',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+  },
+
+  {
     id: 'cultural_exchange',
     name: 'Cultural Exchange',
     type: 'event',
@@ -3469,7 +6085,7 @@ const CARDS = [
     type: 'event',
     subtype: 'utility',
     category: 'military',
-    value: 0,
+    value: 1,
     flavorText: 'What is laid down cannot be turned against you.',
     options: [
       {
@@ -3621,6 +6237,163 @@ const CARDS = [
   },
 
   {
+    id: 'disarmament',
+    name: 'Disarmament',
+    type: 'event',
+    subtype: 'utility',
+    category: 'military',
+    value: 1,
+    flavorText: 'What is laid down cannot be turned against you.',
+    options: [
+      {
+        label: 'Option 1 — Demilitarize',
+        description: 'Remove the oldest Governance resource from your stack. Remove up to 3 Military resources from your stack, shuffling them into the deck. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_n_from_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'military',
+        removeCount: 3,
+        selfDiscardFlow: true,
+      },
+      {
+        label: 'Option 2 — Convert Assets',
+        description: 'Remove the oldest Military resource from your stack. Stack this card as a +1 bonus on Technology.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'military',
+        targetCategory: 'technology',
+        bonusValue: 1,
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+  },
+
+  {
+    id: 'social_upheaval',
+    name: 'Social Upheaval',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 1,
+    flavorText: 'When the people move, institutions shake.',
+    options: [
+      {
+        label: 'Option 1 — Weather the Storm',
+        description: 'Discard 3 cards from your hand. Shuffle this card into the deck.',
+        effect: 'discard_from_hand_then_shuffle_self',
+        count: 3,
+      },
+      {
+        label: 'Option 2 — Concede Ground',
+        description: 'Remove the oldest Culture resource from your stack. Send this card to Governance or Culture instability.',
+        effect: 'remove_stack_card_then_discard_self',
+        sourceCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  {
+    id: 'destabilization',
+    name: 'Destabilization',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 3,
+    flavorText: 'Force projected outward reshapes the world within.',
+    options: [
+      {
+        label: 'Option 1 — Undermine',
+        description: 'Pay 1 Military resource. Place this card in any Culture instability stack on the board (−3 to Culture).',
+        effect: 'remove_stack_card_then_place_in_instability',
+        sourceCategory: 'military',
+        targetInstability: 'culture',
+      },
+      {
+        label: 'Option 2 — Convert Resources',
+        description: 'Pay 1 Governance resource. Stack this card as a +3 bonus on Culture.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'governance',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+  },
+
+  {
+    id: 'direct_attack',
+    name: 'Direct Attack',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 3,
+    flavorText: 'Strike precisely. Strike decisively.',
+    options: [
+      {
+        label: 'Option 1 — Seize Governance',
+        description: 'Remove the oldest Military resource from your stack. Remove the oldest Military resource (or your active Military identity if stack is empty). Place this card on your Governance stack (+3).',
+        effect: 'remove_stack_card_then_remove_or_identity_then_stack',
+        sourceCategory: 'military',
+        removeCategory: 'military',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Military Supremacy',
+        description: 'Remove 1 Military resource. Remove 1 Governance resource (or your active Governance identity if none remain). Place this card on your Military stack (+3).',
+        effect: 'remove_stack_card_then_remove_or_identity_then_stack',
+        sourceCategory: 'military',
+        removeCategory: 'governance',
+        targetCategory: 'military',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+  },
+
+  {
+    id: 'arms_package',
+    name: 'Arms Package',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 2,
+    flavorText: 'Weapons are just another form of trade.',
+    options: [
+      {
+        label: 'Option 1 — Government Contract',
+        description: 'Remove 1 Governance resource. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Cultural Goodwill',
+        description: 'Remove 1 Culture instability. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        effect: 'remove_instability_then_discard_hand_then_stack',
+        instabilityCategory: 'culture',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+  },
+
+  {
     id: 'census',
     name: 'Census',
     type: 'event',
@@ -3645,6 +6418,553 @@ const CARDS = [
     discardTo: [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+  },
+
+  // ─── Labor & Population ───────────────────────────────────────────────────
+
+  {
+    id: 'labor_shortage',
+    name: 'Labor Shortage',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 2,
+    flavorText: 'Empty factories, idle fields, unfilled ranks.',
+    options: [
+      {
+        label: 'Option 1 — Workforce Investment',
+        description: 'Remove 1 resource from your Economy stack → place this card at the bottom of the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Accept the Shortage',
+        description: 'Place this card in Economy Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'population_decline',
+    name: 'Population Decline',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'A civilization that cannot sustain itself cannot endure.',
+    options: [
+      {
+        label: 'Option 1 — Emergency Response',
+        description: 'Remove 1 resource from your Economy stack AND 1 from your Culture stack → place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'economy',
+        sourceCategory2: 'culture',
+      },
+      {
+        label: 'Option 2 — Demographic Crisis',
+        description: 'Place this card in Economy Instability or Culture Instability (your choice).',
+        effect: 'discard_self',
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  {
+    id: 'immigration',
+    name: 'Immigration',
+    type: 'event',
+    subtype: null,
+    category: null,
+    value: 2,
+    flavorText: 'Every wave of new arrivals reshapes what a civilization becomes.',
+    options: [
+      {
+        label: 'Option 1 — Economic Integration',
+        description: 'Place this card on your Economy stack.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Cultural Integration',
+        description: 'Place this card on your Culture stack. Discard 1 card from hand.',
+        effect: 'stack_on_category_then_discard_hand',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  // ─── Crime arc ────────────────────────────────────────────────────────────
+
+  {
+    id: 'crime',
+    name: 'Crime',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 2,
+    flavorText: 'Where laws are weak, the criminal thrives.',
+    options: [
+      {
+        label: 'Option 1 — Law Enforcement',
+        description: 'Remove 1 resource from your Governance stack → place this card at the bottom of the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Accept the Loss',
+        description: 'Place this card in Economy or Military Instability (your choice).',
+        effect: 'discard_self',
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+  },
+
+  {
+    id: 'criminal_conspiracy',
+    name: 'Criminal Conspiracy',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'Corruption spreads like roots — unseen until the tree falls.',
+    options: [
+      {
+        label: 'Option 1 — Coordinated Crackdown',
+        description: 'Remove 1 resource from your Governance stack AND 1 from your Military stack → place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'governance',
+        sourceCategory2: 'military',
+      },
+      {
+        label: 'Option 2 — Systemic Corruption',
+        description: 'Discard 1 card from hand. Place this card in Military Instability.',
+        effect: 'discard_hand_then_self',
+        afterInstability: 'military',
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'organized_crime',
+    name: 'Organized Crime',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 4,
+    flavorText: 'It does not hide in the shadows. It operates in plain sight.',
+    options: [
+      {
+        label: 'Option 1 — Full Suppression',
+        description: 'Remove 1 Governance, 1 Military, AND 1 Economy resource → place this card at the bottom of the deck.',
+        effect: 'remove_three_stack_cards_then_bottom',
+        sourceCategory1: 'governance',
+        sourceCategory2: 'military',
+        sourceCategory3: 'economy',
+        condition: { card_not_in_instability: { id: 'criminal_conspiracy' } },
+      },
+      {
+        label: 'Option 1 — Full Suppression (Entrenched)',
+        description: 'Criminal networks run deep. Remove 1 Governance, 1 Military, 1 Economy, AND 1 Technology resource → place this card at the bottom of the deck.',
+        effect: 'remove_four_stack_cards_then_bottom',
+        sourceCategory1: 'governance',
+        sourceCategory2: 'military',
+        sourceCategory3: 'economy',
+        sourceCategory4: 'technology',
+        condition: { card_in_instability: { id: 'criminal_conspiracy' } },
+      },
+      {
+        label: 'Option 2 — Criminal State',
+        description: 'Discard 2 cards from hand. Place this card in Economy or Culture Instability (your choice).',
+        effect: 'discard_from_hand_modal',
+        count: 2,
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  // ─── Crime arc ────────────────────────────────────────────────────────────
+
+  {
+    id: 'crime',
+    name: 'Crime',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 2,
+    flavorText: 'Where laws are weak, the criminal thrives.',
+    options: [
+      {
+        label: 'Option 1 — Law Enforcement',
+        description: 'Remove 1 resource from your Governance stack → place this card at the bottom of the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Accept the Loss',
+        description: 'Place this card in Economy or Governance Instability (your choice).',
+        effect: 'discard_self',
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'governance_instability', label: 'Governance Instability' },
+    ],
+  },
+
+  {
+    id: 'criminal_conspiracy',
+    name: 'Criminal Conspiracy',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'Corruption spreads like roots — unseen until the tree falls.',
+    options: [
+      {
+        label: 'Option 1 — Coordinated Crackdown',
+        description: 'Remove 1 resource from your Governance stack AND 1 from your Military stack → place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'governance',
+        sourceCategory2: 'military',
+      },
+      {
+        label: 'Option 2 — Systemic Corruption',
+        description: 'Discard 1 card from hand. Place this card in Governance Instability.',
+        effect: 'discard_hand_then_self',
+        afterInstability: 'governance',
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'organized_crime',
+    name: 'Organized Crime',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 4,
+    flavorText: 'It does not hide in the shadows. It operates in plain sight.',
+    options: [
+      {
+        label: 'Option 1 — Full Suppression',
+        description: 'Remove 1 resource from your Governance stack, 1 from your Military stack, AND 1 from your Economy stack → place this card at the bottom of the deck.',
+        effect: 'remove_three_stack_cards_then_bottom',
+        sourceCategory1: 'governance',
+        sourceCategory2: 'military',
+        sourceCategory3: 'economy',
+      },
+      {
+        label: 'Option 2 — Criminal State',
+        description: 'Discard 2 cards from hand. Place this card in Governance Instability.',
+        effect: 'discard_from_hand_modal',
+        count: 2,
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'restitution',
+    name: 'Restitution',
+    type: 'event',
+    subtype: null,
+    category: null,
+    value: 1,
+    flavorText: 'Accountability begins where power admits its cost.',
+    options: [
+      {
+        label: 'Option 1 — Full Restitution',
+        description: 'Remove any two of your resources. Remove any one of your instabilities. Shuffle this card into the deck.',
+        effect: 'remove_two_resources_remove_instability_shuffle_self',
+      },
+      {
+        label: 'Option 2 — Partial Restitution',
+        description: 'Remove any one of your resources. Remove any one of your instabilities. Discard this card.',
+        effect: 'remove_one_resource_remove_instability_discard_self',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'technology_instability', label: 'Technology Instability' },
+      { target: 'environment_instability', label: 'Environment Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+  },
+
+  // ─── Labor & Population ───────────────────────────────────────────────────
+
+  {
+    id: 'labor_shortage',
+    name: 'Labor Shortage',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 2,
+    flavorText: 'Empty factories, idle fields, unfilled ranks.',
+    options: [
+      {
+        label: 'Option 1 — Workforce Investment',
+        description: 'Remove 1 resource from your Economy stack → place this card at the bottom of the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Accept the Shortage',
+        description: 'Place this card in Economy Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'population_decline',
+    name: 'Population Decline',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'A civilization that cannot sustain itself cannot endure.',
+    options: [
+      {
+        label: 'Option 1 — Emergency Response',
+        description: 'Remove 1 resource from your Economy stack AND 1 from your Culture stack → place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'economy',
+        sourceCategory2: 'culture',
+      },
+      {
+        label: 'Option 2 — Demographic Crisis',
+        description: 'Place this card in Economy Instability or Culture Instability (your choice).',
+        effect: 'discard_self',
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  {
+    id: 'immigration',
+    name: 'Immigration',
+    type: 'event',
+    subtype: null,
+    category: null,
+    value: 2,
+    flavorText: 'Every wave of new arrivals reshapes what a civilization becomes.',
+    options: [
+      {
+        label: 'Option 1 — Economic Integration',
+        description: 'Place this card on your Economy stack.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Cultural Integration',
+        description: 'Place this card on your Culture stack. Discard 1 card from hand.',
+        effect: 'stack_on_category_then_discard_hand',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  // ─── Late-game hazards ────────────────────────────────────────────────────
+
+  {
+    id: 'insider_trading',
+    name: 'Insider Trading',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'When the market is a game, only the house wins.',
+    options: [
+      {
+        label: 'Option 1 — Regulatory Crackdown',
+        description: 'Requires all 6 identities to be active. Remove ALL resources from your Economy stack → deck. Shuffle this card into the deck.',
+        effect: 'remove_all_from_stack_shuffle_self',
+        targetCategory: 'economy',
+        condition: { allIdentitiesActive: true },
+      },
+      {
+        label: 'Option 2 — Systemic Rot',
+        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Economy Instability.',
+        effect: 'remove_one_from_each_stack',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'state_capture',
+    name: 'State Capture',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'The state does not fall — it is simply redirected.',
+    options: [
+      {
+        label: 'Option 1 — Anti-Corruption Drive',
+        description: 'Requires all 6 identities to be active. Remove ALL resources from your Governance stack → deck. Shuffle this card into the deck.',
+        effect: 'remove_all_from_stack_shuffle_self',
+        targetCategory: 'governance',
+        condition: { allIdentitiesActive: true },
+      },
+      {
+        label: 'Option 2 — Institutional Capture',
+        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Governance Instability.',
+        effect: 'remove_one_from_each_stack',
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'cultural_purge',
+    name: 'Cultural Purge',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'History is rewritten by those who control the present.',
+    options: [
+      {
+        label: 'Option 1 — Cultural Revival',
+        description: 'Requires all 6 identities to be active. Remove ALL resources from your Culture stack → deck. Shuffle this card into the deck.',
+        effect: 'remove_all_from_stack_shuffle_self',
+        targetCategory: 'culture',
+        condition: { allIdentitiesActive: true },
+      },
+      {
+        label: 'Option 2 — Systematic Erasure',
+        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Culture Instability.',
+        effect: 'remove_one_from_each_stack',
+      },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  {
+    id: 'treason',
+    name: 'Treason',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'Loyalty is the first casualty of a failing state.',
+    options: [
+      {
+        label: 'Option 1 — Military Tribunal',
+        description: 'Requires all 6 identities to be active. Remove ALL resources from your Military stack → deck. Shuffle this card into the deck.',
+        effect: 'remove_all_from_stack_shuffle_self',
+        targetCategory: 'military',
+        condition: { allIdentitiesActive: true },
+      },
+      {
+        label: 'Option 2 — Fractured Command',
+        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Military Instability.',
+        effect: 'remove_one_from_each_stack',
+      },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+
+  {
+    id: 'pollution',
+    name: 'Pollution',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'What we dump into the ground, we drink tomorrow.',
+    options: [
+      {
+        label: 'Option 1 — Environmental Remediation',
+        description: 'Requires all 6 identities to be active. Remove ALL resources from your Environment stack → deck. Shuffle this card into the deck.',
+        effect: 'remove_all_from_stack_shuffle_self',
+        targetCategory: 'environment',
+        condition: { allIdentitiesActive: true },
+      },
+      {
+        label: 'Option 2 — Contained Damage',
+        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Environment Instability.',
+        effect: 'remove_one_from_each_stack',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'pollution',
+    name: 'Pollution',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 3,
+    flavorText: 'The cost of growth, deferred to those who cannot pay it.',
+    options: [
+      {
+        label: 'Option 1 — Clean Up',
+        description: 'Requires all 6 identities to be active. Remove ALL resources from your Environment stack → deck. Shuffle this card into the deck.',
+        effect: 'remove_all_from_stack_shuffle_self',
+        targetCategory: 'environment',
+        condition: { allIdentitiesActive: true },
+      },
+      {
+        label: 'Option 2 — Industrial Externality',
+        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Environment Instability.',
+        effect: 'remove_one_from_each_stack',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
+  {
+    id: 'sabotage',
+    name: 'Sabotage',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 1,
+    flavorText: 'No civilization is safe from within.',
+    options: [
+      {
+        label: 'Option 1 — Target Technology',
+        description: 'Requires all 6 identities to be active. Remove ALL resources from your Technology stack → deck. Shuffle this card into the deck.',
+        effect: 'remove_all_from_stack_shuffle_self',
+        targetCategory: 'technology',
+        condition: { allIdentitiesActive: true },
+      },
+      {
+        label: 'Option 2 — Broad Sabotage',
+        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Technology Instability.',
+        effect: 'remove_one_from_each_stack',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
     ],
   },
 ];
@@ -3674,19 +6994,19 @@ const STARTER_DECK = [
   'the_great_north', 'the_highlands', 'the_waterlands', 'the_union', 'the_union', 'oceana',
   'the_fertile_plains', 'the_fertile_plains', 'the_desert_wastes', 'the_river_delta',
   // Stacking events
-  'efficient_administration', 'tax_collection', 'tax_collection', 'tax_increase', 'tax_increase', 'tax_decrease', 'tax_decrease',
+  'efficient_administration', 'tax_collection', 'tax_collection', 'tax_increase', 'tax_increase', 'tax_decrease', 'tax_decrease', 'tax_increase', 'tax_increase', 'tax_decrease', 'tax_decrease',
   'cultural_festival', 'military_campaign',
   'scientific_breakthrough',
-  'abundant_harvest', 'abundant_harvest', 'abundant_harvest', 'abundant_harvest', 'abundant_harvest', 'abundant_harvest',
+  'abundant_harvest', 'abundant_harvest', 'abundant_harvest', 'abundant_harvest',
   'inspiring_speech', 'inspiring_speech',
-  'activists', 'activists', 'unions', 'unions', 'loyalists', 'loyalists',
+  'activists', 'activists', 'unions', 'unions', 'loyalists', 'loyalists', 'loyalists', 'loyalists',
   'public_works', 'civic_charter',
   'trade_routes', 'market_expansion',
   'artistic_movement', 'folk_songs',
   'war_council', 'border_fortification',
   'research_grants', 'cartography',
-  'river_network', 'river_network', 'river_network', 'river_network',
-  'land_survey', 'land_survey', 'land_survey', 'land_survey',
+  'river_network', 'river_network', 'river_network',
+  'land_survey', 'land_survey', 'land_survey',
   'trade_delegation',
   // Resource-focused stacking
   'civic_assembly', 'civic_assembly', 'public_decree', 'public_decree',
@@ -3694,7 +7014,9 @@ const STARTER_DECK = [
   'oral_history', 'oral_history',
   'battle_hardened', 'battle_hardened',
   'invention_workshop', 'invention_workshop', 'applied_science', 'applied_science',
-  'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra',
+  'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra',
+  'dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
+  'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
   'dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
   'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
   // Must-play events (4)
@@ -3703,22 +7025,60 @@ const STARTER_DECK = [
   'worker_strike', 'worker_strike',
   'political_assassination',
   'flood', 'flood',
-  'corruption', 'corruption', 'epidemic', 'drought', 'rebellion', 'coup_attempt',
-  'earthquake', 'tornado', 'harsh_winter', 'scorched_summer',
+  'corruption', 'corruption', 'epidemic', 'drought', 'rebellion', 'coup_attempt', 'coup_attempt',
+  'earthquake', 'tornado', 'harsh_winter', 'scorched_summer', 'forest_fire', 'forest_fire', 'environmental_collapse', 'forest_fire', 'forest_fire', 'environmental_collapse', 'harsh_winter', 'scorched_summer',
   'political_strife', 'crime_wave', 'public_backlash', 'leaked_report',
   'recession', 'national_debt', 'market_crash', 'trade_war', 'supply_shortage', 'hyperinflation',
   'youthful_dissent', 'cultural_suppression', 'generational_divide', 'loss_of_faith', 'brain_drain',
   'stalled_research', 'adverse_side_effects', 'remote_attack', 'failed_experiment', 'obsolescence', 'record_breach',
-  'mutiny', 'desertion', 'border_skirmish', 'arms_shortage',
+  'misinformation', 'misinformation', 'surveillance_state', 'cyber_warfare', 'technological_collapse',
+  'misinformation', 'misinformation', 'surveillance_state', 'cyber_warfare', 'technological_collapse',
+  'mutiny', 'mutiny', 'desertion', 'desertion', 'border_skirmish', 'border_skirmish', 'arms_shortage',
   // Utility events
   'revisionist_history', 'revisionist_history',
   'contingency_planning',
   'occupation', 'incursion', 'sanctions', 'military_exercise', 'cultural_exchange',
   'peace_treaty', 'diplomatic_mission', 'census',
+  'disarmament', 'destabilization',
+  'direct_attack', 'direct_attack', 'arms_package', 'arms_package',
+  // Crime arc
+  'crime', 'crime', 'crime',
+  'criminal_conspiracy', 'criminal_conspiracy',
+  'organized_crime',
+  // Crime arc
+  'crime', 'crime', 'crime',
+  'criminal_conspiracy', 'criminal_conspiracy',
+  'organized_crime',
+  // Labor & population hazards
+  'labor_shortage', 'labor_shortage',
+  'population_decline',
+  'immigration', 'immigration',
+  // Labor & population hazards
+  'labor_shortage', 'labor_shortage',
+  'population_decline',
+  'immigration', 'immigration',
+  // Hazard events (new)
+  'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval',
+  'sabotage', 'sabotage',
+  'insider_trading',
+  'state_capture',
+  'cultural_purge',
+  'treason',
+  'toxic_spill', 'toxic_spill',
+  'sabotage', 'sabotage',
+  'insider_trading',
+  'state_capture',
+  'cultural_purge',
+  'treason',
+  'pollution', 'toxic_spill', 'social_upheaval', 'social_upheaval', 'social_upheaval',
   'disarmament', 'destabilization', 'destabilization',
   'direct_attack', 'direct_attack', 'arms_package', 'arms_package',
   // Hazard events (new)
   'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval',
+  // Utility events (new)
+  'restitution', 'restitution',
+  // Utility events (new)
+  'restitution', 'restitution',
   // Management philosophy
   'consolidation', 'structural_consolidation', 'managed_decline', 'rationalization',
   'austerity', 'preparedness', 'crisis_protocol', 'grand_strategy',
