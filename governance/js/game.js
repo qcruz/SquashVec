@@ -3257,6 +3257,12 @@ function setAutoSpeed(ms) {
   }
 }
 
+function setAutoMode(mode) {
+  AUTO.mode = mode;
+  document.getElementById('auto-mode-random').classList.toggle('active', mode === 'random');
+  document.getElementById('auto-mode-maximize').classList.toggle('active', mode === 'maximize');
+}
+
 function resetAutoStats() {
   AUTO.stats = { random: blankModeStat(), maximize: blankModeStat() };
   updateAutoStatsDisplay();
