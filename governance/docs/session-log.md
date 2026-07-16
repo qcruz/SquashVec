@@ -58,9 +58,6 @@
 **Card arc multiplier mechanic:**
 - Card arcs are multipliers, not dependencies. Criminal Conspiracy in instability escalates Organized Crime's mitigation cost (3 resources → 4 resources), checked via new `card_in_instability` condition in `checkCondition`.
 
-**WIN_SCORE changed 20 → 16:**
-- Lengthens games; creates more meaningful late-game tension. Autoplay random avg turns improved from ~45 to ~60.
-
 **Autoplay improvements:**
 - Added **Maximize mode** — picks the card+option with highest estimated score delta instead of random choice
 - Added **per-mode stats** — wins/losses tracked separately for Random and Maximize modes

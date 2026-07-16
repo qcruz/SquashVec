@@ -312,6 +312,6 @@
 | Technological Collapse | Hazard | +4 | Technology instability, must-play |
 
 ### WIN/LOSE Thresholds
-- **Win:** Any category reaches **16** points
+- **Win:** Any category reaches **20** points
 - **Lose:** Any category falls to **0** points
 - BASE_SCORE = 10

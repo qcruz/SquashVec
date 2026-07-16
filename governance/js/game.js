@@ -3,7 +3,7 @@
 
 const CATEGORIES = ['governance', 'economy', 'culture', 'military', 'technology', 'environment'];
 const BASE_SCORE = 10;
-const WIN_SCORE = 16;
+const WIN_SCORE = 20;
 const LOSE_SCORE = 0;
 const HAND_SIZE = 5;
 

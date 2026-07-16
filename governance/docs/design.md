@@ -13,7 +13,7 @@
 Games progress through three phases:
 - **Early Game:** Establish active cards in each category.
 - **Mid Game:** Manage instability while upgrading institutions.
-- **Late Game:** Push one or more categories toward 16 while preventing collapse.
+- **Late Game:** Push one or more categories toward 20 while preventing collapse.
 
 ---
 
@@ -21,7 +21,7 @@ Games progress through three phases:
 
 Each player begins with **10 points** in every category.
 
-- **Win:** Any category reaches **16 points**.
+- **Win:** Any category reaches **20 points**.
 - **Lose:** Any category falls to **0 points**.
 
 Multiple categories can win or lose simultaneously.
