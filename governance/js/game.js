@@ -521,70 +521,6 @@ function resolveEventCard(card, opt) {
       render(); showTakeResourceModal(card, srcCats); return;
     }
 
-    case 'remove_two_military_then_discard_three_hand': {
-      if (G.categories.military.stack.length < 2) {
-        addLog(`${card.name}: Need 2 Military resources — cannot play.`);
-        applyCardSelfDiscard(card); break;
-      }
-      G.pendingAction = { type: 'military_exercise_cost', card, sourceCategory: 'military', costRemaining: 2, afterEffect: 'discard_three' };
-      render(); showRemoveStackModal(card, 'military', null); return;
-    }
-
-    case 'remove_two_military_then_draw_two': {
-      if (G.categories.military.stack.length < 2) {
-        addLog(`${card.name}: Need 2 Military resources — cannot play.`);
-        applyCardSelfDiscard(card); break;
-      }
-      G.pendingAction = { type: 'military_exercise_cost', card, sourceCategory: 'military', costRemaining: 2, afterEffect: 'draw_two' };
-      render(); showRemoveStackModal(card, 'military', null); return;
-    }
-
-    case 'remove_military_then_discard_hand_self_discard': {
-      if (!G.categories.military.stack.length) {
-        addLog(`${card.name}: No Military resources to pay cost.`);
-        applyCardSelfDiscard(card);
-        break;
-      }
-      G.pendingAction = { type: 'remove_stack_then_hand_discard', card, sourceCategory: 'military' };
-      render(); showRemoveStackModal(card, 'military', null); return;
-    }
-
-    case 'discard_hand_then_self': {
-      const afterInstab = opt.afterInstability || null;
-      if (!G.hand.length) {
-        addLog(`${card.name}: No cards in hand to discard — skipping.`);
-        if (afterInstab) {
-          G.categories[afterInstab].instability.push(card);
-          addLog(`${card.name} → ${cap(afterInstab)} instability.`);
-          afterCardResolved();
-        } else {
-          applyCardSelfDiscard(card);
-          afterCardResolved();
-        }
-        break;
-      }
-      G.pendingAction = { type: 'discard_hand_cards', card, remaining: 1, afterInstability: afterInstab };
-      render(); showDiscardHandModal(card, 1); return;
-    }
-
-    case 'take_resource_to_economy': {
-      const srcCats = opt.sourceCategories || ['technology', 'economy'];
-      const afterEffect = opt.afterEffect;
-      if (afterEffect === 'remove_military_discard_self' && !G.categories.military.stack.length) {
-        addLog(`${card.name}: No Military resources to pay cost.`);
-        applyCardSelfDiscard(card);
-        break;
-      }
-      const hasResources = srcCats.some(cat => G.categories[cat].stack.length > 0);
-      if (!hasResources) {
-        addLog(`${card.name}: No resources available to take — skipping.`);
-        resolveAfterTake(card, afterEffect);
-        return;
-      }
-      G.pendingAction = { type: 'take_resource_to_economy', card, sourceCategories: srcCats, afterEffect };
-      render(); showTakeResourceModal(card, srcCats); return;
-    }
-
     case 'suppress_hazard': {
       const marker = makeMarker(`${card.name} Suppressed`, opt.altValue || 1);
       G.categories[opt.altInstability].instability.push(marker);
@@ -624,34 +560,6 @@ function resolveEventCard(card, opt) {
     case 'remove_newest_resource_then_remove_newest_instability':
       G.pendingAction = { type: 'rmr_instab__res_src', card };
       render(); showRmrInstabResSrcModal(card); return;
-
-    case 'move_newest_resource_to_sparse_stack':
-      G.pendingAction = { type: 'move_resource_pick_source', card };
-      render(); showMoveResourceSrcModal(card); return;
-
-    case 'move_newest_resource_any':
-      G.pendingAction = { type: 'move_newest_res_any_src', card };
-      render(); showMoveNewestResSrcModal(card); return;
-
-    case 'move_newest_instability_any':
-      G.pendingAction = { type: 'move_newest_instab_src', card };
-      render(); showMoveNewestInstabSrcModal(card); return;
-
-    case 'move_newest_resource_then_move_newest_instability':
-      G.pendingAction = { type: 'mvr_instab__res_src', card };
-      render(); showMvrInstabResSrcModal(card); return;
-
-    case 'remove_newest_resource_then_remove_newest_instability':
-      G.pendingAction = { type: 'rmr_instab__res_src', card };
-      render(); showRmrInstabResSrcModal(card); return;
-
-    case 'remove_lowest_instability_modal':
-      G.pendingAction = { type: 'remove_lowest_instability', card, selfDiscardFlow: !!opt.selfDiscardFlow };
-      render(); showRemoveLowestInstabilityModal(card); return;
-
-    case 'move_instability_modal':
-      G.pendingAction = { type: 'move_instability_src', card, selfDiscardFlow: !!opt.selfDiscardFlow };
-      render(); showMoveInstabilitySrcModal(card); return;
 
     case 'remove_two_instability_modal':
       G.pendingAction = { type: 'remove_two_instability', card, picked: [] };
@@ -738,59 +646,6 @@ function resolveEventCard(card, opt) {
       render(); showRemoveStackModal(card, srcCat, null); return;
     }
 
-    case 'remove_stack_card_then_shuffle_self': {
-      const srcCat = opt.sourceCategory;
-      const stack = G.categories[srcCat].stack;
-      if (!stack.length) {
-        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to remove.`);
-        applyCardSelfDiscard(card);
-        break;
-      }
-      G.pendingAction = { type: 'remove_stack_shuffle_self', card, sourceCategory: srcCat, targetCategory: null };
-      render(); showRemoveStackModal(card, srcCat, null); return;
-    }
-
-    case 'remove_stack_card_then_remove_instability': {
-      const srcCat = opt.sourceCategory;
-      const stack = G.categories[srcCat].stack;
-      if (!stack.length) {
-        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to pay the cost — cannot play.`);
-        applyCardSelfDiscard(card);
-        break;
-      }
-      G.pendingAction = { type: 'remove_stack_then_instability', card, sourceCategory: srcCat, maxRemove: opt.maxRemove || 1, selfDiscardFlow: !!opt.selfDiscardFlow };
-      render(); showRemoveStackModal(card, srcCat, null); return;
-    }
-
-    case 'discard_self':
-      applyCardSelfDiscard(card);
-      break;
-
-    case 'remove_stack_card_then_discard_self': {
-      const srcCat = opt.sourceCategory;
-      const stack = G.categories[srcCat].stack;
-      if (!stack.length) {
-        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to remove.`);
-        applyCardSelfDiscard(card);
-        break;
-      }
-      G.pendingAction = { type: 'remove_stack_place_self', card, sourceCategory: srcCat, targetCategory: null };
-      render(); showRemoveStackModal(card, srcCat, null); return;
-    }
-
-    case 'remove_stack_card_and_optionally_place_self': {
-      const srcCat = opt.sourceCategory;
-      const tgtCat = opt.targetCategory;
-      const stack = G.categories[srcCat].stack;
-      if (!stack.length) {
-        addLog(`${card.name}: No cards in ${cap(srcCat)} stack to remove.`);
-        applyCardSelfDiscard(card);
-        break;
-      }
-      G.pendingAction = { type: 'remove_stack_place_self', card, sourceCategory: srcCat, targetCategory: tgtCat };
-      render(); showRemoveStackModal(card, srcCat, tgtCat); return;
-    }
-
     case 'draw_if_hand_small': {
       const condMet = opt.condition ? checkCondition(opt.condition) : true;
       if (condMet) {
@@ -811,41 +666,6 @@ function resolveEventCard(card, opt) {
       }
       G.pendingAction = { type: 'remove_stack_then_remove_or_identity_stack', card, sourceCategory: srcCat, removeCategory: opt.removeCategory, targetCategory: opt.targetCategory };
       render(); showRemoveStackModal(card, srcCat, null); return;
-    }
-
-    case 'remove_stack_card_then_remove_or_identity_then_stack': {
-      const srcCat = opt.sourceCategory;
-      if (!G.categories[srcCat].stack.length) {
-        addLog(`${card.name}: No ${cap(srcCat)} resources to pay cost.`);
-        applyCardSelfDiscard(card); break;
-      }
-      G.pendingAction = { type: 'remove_stack_then_remove_or_identity_stack', card, sourceCategory: srcCat, removeCategory: opt.removeCategory, targetCategory: opt.targetCategory };
-      render(); showRemoveStackModal(card, srcCat, null); return;
-    }
-
-    case 'remove_stack_card_then_discard_hand_then_stack': {
-      const srcCat = opt.sourceCategory;
-      const tgtCat = opt.targetCategory;
-      if (!G.categories[srcCat].stack.length) {
-        addLog(`${card.name}: No ${cap(srcCat)} resources to pay cost.`);
-        applyCardSelfDiscard(card); break;
-      }
-      G.pendingAction = { type: 'remove_stack_discard_hand_stack', card, sourceCategory: srcCat, targetCategory: tgtCat };
-      render(); showRemoveStackModal(card, srcCat, null); return;
-    }
-
-    case 'remove_instability_then_discard_hand_then_stack': {
-      const filterCat = opt.instabilityCategory || null;
-      const tgtCat = opt.targetCategory;
-      const cats = filterCat
-        ? [filterCat].filter(c => G.categories[c]?.instability.length > 0)
-        : CATEGORIES.filter(c => G.categories[c].instability.length > 0);
-      if (!cats.length) {
-        addLog(`${card.name}: No ${filterCat ? cap(filterCat) + ' ' : ''}instability to remove.`);
-        applyCardSelfDiscard(card); break;
-      }
-      G.pendingAction = { type: 'remove_instability', card, maxRemove: 1, selfDiscardFlow: false, afterStackOn: tgtCat, filter: filterCat };
-      render(); showInstabilityModal(card, 1, filterCat); return;
     }
 
     case 'remove_stack_card_then_discard_hand_then_stack': {
@@ -951,24 +771,6 @@ function resolveEventCard(card, opt) {
       break;
     }
 
-    case 'remove_all_from_stack_place_in_instability': {
-      const tgtCat = opt.targetCategory;
-      const tgtInstab = opt.targetInstability;
-      const stack = G.categories[tgtCat].stack;
-      const count = stack.length;
-      if (count > 0) {
-        stack.forEach(c => G.deck.push(c));
-        G.categories[tgtCat].stack = [];
-        addLog(`${card.name}: All ${count} ${cap(tgtCat)} resource(s) cleared → placed at bottom of deck.`);
-      } else {
-        addLog(`${card.name}: ${cap(tgtCat)} stack already empty — no effect.`);
-      }
-      G.categories[tgtInstab].instability.push(card);
-      addLog(`${card.name} placed in ${cap(tgtInstab)} Instability.`);
-      afterCardResolved();
-      break;
-    }
-
     case 'remove_one_from_each_stack': {
       let removed = 0;
       CATEGORIES.forEach(cat => {
@@ -1012,32 +814,6 @@ function resolveEventCard(card, opt) {
       break;
     }
 
-    case 'remove_four_stack_cards_then_bottom': {
-      const cats = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3, opt.sourceCategory4];
-      cats.forEach(cat => {
-        const r = G.categories[cat].stack.splice(0, 1)[0];
-        G.deck.push(r);
-        addLog(`${r.name} removed from ${cap(cat)} stack → bottom of deck.`);
-      });
-      G.deck.push(card);
-      addLog(`${card.name} placed at bottom of deck.`);
-      afterCardResolved();
-      break;
-    }
-
-    case 'remove_three_stack_cards_then_bottom': {
-      const cats = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3];
-      cats.forEach(cat => {
-        const r = G.categories[cat].stack.splice(0, 1)[0];
-        G.deck.push(r);
-        addLog(`${r.name} removed from ${cap(cat)} stack → bottom of deck.`);
-      });
-      G.deck.push(card);
-      addLog(`${card.name} placed at bottom of deck.`);
-      afterCardResolved();
-      break;
-    }
-
     case 'remove_two_stack_cards_then_bottom': {
       const cat1 = opt.sourceCategory1;
       const cat2 = opt.sourceCategory2;
@@ -1065,134 +841,6 @@ function resolveEventCard(card, opt) {
       }
       G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, alreadyPlaced: true };
       render(); showDiscardHandModal(card, count); return;
-    }
-
-    case 'remove_two_stack_cards_then_bottom': {
-      const cat1 = opt.sourceCategory1;
-      const cat2 = opt.sourceCategory2;
-      const r1 = G.categories[cat1].stack.splice(0, 1)[0];
-      G.deck.push(r1);
-      addLog(`${r1.name} removed from ${cap(cat1)} stack → bottom of deck.`);
-      const r2 = G.categories[cat2].stack.splice(0, 1)[0];
-      G.deck.push(r2);
-      addLog(`${r2.name} removed from ${cap(cat2)} stack → bottom of deck.`);
-      G.deck.push(card);
-      addLog(`${card.name} placed at bottom of deck.`);
-      afterCardResolved();
-      break;
-    }
-
-    case 'stack_on_category_then_discard_hand': {
-      const tgtCat = opt.targetCategory;
-      const stackCard = { ...card, instanceId: Math.random() };
-      G.categories[tgtCat].stack.push(stackCard);
-      addLog(`${card.name} (+${card.value}) stacked on ${cap(tgtCat)}.`);
-      const count = Math.min(1, G.hand.length);
-      if (count <= 0) {
-        addLog(`${card.name}: No cards in hand to discard — skipping.`);
-        afterCardResolved(); return;
-      }
-      G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, alreadyPlaced: true };
-      render(); showDiscardHandModal(card, count); return;
-    }
-
-    case 'remove_two_resources_remove_instability_shuffle_self': {
-      G.pendingAction = { type: 'restitution_pick_resource', card, remaining: 2, afterShuffle: true };
-      render(); showPickAnyResourceModal(card, 2); return;
-    }
-
-    case 'remove_one_resource_remove_instability_discard_self': {
-      G.pendingAction = { type: 'restitution_pick_resource', card, remaining: 1, afterShuffle: false };
-      render(); showPickAnyResourceModal(card, 1); return;
-    }
-
-    case 'remove_two_newest_resources_remove_instability': {
-      G.pendingAction = { type: 'managed_pick_newest_res', card, remaining: 2 };
-      render(); showPickNewestResourceModal(card, 2); return;
-    }
-
-    case 'remove_all_oldest_then_remove_two_instability': {
-      CATEGORIES.forEach(cat => {
-        const stack = G.categories[cat].stack;
-        if (stack.length > 0) {
-          const c = stack.splice(0, 1)[0];
-          G.deck.push(c);
-          addLog(`${c.name} removed from ${cap(cat)} stack (oldest) → bottom of deck.`);
-        }
-      });
-      G.pendingAction = { type: 'managed_pick_instab', card, remaining: 2 };
-      render(); showManagedInstabModal(card, 2); return;
-    }
-
-    case 'strip_stack_to_oldest_and_instab': {
-      G.pendingAction = { type: 'rationalize_strip_pick', card };
-      render(); showStripStackModal(card); return;
-    }
-
-    case 'remove_three_from_stack_remove_two_instab': {
-      G.pendingAction = { type: 'rationalize_res_pick', card };
-      render(); showRationalizeResModal(card); return;
-    }
-
-    case 'remove_one_from_each_stack_and_each_instab': {
-      CATEGORIES.forEach(cat => {
-        const stack = G.categories[cat].stack;
-        if (stack.length > 0) {
-          const c = stack.splice(0, 1)[0];
-          G.deck.push(c);
-          addLog(`${c.name} removed from ${cap(cat)} stack → bottom of deck.`);
-        }
-        const pile = G.categories[cat].instability;
-        if (pile.length > 0) {
-          const c = pile.shift();
-          G.deck.push(c);
-          addLog(`${c.name} removed from ${cat} instability → bottom of deck.`);
-        }
-      });
-      G.pendingAction = null;
-      G.deck.push(card);
-      addLog(`${card.name} placed at bottom of deck.`);
-      afterCardResolved();
-      break;
-    }
-
-    case 'remove_three_resources_clear_one_pile': {
-      G.pendingAction = { type: 'austerity_pick_res', card, remaining: 3 };
-      render(); showAusterityResModal(card, 3); return;
-    }
-
-    case 'remove_all_from_stack_shuffle_self': {
-      const tgtCat = opt.targetCategory;
-      const stack = G.categories[tgtCat].stack;
-      const count = stack.length;
-      if (count > 0) {
-        stack.forEach(c => G.deck.push(c));
-        G.categories[tgtCat].stack = [];
-        addLog(`${card.name}: All ${count} ${cap(tgtCat)} resource(s) cleared → placed at bottom of deck.`);
-      } else {
-        addLog(`${card.name}: ${cap(tgtCat)} stack already empty — no effect.`);
-      }
-      G.deck.push(card); shuffle(G.deck);
-      addLog(`${card.name} shuffled into deck.`);
-      afterCardResolved();
-      break;
-    }
-
-    case 'remove_one_from_each_stack': {
-      let removed = 0;
-      CATEGORIES.forEach(cat => {
-        const stack = G.categories[cat].stack;
-        if (stack.length > 0) {
-          const c = stack.splice(0, 1)[0];
-          G.deck.push(c);
-          removed++;
-          addLog(`${c.name} removed from ${cap(cat)} stack → deck.`);
-        }
-      });
-      if (removed === 0) addLog(`${card.name}: No resources on any stack — no effect.`);
-      applyCardSelfDiscard(card);
-      afterCardResolved();
-      break;
     }
 
     case 'remove_two_resources_remove_instability_shuffle_self': {
@@ -1942,55 +1590,27 @@ function resolveRemoveStackCard(idx) {
     }
     G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
     render(); showDiscardHandModal(card, count); return;
-  } else if (type === 'remove_stack_then_hand_discard') {
-    const count = Math.min(1, G.hand.length);
-    if (count <= 0) {
-      G.pendingAction = null;
-      addLog(`${card.name}: No cards in hand to discard — skipping.`);
-      applyCardSelfDiscard(card);
-      afterCardResolved();
-      return;
-    }
-    G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
-    render(); showDiscardHandModal(card, count); return;
   } else if (type === 'military_exercise_cost') {
     const costRemaining = G.pendingAction.costRemaining - 1;
     if (costRemaining > 0) {
       G.pendingAction = { ...G.pendingAction, costRemaining };
       render(); showRemoveStackModal(card, 'military', null); return;
     }
-    const { afterEffect } = G.pendingAction;
+    // Cost paid — apply afterEffect
+    const afterEffect = G.pendingAction.afterEffect;
     G.pendingAction = null;
-    if (afterEffect === 'discard_three') {
-      const count = Math.min(3, G.hand.length);
-      if (count <= 0) { applyCardSelfDiscard(card); afterCardResolved(); return; }
-      G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
-      render(); showDiscardHandModal(card, count); return;
-    } else if (afterEffect === 'draw_two') {
+    if (afterEffect === 'draw_two') {
       drawCard(); drawCard();
       addLog(`${card.name}: Drew 2 cards.`);
-      applyCardSelfDiscard(card); afterCardResolved();
-    }
-    return;
-  } else if (type === 'military_exercise_cost') {
-    const costRemaining = G.pendingAction.costRemaining - 1;
-    if (costRemaining > 0) {
-      G.pendingAction = { ...G.pendingAction, costRemaining };
-      render(); showRemoveStackModal(card, 'military', null); return;
-    }
-    const { afterEffect } = G.pendingAction;
-    G.pendingAction = null;
-    if (afterEffect === 'discard_three') {
+    } else if (afterEffect === 'discard_three') {
       const count = Math.min(3, G.hand.length);
-      if (count <= 0) { applyCardSelfDiscard(card); afterCardResolved(); return; }
-      G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
-      render(); showDiscardHandModal(card, count); return;
-    } else if (afterEffect === 'draw_two') {
-      drawCard(); drawCard();
-      addLog(`${card.name}: Drew 2 cards.`);
-      applyCardSelfDiscard(card); afterCardResolved();
+      if (count > 0) {
+        G.pendingAction = { type: 'discard_hand_cards', card, remaining: count };
+        render(); showDiscardHandModal(card, count); return;
+      }
     }
-    return;
+    applyCardSelfDiscard(card);
+    afterCardResolved(); return;
   } else if (type === 'replace_with_stack_cost') {
     const costRemaining = G.pendingAction.costRemaining - 1;
     if (costRemaining > 0) {
@@ -2020,27 +1640,6 @@ function resolveRemoveStackCard(idx) {
     G.categories[targetCategory].stack.push(card);
     addLog(`${card.name} (+${card.value}) placed on ${cap(targetCategory)} stack.`);
     afterCardResolved();
-  } else if (type === 'remove_stack_then_remove_or_identity_stack') {
-    const { removeCategory, targetCategory } = G.pendingAction;
-    G.pendingAction = null;
-    const removeStack = G.categories[removeCategory].stack;
-    if (removeStack.length > 0) {
-      const removed2 = removeStack.splice(0, 1)[0];
-      G.deck.push(removed2); shuffle(G.deck);
-      addLog(`${removed2.name} removed from ${cap(removeCategory)} stack → deck.`);
-    } else {
-      const identity = G.categories[removeCategory].active;
-      if (identity) {
-        G.categories[removeCategory].active = null;
-        G.categories[removeCategory].instability.push(identity);
-        addLog(`${identity.name} (active ${cap(removeCategory)} identity) removed → ${cap(removeCategory)} instability.`);
-      } else {
-        addLog(`${card.name}: No ${cap(removeCategory)} resources or identity to remove.`);
-      }
-    }
-    G.categories[targetCategory].stack.push(card);
-    addLog(`${card.name} (+${card.value}) placed on ${cap(targetCategory)} stack.`);
-    afterCardResolved();
   } else if (type === 'remove_stack_discard_hand_stack') {
     const count = Math.min(1, G.hand.length);
     if (!count) {
@@ -2061,34 +1660,6 @@ function resolveRemoveStackCard(idx) {
     }
     G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, afterStackOn: targetCategory };
     render(); showDiscardHandModal(card, count); return;
-  } else if (type === 'remove_stack_place_on_category') {
-    const tgtCat = G.pendingAction.targetCategory;
-    const val = G.pendingAction.bonusValue !== undefined ? G.pendingAction.bonusValue : card.value;
-    const stackedCard = val !== card.value ? { ...card, value: val } : card;
-    G.pendingAction = null;
-    G.categories[tgtCat].stack.push(stackedCard);
-    addLog(`${card.name} (+${val}) placed on ${cap(tgtCat)} stack.`);
-    afterCardResolved();
-  } else if (type === 'remove_stack_then_remove_target_stack') {
-    const { targetCategory: tgtCat, removeCount, selfDiscardFlow } = G.pendingAction;
-    const tgtStack = G.categories[tgtCat].stack;
-    const toRemove = Math.min(removeCount, tgtStack.length);
-    if (toRemove > 0) {
-      const removed2 = tgtStack.splice(0, toRemove);
-      removed2.forEach(c => { G.deck.push(c); });
-      addLog(`${removed2.map(c => c.name).join(', ')} removed from ${cap(tgtCat)} stack → bottom of deck.`);
-    } else {
-      addLog(`${card.name}: No ${cap(tgtCat)} resources to remove.`);
-    }
-    G.pendingAction = null;
-    if (selfDiscardFlow) { applyCardSelfDiscard(card); } else { G.deck.push(card); shuffle(G.deck); }
-    afterCardResolved();
-  } else if (type === 'remove_stack_place_in_instability') {
-    const tgtInstab = G.pendingAction.targetInstability;
-    G.pendingAction = null;
-    G.categories[tgtInstab].instability.push(card);
-    addLog(`${card.name} → ${cap(tgtInstab)} instability (−${card.value}).`);
-    afterCardResolved();
   } else if (type === 'remove_stack_place_on_category') {
     const tgtCat = G.pendingAction.targetCategory;
     const val = G.pendingAction.bonusValue !== undefined ? G.pendingAction.bonusValue : card.value;
@@ -2663,24 +2234,10 @@ function canPlayOption(card, opt) {
       _cats4.forEach(c => _req4[c] = (_req4[c] || 0) + 1);
       return Object.entries(_req4).every(([c, n]) => G.categories[c].stack.length >= n);
     }
-    case 'remove_four_stack_cards_then_bottom': {
-      // Count how many times each category is referenced; require that many cards in the stack
-      const _cats4 = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3, opt.sourceCategory4];
-      const _req4 = {};
-      _cats4.forEach(c => _req4[c] = (_req4[c] || 0) + 1);
-      return Object.entries(_req4).every(([c, n]) => G.categories[c].stack.length >= n);
-    }
     case 'remove_three_stack_cards_then_bottom':
       return G.categories[opt.sourceCategory1].stack.length >= 1 &&
              G.categories[opt.sourceCategory2].stack.length >= 1 &&
              G.categories[opt.sourceCategory3].stack.length >= 1;
-    case 'remove_three_stack_cards_then_bottom':
-      return G.categories[opt.sourceCategory1].stack.length >= 1 &&
-             G.categories[opt.sourceCategory2].stack.length >= 1 &&
-             G.categories[opt.sourceCategory3].stack.length >= 1;
-    case 'remove_two_stack_cards_then_bottom':
-      return G.categories[opt.sourceCategory1].stack.length >= 1 &&
-             G.categories[opt.sourceCategory2].stack.length >= 1;
     case 'remove_two_stack_cards_then_bottom':
       return G.categories[opt.sourceCategory1].stack.length >= 1 &&
              G.categories[opt.sourceCategory2].stack.length >= 1;
@@ -2713,25 +2270,11 @@ function canPlayOption(card, opt) {
       return G.categories.military.stack.length >= 1;
     case 'discard_hand_then_self':
       return true;
-    case 'remove_two_military_then_discard_three_hand':
-    case 'remove_two_military_then_draw_two':
-      return G.categories.military.stack.length >= 2;
-    case 'remove_military_then_discard_hand_self_discard':
-      return G.categories.military.stack.length >= 1;
-    case 'discard_hand_then_self':
-      return true;
     case 'move_newest_resource_to_sparse_stack': {
       const sparseTargets = CATEGORIES.filter(c => G.categories[c].stack.length === 1);
       const validSources = CATEGORIES.filter(c => G.categories[c].stack.length >= 1 && sparseTargets.some(t => t !== c));
       return validSources.length > 0;
     }
-    case 'move_newest_resource_any':
-      return CATEGORIES.some(c => G.categories[c].stack.length >= 1);
-    case 'move_newest_instability_any':
-      return CATEGORIES.some(c => G.categories[c].instability.length >= 1);
-    case 'move_newest_resource_then_move_newest_instability':
-    case 'remove_newest_resource_then_remove_newest_instability':
-      return CATEGORIES.some(c => G.categories[c].stack.length >= 1);
     case 'move_newest_resource_any':
       return CATEGORIES.some(c => G.categories[c].stack.length >= 1);
     case 'move_newest_instability_any':
@@ -2745,10 +2288,6 @@ function canPlayOption(card, opt) {
     case 'strip_stack_to_oldest_and_instab':
       return CATEGORIES.some(c => G.categories[c].stack.length >= 2);
     case 'remove_three_from_stack_remove_two_instab':
-      return true;
-    case 'remove_one_from_each_stack_and_each_instab':
-      return true;
-    case 'remove_three_resources_clear_one_pile':
       return true;
     case 'remove_one_from_each_stack_and_each_instab':
       return true;
@@ -2790,9 +2329,6 @@ function checkCondition(cond) {
   }
   if (cond.instabilityEmpty) {
     return G.categories[cond.instabilityEmpty].instability.length === 0;
-  }
-  if (cond.instabilityExists !== undefined) {
-    return G.categories[cond.instabilityExists].instability.length > 0;
   }
   if (cond.instabilityExists !== undefined) {
     return G.categories[cond.instabilityExists].instability.length > 0;
@@ -3413,6 +2949,121 @@ function updateAutoStatsDisplay() {
   `;
 }
 
+function estimateOptionDelta(card, opt) {
+  const eff = opt.effect || '';
+  const val = card.value || 1;
+
+  // Stacking effects — add value to a category score
+  if (eff === 'stack_on_category' || eff === 'stack_bonus') return val;
+  if (eff === 'stack_on_any_modal' || eff === 'stack_bonus_any') return (opt.bonusValue !== undefined ? opt.bonusValue : val);
+  if (eff === 'replace_plus_stack_bonus' || eff === 'replace_plus_stack_cost' || eff === 'replace_consume_env') return val + 1;
+  if (eff === 'replace_plus_draw') return val + 0.5;
+  if (eff === 'replace_plus_remove_instability') return val + 2;
+  if (eff === 'pay_own_stack_then_stack_on_any') {
+    const ownCat = opt.ownCategory;
+    return ownCat && G.categories[ownCat].stack.length ? val : -5;
+  }
+  if (eff === 'stack_on_category_then_discard_hand') return val - 1;
+
+  // Draw effects
+  if (eff === 'draw_and_discard_self' || eff === 'draw_and_shuffle_self') return opt.drawCount || 1;
+  if (eff === 'draw_if_hand_small') return G.hand.length < 3 ? 1.5 : 0.5;
+
+  // Instability removal effects — very valuable
+  if (eff === 'remove_instability_modal') {
+    const total = CATEGORIES.reduce((n, c) => n + G.categories[c].instability.length, 0);
+    return total > 0 ? (opt.maxRemove || 1) * 2 : 0;
+  }
+  if (eff === 'remove_lowest_instability_modal') {
+    const total = CATEGORIES.reduce((n, c) => n + G.categories[c].instability.length, 0);
+    return total > 0 ? 1.5 : 0;
+  }
+  if (eff === 'remove_two_instability_modal') {
+    const total = CATEGORIES.reduce((n, c) => n + G.categories[c].instability.length, 0);
+    return Math.min(total, 2) * 2;
+  }
+  if (eff === 'move_instability_modal' || eff === 'move_newest_instability_any') {
+    const total = CATEGORIES.reduce((n, c) => n + G.categories[c].instability.length, 0);
+    return total > 0 ? 1 : 0;
+  }
+  if (eff === 'suppress_hazard') return 3;
+
+  // Resource manipulation (move/remove resources)
+  if (eff === 'move_newest_resource_to_sparse_stack' || eff === 'move_newest_resource_any') return 1;
+  if (eff === 'move_newest_resource_then_move_newest_instability') return 2;
+  if (eff === 'remove_newest_resource_then_remove_newest_instability') {
+    const totalRes = CATEGORIES.reduce((n, c) => n + G.categories[c].stack.length, 0);
+    const totalInstab = CATEGORIES.reduce((n, c) => n + G.categories[c].instability.length, 0);
+    return totalInstab > 0 ? 1 : -1;
+  }
+  if (eff === 'remove_two_resources_remove_instability_shuffle_self') return 0;
+
+  // Hazard placement into instability — penalty
+  if (eff === 'place_self_to_instability') return -val;
+
+  // Discard hand — moderate penalty
+  if (eff === 'discard_hand_then_self') return G.hand.length > 1 ? -1.5 : -3;
+  if (eff === 'discard_from_hand_modal') return -(opt.count || 1) * 1.5;
+  if (eff === 'discard_from_hand_then_shuffle_self') return -(opt.count || 1) * 1.5 + 0.5;
+
+  // Remove resources then draw — break-even ish
+  if (eff === 'remove_two_military_then_draw_two') {
+    return G.categories.military.stack.length >= 2 ? 0.5 : -5;
+  }
+  if (eff === 'remove_two_military_then_discard_three_hand') {
+    return G.categories.military.stack.length >= 2 ? -1 : -5;
+  }
+  if (eff === 'remove_military_then_discard_hand_self_discard') {
+    return G.categories.military.stack.length >= 1 ? -1.5 : -5;
+  }
+
+  // Discard self — low value but at least it's harmless
+  if (eff === 'discard_self') return 0;
+  if (eff === 'multiplayer_only') return -10;
+
+  // Remove stack cards — costly but sometimes needed (remove_stack_* effects)
+  if (eff === 'remove_stack_card_then_shuffle_self') return -1;
+  if (eff === 'remove_stack_card_then_discard_self') return -1;
+  if (eff === 'remove_stack_card_and_optionally_place_self') {
+    const tgtCat = opt.targetCategory;
+    const hasSrc = CATEGORIES.some(c => (opt.sourceCategory ? c === opt.sourceCategory : true) && G.categories[c].stack.length > 0);
+    return hasSrc ? (tgtCat ? val - 1 : -1) : -5;
+  }
+  if (eff === 'remove_stack_card_then_remove_instability') return 1;
+  if (eff === 'remove_stack_card_then_remove_or_identity_then_stack') return val - 1;
+  if (eff === 'remove_stack_card_then_discard_hand_then_stack') return val - 2;
+  if (eff === 'remove_instability_then_discard_hand_then_stack') return val;
+  if (eff === 'remove_stack_card_then_stack_on_category') return val - 1;
+  if (eff === 'remove_stack_card_then_remove_n_from_stack') return -2;
+  if (eff === 'remove_stack_card_then_place_in_instability') return -2;
+  if (eff === 'take_resource_to_economy') return 1;
+
+  // Heavy resource removal hazards
+  if (eff === 'remove_all_from_stack_shuffle_self' || eff === 'remove_all_from_stack_place_in_instability') {
+    const srcCat = opt.sourceCategory;
+    return srcCat ? -(G.categories[srcCat].stack.length * 1.5) : -3;
+  }
+  if (eff === 'remove_one_from_each_stack') return -CATEGORIES.filter(c => G.categories[c].stack.length > 0).length;
+  if (eff === 'remove_three_stack_cards_then_bottom' || eff === 'remove_four_stack_cards_then_bottom') return -3;
+  if (eff === 'remove_two_stack_cards_then_bottom') return -2;
+  if (eff === 'remove_two_newest_resources_remove_instability') return -1;
+  if (eff === 'remove_all_oldest_then_remove_two_instability') return -2;
+  if (eff === 'strip_stack_to_oldest_and_instab') return -3;
+  if (eff === 'remove_three_from_stack_remove_two_instab') return -2;
+  if (eff === 'remove_one_from_each_stack_and_each_instab') return -3;
+  if (eff === 'remove_three_resources_clear_one_pile') return -1;
+  if (eff === 'remove_three_resources_clear_one_pile') return -1;
+  if (eff === 'remove_two_resources_remove_instability_shuffle_self') return 0;
+
+  // Managed / rationalize / austerity — complex but self-shuffling
+  if (eff === 'managed') return 2;
+  if (eff === 'rationalize') return 1;
+  if (eff === 'austerity') return 2;
+
+  // Default: estimate based on card value
+  return val * 0.5;
+}
+
 function autoPlayStep() {
   if (!G || G.phase === 'won' || G.phase === 'lost') {
     const end = checkEndConditions();
@@ -3738,6 +3389,84 @@ function resolveAutoPendingAction() {
         ? eligible.reduce((a, b) => pileVal(b) > pileVal(a) ? b : a)
         : randFrom(eligible);
       resolveAusterityClearPile(bestPile);
+      break;
+    }
+    case 'move_resource_pick_source': {
+      const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
+      if (!srcs.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
+      resolveMoveResourceSrc(maximize ? highestScoreCat(srcs) : randFrom(srcs));
+      break;
+    }
+    case 'move_resource_pick_target': {
+      const { srcCat } = action;
+      const tgts = CATEGORIES.filter(c => c !== srcCat && G.categories[c].stack.length === 1);
+      if (!tgts.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
+      resolveMoveResourceTgt(maximize ? highestScoreCat(tgts) : randFrom(tgts));
+      break;
+    }
+    case 'move_newest_res_any_src': {
+      const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
+      if (!srcs.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
+      resolveMoveNewestResSrc(maximize ? highestScoreCat(srcs) : randFrom(srcs));
+      break;
+    }
+    case 'move_newest_res_any_tgt': {
+      const { srcCat } = action;
+      const tgts = CATEGORIES.filter(c => c !== srcCat);
+      if (!tgts.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
+      resolveMoveNewestResTgt(maximize ? highestScoreCat(tgts) : randFrom(tgts));
+      break;
+    }
+    case 'move_newest_instab_src': {
+      const srcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
+      if (!srcs.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
+      resolveMoveNewestInstabSrc(maximize ? mostInstabCat(srcs) : randFrom(srcs));
+      break;
+    }
+    case 'move_newest_instab_tgt': {
+      const { srcCat } = action;
+      const tgts = CATEGORIES.filter(c => c !== srcCat);
+      if (!tgts.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
+      // Dump instability into the highest-score category (most buffer to absorb it)
+      resolveMoveNewestInstabTgt(maximize ? highestScoreCat(tgts) : randFrom(tgts));
+      break;
+    }
+    case 'mvr_instab__res_src': {
+      const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
+      if (!srcs.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
+      resolveMvrInstabResSrc(maximize ? highestScoreCat(srcs) : randFrom(srcs));
+      break;
+    }
+    case 'mvr_instab__res_tgt': {
+      const { srcCat } = action;
+      const tgts = CATEGORIES.filter(c => c !== srcCat);
+      if (!tgts.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
+      resolveMvrInstabResTgt(maximize ? highestScoreCat(tgts) : randFrom(tgts));
+      break;
+    }
+    case 'mvr_instab__instab_src': {
+      const srcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
+      if (!srcs.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
+      resolveMvrInstabInstabSrc(maximize ? mostInstabCat(srcs) : randFrom(srcs));
+      break;
+    }
+    case 'mvr_instab__instab_tgt': {
+      const { instabSrcCat } = action;
+      const tgts = CATEGORIES.filter(c => c !== instabSrcCat);
+      if (!tgts.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
+      resolveMvrInstabInstabTgt(maximize ? highestScoreCat(tgts) : randFrom(tgts));
+      break;
+    }
+    case 'rmr_instab__res_src': {
+      const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
+      if (!srcs.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
+      resolveRmrInstabResSrc(maximize ? highestScoreCat(srcs) : randFrom(srcs));
+      break;
+    }
+    case 'rmr_instab__instab_src': {
+      const srcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
+      if (!srcs.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
+      resolveRmrInstabInstabSrc(maximize ? lowestScoreCat(srcs) : randFrom(srcs));
       break;
     }
     default: {
