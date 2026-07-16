@@ -50,6 +50,7 @@ Player chooses a category; takes oldest N instability cards from that pile → d
 - `maxRemove?: number` — how many to remove (default 1)
 - `targetCategory?: string` — restrict to a single category pile
 - `selfDiscardFlow?: boolean` — if true, uses card's `discardTo` after resolution
+- `afterShuffle?: boolean` — if true, shuffles this card into the deck after resolution (overrides selfDiscardFlow)
 
 **`remove_lowest_instability_modal`**
 Player chooses a category; takes the **lowest-value** instability card from that pile → deck.
@@ -219,6 +220,19 @@ Remove all resources from a specified stack → deck. Place this card in the spe
 - `targetInstability: string` — instability destination
 - *Used by: Environmental Collapse Opt 2*
 
+**`remove_stack_card_then_remove_crime_instability`**
+Take the oldest resource from `sourceCategory` stack → deck. Remove all Crime-arc instability cards (crime, criminal_conspiracy, organized_crime) from all category piles → deck. Place this card in Governance instability.
+- `sourceCategory: string`
+- `condition?: object` — typically `active_identity_is` to gate the cheaper Dictatorship version
+- *Requires: `G.categories[sourceCategory].stack.length >= 1`*
+- *Used by: Martial Law Opt 1*
+
+**`remove_multi_stack_then_remove_crime_instability`**
+Take the oldest resource from each listed stack → deck (list may repeat a category to require multiple). Remove all Crime-arc instability from all piles → deck. Place this card in Governance instability.
+- `stacks: string[]` — array of category names (repeats allowed); e.g. `['military', 'governance', 'governance']`
+- *Requires: each category appears enough times for its stack to have that many cards*
+- *Used by: Martial Law Opt 2*
+
 ---
 
 ### Military-Specific Costs
@@ -330,6 +344,12 @@ condition: {
 condition: {
   type: 'card_in_instability',  // a specific card ID is in any instability pile
   cardId: 'criminal_conspiracy',
+}
+// or
+condition: {
+  card_in_stack: { id: 'alliance' }
+  // returns true if any category's event stack contains a card with that id
+  // optional: add category: 'governance' to restrict to one stack
 }
 ```
 

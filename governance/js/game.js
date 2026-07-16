@@ -399,6 +399,23 @@ function resolveDiscardReplaced(target) {
 
 // ─── Event Card Resolution ────────────────────────────────────────────────────
 
+function removeCrimeInstability(cardName) {
+  const crimeIds = ['crime', 'criminal_conspiracy', 'organized_crime'];
+  let count = 0;
+  CATEGORIES.forEach(cat => {
+    const pile = G.categories[cat].instability;
+    for (let i = pile.length - 1; i >= 0; i--) {
+      if (crimeIds.includes(pile[i].id)) {
+        const removed = pile.splice(i, 1)[0];
+        G.deck.push(removed);
+        addLog(`${removed.name} removed from ${cap(cat)} instability → deck.`);
+        count++;
+      }
+    }
+  });
+  if (!count) addLog(`${cardName}: No Crime instability found.`);
+}
+
 function resolveEventCard(card, opt) {
   addLog(`Event: ${card.name}`);
 
@@ -513,7 +530,7 @@ function resolveEventCard(card, opt) {
     }
 
     case 'remove_instability_modal':
-      G.pendingAction = { type: 'remove_instability', card, maxRemove: opt.maxRemove || 1, filter: opt.targetCategory || null, selfDiscardFlow: !!opt.selfDiscardFlow };
+      G.pendingAction = { type: 'remove_instability', card, maxRemove: opt.maxRemove || 1, filter: opt.targetCategory || null, selfDiscardFlow: !!opt.selfDiscardFlow, afterShuffle: !!opt.afterShuffle };
       render(); showInstabilityModal(card, opt.maxRemove || 1, opt.targetCategory || null); return;
 
     case 'remove_lowest_instability_modal':
@@ -880,6 +897,40 @@ function resolveEventCard(card, opt) {
     case 'remove_three_resources_clear_one_pile': {
       G.pendingAction = { type: 'austerity_pick_res', card, remaining: 3 };
       render(); showAusterityResModal(card, 3); return;
+    }
+
+    case 'remove_stack_card_then_remove_crime_instability': {
+      const srcCat = opt.sourceCategory;
+      const srcStack = G.categories[srcCat].stack;
+      if (!srcStack.length) {
+        addLog(`${card.name}: No ${cap(srcCat)} resources to pay cost.`);
+        applyCardSelfDiscard(card); break;
+      }
+      const r = srcStack.splice(0, 1)[0];
+      G.deck.push(r);
+      addLog(`${r.name} removed from ${cap(srcCat)} stack → deck.`);
+      removeCrimeInstability(card.name);
+      G.categories.governance.instability.push(card);
+      addLog(`${card.name} → Governance instability.`);
+      afterCardResolved(); break;
+    }
+
+    case 'remove_multi_stack_then_remove_crime_instability': {
+      const stacks = opt.stacks || [];
+      const reqMap = {};
+      stacks.forEach(c => reqMap[c] = (reqMap[c] || 0) + 1);
+      if (!Object.entries(reqMap).every(([c, n]) => G.categories[c].stack.length >= n)) {
+        addLog(`${card.name}: Not enough resources to pay cost.`);
+        applyCardSelfDiscard(card); break;
+      }
+      stacks.forEach(cat => {
+        const r = G.categories[cat].stack.splice(0, 1)[0];
+        if (r) { G.deck.push(r); addLog(`${r.name} removed from ${cap(cat)} stack → deck.`); }
+      });
+      removeCrimeInstability(card.name);
+      G.categories.governance.instability.push(card);
+      addLog(`${card.name} → Governance instability.`);
+      afterCardResolved(); break;
     }
 
     default:
@@ -2153,7 +2204,13 @@ function canPlayOption(card, opt) {
     case 'remove_stack_card_then_place_in_instability':
     case 'remove_stack_card_then_discard_hand_then_stack':
     case 'remove_stack_card_then_remove_or_identity_then_stack':
+    case 'remove_stack_card_then_remove_crime_instability':
       return G.categories[opt.sourceCategory].stack.length >= 1;
+    case 'remove_multi_stack_then_remove_crime_instability': {
+      const _reqCrime = {};
+      (opt.stacks || []).forEach(c => _reqCrime[c] = (_reqCrime[c] || 0) + 1);
+      return Object.entries(_reqCrime).every(([c, n]) => G.categories[c].stack.length >= n);
+    }
     case 'remove_instability_then_discard_hand_then_stack': {
       const fc = opt.instabilityCategory;
       return fc ? G.categories[fc].instability.length >= 1
@@ -2247,6 +2304,11 @@ function checkCondition(cond) {
     const { id, category } = cond.card_in_instability;
     const cats = category ? [category] : CATEGORIES;
     return cats.some(c => G.categories[c].instability.some(card => card.id === id));
+  }
+  if (cond.card_in_stack) {
+    const { id, category } = cond.card_in_stack;
+    const cats = category ? [category] : CATEGORIES;
+    return cats.some(c => G.categories[c].stack.some(card => card.id === id));
   }
   if (cond.card_not_in_instability) {
     const { id, category } = cond.card_not_in_instability;
@@ -2952,6 +3014,13 @@ function estimateOptionDelta(card, opt) {
   if (eff === 'managed') return 2;
   if (eff === 'rationalize') return 1;
   if (eff === 'austerity') return 2;
+
+  if (eff === 'remove_stack_card_then_remove_crime_instability' || eff === 'remove_multi_stack_then_remove_crime_instability') {
+    const crimeIds = ['crime', 'criminal_conspiracy', 'organized_crime'];
+    const crimeCount = CATEGORIES.reduce((n, c) => n + G.categories[c].instability.filter(x => crimeIds.includes(x.id)).length, 0);
+    const costCount = eff === 'remove_multi_stack_then_remove_crime_instability' ? (opt.stacks || []).length : 1;
+    return crimeCount * 2 - costCount;
+  }
 
   // Default: estimate based on card value
   return val * 0.5;

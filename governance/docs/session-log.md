@@ -4,6 +4,32 @@
 
 ---
 
+## Session 7 — 2026-07-15
+
+**Focus:** Design questions, doc buildout, implement three draft cards
+
+### Changes
+- **Answered all 6 open design questions** in `docs/questions.md` — stacks persist on replacement, no hand size cap, no stack cap, Democracy draw bonus kept, multiplayer_only eliminated, Alliance redesigned
+- **Expanded design.md** — Long Game Philosophy (Jenga model), Instability Difficulty Tiers table, Hand Size section, identity card rules (stacks persist, oldest cost), Solo/Multiplayer dual-design rule, Planned Mechanics section (card_in_stack, resource swap, coalition network)
+- **Implemented Alliance** (redesigned) — was a Governance identity card; now a Governance stacking event (+2). Opt 1: pay oldest Culture → stack on Governance. Opt 2: remove 1 Military instability → shuffle self into deck. Old identity removed from STARTER_DECK; 2× event copies added.
+- **Implemented Martial Law** — new Governance utility event (value 3). Opt 1 (Dictatorship active): costs 1 Military. Opt 2 (any identity): costs 1 Military + 2 Governance. Both remove all Crime instability (crime, criminal_conspiracy, organized_crime) from all piles → deck, then place self in Governance instability. Added 2× to STARTER_DECK.
+- **Implemented Free Trade Agreement** — new Economy stacking event (value 1). Opt 1 (free, condition: Alliance in any stack). Opt 2: pay oldest Governance → stack on Economy. 2× added to STARTER_DECK.
+- **Added `card_in_stack` condition** to `checkCondition` and `checkConditionDisplay` in game.js
+- **Added `afterShuffle` flag** support to `remove_instability_modal` effect
+- **Added two new effects** — `remove_stack_card_then_remove_crime_instability`, `remove_multi_stack_then_remove_crime_instability` — with canPlayOption checks and estimateOptionDelta heuristics
+- **Added `removeCrimeInstability()` helper** — scans all instability piles, removes crime-arc cards
+- **Updated effects-reference.md** — new effects, afterShuffle flag, card_in_stack condition documented
+- **Updated planned-cards.md** — three cards marked Implemented, moved to Implemented section
+
+### Deck State
+309 STARTER_DECK slots, 168 unique card IDs (alliance event + martial_law + free_trade_agreement)
+
+### Notes
+- FTA swap mechanic (Opt 2 original concept) deferred — requires a new "pick any specific stack card" modal not yet implemented
+- Coalition synergy network established: Alliance anchors future cards (Non-Aggression Pact, Cultural Exchange, etc.)
+
+---
+
 ## Session 6 — 2026-07-15
 
 **Focus:** Bug fixes, dead code cleanup, full doc sync

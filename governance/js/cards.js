@@ -76,30 +76,31 @@ const CARDS = [
   {
     id: 'alliance',
     name: 'Alliance',
-    type: 'category',
-    subtype: 'institution',
+    type: 'event',
+    subtype: 'stacking',
     category: 'governance',
     value: 2,
     flavorText: 'No civilization stands alone.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Form Alliance',
-        description: 'Remove the oldest Military resource from your stack and shuffle it into the draw deck. Replace or stack your current Governance with this card. Replaced cards get discarded.',
-        effect: 'replace_plus_stack_cost',
-        costCategory: 'military',
+        description: 'Remove the oldest Culture resource from your stack → place this card on your Governance stack.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'culture',
+        targetCategory: 'governance',
       },
       {
-        label: 'Option 2 — Hold Off',
-        description: 'Draw 1 card. Shuffle this card into the draw deck.',
-        effect: 'draw_and_shuffle_self',
-        targetCategory: 'governance',
+        label: 'Option 2 — Peace Accord',
+        description: 'Remove 1 Military instability → shuffle this card into the deck.',
+        effect: 'remove_instability_modal',
+        targetCategory: 'military',
+        afterShuffle: true,
       },
     ],
     discardTo: [
       { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
     ],
-    requires: null,
   },
 
   {
@@ -5622,6 +5623,34 @@ const CARDS = [
     discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
   },
 
+  {
+    id: 'martial_law',
+    name: 'Martial Law',
+    type: 'event',
+    subtype: 'utility',
+    category: 'governance',
+    value: 3,
+    flavorText: 'When the law fails, force fills the vacuum.',
+    options: [
+      {
+        label: 'Option 1 — Emergency Crackdown (Dictatorship)',
+        description: 'Dictatorship must be active. Remove the oldest Military resource from your stack → remove all Crime instability from all categories. Place this card in Governance instability.',
+        effect: 'remove_stack_card_then_remove_crime_instability',
+        sourceCategory: 'military',
+        condition: { active_identity_is: { category: 'governance', id: 'dictatorship' } },
+      },
+      {
+        label: 'Option 2 — Costly Enforcement',
+        description: 'Remove the oldest Military resource and 2 oldest Governance resources from your stacks → remove all Crime instability from all categories. Place this card in Governance instability.',
+        effect: 'remove_multi_stack_then_remove_crime_instability',
+        stacks: ['military', 'governance', 'governance'],
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+    ],
+  },
+
   // ─── Management Philosophy — Governance Utility Cards ──────────────────────
 
   {
@@ -6421,6 +6450,36 @@ const CARDS = [
     ],
   },
 
+  {
+    id: 'free_trade_agreement',
+    name: 'Free Trade Agreement',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 1,
+    flavorText: 'Open borders enrich both sides — or so the theory goes.',
+    options: [
+      {
+        label: 'Option 1 — Coalition Trade (Alliance active)',
+        description: 'Requires Alliance in any stack. Place this card on your Economy stack for free.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { card_in_stack: { id: 'alliance' } },
+      },
+      {
+        label: 'Option 2 — Open Market',
+        description: 'Remove the oldest Governance resource from your stack → place this card on your Economy stack.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'governance',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+  },
+
   // ─── Labor & Population ───────────────────────────────────────────────────
 
   {
@@ -6976,7 +7035,7 @@ CARDS.forEach(c => { CARD_MAP[c.id] = c; });
 // ─── Starter deck ─────────────────────────────────────────────────────────────
 const STARTER_DECK = [
   // Governance (9)
-  'democracy', 'democracy', 'theocracy', 'alliance',
+  'democracy', 'democracy', 'theocracy',
   'republic', 'republic', 'oligarchy', 'constitutional_monarchy', 'dictatorship', 'populist_governance',
   // Economy (9)
   'free_trade', 'free_trade', 'industrial_expansion', 'industrial_expansion', 'green_investment', 'green_investment',
@@ -6994,6 +7053,8 @@ const STARTER_DECK = [
   'the_great_north', 'the_highlands', 'the_waterlands', 'the_union', 'the_union', 'oceana',
   'the_fertile_plains', 'the_fertile_plains', 'the_desert_wastes', 'the_river_delta',
   // Stacking events
+  'alliance', 'alliance',
+  'free_trade_agreement', 'free_trade_agreement',
   'efficient_administration', 'tax_collection', 'tax_collection', 'tax_increase', 'tax_increase', 'tax_decrease', 'tax_decrease', 'tax_increase', 'tax_increase', 'tax_decrease', 'tax_decrease',
   'cultural_festival', 'military_campaign',
   'scientific_breakthrough',
@@ -7035,6 +7096,7 @@ const STARTER_DECK = [
   'misinformation', 'misinformation', 'surveillance_state', 'cyber_warfare', 'technological_collapse',
   'mutiny', 'mutiny', 'desertion', 'desertion', 'border_skirmish', 'border_skirmish', 'arms_shortage',
   // Utility events
+  'martial_law', 'martial_law',
   'revisionist_history', 'revisionist_history',
   'contingency_planning',
   'occupation', 'incursion', 'sanctions', 'military_exercise', 'cultural_exchange',
