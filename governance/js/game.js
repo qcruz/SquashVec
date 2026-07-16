@@ -548,11 +548,6 @@ function resolveEventCard(card, opt) {
       G.pendingAction = { type: 'remove_two_instability', card, picked: [] };
       render(); showTwoInstabilityModal(card); return;
 
-    case 'multiplayer_only':
-      addLog(`${card.name}: Multiplayer option — not available in solo play.`);
-      applyCardSelfDiscard(card);
-      break;
-
     case 'draw_and_shuffle_self':
       drawCard();
       G.deck.push(card); shuffle(G.deck);
@@ -2131,7 +2126,6 @@ function showEndModal(end) {
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function canPlayOption(card, opt) {
-  if (opt.effect === 'multiplayer_only') return false;
   if (opt.condition && !checkConditionDisplay(opt.condition)) return false;
   switch (opt.effect) {
     case 'replace_plus_stack_cost':
@@ -2573,23 +2567,20 @@ function renderDetailFrame(card, color, location, readonly) {
   if (card.options?.length) {
     optionsHTML = `<div class="detail-section-label">Play Options</div><div class="detail-opts">`;
     card.options.forEach((opt, oi) => {
-      const isMultiplayerOnly = opt.effect === 'multiplayer_only';
       const eligible = !readonly && canPlayOption(card, opt);
       const condMet = opt.condition ? checkCondition(opt.condition) : true;
       const isSelected = eligible && G.selectedOption === oi;
-      const ineligibleNote = !isMultiplayerOnly && !eligible
+      const ineligibleNote = !eligible
         ? `<span class="opt-cond-unmet">Not enough resources to play this option.</span>` : '';
       const unmetNote = eligible && opt.condition && !condMet
         ? `<span class="opt-cond-unmet">Condition not currently met — will apply fallback.</span>` : '';
-      const multiplayerNote = isMultiplayerOnly
-        ? `<span class="opt-multiplayer-tag">Multiplayer only — not available in solo play</span>` : '';
-      const dimmedClass = isMultiplayerOnly ? ' detail-opt-multiplayer' : (!eligible ? ' detail-opt-dimmed' : '');
+      const dimmedClass = !eligible ? ' detail-opt-dimmed' : '';
       optionsHTML += `
         <div class="detail-opt${isSelected ? ' detail-opt-selected' : ''}${dimmedClass}"
              style="${isSelected ? `border-color:${color}` : ''}"
              ${readonly || !eligible ? '' : `onclick="setSelectedOption(${oi})"`}>
           <div class="detail-opt-label">${opt.label}</div>
-          <div class="detail-opt-desc">${opt.description}${opt.effect === 'replace_plus_stack_cost' ? ' <em>Bonus: removes the oldest instability from this category (if any).</em>' : ''} ${ineligibleNote}${unmetNote}${multiplayerNote}</div>
+          <div class="detail-opt-desc">${opt.description}${opt.effect === 'replace_plus_stack_cost' ? ' <em>Bonus: removes the oldest instability from this category (if any).</em>' : ''} ${ineligibleNote}${unmetNote}</div>
         </div>`;
     });
     optionsHTML += `</div>`;
@@ -2924,7 +2915,6 @@ function estimateOptionDelta(card, opt) {
 
   // Discard self — low value but at least it's harmless
   if (eff === 'discard_self') return 0;
-  if (eff === 'multiplayer_only') return -10;
 
   // Remove stack cards — costly but sometimes needed (remove_stack_* effects)
   if (eff === 'remove_stack_card_then_shuffle_self') return -1;

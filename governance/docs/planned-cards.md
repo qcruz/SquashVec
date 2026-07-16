@@ -17,8 +17,14 @@ Status tags: `[idea]` `[draft]` `[ready]` `✅ Approved` `✅ Implemented`
 
 ## Governance
 
+### ⚠ Alliance Identity Card — Pending Removal
+The current **Alliance** Governance identity in cards.js (+2, costs 1 Military, discards to Governance Instability) is being replaced by the redesigned Alliance stacking event below. The identity version should be removed from cards.js and STARTER_DECK. Requires confirmation before implementation.
+
 | Name | Status | Concept |
 |------|--------|---------|
+| Alliance | `[draft]` | **Redesigned — Governance stacking event (value +2).** Opt 1: Pay oldest Culture resource → stack on Governance. Opt 2: Remove 1 Military instability → shuffle self into deck. Discard: Governance instability or Culture instability. Anchors the diplomacy/coalition synergy network — future cards check if Alliance is in any stack. |
+| Free Trade Agreement | `[draft]` | **Economy stacking event (value +1).** Opt 1: If Alliance is in any stack → stack on Economy for free; otherwise pay oldest Governance resource → stack on Economy. Opt 2: Swap any Technology resource in play with your oldest Economy resource → shuffle self into deck. Discard: Governance instability or Military instability. Requires new `card_in_stack` condition type in game.js. |
+| Martial Law | `[draft]` | Identity-synergy utility (value 3). **Opt 1 (Dictatorship active):** Pay 1 Military resource → remove all Crime instability from all categories → discard to Governance instability. **Opt 2 (any other identity):** Pay 1 Military + 2 Governance resources → remove all Crime instability → discard to Governance instability. Uses `condition: { active_identity_is: { category: 'governance', id: 'dictatorship' } }` on the cost-reduced option. |
 | Emergency Powers | `[idea]` | Crisis only (Governance ≤ 7). Draw 3 cards. Place this in Governance instability. |
 | Constitutional Reform | `[idea]` | Move 2 instability cards from any pile to the draw deck. Pay 2 Governance resources. |
 | Coalition Government | `[idea]` | Requires Economy ≥ 12 AND Culture ≥ 12. Stack +3 on Governance. |
@@ -55,11 +61,13 @@ Status tags: `[idea]` `[draft]` `[ready]` `✅ Approved` `✅ Implemented`
 
 | Name | Status | Concept |
 |------|--------|---------|
-| Fortified Peace | `[idea]` | Passive while in stack: all Military hazards cost 1 more resource to mitigate. |
-| Strategic Reserve | `[idea]` | Remove 1 Military resource. Next turn, play 1 additional card. |
+| Surprise Attack | `[draft]` | Military stacking event (value 3). **Solo Opt 1:** Pay 1 Military resource → stack +3 on Military immediately (no cost modal — the surprise is the payoff). **Solo Opt 2:** Pay 1 Governance resource → stack +2 on any category of choice. **Multiplayer:** Opt 1 moves the oldest resource from an opponent's chosen category stack to your Military stack instead. Thematically: an internal rapid deployment or border raid. |
+| Occupation | `[draft]` | Military stacking event (value 2). **Solo Opt 1:** Pay 1 Military + 1 Governance → stack +2 on Military AND remove 1 Military instability. **Solo Opt 2:** Pay 2 Military resources → stack +2 on Environment (territory secured). **Multiplayer:** Opt 1 places 1 instability into an opponent's Military pile instead of removing your own. Thematically: military occupation of territory. |
+| Fortified Peace | `[idea]` | Needs redesign — original concept used a passive. New direction: one-time effect. Pay 1 Military → remove 2 Military instability. Opt 2: stack +1 on Military, shuffle self into deck. |
 | War of Attrition | `[idea]` | Remove 2 Military resources. Remove 3 instability cards from any category. |
 | Conscription | `[idea]` | Pay 1 Culture resource. Stack +2 on Military. |
 | Peace Dividend | `[idea]` | Remove Military identity from play (discard). Remove 2 Military instability. Draw 2. |
+| Strategic Reserve | `[idea]` | Needs redesign — original concept used a delayed effect ("next turn"). New direction: draw-based. Pay 1 Military resource → draw 2 cards. Opt 2: stack +1 on Military AND +1 on Governance. |
 
 ---
 

@@ -76,6 +76,8 @@ There are exactly **two card types**: Category Cards and Event Cards.
 Category cards represent the foundational institutions of a civilization. **Only one may be active per category at a time.**
 
 - Playing a new category card **always replaces** the current active card — no "stack or replace?" prompt.
+- **Event stacks persist on replacement.** The new identity becomes the foundation; existing stacked event cards remain in place. Identity replacement does not clear the stack.
+- **Identity card costs always remove the oldest resource** from the cost category — never the newest. This is enforced by the `replace_plus_stack_cost` effect default (index 0). No card may override this to use the newest resource.
 - The replaced card is **discarded** — the player chooses where it goes at the moment of replacement, using that card's printed discard options.
 - Identity card Option 1 **automatically removes the oldest instability** from that category before the previous card is discarded (if any instability exists). This resolution order matters: instability is removed first, then the old identity goes to discard.
 - A category card's **value** contributes to that category's score while it is active.
@@ -113,9 +115,26 @@ Instability represents accumulated consequences. Cards in the instability pile s
 
 - Instability remains visible and face up (it is the history of the civilization).
 - Some cards allow instability to be removed or shuffled back into the draw deck.
-- **Governance instability** is generally easier to remove.
-- **Culture instability** is harder to remove but sometimes offers bonuses if accepted.
 - **There is no discard pile.** Cards that leave play go to either the instability pile or back into the draw deck (shuffled or placed at bottom). All cards cycle.
+
+### Instability Difficulty Tiers
+
+Not all instability is equally removable. The deck composition intentionally creates a **hidden difficulty hierarchy** across instability types. This is a core meta-challenge: experienced players learn to avoid the expensive types, while new players discover the cost the hard way.
+
+| Tier | Category | Removal Difficulty | Design Intent |
+|------|----------|--------------------|---------------|
+| Easy | Governance | Most removal options in deck; many utility cards target Governance instability | Backbone recovery — lets players stabilize often |
+| Medium | Economy, Military, Technology, Environment | Moderate removal options; category-specific tools exist | Manageable with the right identity setup |
+| Hard | Culture | Fewest removal options in the deck; very few cards specifically remove Culture instability | The most expensive type — a long-term drag on any civilization |
+
+**Design rules from this hierarchy:**
+- The deck should always have significantly fewer Culture instability removal cards than Governance instability removal cards.
+- Cards that route to Culture instability as a penalty should always include meaningful compensation — a card draw, a resource gain, or a score boost — because the player is accepting a hard-to-remove consequence.
+- Cards that give the player a **choice** of instability destination should always make Culture one of the harder/cheaper options and reward accepting it appropriately.
+- New card designs should respect this hierarchy: do not add Culture instability removal cards casually. Each one added reduces the meta-challenge.
+
+**Example — Democracy:**
+When replaced, Democracy can discard to Governance Instability (easy to remove) or Culture Instability + draw 1 card (hard to remove, compensated). The draw represents the societal value of retained democratic knowledge persisting as cultural memory even after the government form changes.
 
 ---
 
@@ -140,13 +159,63 @@ If a player cannot play any card from their hand (all options are ineligible), t
 
 ---
 
-## Solo Mode
+## Long Game Philosophy — Stacks, Instability, and Synergy
 
-In single-player mode:
-- Each card is designed with at least one option that is always available in solo play.
-- Options that reference "another player" or "an allied player" **cannot be used** in solo play.
-- **Solo multiplayer principle:** Options with comparative conditions (e.g., "if you have the highest Military score") always resolve to the harder outcome in solo — the player is assumed to be at a disadvantage relative to an implied opponent. This makes multiplayer-oriented cards deliberately harder in solo play, which is by design.
-- If no viable option exists for a card, the card has no effect and is discarded.
+**There is no maximum stack size.** Large, deeply built stacks are the intended endgame state.
+
+The game is designed around a **Jenga model of civilization**: resources and instabilities accumulate in parallel. As stacks grow, so do instability piles. The civilization becomes increasingly complex and precarious — held together by the synergies between the active identity cards and the events in play. A single surprise card (a new hazard, a must-play event, a discard-forcing event) can cascade into a dramatic reshaping of strategy — a military powerhouse pivoting to education, a theocracy collapsing into a trade republic.
+
+### Instability Should Always Be Building
+
+Instability pressure should never fully relent. The deck composition should ensure that no combination of utility cards can eliminate instability permanently. New hazard events, cross-category hazards, and must-play events ensure that instability is a constant feature of the late game, not a problem that gets solved.
+
+**Design rule:** A late-game board should always have instability in at least 2–3 categories. Cards that remove instability should never outpace cards that add it across the full deck.
+
+### Identity-Contingent Synergies
+
+The primary mechanism for managing large, complex boards is **identity synergy**: cards that cost less, do more, or have entirely different effects when a specific identity is active.
+
+This is the game's deepest strategic layer. A player who has built toward Dictatorship + Military identity combination can handle threats that would cripple a Republic + Culture setup — and vice versa. Choosing and committing to an identity combination is as important as any individual card play.
+
+**Design rule for identity-contingent cards:**
+- A card with a synergy cost should be noticeably cheaper or more powerful when the synergy condition is met
+- The default cost (without the synergy) should be meaningfully harder — not just slightly worse
+- Both paths must be playable (no option that requires a condition that can't be met in solo play)
+
+**Example — Martial Law:**
+- Dictatorship active: costs 1 Military resource → removes all Crime instability from all categories → discards to Governance instability
+- Any other identity active: costs 1 Military + 2 Governance resources → removes all Crime instability → discards to Governance instability
+
+This makes Dictatorship a genuinely powerful identity for crime-heavy board states, and gives the player a real reason to stay on it rather than upgrading to a higher-value identity.
+
+---
+
+## Hand Size
+
+There is **no enforced maximum hand size.** Hand discipline is created organically by the deck itself:
+
+- Most cards are designed to be played quickly — there is no benefit to holding cards indefinitely.
+- Discard-forcing event cards (Social Upheaval, Criminal Conspiracy, Military Exercise, etc.) create a looming threat for players who accumulate large hands. Social Upheaval in particular can wipe the hand entirely.
+- Holding cards is a deliberate risk, not a free option. The larger the hand, the more damage a single discard-forcing event can do.
+- **Military "surprise" strategies** are the primary legitimate reason to hold multiple cards — building toward a concentrated play.
+
+**Design rule:** Every set of new cards should include at least one discard-forcing event to maintain this pressure. Cards that force "discard your entire hand" (or "discard down to N") are high-value additions to the deck.
+
+---
+
+## Solo Mode and Multiplayer Card Design
+
+**Every option on every card must be playable in solo.** There are no `multiplayer_only` dead options. A card option that requires another player to exist is a design error.
+
+Cards that are *intended* for multiplayer disruption (Surprise Attack, Occupation, Sanctions, etc.) must be designed with **dual interpretations**:
+- **Multiplayer:** affects an opponent's stack, identity, or instability pile
+- **Solo:** equivalent self-affecting cost or benefit (e.g. gain a resource, remove instability, draw a card)
+
+Both interpretations should feel thematically coherent. A Surprise Attack in solo might represent an internal military exercise or a border skirmish — something that has real domestic cost/benefit without requiring an opponent.
+
+**Comparative conditions** ("if you have the highest Military score") resolve to the harder outcome in solo — the player is always assumed to be at a disadvantage relative to an implied opponent field.
+
+**Design rule:** When designing any military disruption card, write the solo version first. If it doesn't stand on its own as a meaningful solo effect, redesign before adding the multiplayer interpretation.
 
 ---
 
@@ -249,4 +318,30 @@ Six categories must be managed simultaneously. Letting one category slide create
 
 ---
 
-*Last updated: 2026-07-15 — full sync from Sessions 5–6 design notes*
+---
+
+## Planned Mechanics — Confirmed, Pending Implementation
+
+These mechanics have been confirmed by design but not yet implemented in code.
+
+### `card_in_stack` Condition
+Check whether a specific card ID is present in any category's event stack. Mirrors the existing `card_in_instability` condition in `checkCondition`.
+
+```js
+condition: { card_in_stack: { id: 'alliance' } }
+// returns true if any category's stack contains a card with id === 'alliance'
+```
+
+Used by: Free Trade Agreement Opt 1 — free to play when Alliance is in any stack, costs 1 Governance resource otherwise.
+
+### Resource Swap Effect
+Exchange a chosen resource from one stack with the oldest resource of another stack simultaneously. Needs a two-step modal: player picks the resource to take, the oldest resource from the target stack is automatically displaced to the source stack in return.
+
+Used by: Free Trade Agreement Opt 2 — swap a chosen Technology resource with oldest Economy resource.
+
+### Diplomacy / Coalition Synergy Network
+Alliance (Governance stacking event, +2) anchors a family of cards whose effects improve when Alliance is in any stack. This creates a strategic build path: establish Alliance early, then play coalition cards at reduced cost or greater effect. Future cards in this family include Free Trade Agreement, Non-Aggression Pact, Cultural Exchange, and similar diplomacy-themed events.
+
+---
+
+*Last updated: 2026-07-15 — Session 7 design questions resolved*
