@@ -6861,15 +6861,16 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Regulatory Crackdown',
-        description: 'Requires all 6 identities to be active. Remove ALL resources from your Economy stack → deck. Shuffle this card into the deck.',
-        effect: 'remove_all_from_stack_shuffle_self',
-        targetCategory: 'economy',
-        condition: { allIdentitiesActive: true },
+        description: 'Remove 2 oldest Economy resources from your stack → place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'economy',
+        sourceCategory2: 'economy',
       },
       {
         label: 'Option 2 — Systemic Rot',
-        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Economy Instability.',
-        effect: 'remove_one_from_each_stack',
+        description: 'Place this card in Economy Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'economy',
       },
     ],
     discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
@@ -6886,15 +6887,16 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Anti-Corruption Drive',
-        description: 'Requires all 6 identities to be active. Remove ALL resources from your Governance stack → deck. Shuffle this card into the deck.',
-        effect: 'remove_all_from_stack_shuffle_self',
-        targetCategory: 'governance',
-        condition: { allIdentitiesActive: true },
+        description: 'Remove 2 oldest Governance resources from your stack → place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'governance',
+        sourceCategory2: 'governance',
       },
       {
         label: 'Option 2 — Institutional Capture',
-        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Governance Instability.',
-        effect: 'remove_one_from_each_stack',
+        description: 'Place this card in Governance Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'governance',
       },
     ],
     discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
@@ -6911,15 +6913,16 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Cultural Revival',
-        description: 'Requires all 6 identities to be active. Remove ALL resources from your Culture stack → deck. Shuffle this card into the deck.',
-        effect: 'remove_all_from_stack_shuffle_self',
-        targetCategory: 'culture',
-        condition: { allIdentitiesActive: true },
+        description: 'Remove 2 oldest Culture resources from your stack → place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'culture',
+        sourceCategory2: 'culture',
       },
       {
         label: 'Option 2 — Systematic Erasure',
-        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Culture Instability.',
-        effect: 'remove_one_from_each_stack',
+        description: 'Place this card in Culture Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'culture',
       },
     ],
     discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
@@ -6936,18 +6939,44 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Military Tribunal',
-        description: 'Requires all 6 identities to be active. Remove ALL resources from your Military stack → deck. Shuffle this card into the deck.',
-        effect: 'remove_all_from_stack_shuffle_self',
-        targetCategory: 'military',
-        condition: { allIdentitiesActive: true },
+        description: 'Remove 2 oldest Military resources from your stack → place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'military',
+        sourceCategory2: 'military',
       },
       {
         label: 'Option 2 — Fractured Command',
-        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Military Instability.',
-        effect: 'remove_one_from_each_stack',
+        description: 'Place this card in Military Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'military',
       },
     ],
     discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+
+  {
+    id: 'toxic_spill',
+    name: 'Toxic Spill',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 2,
+    flavorText: 'What industry discards, the land absorbs.',
+    options: [
+      {
+        label: 'Option 1 — Containment Operation',
+        description: 'Remove the oldest Technology resource from your stack → place this card at the bottom of the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Environmental Damage',
+        description: 'Place this card in Environment Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
   },
 
   {
@@ -6961,15 +6990,16 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Environmental Remediation',
-        description: 'Requires all 6 identities to be active. Remove ALL resources from your Environment stack → deck. Shuffle this card into the deck.',
-        effect: 'remove_all_from_stack_shuffle_self',
-        targetCategory: 'environment',
-        condition: { allIdentitiesActive: true },
+        description: 'Remove 2 oldest Environment resources from your stack → place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'environment',
+        sourceCategory2: 'environment',
       },
       {
         label: 'Option 2 — Contained Damage',
-        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Environment Instability.',
-        effect: 'remove_one_from_each_stack',
+        description: 'Place this card in Environment Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'environment',
       },
     ],
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
@@ -6986,15 +7016,16 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Clean Up',
-        description: 'Requires all 6 identities to be active. Remove ALL resources from your Environment stack → deck. Shuffle this card into the deck.',
-        effect: 'remove_all_from_stack_shuffle_self',
-        targetCategory: 'environment',
-        condition: { allIdentitiesActive: true },
+        description: 'Remove 2 oldest Environment resources from your stack → place this card at the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'environment',
+        sourceCategory2: 'environment',
       },
       {
         label: 'Option 2 — Industrial Externality',
-        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Environment Instability.',
-        effect: 'remove_one_from_each_stack',
+        description: 'Place this card in Environment Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'environment',
       },
     ],
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
@@ -7010,16 +7041,16 @@ const CARDS = [
     flavorText: 'No civilization is safe from within.',
     options: [
       {
-        label: 'Option 1 — Target Technology',
-        description: 'Requires all 6 identities to be active. Remove ALL resources from your Technology stack → deck. Shuffle this card into the deck.',
-        effect: 'remove_all_from_stack_shuffle_self',
-        targetCategory: 'technology',
-        condition: { allIdentitiesActive: true },
+        label: 'Option 1 — Counter-Sabotage',
+        description: 'Remove the oldest Technology resource from your stack → place this card at the bottom of the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'technology',
       },
       {
-        label: 'Option 2 — Broad Sabotage',
-        description: 'Remove the oldest resource from every category stack that has cards. Discard this card to Technology Instability.',
-        effect: 'remove_one_from_each_stack',
+        label: 'Option 2 — Compromised Systems',
+        description: 'Place this card in Technology Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'technology',
       },
     ],
     discardTo: [
@@ -7080,69 +7111,56 @@ const STARTER_DECK = [
   'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
   'dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
   'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
-  // Must-play events (4)
+  // Must-play events
   'indecisiveness', 'indecisiveness', 'indecisiveness', 'indecisiveness',
-  // Hazard events
+  // Hazard events — natural/environmental
   'worker_strike', 'worker_strike',
   'political_assassination',
   'flood', 'flood',
   'corruption', 'corruption', 'epidemic', 'drought', 'rebellion', 'coup_attempt', 'coup_attempt',
-  'earthquake', 'tornado', 'harsh_winter', 'scorched_summer', 'forest_fire', 'forest_fire', 'environmental_collapse', 'forest_fire', 'forest_fire', 'environmental_collapse', 'harsh_winter', 'scorched_summer',
+  'earthquake', 'tornado', 'harsh_winter', 'harsh_winter', 'scorched_summer', 'scorched_summer',
+  'forest_fire', 'forest_fire', 'environmental_collapse',
+  // Hazard events — social/political
   'political_strife', 'crime_wave', 'public_backlash', 'leaked_report',
   'recession', 'national_debt', 'market_crash', 'trade_war', 'supply_shortage', 'hyperinflation',
   'youthful_dissent', 'cultural_suppression', 'generational_divide', 'loss_of_faith', 'brain_drain',
+  // Hazard events — technology/research
   'stalled_research', 'adverse_side_effects', 'remote_attack', 'failed_experiment', 'obsolescence', 'record_breach',
   'misinformation', 'misinformation', 'surveillance_state', 'cyber_warfare', 'technological_collapse',
-  'misinformation', 'misinformation', 'surveillance_state', 'cyber_warfare', 'technological_collapse',
+  // Hazard events — military
   'mutiny', 'mutiny', 'desertion', 'desertion', 'border_skirmish', 'border_skirmish', 'arms_shortage',
+  // Hazard events — targeted
+  'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval',
+  'sabotage', 'sabotage',
+  'insider_trading', 'state_capture', 'cultural_purge', 'treason',
+  'pollution', 'toxic_spill', 'toxic_spill',
+  // Crime arc
+  'crime', 'crime', 'crime',
+  'criminal_conspiracy', 'criminal_conspiracy',
+  'organized_crime',
+  // Labor & population
+  'labor_shortage', 'labor_shortage',
+  'population_decline',
+  'immigration', 'immigration',
   // Utility events
   'martial_law', 'martial_law',
   'revisionist_history', 'revisionist_history',
   'contingency_planning',
   'occupation', 'incursion', 'sanctions', 'military_exercise', 'cultural_exchange',
   'peace_treaty', 'diplomatic_mission', 'census',
-  'disarmament', 'destabilization',
+  'disarmament', 'disarmament',
+  'destabilization', 'destabilization',
   'direct_attack', 'direct_attack', 'arms_package', 'arms_package',
-  // Crime arc
-  'crime', 'crime', 'crime',
-  'criminal_conspiracy', 'criminal_conspiracy',
-  'organized_crime',
-  // Crime arc
-  'crime', 'crime', 'crime',
-  'criminal_conspiracy', 'criminal_conspiracy',
-  'organized_crime',
-  // Labor & population hazards
-  'labor_shortage', 'labor_shortage',
-  'population_decline',
-  'immigration', 'immigration',
-  // Labor & population hazards
-  'labor_shortage', 'labor_shortage',
-  'population_decline',
-  'immigration', 'immigration',
-  // Hazard events (new)
-  'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval',
-  'sabotage', 'sabotage',
-  'insider_trading',
-  'state_capture',
-  'cultural_purge',
-  'treason',
-  'toxic_spill', 'toxic_spill',
-  'sabotage', 'sabotage',
-  'insider_trading',
-  'state_capture',
-  'cultural_purge',
-  'treason',
-  'pollution', 'toxic_spill', 'social_upheaval', 'social_upheaval', 'social_upheaval',
-  'disarmament', 'destabilization', 'destabilization',
-  'direct_attack', 'direct_attack', 'arms_package', 'arms_package',
-  // Hazard events (new)
-  'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval', 'social_upheaval',
-  // Utility events (new)
   'restitution', 'restitution',
-  // Utility events (new)
-  'restitution', 'restitution',
-  // Management philosophy
-  'consolidation', 'structural_consolidation', 'managed_decline', 'rationalization',
-  'austerity', 'preparedness', 'crisis_protocol', 'grand_strategy',
-  'redundancy_systems', 'adaptive_management',
+  // Management philosophy (2× each — primary recovery tools)
+  'consolidation', 'consolidation',
+  'structural_consolidation', 'structural_consolidation',
+  'managed_decline', 'managed_decline',
+  'rationalization', 'rationalization',
+  'austerity', 'austerity',
+  'preparedness', 'preparedness',
+  'crisis_protocol', 'crisis_protocol',
+  'grand_strategy', 'grand_strategy',
+  'redundancy_systems', 'redundancy_systems',
+  'adaptive_management', 'adaptive_management',
 ];

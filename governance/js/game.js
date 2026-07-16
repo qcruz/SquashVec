@@ -2192,9 +2192,12 @@ function canPlayOption(card, opt) {
       return G.categories[opt.sourceCategory1].stack.length >= 1 &&
              G.categories[opt.sourceCategory2].stack.length >= 1 &&
              G.categories[opt.sourceCategory3].stack.length >= 1;
-    case 'remove_two_stack_cards_then_bottom':
-      return G.categories[opt.sourceCategory1].stack.length >= 1 &&
-             G.categories[opt.sourceCategory2].stack.length >= 1;
+    case 'remove_two_stack_cards_then_bottom': {
+      const _cats2 = [opt.sourceCategory1, opt.sourceCategory2];
+      const _req2 = {};
+      _cats2.forEach(c => _req2[c] = (_req2[c] || 0) + 1);
+      return Object.entries(_req2).every(([c, n]) => G.categories[c].stack.length >= n);
+    }
     case 'remove_stack_card_and_optionally_place_self':
     case 'remove_stack_card_then_shuffle_self':
     case 'remove_stack_card_then_remove_instability':
