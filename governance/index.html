@@ -87,6 +87,18 @@
   <div id="modal-content"></div>
 </div>
 
+<div id="library-overlay" class="hidden">
+  <div id="library-header">
+    <span id="library-subtitle"></span>
+    <button class="opt-btn" onclick="closeLibrary()" style="margin-left:auto">✕ Close</button>
+  </div>
+  <div id="library-grid"></div>
+  <div id="lib-float" class="hidden">
+    <button class="deselect-btn" onclick="closeLibraryFloat()" style="margin-bottom:8px">✕ Close</button>
+    <div id="lib-float-detail"></div>
+  </div>
+</div>
+
 <script src="js/cards.js"></script>
 <script src="js/game.js"></script>
 </body>

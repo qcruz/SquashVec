@@ -263,23 +263,6 @@ function applyCategoryCard(card, opt) {
     return;
   }
 
-  // Draw a card and shuffle this category card back into the deck
-  if (opt.effect === 'draw_and_shuffle_self') {
-    drawCard();
-    G.deck.push(card);
-    addLog(`${card.name}: drew 1 card. ${card.name} placed at bottom of deck.`);
-    return;
-  }
-
-  // Draw a card and discard this category card without replacing the active
-  if (opt.effect === 'draw_and_discard_self') {
-    const cat = opt.targetCategory || card.category;
-    drawCard();
-    addLog(`${card.name}: drew 1 card. Discarding ${card.name}.`);
-    triggerOldCardDiscard(card, cat);
-    return;
-  }
-
   // Stack bonus (no replacement)
   if (opt.effect === 'stack_bonus') {
     G.categories[cat].stack.push(card);
@@ -792,8 +775,7 @@ function resolveEventCard(card, opt) {
       const cats = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3];
       cats.forEach(cat => {
         const r = G.categories[cat].stack.splice(0, 1)[0];
-        G.deck.push(r);
-        addLog(`${r.name} removed from ${cap(cat)} stack → bottom of deck.`);
+        if (r) { G.deck.push(r); addLog(`${r.name} removed from ${cap(cat)} stack → bottom of deck.`); }
       });
       G.deck.push(card);
       addLog(`${card.name} placed at bottom of deck.`);
@@ -805,8 +787,7 @@ function resolveEventCard(card, opt) {
       const cats = [opt.sourceCategory1, opt.sourceCategory2, opt.sourceCategory3, opt.sourceCategory4];
       cats.forEach(cat => {
         const r = G.categories[cat].stack.splice(0, 1)[0];
-        G.deck.push(r);
-        addLog(`${r.name} removed from ${cap(cat)} stack → bottom of deck.`);
+        if (r) { G.deck.push(r); addLog(`${r.name} removed from ${cap(cat)} stack → bottom of deck.`); }
       });
       G.deck.push(card);
       addLog(`${card.name} placed at bottom of deck.`);
@@ -818,11 +799,9 @@ function resolveEventCard(card, opt) {
       const cat1 = opt.sourceCategory1;
       const cat2 = opt.sourceCategory2;
       const r1 = G.categories[cat1].stack.splice(0, 1)[0];
-      G.deck.push(r1);
-      addLog(`${r1.name} removed from ${cap(cat1)} stack → bottom of deck.`);
+      if (r1) { G.deck.push(r1); addLog(`${r1.name} removed from ${cap(cat1)} stack → bottom of deck.`); }
       const r2 = G.categories[cat2].stack.splice(0, 1)[0];
-      G.deck.push(r2);
-      addLog(`${r2.name} removed from ${cap(cat2)} stack → bottom of deck.`);
+      if (r2) { G.deck.push(r2); addLog(`${r2.name} removed from ${cap(cat2)} stack → bottom of deck.`); }
       G.deck.push(card);
       addLog(`${card.name} placed at bottom of deck.`);
       afterCardResolved();
@@ -1397,32 +1376,6 @@ function resolveAusterityClearPile(cat) {
 }
 
 
-
-
-// ── Managed Decline: newest resource picker ───────────────────────────────────
-
-
-
-// ── Managed Decline: instability picker (chains to deck placement) ────────────
-
-
-
-// ── Rationalization: strip stack to oldest + clear instability pile ────────────
-
-
-
-// ── Rationalization: remove 3 from one stack + 2 instability from one pile ───
-
-
-
-
-
-// ── Austerity: pick 3 resources then clear one pile ───────────────────────────
-
-
-
-
-
 function showStackOnAnyModal(card, bonusValue, choices = null) {
   const cats = choices || CATEGORIES;
   if (cats.length === 1) { resolveStackOnAny(cats[0]); return; }
@@ -1650,16 +1603,6 @@ function resolveRemoveStackCard(idx) {
     }
     G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, afterStackOn: targetCategory };
     render(); showDiscardHandModal(card, count); return;
-  } else if (type === 'remove_stack_discard_hand_stack') {
-    const count = Math.min(1, G.hand.length);
-    if (!count) {
-      G.pendingAction = null;
-      G.categories[targetCategory].stack.push(card);
-      addLog(`${card.name} (+${card.value}) placed on ${cap(targetCategory)} stack.`);
-      afterCardResolved(); return;
-    }
-    G.pendingAction = { type: 'discard_hand_cards', card, remaining: count, afterStackOn: targetCategory };
-    render(); showDiscardHandModal(card, count); return;
   } else if (type === 'remove_stack_place_on_category') {
     const tgtCat = G.pendingAction.targetCategory;
     const val = G.pendingAction.bonusValue !== undefined ? G.pendingAction.bonusValue : card.value;
@@ -1700,36 +1643,6 @@ function resolveRemoveStackCard(idx) {
   }
 }
 
-function showPlaceSelfModal(card, tgtCat) {
-  const color = CAT_COLORS[tgtCat];
-  openModal(`
-    <div class="modal-card-name">${card.name}</div>
-    <p class="modal-sub">Place this card in your ${cap(tgtCat)} Stack?</p>
-    <div class="opt-list">
-      <button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolvePlaceSelf(true)">
-        <strong style="color:${color}">Yes — Stack on ${cap(tgtCat)}</strong>
-        <small>+${card.value} to ${cap(tgtCat)} score</small>
-      </button>
-      <button class="opt-btn" onclick="resolvePlaceSelf(false)">
-        <strong>No — Shuffle into deck</strong>
-        <small>Card returns to draw deck</small>
-      </button>
-    </div>
-  `);
-}
-
-function resolvePlaceSelf(place) {
-  closeModal();
-  const { card, targetCategory } = G.pendingAction;
-  G.pendingAction = null;
-  if (place) {
-    G.categories[targetCategory].stack.push(card);
-    addLog(`${card.name} (+${card.value}) placed on ${targetCategory} stack.`);
-  } else {
-    applyCardSelfDiscard(card);
-  }
-  afterCardResolved();
-}
 
 function showRemoveLowestInstabilityModal(card) {
   const cats = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
@@ -1841,7 +1754,7 @@ function showMoveResourceSrcModal(card) {
       <small>Move ${newest.name} (+${newest.value})</small>
     </button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Move the newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Move the newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
 }
 
 function resolveMoveResourceSrc(srcCat) {
@@ -1858,7 +1771,7 @@ function resolveMoveResourceSrc(srcCat) {
       <small>Alongside ${existing.name} (+${existing.value})</small>
     </button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Move <strong>${movedCard.name} (+${movedCard.value})</strong> to which stack?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Move <strong>${movedCard.name} (+${movedCard.value})</strong> to which stack?</p><div class="opt-list">${btns}</div>`);
 }
 
 function resolveMoveResourceTgt(tgtCat) {
@@ -1885,7 +1798,7 @@ function showMoveNewestResSrcModal(card) {
       <small>Move ${newest.name} (+${newest.value})</small>
     </button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Move the newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Move the newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
 }
 
 function resolveMoveNewestResSrc(srcCat) {
@@ -1904,7 +1817,7 @@ function resolveMoveNewestResSrc(srcCat) {
       <small>${stackInfo}</small>
     </button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Move <strong>${movedCard.name} (+${movedCard.value})</strong> to which stack?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Move <strong>${movedCard.name} (+${movedCard.value})</strong> to which stack?</p><div class="opt-list">${btns}</div>`);
 }
 
 function resolveMoveNewestResTgt(tgtCat) {
@@ -1931,7 +1844,7 @@ function showMoveNewestInstabSrcModal(card) {
       <small>Move ${newest.name} (−${newest.value})</small>
     </button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Move the newest instability from which pile?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Move the newest instability from which pile?</p><div class="opt-list">${btns}</div>`);
 }
 
 function resolveMoveNewestInstabSrc(srcCat) {
@@ -1946,7 +1859,7 @@ function resolveMoveNewestInstabSrc(srcCat) {
       <strong style="color:${color}">${cap(cat)}</strong>
     </button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Move <strong>${movedCard.name} (−${movedCard.value})</strong> to which instability pile?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Move <strong>${movedCard.name} (−${movedCard.value})</strong> to which instability pile?</p><div class="opt-list">${btns}</div>`);
 }
 
 function resolveMoveNewestInstabTgt(tgtCat) {
@@ -1972,7 +1885,7 @@ function showMvrInstabResSrcModal(card) {
     return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMvrInstabResSrc('${cat}')">
       <strong style="color:${color}">${cap(cat)}</strong><small>Move ${newest.name} (+${newest.value})</small></button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Move newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Move newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
 }
 function resolveMvrInstabResSrc(srcCat) {
   closeModal();
@@ -1985,7 +1898,7 @@ function resolveMvrInstabResSrc(srcCat) {
     return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMvrInstabResTgt('${cat}')">
       <strong style="color:${color}">${cap(cat)}</strong><small>${top ? top.name : 'empty'}</small></button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Move <strong>${movedCard.name} (+${movedCard.value})</strong> to which stack?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Move <strong>${movedCard.name} (+${movedCard.value})</strong> to which stack?</p><div class="opt-list">${btns}</div>`);
 }
 function resolveMvrInstabResTgt(tgtCat) {
   closeModal();
@@ -2011,7 +1924,7 @@ function showMvrInstabInstabSrcModal() {
     return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMvrInstabInstabSrc('${cat}')">
       <strong style="color:${color}">${cap(cat)}</strong><small>Move ${newest.name} (−${newest.value})</small></button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Move newest instability from which pile?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Move newest instability from which pile?</p><div class="opt-list">${btns}</div>`);
 }
 function resolveMvrInstabInstabSrc(srcCat) {
   closeModal();
@@ -2023,7 +1936,7 @@ function resolveMvrInstabInstabSrc(srcCat) {
     return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveMvrInstabInstabTgt('${cat}')">
       <strong style="color:${color}">${cap(cat)}</strong></button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Move <strong>${movedInstab.name} (−${movedInstab.value})</strong> to which pile?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Move <strong>${movedInstab.name} (−${movedInstab.value})</strong> to which pile?</p><div class="opt-list">${btns}</div>`);
 }
 function resolveMvrInstabInstabTgt(tgtCat) {
   closeModal();
@@ -2048,7 +1961,7 @@ function showRmrInstabResSrcModal(card) {
     return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveRmrInstabResSrc('${cat}')">
       <strong style="color:${color}">${cap(cat)}</strong><small>Remove ${newest.name} (+${newest.value})</small></button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Remove newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Remove newest resource from which stack?</p><div class="opt-list">${btns}</div>`);
 }
 function resolveRmrInstabResSrc(srcCat) {
   closeModal();
@@ -2072,7 +1985,7 @@ function showRmrInstabInstabSrcModal() {
     return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="resolveRmrInstabInstabSrc('${cat}')">
       <strong style="color:${color}">${cap(cat)}</strong><small>Remove ${newest.name} (−${newest.value})</small></button>`;
   }).join('');
-  showModal(`<p class="modal-sub">Remove newest instability from which pile?</p><div class="opt-list">${btns}</div>`);
+  openModal(`<p class="modal-sub">Remove newest instability from which pile?</p><div class="opt-list">${btns}</div>`);
 }
 function resolveRmrInstabInstabSrc(srcCat) {
   closeModal();
@@ -2093,10 +2006,6 @@ function resolveRmrInstabInstabSrc(srcCat) {
 
 
 
-
-// ── Chain: move newest resource → move newest instability ────────────────────
-
-// ── Chain: remove newest resource → remove newest instability ────────────────
 
 function showReplaceOrStackModal(card, cat) {
   // Always replace automatically — no modal needed
@@ -2432,14 +2341,8 @@ function passTurn() {
   const drawn = drawCard();
   if (!drawn) { endTurn(); return; }
 
-  if (drawn.mustPlayWhenDrawn) {
-    // drawCard() already set mustPlayEventId + selectedCardIndex
-    render();
-  } else if (drawn.type === 'event' && drawn.subtype === 'hazard') {
-    G.mustPlayEventId = drawn.instanceId;
-    G.selectedCardIndex = G.hand.length - 1;
-    G.selectedOption = firstEligibleOption(drawn);
-    addLog(`${drawn.name} is a hazard — must be resolved before turn ends.`);
+  if (drawn.mustPlayWhenDrawn || drawn.subtype === 'hazard') {
+    // drawCard() already set mustPlayEventId, selectedCardIndex, and logged
     render();
   } else {
     endTurn();
@@ -2580,7 +2483,6 @@ function renderHand() {
       <div class="hc-effects">${effectSummary}</div>
       ${card.requires ? `<div class="hc-req-tag">${buildReqText(card)}</div>` : ''}
       ${card.mustPlayWhenDrawn ? '<div class="hc-must-play">⚠ Must play when drawn</div>' : ''}
-      ${card.mustPlayWhenDrawn ? '<div class="hc-must-play">⚠ Must play when drawn</div>' : ''}
       ${!playable ? '<div class="hc-unplayable">Select to discard</div>' : ''}
       <div class="hc-flavor">${card.flavorText || ''}</div>
       <div class="hc-opt-btns">${optBtns}</div>
@@ -2655,6 +2557,11 @@ function renderDetailFrame(card, color, location, readonly) {
       <span class="detail-section-label">Must Be Played When Drawn</span>
     </div>` : '';
 
+  const benefitHTML = card.benefit ? `
+    <div class="detail-benefit">
+      <span class="detail-section-label">Identity Benefit</span>
+      <div>Adds up to ${card.benefit.count} ${cap(card.benefit.resourceCategory)} resource card${card.benefit.count > 1 ? 's' : ''} from the deck to your hand when played.</div>
+    </div>` : '';
 
   const reqHTML = card.requires ? `
     <div class="detail-requires ${canPlayCard(card) ? 'req-met' : 'req-unmet'}">
@@ -2706,8 +2613,6 @@ function renderDetailFrame(card, color, location, readonly) {
         </div>
         ${card.value > 0 ? `<div class="detail-value" style="color:${color}">+${card.value}</div>` : ''}
       </div>
-      ${mustPlayHTML}
-      ${benefitHTML}
       ${mustPlayHTML}
       ${benefitHTML}
       ${reqHTML}
@@ -3052,8 +2957,6 @@ function estimateOptionDelta(card, opt) {
   if (eff === 'remove_three_from_stack_remove_two_instab') return -2;
   if (eff === 'remove_one_from_each_stack_and_each_instab') return -3;
   if (eff === 'remove_three_resources_clear_one_pile') return -1;
-  if (eff === 'remove_three_resources_clear_one_pile') return -1;
-  if (eff === 'remove_two_resources_remove_instability_shuffle_self') return 0;
 
   // Managed / rationalize / austerity — complex but self-shuffling
   if (eff === 'managed') return 2;
@@ -3571,18 +3474,9 @@ function closeLibrary() {
 // ─── Global onclick bridges (for inline onclick in innerHTML) ─────────────────
 
 window.resolvePickAnyResource = resolvePickAnyResource;
-window.resolvePickAnyResource = resolvePickAnyResource;
-window.toggleHandMinimize = toggleHandMinimize;
 window.toggleHandMinimize = toggleHandMinimize;
 window.discardUnplayable = discardUnplayable;
 window.pickDiscardHand = pickDiscardHand;
-window.pickDiscardHand = pickDiscardHand;
-window.discardUnplayable = discardUnplayable;
-window.passTurn = passTurn;
-window.togglePanel = togglePanel;
-window.togglePanelMinimize = togglePanelMinimize;
-window.selectCardWithOption = selectCardWithOption;
-
 window.passTurn = passTurn;
 window.togglePanel = togglePanel;
 window.togglePanelMinimize = togglePanelMinimize;
@@ -3618,23 +3512,20 @@ window.resolveRationalizeRes = resolveRationalizeRes;
 window.resolveRationalizeInstab = resolveRationalizeInstab;
 window.resolveAusterityRes = resolveAusterityRes;
 window.resolveAusterityClearPile = resolveAusterityClearPile;
-window.resolvePickNewestResource = resolvePickNewestResource;
-window.resolveManagedInstab = resolveManagedInstab;
-window.resolveStripStack = resolveStripStack;
-window.resolveRationalizeRes = resolveRationalizeRes;
-window.resolveRationalizeInstab = resolveRationalizeInstab;
-window.resolveAusterityRes = resolveAusterityRes;
-window.resolveAusterityClearPile = resolveAusterityClearPile;
 window.resolveRemoveStackCard = resolveRemoveStackCard;
-window.resolvePlaceSelf = resolvePlaceSelf;
 window.resolveReplaceOrStack = resolveReplaceOrStack;
-window.resolveTakeResource = resolveTakeResource;
-window.resolveRemoveLowestInstability = resolveRemoveLowestInstability;
-window.resolveMoveInstabilitySrc = resolveMoveInstabilitySrc;
-window.resolveMoveInstabilityDest = resolveMoveInstabilityDest;
-window.resolveRemoveStackCard = resolveRemoveStackCard;
-window.resolvePlaceSelf = resolvePlaceSelf;
-window.resolveReplaceOrStack = resolveReplaceOrStack;
+window.resolveMoveNewestInstabTgt = resolveMoveNewestInstabTgt;
+window.resolveMvrInstabInstabTgt = resolveMvrInstabInstabTgt;
+window.resolveMoveResourceSrc = resolveMoveResourceSrc;
+window.resolveMoveResourceTgt = resolveMoveResourceTgt;
+window.resolveMoveNewestResSrc = resolveMoveNewestResSrc;
+window.resolveMoveNewestResTgt = resolveMoveNewestResTgt;
+window.resolveMoveNewestInstabSrc = resolveMoveNewestInstabSrc;
+window.resolveMvrInstabResSrc = resolveMvrInstabResSrc;
+window.resolveMvrInstabResTgt = resolveMvrInstabResTgt;
+window.resolveMvrInstabInstabSrc = resolveMvrInstabInstabSrc;
+window.resolveRmrInstabResSrc = resolveRmrInstabResSrc;
+window.resolveRmrInstabInstabSrc = resolveRmrInstabInstabSrc;
 window.resolveTakeResource = resolveTakeResource;
 window.resolveRemoveLowestInstability = resolveRemoveLowestInstability;
 window.resolveMoveInstabilitySrc = resolveMoveInstabilitySrc;
@@ -3644,8 +3535,6 @@ window.toggleAutoplay = toggleAutoplay;
 window.setAutoSpeed = setAutoSpeed;
 window.setAutoMode = setAutoMode;
 window.resetAutoStats = resetAutoStats;
-window.startBatchRun = startBatchRun;
-window.exportAutoStats = exportAutoStats;
 window.startBatchRun = startBatchRun;
 window.exportAutoStats = exportAutoStats;
 window.showLibrary = showLibrary;
