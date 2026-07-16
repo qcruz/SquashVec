@@ -102,6 +102,8 @@ Core principles from `docs/design.md` — internalize these before proposing any
 > **No card may be added to or modified in `js/cards.js` without explicit owner confirmation.**
 > New ideas go to `docs/planned-cards.md` first.
 
+> **This includes balance-motivated redesigns.** Even if a card's mechanics appear problematic (e.g. `allIdentitiesActive` conditions, `remove_one_from_each_stack` penalties), do NOT change the card design as a side effect of a balance or bug-fix session. Propose the change separately and wait for explicit approval. The correct balance lever is deck composition (STARTER_DECK counts), not card redesign.
+
 When implementing a confirmed card:
 1. Check `docs/effects-reference.md` — use an existing effect if possible
 2. If a new effect is needed, implement it in `js/game.js` and document it in `docs/effects-reference.md`
