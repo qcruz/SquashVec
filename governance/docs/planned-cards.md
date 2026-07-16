@@ -110,20 +110,20 @@ Cards representing civilization-level problem-solving doctrines. All are Governa
 
 | # | Name | Status | Concept |
 |---|------|--------|---------|
-| 1 | Consolidation | `✅ Implemented` | Opt 1: Take oldest 2 instability from one category → deck. Opt 2: Take oldest instability from each of 2 categories → deck. |
-| 2 | Structural Consolidation | `✅ Implemented` | Opt 1: Pay 1 Governance resource, take oldest 2 instability from any category. Opt 2: Move oldest instability from one category to another. |
-| 3 | Managed Decline | `✅ Implemented` | Opt 1: Discard 2 hand cards, shuffle self. Opt 2: Pay 1 Governance resource, take oldest 1 instability from any category. |
-| 4 | Rationalization | `✅ Implemented` | Opt 1: Draw 2 cards, discard self. Opt 2: Take lowest-value instability from any category, discard self. |
-| 5 | Austerity | `✅ Implemented` | Opt 1: Pay 1 Economy resource, take oldest 3 instability from any category. Opt 2: Pay 1 Governance resource, take oldest 2 instability. |
+| 1 | Consolidation | `✅ Implemented` | **Redesigned S5.** Opt 1: Move newest resource (any→any). Opt 2: Move newest instability (any→any). Both shuffle self. |
+| 2 | Structural Consolidation | `✅ Implemented` | **Redesigned S5.** Opt 1: Move newest resource + newest instability (any→any). Opt 2: Remove newest resource + newest instability → deck. Both shuffle self. |
+| 3 | Managed Decline | `✅ Implemented` | **Redesigned S5.** Opt 1: Pay newest from 2 stacks, remove 1 instability. Opt 2: Pay oldest from all stacks, remove 2 instabilities. Both to deck. |
+| 4 | Rationalization | `✅ Implemented` | **Redesigned S5.** Opt 1 (Strip to Core): Remove all resources except oldest + all instabilities except one from chosen category. Opt 2 (Aggressive Cuts): Remove 3 oldest from any stack + 2 oldest from any pile. Both to deck. |
+| 5 | Austerity | `✅ Implemented` | **Redesigned S5.** Opt 1 (Broad): Remove 1 oldest resource + 1 oldest instability from every non-empty category (immediate). Opt 2 (Shock): Pay newest from 3 stacks; clear one pile entirely. Both to deck. |
 
 ### Contingency Planning Family
 
 | # | Name | Status | Concept |
 |---|------|--------|---------|
-| 6 | Preparedness | `✅ Implemented` | (Contingency Planning already exists; this variant.) Opt 1: Draw 2. Opt 2: Draw 1. Both shuffle self into deck. |
-| 7 | Crisis Protocol | `✅ Implemented` | Opt 1: Take oldest instability from any category. Opt 2: Take oldest instability from each of 2 categories. Both shuffle self. |
+| 6 | Preparedness | `✅ Implemented` | **Redesigned S5** — see cards.js for current effect. |
+| 7 | Crisis Protocol | `✅ Implemented` | Opt 1: Take oldest instability from any category. Opt 2: Take oldest instability from each of 2 different categories. Both shuffle self. |
 | 8 | Grand Strategy | `✅ Implemented` | Opt 1: Draw 2. Opt 2: Pay 1 Military resource, take oldest 2 instability from any category. Both shuffle self. |
-| 9 | Redundancy Systems | `✅ Implemented` | Opt 1: Discard 1 hand card, shuffle self. Opt 2: Pay 1 Technology resource, take oldest 2 instability from any category. |
+| 9 | Redundancy Systems | `✅ Implemented` | **Updated S5.** Opt 1: Move newest resource from any stack to any stack with exactly 1 resource. Opt 2: Pay 1 Technology resource, remove 2 instability. Both shuffle self. |
 | 10 | Adaptive Management | `✅ Implemented` | Opt 1: Take oldest instability from any category. Opt 2: Pay 1 Governance resource, stack +2 on any category. Both shuffle self. |
 
 ---
@@ -160,13 +160,32 @@ Cards that have been approved and added to cards.js. Kept here for reference.
 | Rich Soil | Environment | Stacking resource +1. |
 | Natural Springs | Environment | Stacking resource +1. |
 | Coastal Fisheries | Environment | Stacking resource +1. |
-| Consolidation | Governance | Utility. Take oldest instability from one or two category piles. Shuffles to deck. |
-| Structural Consolidation | Governance | Utility. Pay Governance resource to remove instability, or move instability between categories. |
-| Managed Decline | Governance | Utility. Discard 2 hand cards, or pay Governance resource to remove instability. |
-| Rationalization | Governance | Utility. Draw 2 cards, or remove lowest-value instability. Single-use (goes to discard). |
-| Austerity | Governance | Utility. Pay Economy (remove 3 instability) or Governance (remove 2 instability). |
-| Preparedness | Governance | Utility. Draw 2 or Draw 1. Always shuffles back to deck. |
+| Consolidation | Governance | Utility (redesigned S5). Move newest resource or newest instability any→any. |
+| Structural Consolidation | Governance | Utility (redesigned S5). Move or remove newest resource + newest instability. |
+| Managed Decline | Governance | Utility (redesigned S5). Pay newest from 2 stacks + remove instability; or pay oldest from all + remove 2 instabilities. |
+| Rationalization | Governance | Utility (redesigned S5). Strip to Core (remove all but oldest resource + clear instabilities), or Aggressive Cuts (3 resources + 2 instabilities). |
+| Austerity | Governance | Utility (redesigned S5). Broad (auto-remove 1 oldest from everything) or Shock Treatment (pay 3 newest resources, clear one pile). |
+| Preparedness | Governance | Utility (redesigned S5 — see cards.js for current effect). |
 | Crisis Protocol | Governance | Utility. Remove 1 instability (shuffle self), or remove 1 from each of 2 categories. |
 | Grand Strategy | Governance | Utility. Draw 2, or pay Military resource to remove 2 instability. |
-| Redundancy Systems | Governance | Utility. Discard 1 hand card (shuffle self), or pay Technology resource to remove 2 instability. |
+| Redundancy Systems | Governance | Utility (updated S5). Move newest resource to sparse stack; or pay Technology to remove 2 instability. |
 | Adaptive Management | Governance | Utility. Remove 1 instability (shuffle self), or pay Governance to stack +2 on any category. |
+| Labor Shortage | Economy | Hazard +2 (S5). Pay 1 Economy → bottom of deck; else Economy instability. |
+| Population Decline | Economy/Culture | Hazard +3 (S5). Pay Economy + Culture → bottom of deck; else choice of Economy/Culture instability. |
+| Immigration | Economy/Culture | Event +2 (S5). Stack on Economy free; or stack on Culture + discard 1 hand card. Discards to Governance instability. |
+| Crime | Economy/Military | Hazard +2 (S5). Pay 1 Governance → bottom of deck; else choice of Economy/Military instability. |
+| Criminal Conspiracy | Governance/Military | Hazard +3 (S5). Pay Governance + Military → bottom of deck; or discard 1 hand card → Governance instability. Arc: harder when Crime in instability. |
+| Organized Crime | Governance/Military/Economy | Hazard +4 (S5). Standard: pay Gov+Mil+Eco; escalated (if criminal_conspiracy in instability): pay Gov+Mil+Eco+Tech. Or discard 2 hand cards. Always Governance instability. |
+| Restitution | Governance | Utility +1 (S5). Remove 2 resources + instability → deck; or remove 1 resource + instability → discard. |
+| Insider Trading | Technology/Economy | Hazard +3 (S5). |
+| State Capture | Governance | Hazard +3 (S5). |
+| Cultural Purge | Culture/Governance | Hazard +3 (S5). |
+| Treason | Governance/Military | Hazard +3 (S5). |
+| Sabotage | Technology | Hazard +1 (S5). |
+| Pollution | Environment/Economy | Hazard +3 (S5). |
+| Forest Fire | Environment | Hazard +3, must-play (S5). Take env instability; or pay 1 Technology → avoid. |
+| Environmental Collapse | Environment | Hazard +4, must-play (S5). Pay 2 Economy + 2 Technology → deck; or clear all env stack resources → env instability. |
+| Misinformation | Technology | Hazard +2 (S5). Technology instability. |
+| Surveillance State | Technology/Economy | Hazard +3 (S5). Targets Economy instability. |
+| Cyber Warfare | Technology | Hazard +3 (S5). Technology instability. |
+| Technological Collapse | Technology | Hazard +4, must-play (S5). Technology instability. |

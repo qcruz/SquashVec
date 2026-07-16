@@ -24,6 +24,11 @@ Take the oldest resource from own category stack, then stack this card's value o
 - `choices: string[]` — **required** — 2 category names the player may choose between. Design rule: all cards must specify choices; open "any category" is not permitted.
 - *(stack value comes from the card's `value` field)*
 
+**`stack_on_category_then_discard_hand`**
+Stack this card on a specific category, then player discards 1 card from hand.
+- `targetCategory: string`
+- *Used by: Immigration Opt 2 — stack on Culture, then discard 1 hand card*
+
 **Design rule — stack destination choices:**
 All stacking cards that redirect to another category must declare exactly 2 choices from the following pairings. The player picks one:
 
@@ -61,7 +66,7 @@ Player picks a source category then a destination; oldest instability card is mo
 
 ### Resource Costs (Stack Removal)
 
-> Resource costs always take the **oldest** card from the stack — no player choice.
+> Resource costs take either the **oldest** (default) or **newest** card from the stack, depending on the `stackEnd` parameter.
 
 **`remove_stack_card_then_remove_instability`**
 Take the oldest resource from `sourceCategory` stack → deck. Then remove N instability from any category → deck.
@@ -100,10 +105,11 @@ Player chooses (optionally filtered) instability pile; removes oldest card → d
 - *Requires: matching instability pile has ≥ 1 card*
 
 **`remove_stack_card_then_stack_on_category`**
-Take the oldest resource from `sourceCategory` stack → deck. Place this card on `targetCategory` stack.
+Take the oldest (or newest) resource from `sourceCategory` stack → deck. Place this card on `targetCategory` stack.
 - `sourceCategory: string`
 - `targetCategory: string`
 - `bonusValue?: number` — if set, overrides card's own value when placed on the stack
+- `stackEnd?: 'newest'` — if set, takes the newest card instead of oldest
 - *Requires: `G.categories[sourceCategory].stack.length >= 1`*
 
 **`remove_stack_card_then_remove_n_from_stack`**
@@ -125,6 +131,93 @@ Take the oldest resource from `sourceCategory` stack → deck. Player chooses to
 - `sourceCategory: string`
 - `targetCategory: string`
 - *Requires: `G.categories[sourceCategory].stack.length >= 1`*
+
+---
+
+### Multi-Stack Resource Costs (hazard mitigation chains)
+
+**`remove_two_stack_cards_then_bottom`**
+Auto-takes oldest card from each of 2 specified stacks → deck. Card goes to bottom of deck.
+- `stacks: string[]` — array of exactly 2 category names (may repeat if needing 2 from same category)
+- *Requires: each named category stack ≥ 1 (or ≥ 2 if same category appears twice)*
+- *Used by: Population Decline Opt 1*
+
+**`remove_three_stack_cards_then_bottom`**
+Auto-takes oldest card from each of 3 specified stacks → deck. Card goes to bottom of deck.
+- `stacks: string[]` — array of exactly 3 category names
+- *Requires: each named category meets count requirements*
+- *Used by: Organized Crime Opt 1 (standard)*
+
+**`remove_four_stack_cards_then_bottom`**
+Auto-takes oldest card from each of 4 specified stacks → deck. Card goes to bottom of deck.
+- `stacks: string[]` — array of exactly 4 category names
+- *Used by: Organized Crime Opt 1 (escalated, when `criminal_conspiracy` is in instability)*
+
+---
+
+### Resource Movement (Move Without Removal)
+
+**`move_newest_resource_to_sparse_stack`**
+Two-step modal: player picks a source stack (≥ 1 card), then a target stack with **exactly 1** card (different from source). The newest (top) card moves from source to target. Card goes to bottom of deck.
+- *Grayed out if no valid source+target pair exists*
+- *Used by: Redundancy Systems Opt 1*
+
+**`move_newest_resource_any`**
+Two-step modal: player picks any source stack (≥ 1), then any target stack (different from source). The newest resource moves source → target. Card shuffles to deck.
+- *Used by: Consolidation Opt 1*
+
+**`move_newest_instability_any`**
+Two-step modal: player picks any source instability pile (≥ 1), then any target pile (different). The newest (top) instability card moves source → target. Card shuffles to deck.
+- *Used by: Consolidation Opt 2*
+
+**`move_newest_resource_then_move_newest_instability`**
+Chain: move newest resource (any → any), then move newest instability (any → any). Card shuffles to deck.
+- *Requires: at least one valid resource move pair AND at least one valid instability move pair*
+- *Used by: Structural Consolidation Opt 1*
+
+**`remove_newest_resource_then_remove_newest_instability`**
+Chain: remove newest resource from any chosen stack → deck, then remove newest instability from any chosen pile → deck. Card shuffles to deck.
+- *Used by: Structural Consolidation Opt 2*
+
+---
+
+### Multi-Stack Removal (Management Philosophy)
+
+**`remove_two_newest_resources_remove_instability`**
+Three-step chain: player picks 2 stacks; removes newest resource from each → deck. Then picks 1 instability pile; removes oldest card → deck. Card to deck.
+- *Used by: Managed Decline Opt 1*
+
+**`remove_all_oldest_then_remove_two_instability`**
+Immediate + modal chain: auto-removes oldest resource from every non-empty stack → deck. Then player picks 2 instability cards to remove → deck. Card to deck.
+- *Used by: Managed Decline Opt 2*
+
+**`strip_stack_to_oldest_and_instab`**
+Two-step: player picks a stack with 2+ resources. Removes all resources except the oldest → deck. Also removes all instabilities from that category's pile except one (keeps oldest) → deck. Card to deck.
+- *Grayed out if no stack has 2+ resources*
+- *Used by: Rationalization Opt 1*
+
+**`remove_three_from_stack_remove_two_instab`**
+Two-step: player picks any stack; removes up to 3 oldest → deck. Player picks any instability pile; removes up to 2 oldest → deck. Card to deck.
+- *Always eligible*
+- *Used by: Rationalization Opt 2*
+
+**`remove_one_from_each_stack_and_each_instab`**
+Fully immediate, no modals. Loops all 6 categories; removes oldest resource from each non-empty stack → deck AND oldest instability from each non-empty pile → deck. Card to deck.
+- *Used by: Austerity Opt 1*
+
+**`remove_three_resources_clear_one_pile`**
+Chain: player picks 3 stacks (newest resource from each → deck). Then player picks one instability pile — all instabilities cleared → deck. Card to deck.
+- *Used by: Austerity Opt 2*
+
+**`remove_all_from_stack_shuffle_self`**
+Player picks any stack; removes all resource cards from it → deck. This card shuffles into the deck.
+- *Used by: Rationalization family variants*
+
+**`remove_all_from_stack_place_in_instability`**
+Remove all resources from a specified stack → deck. Place this card in the specified instability pile.
+- `targetStack: string` — category whose stack is cleared
+- `targetInstability: string` — instability destination
+- *Used by: Environmental Collapse Opt 2*
 
 ---
 
@@ -152,6 +245,9 @@ Player picks N cards from hand to discard. Then shuffles this card into the deck
 
 **`draw_and_shuffle_self`**
 Draw 1 card. Shuffle this card into the deck.
+
+**`draw_and_discard_self`**
+Draw 1 card. Discard this card using `discardTo`.
 
 **`draw_if_hand_small`**
 Draw 2 cards. Uses card's `discardTo` for self-disposal.
@@ -185,10 +281,16 @@ Take a resource card from one of `sourceCategories` and move it to the Economy s
 - `afterEffect?: string` — `'remove_military_discard_self'` requires Military stack ≥ 1
 
 **`discard_self`**
-Simply discard this card. No effect.
+Simply discard this card using `discardTo`. No additional effect.
 
 **`multiplayer_only`**
 Not available in solo play. Card is discarded.
+
+**`replace`**
+Identity card effect — replaces the current active card in `targetCategory`. Takes `costCategory` and `costAmount` for the resource payment.
+- `targetCategory: string`
+- `costCategory: string`
+- `costAmount: number`
 
 ---
 
@@ -198,8 +300,9 @@ Not available in solo play. Card is discarded.
 | Target | Behavior |
 |--------|----------|
 | `shuffle_to_deck` | Card shuffles into the draw deck |
-| `discard_pile` | Card goes to the discard pile |
 | `[category]_instability` | Card goes to that category's instability pile |
+
+> **Note:** There is no `discard_pile` target. All cards cycle — they go to instability or back to the deck. This is a core design constraint.
 
 ### `discardTo` Bonus Values
 - `bonus: 'draw_1'` — draw 1 card after the card is placed
@@ -218,6 +321,15 @@ condition: {
   type: 'category_score_gte',
   category: 'governance',
   value: 14,
+}
+// or
+condition: {
+  type: 'instabilityExists',  // any instability pile has ≥ 1 card
+}
+// or
+condition: {
+  type: 'card_in_instability',  // a specific card ID is in any instability pile
+  cardId: 'criminal_conspiracy',
 }
 ```
 
@@ -240,4 +352,9 @@ These effects are **disabled** (grayed out) when requirements aren't met:
 | `pay_own_stack_then_stack_on_any` | `ownCategory` stack ≥ 1 |
 | `remove_two_military_then_*` | Military stack ≥ 2 |
 | `remove_military_then_*` | Military stack ≥ 1 |
+| `remove_two_stack_cards_then_bottom` | Each named stack meets count requirement |
+| `remove_three_stack_cards_then_bottom` | Each named stack meets count requirement |
+| `remove_four_stack_cards_then_bottom` | Each named stack meets count requirement |
+| `move_newest_resource_to_sparse_stack` | At least one valid (source ≥ 1, target exactly 1) pair |
+| `strip_stack_to_oldest_and_instab` | At least one stack with 2+ resources |
 | All others | Always eligible |

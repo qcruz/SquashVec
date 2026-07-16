@@ -274,30 +274,44 @@
 ---
 
 ## DECK COMPOSITION SUMMARY
-*Exact counts in the starter deck.*
+*Last updated: Session 6, 2026-07-15*
+
+> **Note:** The detailed card-by-card rows above are from Session 3 and are partially stale — many new cards were added in Sessions 4 and 5. The summary counts below reflect the actual current `cards.js` state.
 
 | Type                          | Unique Cards | Copies in Deck |
 |-------------------------------|-------------|----------------|
-| Identity (category) cards     | 54          | 59             |
-| Stacking events               | 41          | 84             |
-| Hazard events (incl. must-play)| 34         | 46             |
-| Utility events                | 21          | 21             |
-| **Total**                     | **—**       | **210**        |
+| Identity (category) cards     | ~45         | ~55            |
+| Stacking events               | ~35         | ~65            |
+| Hazard events (incl. must-play)| ~55        | ~130           |
+| Utility events                | ~30         | ~55            |
+| **Total**                     | **165**     | **303**        |
 
-### By Category
-| Category    | Identities | Stacking | Hazards | Utility | **Total** |
-|-------------|-----------|---------|---------|---------|-----------|
-| Governance  | 10        | 19      | 4       | 10 †    | **43**    |
-| Economy     | 10        | 9 §     | 6       | —       | **25**    |
-| Culture     | 11        | 4       | 5       | 1       | **21**    |
-| Military    | 9         | 9 ‡     | 4       | 3       | **25**    |
-| Technology  | 9         | 7       | 6       | —       | **22**    |
-| Environment | 10        | 32      | 4       | —       | **46**    |
-| Neutral/Any | —         | 3       | 13 ★    | 7       | **23**    |
-| Must-Play   | —         | —       | 4       | —       | **4**     |
-| **Total**   | **59**    | **84**  | **46**  | **21**  | **210**   |
+*Exact per-card counts available from `cards.js` STARTER_DECK array.*
 
-*† 10 management philosophy cards, all Governance utility.*
-*‡ Includes Destabilization ×2 + Direct Attack ×2 (stacking, military category).*
-*§ Includes Sanctions ×1 + Arms Package ×2 (stacking, economy category).*
-*★ Includes Social Upheaval ×2.*
+### Key Additions Since Session 3 (not in rows above)
+| Card | Type | Value | Notes |
+|------|------|-------|-------|
+| Labor Shortage | Hazard | +2 | Economy/Culture |
+| Population Decline | Hazard | +3 | Economy/Culture |
+| Immigration | Event | +2 | Discards to Governance instability |
+| Crime | Hazard | +2 | Arc card #1 |
+| Criminal Conspiracy | Hazard | +3 | Arc card #2; escalates with Crime |
+| Organized Crime | Hazard | +4 | Arc card #3; escalates with Criminal Conspiracy |
+| Restitution | Utility | +1 | Governance recovery |
+| Insider Trading | Hazard | +3 | Technology/Economy |
+| State Capture | Hazard | +3 | Governance |
+| Cultural Purge | Hazard | +3 | Culture/Governance |
+| Treason | Hazard | +3 | Governance/Military |
+| Sabotage | Hazard | +1 | Technology |
+| Pollution | Hazard | +3 | Environment/Economy |
+| Forest Fire | Hazard | +3 | Environment, must-play |
+| Environmental Collapse | Hazard | +4 | Environment, must-play |
+| Misinformation | Hazard | +2 | Technology instability |
+| Surveillance State | Hazard | +3 | Technology/Economy instability |
+| Cyber Warfare | Hazard | +3 | Technology instability |
+| Technological Collapse | Hazard | +4 | Technology instability, must-play |
+
+### WIN/LOSE Thresholds
+- **Win:** Any category reaches **16** points
+- **Lose:** Any category falls to **0** points
+- BASE_SCORE = 10

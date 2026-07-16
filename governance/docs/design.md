@@ -13,7 +13,7 @@
 Games progress through three phases:
 - **Early Game:** Establish active cards in each category.
 - **Mid Game:** Manage instability while upgrading institutions.
-- **Late Game:** Push one or more categories toward 20 while preventing collapse.
+- **Late Game:** Push one or more categories toward 16 while preventing collapse.
 
 ---
 
@@ -21,7 +21,7 @@ Games progress through three phases:
 
 Each player begins with **10 points** in every category.
 
-- **Win:** Any category reaches **20 points**.
+- **Win:** Any category reaches **16 points**.
 - **Lose:** Any category falls to **0 points**.
 
 Multiple categories can win or lose simultaneously.
@@ -42,7 +42,9 @@ Each player maintains six category slots. Each category has:
 | **Culture** | Slow, powerful, hard to stabilize; strong late game |
 | **Military** | Enables disruption; supports Governance; adds Culture instability |
 | **Technology** | Mid-game strength; boosts Military; costly to Culture |
-| **Environment** | Resource base; consumed by Economy and Technology; valuable late game |
+| **Environment** | Resource base for natural world and physical infrastructure; consumed by Economy and Technology |
+
+**Environment design note:** Environment represents both a civilization's relationship with the natural world and the physical infrastructure built on it (roads, rails, settlements, ports). Cards in this category may reference either ecological resources or built infrastructure.
 
 ---
 
@@ -55,10 +57,10 @@ Category Score = 10 (base) + active card value + sum(event stack values) − sum
 Example:
 ```
 Governance
-  Active:     Theocracy (+2)
-  Event stack: Efficient Administration (+2)
+  Active:      Theocracy (+2)
+  Event stack: Efficient Administration (+1)
   Instability: Political Assassination (−2)
-  Score: 10 + 2 + 2 − 2 = 12
+  Score: 10 + 2 + 1 − 2 = 11
 ```
 
 ---
@@ -73,8 +75,9 @@ There are exactly **two card types**: Category Cards and Event Cards.
 
 Category cards represent the foundational institutions of a civilization. **Only one may be active per category at a time.**
 
-- Playing a new category card **replaces** the current active card.
+- Playing a new category card **always replaces** the current active card — no "stack or replace?" prompt.
 - The replaced card is **discarded** — the player chooses where it goes at the moment of replacement, using that card's printed discard options.
+- Identity card Option 1 **automatically removes the oldest instability** from that category before the previous card is discarded (if any instability exists). This resolution order matters: instability is removed first, then the old identity goes to discard.
 - A category card's **value** contributes to that category's score while it is active.
 
 **Card anatomy (all category cards must have):**
@@ -112,6 +115,7 @@ Instability represents accumulated consequences. Cards in the instability pile s
 - Some cards allow instability to be removed or shuffled back into the draw deck.
 - **Governance instability** is generally easier to remove.
 - **Culture instability** is harder to remove but sometimes offers bonuses if accepted.
+- **There is no discard pile.** Cards that leave play go to either the instability pile or back into the draw deck (shuffled or placed at bottom). All cards cycle.
 
 ---
 
@@ -132,13 +136,16 @@ This applies to both category cards being replaced AND event cards being removed
 3. **Resolve** all effects immediately.
 4. **Check** win/lose conditions.
 
+If a player cannot play any card from their hand (all options are ineligible), they may **pass their turn** without playing.
+
 ---
 
 ## Solo Mode
 
 In single-player mode:
 - Each card is designed with at least one option that is always available in solo play.
-- Options that reference "another player" or "an allied player" **cannot be used** in solo play and are clearly marked as multiplayer only.
+- Options that reference "another player" or "an allied player" **cannot be used** in solo play.
+- **Solo multiplayer principle:** Options with comparative conditions (e.g., "if you have the highest Military score") always resolve to the harder outcome in solo — the player is assumed to be at a disadvantage relative to an implied opponent. This makes multiplayer-oriented cards deliberately harder in solo play, which is by design.
 - If no viable option exists for a card, the card has no effect and is discarded.
 
 ---
@@ -150,60 +157,96 @@ When designing new cards, follow these rules:
 1. **Simple arithmetic only.** No tracking of complex variables; scores are always a simple sum.
 2. **All effects resolve immediately.** No delayed or triggered abilities.
 3. **Every card has two play options.** Both options should be meaningful. One should not be strictly better than the other in all situations.
-4. **Discard destinations are on the card.** The card tells you where it can go when removed.
+4. **Discard destinations are on the card.** The card tells you where it can go when removed. No discard pile.
 5. **Every decision creates tradeoffs.** High-value cards should cost something (requires, instability, losing a different card).
 6. **Category cards are the foundation; event cards are the texture.** A civilization's identity is its active category cards.
 7. **Winning should be difficult.** Cards with high values should have high requirements or significant costs.
+8. **No zero-value cards.** All cards in the deck must have value ≥ 1.
+9. **Philosophy/utility cards should implement their concept.** Management philosophy cards in particular should primarily move resources around the board rather than simply discarding them. If a card is named "Consolidation," its options should consolidate something.
+10. **Confirmation required before implementation.** No card may be added to or modified in `js/cards.js` without explicit owner confirmation. Ambiguous requests must be clarified before implementation, not fixed after.
 
 ---
 
-## Category Card Roster (Current)
+## Card Arc Design Principle
 
-| Card | Category | Value | Requires |
-|------|----------|-------|---------|
-| Democracy | Governance | +2 | — |
-| Theocracy | Governance | +2 | — |
-| Alliance | Governance | +2 | — |
-| Healthy Democracy | Governance | +4 | Democracy active + Culture ≥ 15 |
-| Free Trade | Economy | +2 | — |
-| Industrial Expansion | Economy | +4 | — |
-| Green Investment | Economy | +3 | Environment ≥ 14 |
-| Matriarchy | Culture | +2 | — |
-| Patriarchy | Culture | +2 | — |
-| Higher Education | Culture | +3 | — |
-| Renaissance Culture | Culture | +5 | Governance ≥ 16 |
-| Citizen Militia | Military | +1 | — |
-| Warrior Tradition | Military | +3 | — |
-| Practical Innovation | Technology | +1 | — |
-| Centers of Learning | Technology | +2 | — |
-| The Great North | Environment | +1 | — |
-| The Highlands | Environment | +2 | — |
-| The Waterlands | Environment | +2 | — |
-| The Union | Environment | +3 | — |
-| Oceana | Environment | +3 | — |
+Card arcs (escalating cards like Crime → Criminal Conspiracy → Organized Crime) are **multipliers, not dependencies.** A card in an arc:
+- Can always be played and mitigated on its own merits
+- Becomes **harder to mitigate** (higher cost or additional damage) when a related card is already in an instability pile
+- Never requires the previous arc card to be drawn or played first
+
+Example: Organized Crime's standard mitigation costs 3 resources. If Criminal Conspiracy is already in an instability pile, the cost escalates to 4 resources. The lower card amplifies the threat but does not gate it.
 
 ---
 
-## Event Card Roster (Current / Planned)
+## Resource Stack Order as Strategy
 
-| Card | Subtype | Primary Effect | Solo Mode |
-|------|---------|----------------|-----------|
-| Worker Strike | Hazard | Economy Instability −2 | Same |
-| Political Assassination | Hazard | Governance Instability −2 | Same |
-| Flood | Hazard | Environment Instability −2 | Same |
-| Occupation | Utility | Take opponent's Environment card | Draw top card to Economy or Environment |
-| Incursion | Utility | Disrupt opponent's Technology or Economy | Add −1 pressure to chosen category |
-| Cultural Exchange | Utility | Ally removes Culture Instability | If Matriarchy active, remove 1 Culture Instability |
-| Revisionist History | Recovery | Remove oldest card from any Instability pile | Same |
-| Contingency Planning | Recovery | Shuffle 2 instability cards into deck | Same |
-| Inspiring Speech (+1) | Stacking | Stack on any category as +1 | Same |
-| Efficient Administration (+2) | Stacking | Stack on Governance | Remove 1 Governance Instability |
-| Tax Collection (+2) | Stacking | Stack on Economy | Stack on any category as +1 |
-| Cultural Festival (+2) | Stacking | Stack on Culture | Remove 1 Culture Instability |
-| Military Campaign (+2) | Stacking | Stack on Military | Remove 1 Environment Instability |
-| Scientific Breakthrough (+3) | Stacking | Stack on Technology | Stack on any category as +1 |
-| Abundant Harvest (+2) | Stacking | Stack on Environment | Stack on Economy as +2 |
+Resources are added to a stack in play order. The **stack position** of a resource matters:
+
+- **Oldest resources** (bottom of stack) — used as cost by stronger hazard mitigations; long-term foundational investments
+- **Newest resources** (top of stack) — used as cost by lighter management effects; recently acquired, more tactical
+
+Design intent: players who protect valuable resources by playing them early (letting them sink to the bottom) gain resilience against heavy threats. Weak hazards take recent cards; strong hazards tear out foundational ones. Players should think about *when* they play resources, not just *which* ones.
+
+This distinction is reflected in card wording:
+- "Remove the **newest** resource from [stack]" — lighter cost, recent tactical card
+- "Remove the **oldest** resource from [stack]" — heavier cost, foundational card threatened
 
 ---
 
-*Last updated: 2026-07-10 — design doc created from original owner submission + session clarifications*
+## Card Penalty Severity Tiers
+
+A reference guide for card design. Card face value should roughly correspond to the tier of penalty imposed.
+
+| Tier | Penalty |
+|------|---------|
+| 1 | Place card at bottom of deck (card guaranteed to return) |
+| 2 | Gain 1 instability in a player-chosen category |
+| 3 | Gain 1 instability in a fixed category (no choice — harder than Tier 2) |
+| 4 | Discard 1 card from hand |
+| 5 | Lose oldest resource from one stack |
+| 6 | Lose multiple resources (2–3) from one or more stacks |
+| 7 | Discard a card from hand AND take instability |
+| 8 | Lose resources from multiple stacks simultaneously |
+| 9 | Lose your active identity card (not yet implemented) |
+| 10 | Hostile cross-category effects (multiplayer) |
+| 11 | Force opponent to lose identity card (multiplayer) |
+| 12 | WMD-class effects: mutual resource loss + hand loss (multiplayer) |
+
+No discard pile tier exists — consistent with the deck-cycling model. Tiers 10–12 are blocked until multiplayer is built.
+
+---
+
+## Strategic Depth — Core Player Patterns
+
+This section documents the strategic depth the game is designed to reward. Use it as a guide for future card design — every new card should engage at least one of these patterns.
+
+### 1. Resource Stack Management
+Stack order is a form of strategy. A resource played early (bottom of stack) becomes a foundational investment — valuable and harder to dislodge. A resource played late (top of stack) is recent and tactical — cheaper to spend, first to be lost to light pressure. Players should consider *when* to play resources, not just whether to play them. Protecting valuable resources under newer ones allows the stack order to tell the story of the civilization's development.
+
+### 2. Resource Exchange and Timing
+The core decision every turn is whether to spend now, hold for a better opportunity, or redirect. Resources that are spent as costs leave play — this is never "free." High-value cards requiring two or three resources demand planning. Timing matters: spending in mid-game may prevent instability that would be catastrophic in the late game.
+
+### 3. Synergy Optimization
+Some cards reward board states: specific identity combinations, multiple stacks above a threshold, instability in a particular pile. Players who build toward these configurations gain outsized returns. Arc cards (Crime, Criminal Conspiracy) become harder to manage together — players who let one slide may face a compounded crisis later.
+
+### 4. Risk Calibration
+Six categories must be managed simultaneously. Letting one category slide creates pressure: instability in the pile, no resources available for mitigation, and future hazards arrive harder. The best players know which categories to sacrifice temporarily and when to push for a win vs. stabilize.
+
+---
+
+## Balance Guidelines
+
+| Card Type | Typical Cost | Typical Benefit |
+|-----------|-------------|-----------------|
+| Stacking (free) | Nothing | +1 to +2 on own category |
+| Stacking (redirectable) | Pay 1 own resource | +1 on any category |
+| Stacking (cross-category) | Pay 1 other resource | +2 on target category |
+| Utility (single action) | None | Remove 1 instability OR draw 1–2 |
+| Utility (resource cost) | Pay 1 resource | Remove 2–3 instability |
+| Hazard (mitigatable) | Pay 1 resource | Avoid instability pile (card goes to deck) |
+| Hazard (multi-resource) | Pay 2–3 resources | Avoid instability pile |
+| Identity | Pay 1–2 resources | +1 to +5 on category (permanent while active) |
+
+---
+
+*Last updated: 2026-07-15 — full sync from Sessions 5–6 design notes*
