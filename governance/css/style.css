@@ -455,14 +455,14 @@ html, body {
 }
 
 .hc-tag {
-  font-size: 7px;
+  font-size: 9px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   padding: 1px 4px;
   border-radius: 2px;
-  background: rgba(255,255,255,0.06);
-  color: var(--text-dim);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.08);
+  color: var(--text-muted);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
 .hc-tag-hostile {
@@ -480,9 +480,9 @@ html, body {
 .card-tint-green .hc-tag,
 .card-tint-red .hc-tag,
 .card-tint-gold .hc-tag {
-  background: rgba(0,0,0,0.1);
-  color: rgba(0,0,0,0.5);
-  border-color: rgba(0,0,0,0.15);
+  background: rgba(0,0,0,0.12);
+  color: rgba(0,0,0,0.6);
+  border-color: rgba(0,0,0,0.2);
 }
 
 .detail-tags {
@@ -493,14 +493,14 @@ html, body {
 }
 
 .detail-tag {
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 2px 6px;
   border-radius: 3px;
-  background: rgba(255,255,255,0.06);
-  color: var(--text-dim);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.08);
+  color: var(--text-muted);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
 .detail-tag-hostile {
