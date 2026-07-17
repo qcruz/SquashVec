@@ -2520,6 +2520,11 @@ function renderHand() {
       ? `Event${subtypeLabel}`
       : `${cap(card.category || '')} Identity`;
 
+    const tagsHTML = (card.tags || []).map(t => {
+      const cls = t === 'hostile' ? ' hc-tag-hostile' : t === 'event' ? ' hc-tag-event' : '';
+      return `<span class="hc-tag${cls}">${t}</span>`;
+    }).join('');
+
     const effectSummary = (card.options || []).map(o =>
       `<div class="hc-opt"><span class="hc-opt-label">${o.label}:</span> ${o.description}</div>`
     ).join('');
@@ -2537,6 +2542,7 @@ function renderHand() {
         <span class="hc-type">${typeLabel}</span>
         ${card.value > 0 ? `<span class="hc-val-badge">+${card.value}</span>` : ''}
       </div>
+      ${tagsHTML ? `<div class="hc-tags">${tagsHTML}</div>` : ''}
       <div class="hc-name">${card.name}</div>
       <div class="hc-art"></div>
       <div class="hc-effects">${effectSummary}</div>
@@ -2610,6 +2616,13 @@ function renderDetailFrame(card, color, location, readonly) {
     ? `Event Card${subtypeLabel}`
     : `${cap(card.category || '')} Identity`;
 
+  const detailTagsHTML = (card.tags || []).length
+    ? `<div class="detail-tags">${(card.tags).map(t => {
+        const cls = t === 'hostile' ? ' detail-tag-hostile' : t === 'event' ? ' detail-tag-event' : '';
+        return `<span class="detail-tag${cls}">${t}</span>`;
+      }).join('')}</div>`
+    : '';
+
   const isMustPlay = card.mustPlayWhenDrawn || card.subtype === 'hazard';
   const mustPlayHTML = isMustPlay ? `
     <div class="detail-must-play">
@@ -2666,6 +2679,7 @@ function renderDetailFrame(card, color, location, readonly) {
         <div>
           <div class="detail-type">${typeStr}</div>
           <div class="detail-name" style="color:${color}">${card.name}</div>
+          ${detailTagsHTML}
         </div>
         ${card.value > 0 ? `<div class="detail-value" style="color:${color}">+${card.value}</div>` : ''}
       </div>
@@ -3482,6 +3496,10 @@ function showLibrary() {
       const effectSummary = (card.options || []).map(o =>
         `<div class="hc-opt"><span class="hc-opt-label">${o.label}:</span> ${o.description}</div>`
       ).join('');
+      const libTagsHTML = (card.tags || []).map(t => {
+        const cls = t === 'hostile' ? ' hc-tag-hostile' : t === 'event' ? ' hc-tag-event' : '';
+        return `<span class="hc-tag${cls}">${t}</span>`;
+      }).join('');
       const copiesBadge = counts[card.id] > 1
         ? `<div class="lib-copies-badge">×${counts[card.id]}</div>` : '';
       html += `
@@ -3493,6 +3511,7 @@ function showLibrary() {
             <span class="hc-type">${typeLabel}</span>
             ${card.value > 0 ? `<span class="hc-val-badge">+${card.value}</span>` : ''}
           </div>
+          ${libTagsHTML ? `<div class="hc-tags">${libTagsHTML}</div>` : ''}
           <div class="hc-name">${card.name}</div>
           <div class="hc-art"></div>
           <div class="hc-effects">${effectSummary}</div>

@@ -4,6 +4,35 @@
 
 ---
 
+## Session 8 — 2026-07-17
+
+**Focus:** Card tag system — design, implementation, display
+
+### Changes
+- **Added `tags` field to all 285 card objects** in `js/cards.js` (including duplicates)
+  - Tag rules: `identity` (category cards), `resource` (stacking events), `instability` (hazard events), `policy` (utility events)
+  - Special overrides: `hostile` added to direct_attack, arms_package, sanctions, destabilization, occupation, incursion
+  - Must-play hazards get both `instability` + `event`: forest_fire, environmental_collapse, indecisiveness
+  - Mixed tags: military_exercise (`resource` + `policy`); occupation/incursion (`policy` + `hostile`); direct_attack/arms_package/sanctions/destabilization (`resource` + `hostile`)
+  - Single-tag overrides: immigration (`resource`), alliance (`resource`), free_trade_agreement (`resource`), martial_law (`policy`), all management philosophy/diplomacy cards (`policy`)
+- **Added tag rendering to all three card display contexts** in `js/game.js`:
+  - Hand cards (`.hc-tags` with pill spans)
+  - Detail panel (`.detail-tags` under card name)
+  - Library overlay (same `.hc-tags` pill layout)
+- **Added tag CSS** in `css/style.css`:
+  - `.hc-tag` / `.detail-tag` — neutral pill at 7px/8px uppercase
+  - `.hc-tag-hostile` / `.detail-tag-hostile` — red tint
+  - `.hc-tag-event` / `.detail-tag-event` — yellow tint (must-play marker)
+  - Tinted card overrides so pills stay readable on green/red/gold backgrounds
+
+### Deck State
+276 STARTER_DECK slots (unchanged)
+
+### Notes
+- Tag definitions confirmed: resource, instability, identity, policy, structure (unused), global (unused), event (must-play), hostile
+
+---
+
 ## Session 7 — 2026-07-15
 
 **Focus:** Design questions, doc buildout, implement three draft cards
