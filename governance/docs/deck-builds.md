@@ -363,7 +363,14 @@ Win: any category reaches 20 · Lose: any category drops to 0
 | `exchange` | 21 | 12 | Stacking events where all options cost a resource |
 | `hostile` | 9 | 6 | Cards with opponent-facing effects |
 | `event` | 7 | 3 | Must-play when drawn (subset of instability) |
-| **Total occurrences** | **292** | — | *16 slots carry 2 tags* |
+| **Semantic total** | **292** | — | *16 slots carry 2 semantic tags* |
+| | | | |
+| `governance` | 108 | 66 | Cards referencing governance in any field |
+| `economy` | 117 | 78 | Cards referencing economy in any field |
+| `environment` | 81 | 38 | Cards referencing environment in any field |
+| `culture` | 76 | 47 | Cards referencing culture in any field |
+| `military` | 70 | 45 | Cards referencing military in any field |
+| `technology` | 60 | 38 | Cards referencing technology in any field |
 
 ### Tag Distribution by Category
 
@@ -400,6 +407,7 @@ Win: any category reaches 20 · Lose: any category drops to 0
 | Technology | 2 | 18 | 4 | 4 | **27** | 6 |
 | Environment | 2 | 10 | 12 | 5 | 16 | **57** |
 | Cross | 15 | 15 | 11 | 5 | 5 | 4 |
+| **Total** | **108** | **117** | **76** | **70** | **60** | **81** |
 
 *Bold = self-tag (home category). Rows sum to more than Total because one card can carry multiple category tags.*
 
