@@ -356,25 +356,25 @@ Win: any category reaches 20 · Lose: any category drops to 0
 
 | Tag | Slots | Unique Cards | Notes |
 |-----|-------|--------------|-------|
-| `resource` | 103 | 48 | Stacking events — score boosters |
+| `resource` | 81 | 35 | Stacking events with at least one free-stack option |
 | `instability` | 80 | 57 | Hazard events — score threats |
 | `identity` | 58 | 41 | Category cards — permanent base score |
 | `policy` | 36 | 22 | Utility events — board management |
-| `event` | 7 | 3 | Must-play when drawn (subset of instability) |
+| `exchange` | 21 | 12 | Stacking events where all options cost a resource |
 | `hostile` | 9 | 6 | Cards with opponent-facing effects |
-| **Total occurrences** | **293** | — | *17 slots carry 2 tags* |
+| `event` | 7 | 3 | Must-play when drawn (subset of instability) |
+| **Total occurrences** | **292** | — | *16 slots carry 2 tags* |
 
 **Multi-tag cards** (count toward each of their tags):
 
 | Card | Tags | Slots |
 |------|------|-------|
-| Direct Attack | resource + hostile | ×2 |
-| Arms Package | resource + hostile | ×2 |
-| Destabilization | resource + hostile | ×2 |
-| Sanctions | resource + hostile | ×1 |
+| Direct Attack | exchange + hostile | ×2 |
+| Arms Package | exchange + hostile | ×2 |
+| Destabilization | exchange + hostile | ×2 |
+| Sanctions | exchange + hostile | ×1 |
 | Occupation | policy + hostile | ×1 |
 | Incursion | policy + hostile | ×1 |
-| Military Exercise | resource + policy | ×1 |
 | Indecisiveness | instability + event | ×4 |
 | Forest Fire | instability + event | ×2 |
 | Environmental Collapse | instability + event | ×1 |
@@ -431,58 +431,66 @@ Win: any category reaches 20 · Lose: any category drops to 0
 
 ---
 
-### RESOURCE — 103 slots · 48 unique cards
+### RESOURCE — 81 slots · 35 unique cards
+*Free-stack option: card can be placed on a category stack at no cost*
+
+| Count | Name | Value |
+|-------|------|-------|
+| ×4 | Abundant Harvest | +1 |
+| ×2 | Activists | +1 |
+| ×2 | Applied Science | +2 |
+| ×2 | Battle Hardened | +1 |
+| ×1 | Border Fortification | +1 |
+| ×1 | Cartography | +1 |
+| ×2 | Civic Assembly | +1 |
+| ×4 | Coastal Fisheries | +1 |
+| ×1 | Cultural Festival | +2 |
+| ×4 | Dense Forests | +1 |
+| ×1 | Folk Songs | +1 |
+| ×4 | Frozen Tundra | +1 |
+| ×2 | Immigration | +2 |
+| ×2 | Inspiring Speech | +1 |
+| ×2 | Invention Workshop | +1 |
+| ×3 | Land Survey | +1 |
+| ×1 | Market Expansion | +1 |
+| ×1 | Military Campaign | +2 |
+| ×4 | Mineral Deposits | +1 |
+| ×4 | Natural Springs | +1 |
+| ×2 | Oral History | +1 |
+| ×2 | Public Decree | +2 |
+| ×1 | Public Works | +2 |
+| ×4 | Rare Plants | +1 |
+| ×1 | Research Grants | +2 |
+| ×4 | Rich Soil | +1 |
+| ×3 | River Network | +1 |
+| ×2 | Surplus Goods | +1 |
+| ×4 | Tax Decrease | +1 |
+| ×4 | Tax Increase | +2 |
+| ×1 | Trade Delegation | +1 |
+| ×1 | Trade Routes | +2 |
+| ×2 | Trade Surplus | +2 |
+| ×2 | Unions | +1 |
+| ×1 | War Council | +2 |
+
+---
+
+### EXCHANGE — 21 slots · 12 unique cards
+*All options require paying a cost (remove a stack card, discard, etc.) to gain the benefit*
 
 | Count | Name | Value | Notes |
 |-------|------|-------|-------|
-| ×4 | Abundant Harvest | +1 | |
-| ×2 | Activists | +1 | |
 | ×2 | Alliance | +2 | |
-| ×2 | Applied Science | +2 | |
 | ×2 | Arms Package | +2 | also hostile |
 | ×1 | Artistic Movement | +2 | |
-| ×2 | Battle Hardened | +1 | |
-| ×1 | Border Fortification | +1 | |
-| ×1 | Cartography | +1 | |
-| ×2 | Civic Assembly | +1 | |
 | ×1 | Civic Charter | +2 | |
-| ×4 | Coastal Fisheries | +1 | |
-| ×1 | Cultural Festival | +2 | |
-| ×4 | Dense Forests | +1 | |
 | ×2 | Destabilization | +3 | also hostile |
 | ×2 | Direct Attack | +3 | also hostile |
 | ×1 | Efficient Administration | +1 | |
-| ×1 | Folk Songs | +1 | |
-| ×2 | Free Trade Agreement | +1 | |
-| ×4 | Frozen Tundra | +1 | |
-| ×2 | Immigration | +2 | |
-| ×2 | Inspiring Speech | +1 | |
-| ×2 | Invention Workshop | +1 | |
-| ×3 | Land Survey | +1 | |
+| ×2 | Free Trade Agreement | +1 | Opt 1 free if Alliance in stack |
 | ×4 | Loyalists | +1 | |
-| ×1 | Market Expansion | +1 | |
-| ×1 | Military Campaign | +2 | |
-| ×1 | Military Exercise | +1 | also policy |
-| ×4 | Mineral Deposits | +1 | |
-| ×4 | Natural Springs | +1 | |
-| ×2 | Oral History | +1 | |
-| ×2 | Public Decree | +2 | |
-| ×1 | Public Works | +2 | |
-| ×4 | Rare Plants | +1 | |
-| ×1 | Research Grants | +2 | |
-| ×4 | Rich Soil | +1 | |
-| ×3 | River Network | +1 | |
 | ×1 | Sanctions | +1 | also hostile |
 | ×1 | Scientific Breakthrough | +2 | |
-| ×2 | Surplus Goods | +1 | |
 | ×2 | Tax Collection | +2 | |
-| ×4 | Tax Decrease | +1 | |
-| ×4 | Tax Increase | +2 | |
-| ×1 | Trade Delegation | +1 | |
-| ×1 | Trade Routes | +2 | |
-| ×2 | Trade Surplus | +2 | |
-| ×2 | Unions | +1 | |
-| ×1 | War Council | +2 | |
 
 ---
 

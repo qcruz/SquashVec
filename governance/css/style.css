@@ -471,6 +471,12 @@ html, body {
   border-color: rgba(231,76,60,0.3);
 }
 
+.hc-tag-exchange {
+  background: rgba(52,152,219,0.15);
+  color: rgba(52,152,219,0.85);
+  border-color: rgba(52,152,219,0.3);
+}
+
 .hc-tag-event {
   background: rgba(241,196,15,0.15);
   color: rgba(241,196,15,0.85);
@@ -507,6 +513,12 @@ html, body {
   background: rgba(231,76,60,0.15);
   color: rgba(231,76,60,0.85);
   border-color: rgba(231,76,60,0.3);
+}
+
+.detail-tag-exchange {
+  background: rgba(52,152,219,0.15);
+  color: rgba(52,152,219,0.85);
+  border-color: rgba(52,152,219,0.3);
 }
 
 .detail-tag-event {

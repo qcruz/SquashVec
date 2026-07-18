@@ -82,7 +82,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['resource'],
+    tags: ['exchange'],
     flavorText: 'No civilization stands alone.',
     options: [
       {
@@ -2020,7 +2020,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 1,
-    tags: ['resource'],
+    tags: ['exchange'],
     flavorText: 'A well-run state hums like a quiet machine.',
     options: [
       {
@@ -2048,7 +2048,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource'],
+    tags: ['exchange'],
     flavorText: 'The price of civilization, collected quarterly.',
     options: [
       {
@@ -2241,7 +2241,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 2,
-    tags: ['resource'],
+    tags: ['exchange'],
     flavorText: 'An idea that changes everything.',
     options: [
       {
@@ -2386,7 +2386,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 1,
-    tags: ['resource'],
+    tags: ['exchange'],
     flavorText: 'Those who uphold the state in its hour of need.',
     options: [
       {
@@ -2444,7 +2444,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['resource'],
+    tags: ['exchange'],
     flavorText: 'Written rights outlast the rulers who grant them.',
     options: [
       {
@@ -2530,7 +2530,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 2,
-    tags: ['resource'],
+    tags: ['exchange'],
     flavorText: 'When the people speak through art.',
     options: [
       {
@@ -2588,7 +2588,7 @@ const CARDS = [
     subtype: 'utility',
     category: 'military',
     value: 1,
-    tags: ['resource', 'policy'],
+    tags: ['policy'],
     flavorText: 'Strength forged through sacrifice and repetition.',
     options: [
       {
@@ -2614,7 +2614,7 @@ const CARDS = [
     subtype: 'utility',
     category: 'military',
     value: 1,
-    tags: ['resource', 'policy'],
+    tags: ['policy'],
     flavorText: 'Strength forged through sacrifice and repetition.',
     options: [
       {
@@ -3692,7 +3692,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['resource'],
+    tags: ['exchange'],
     flavorText: 'Written rights outlast the rulers who grant them.',
     options: [
       {
@@ -3777,7 +3777,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 2,
-    tags: ['resource'],
+    tags: ['exchange'],
     flavorText: 'When the people speak through art.',
     options: [
       {
@@ -6221,7 +6221,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['resource', 'hostile'],
+    tags: ['exchange', 'hostile'],
     flavorText: 'Power does not always wear armor.',
     options: [
       {
@@ -6253,7 +6253,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['resource', 'hostile'],
+    tags: ['exchange', 'hostile'],
     flavorText: 'Power does not always wear armor.',
     options: [
       {
@@ -6430,7 +6430,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 3,
-    tags: ['resource', 'hostile'],
+    tags: ['exchange', 'hostile'],
     flavorText: 'Force projected outward reshapes the world within.',
     options: [
       {
@@ -6462,7 +6462,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 3,
-    tags: ['resource', 'hostile'],
+    tags: ['exchange', 'hostile'],
     flavorText: 'Strike precisely. Strike decisively.',
     options: [
       {
@@ -6497,7 +6497,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource', 'hostile'],
+    tags: ['exchange', 'hostile'],
     flavorText: 'Weapons are just another form of trade.',
     options: [
       {
@@ -6592,7 +6592,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 3,
-    tags: ['resource', 'hostile'],
+    tags: ['exchange', 'hostile'],
     flavorText: 'Force projected outward reshapes the world within.',
     options: [
       {
@@ -6624,7 +6624,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 3,
-    tags: ['resource', 'hostile'],
+    tags: ['exchange', 'hostile'],
     flavorText: 'Strike precisely. Strike decisively.',
     options: [
       {
@@ -6659,7 +6659,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource', 'hostile'],
+    tags: ['exchange', 'hostile'],
     flavorText: 'Weapons are just another form of trade.',
     options: [
       {
@@ -6720,7 +6720,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['resource'],
+    tags: ['exchange'],
     flavorText: 'Open borders enrich both sides — or so the theory goes.',
     options: [
       {

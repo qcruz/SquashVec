@@ -2521,7 +2521,7 @@ function renderHand() {
       : `${cap(card.category || '')} Identity`;
 
     const tagsHTML = (card.tags || []).map(t => {
-      const cls = t === 'hostile' ? ' hc-tag-hostile' : t === 'event' ? ' hc-tag-event' : '';
+      const cls = t === 'hostile' ? ' hc-tag-hostile' : t === 'event' ? ' hc-tag-event' : t === 'exchange' ? ' hc-tag-exchange' : '';
       return `<span class="hc-tag${cls}">${t}</span>`;
     }).join('');
 
@@ -2618,7 +2618,7 @@ function renderDetailFrame(card, color, location, readonly) {
 
   const detailTagsHTML = (card.tags || []).length
     ? `<div class="detail-tags">${(card.tags).map(t => {
-        const cls = t === 'hostile' ? ' detail-tag-hostile' : t === 'event' ? ' detail-tag-event' : '';
+        const cls = t === 'hostile' ? ' detail-tag-hostile' : t === 'event' ? ' detail-tag-event' : t === 'exchange' ? ' detail-tag-exchange' : '';
         return `<span class="detail-tag${cls}">${t}</span>`;
       }).join('')}</div>`
     : '';
@@ -3497,7 +3497,7 @@ function showLibrary() {
         `<div class="hc-opt"><span class="hc-opt-label">${o.label}:</span> ${o.description}</div>`
       ).join('');
       const libTagsHTML = (card.tags || []).map(t => {
-        const cls = t === 'hostile' ? ' hc-tag-hostile' : t === 'event' ? ' hc-tag-event' : '';
+        const cls = t === 'hostile' ? ' hc-tag-hostile' : t === 'event' ? ' hc-tag-event' : t === 'exchange' ? ' hc-tag-exchange' : '';
         return `<span class="hc-tag${cls}">${t}</span>`;
       }).join('');
       const copiesBadge = counts[card.id] > 1
