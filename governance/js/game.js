@@ -2521,7 +2521,8 @@ function renderHand() {
       : `${cap(card.category || '')} Identity`;
 
     const tagsHTML = (card.tags || []).map(t => {
-      const cls = t === 'hostile' ? ' hc-tag-hostile' : t === 'event' ? ' hc-tag-event' : t === 'exchange' ? ' hc-tag-exchange' : '';
+      const CATEGORY_TAGS = new Set(['governance','economy','culture','military','technology','environment']);
+      const cls = t === 'hostile' ? ' hc-tag-hostile' : t === 'event' ? ' hc-tag-event' : t === 'exchange' ? ' hc-tag-exchange' : CATEGORY_TAGS.has(t) ? ` hc-tag-${t}` : '';
       return `<span class="hc-tag${cls}">${t}</span>`;
     }).join('');
 
@@ -3497,7 +3498,8 @@ function showLibrary() {
         `<div class="hc-opt"><span class="hc-opt-label">${o.label}:</span> ${o.description}</div>`
       ).join('');
       const libTagsHTML = (card.tags || []).map(t => {
-        const cls = t === 'hostile' ? ' hc-tag-hostile' : t === 'event' ? ' hc-tag-event' : t === 'exchange' ? ' hc-tag-exchange' : '';
+        const CATEGORY_TAGS = new Set(['governance','economy','culture','military','technology','environment']);
+        const cls = t === 'hostile' ? ' hc-tag-hostile' : t === 'event' ? ' hc-tag-event' : t === 'exchange' ? ' hc-tag-exchange' : CATEGORY_TAGS.has(t) ? ` hc-tag-${t}` : '';
         return `<span class="hc-tag${cls}">${t}</span>`;
       }).join('');
       const copiesBadge = counts[card.id] > 1

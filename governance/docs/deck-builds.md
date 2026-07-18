@@ -387,6 +387,29 @@ Win: any category reaches 20 · Lose: any category drops to 0
 - **Cross instability** — 38 slots hit all categories; combined with targeted instability, 29% of the deck is instability.
 
 ---
+### Cross-Category Tag Connections
+
+*How many STARTER_DECK slots from each home category carry another category's tag. Reflects economic/political dependencies built into card costs and effects.*
+
+| Home | gov | eco | cul | mil | tec | env |
+|------|:---:|:---:|:---:|:---:|:---:|:---:|
+| Governance | **50** | 14 | 17 | 19 | 3 | 2 |
+| Economy | 20 | **37** | 5 | 7 | 3 | 9 |
+| Culture | 8 | 10 | **23** | 2 | 3 | 3 |
+| Military | 11 | 13 | 4 | **28** | 3 | — |
+| Technology | 2 | 18 | 4 | 4 | **27** | 6 |
+| Environment | 2 | 10 | 12 | 5 | 16 | **57** |
+| Cross | 15 | 15 | 11 | 5 | 5 | 4 |
+
+*Bold = self-tag (home category). Rows sum to more than Total because one card can carry multiple category tags.*
+
+**Key dependencies:**
+- **Governance** deeply touches Military (19) and Culture (17) — many governance cards cost or reference military/culture
+- **Technology** leans on Economy (18) — tech improvements often route through economic costs
+- **Environment** has significant technology cross-reference (16) and culture (12)
+- **Cross** cards spread evenly to Governance and Economy (15 each)
+
+---
 
 **Multi-tag cards** (count toward each of their tags):
 
@@ -624,10 +647,10 @@ Win: any category reaches 20 · Lose: any category drops to 0
 
 | Count | Name | Value | Primary Tag |
 |-------|------|-------|-------------|
-| ×2 | Direct Attack | +3 | resource |
-| ×2 | Destabilization | +3 | resource |
-| ×2 | Arms Package | +2 | resource |
-| ×1 | Sanctions | +1 | resource |
+| ×2 | Direct Attack | +3 | exchange |
+| ×2 | Destabilization | +3 | exchange |
+| ×2 | Arms Package | +2 | exchange |
+| ×1 | Sanctions | +1 | exchange |
 | ×1 | Occupation | +1 | policy |
 | ×1 | Incursion | +1 | policy |
 
@@ -643,4 +666,4 @@ Win: any category reaches 20 · Lose: any category drops to 0
 
 ---
 
-*Last updated: 2026-07-18 — Session 8 (tag distribution by category + balance flags)*
+*Last updated: 2026-07-18 — Session 8 (tag distribution by category, cross-category connections, category tags on all cards)*

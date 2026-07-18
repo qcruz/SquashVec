@@ -31,6 +31,13 @@
 ### Notes
 - Tag definitions confirmed: resource, instability, identity, policy, structure (unused), global (unused), event (must-play), hostile
 
+**Session 8 continued (2026-07-18):**
+- **Refined tag taxonomy** — split `resource` into `resource` (free-stack, 81 slots) vs `exchange` (all options cost something, 21 slots). Updated TAG_OVERRIDES for alliance, free_trade_agreement, tax_collection, efficient_administration, loyalists, civic_charter, artistic_movement, scientific_breakthrough, direct_attack/arms_package/sanctions/destabilization
+- **Added category tags to every card** — each card now tagged with every category name referenced in its definition (id, category, costCategory, discardTo, options). Written as Python script `governance/add-tags.py`; revised to use full card block (not truncated block) to catch costCategory/discardTo references after the value line
+- **Added tag color CSS** — `.hc-tag-exchange` (blue), 6 category classes: `.hc-tag-governance` (purple), `.hc-tag-economy` (green), `.hc-tag-culture` (brown), `.hc-tag-military` (red), `.hc-tag-technology` (blue), `.hc-tag-environment` (dark green)
+- **Updated game.js** tag rendering — both renderHand() and library overlay now detect category tags and apply `hc-tag-{category}` class
+- **Updated deck-builds.md** — added Tag Distribution by Category table, Cards by Tag section, Cross-Category Tag Connections table, balance flags. Fixed hostile section primary tags (exchange, not resource)
+
 ---
 
 ## Session 7 — 2026-07-15

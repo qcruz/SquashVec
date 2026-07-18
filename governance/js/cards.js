@@ -20,7 +20,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power derived from the consent of the governed.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -51,7 +51,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'governance'],
     flavorText: 'Divine law made civil law.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -82,7 +82,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['exchange'],
+    tags: ['exchange', 'culture', 'governance', 'military'],
     flavorText: 'No civilization stands alone.',
     options: [
       {
@@ -113,7 +113,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power through representation, not birth.',
     benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
@@ -144,7 +144,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'governance'],
     flavorText: 'Power consolidated among the few.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -175,7 +175,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'governance'],
     flavorText: 'A crown constrained by law.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -205,7 +205,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'governance', 'military'],
     flavorText: 'Order through absolute authority.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -235,7 +235,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power drawn from the anger of the many.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -264,7 +264,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power through representation, not birth.',
     benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
@@ -295,7 +295,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'governance'],
     flavorText: 'Power consolidated among the few.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -326,7 +326,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'governance'],
     flavorText: 'A crown constrained by law.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -356,7 +356,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'governance', 'military'],
     flavorText: 'Order through absolute authority.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -386,7 +386,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'governance',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power drawn from the anger of the many.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -419,7 +419,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'economy',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment'],
     flavorText: 'Open markets, open opportunities.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -449,7 +449,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'economy',
     value: 4,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment', 'technology'],
     flavorText: 'Growth demands sacrifice — usually someone else\'s.',
     benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
@@ -481,7 +481,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'economy',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment'],
     flavorText: 'Prosperity that does not cost the earth.',
     benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
@@ -511,7 +511,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'economy',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment'],
     flavorText: 'The earth sustains all.',
     benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
@@ -542,7 +542,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'economy',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'governance'],
     flavorText: 'Resources directed by the state.',
     benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
@@ -573,7 +573,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'economy',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'governance'],
     flavorText: 'Capital creates capital.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -603,7 +603,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'economy',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment'],
     flavorText: 'The earth sustains all.',
     benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
@@ -634,7 +634,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'economy',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'governance'],
     flavorText: 'Resources directed by the state.',
     benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
@@ -665,7 +665,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'economy',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'governance'],
     flavorText: 'Capital creates capital.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -699,7 +699,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'economy'],
     flavorText: 'Society shaped by those who sustain it.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -729,7 +729,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'economy'],
     flavorText: 'Order imposed from the top down.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -759,7 +759,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'economy', 'technology'],
     flavorText: 'Knowledge compounds.',
     benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
@@ -789,7 +789,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 5,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'governance'],
     flavorText: 'When art, science, and governance align.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -820,7 +820,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'economy'],
     flavorText: 'Knowledge passed by word of mouth.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -850,7 +850,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'economy', 'governance'],
     flavorText: 'Belief structures that outlast empires.',
     benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
@@ -881,7 +881,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'economy'],
     flavorText: 'Wealth as social currency.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -912,7 +912,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 4,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'technology'],
     flavorText: 'Reason as the highest authority.',
     benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
@@ -943,7 +943,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'economy'],
     flavorText: 'Knowledge passed by word of mouth.',
     benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
@@ -973,7 +973,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'economy', 'governance'],
     flavorText: 'Belief structures that outlast empires.',
     benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
@@ -1004,7 +1004,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'economy'],
     flavorText: 'Wealth as social currency.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -1035,7 +1035,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'culture',
     value: 4,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'technology'],
     flavorText: 'Reason as the highest authority.',
     benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
@@ -1070,7 +1070,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'military',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'military'],
     flavorText: 'Security through shields, not swords.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1100,7 +1100,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'military',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'military'],
     flavorText: 'Strike first. Strike hard. Leave no doubt.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1130,7 +1130,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'military',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'military'],
     flavorText: 'Hold the line. Let them come to us.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1160,7 +1160,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'military',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'military'],
     flavorText: 'Neither sword nor shield — both, as the moment demands.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1191,7 +1191,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'military',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'military'],
     flavorText: 'Match every blow. No more, no less.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1221,7 +1221,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'military',
     value: 4,
-    tags: ['identity'],
+    tags: ['identity', 'military', 'technology'],
     flavorText: 'Bring enough, and leave no question unanswered.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1253,7 +1253,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'military',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'military'],
     flavorText: 'Hold the line. Let them come to us.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1283,7 +1283,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'military',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'military'],
     flavorText: 'Neither sword nor shield — both, as the moment demands.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1314,7 +1314,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'military',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'military'],
     flavorText: 'Match every blow. No more, no less.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1344,7 +1344,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'military',
     value: 4,
-    tags: ['identity'],
+    tags: ['identity', 'military', 'technology'],
     flavorText: 'Bring enough, and leave no question unanswered.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1380,7 +1380,7 @@ const CARDS = [
     subtype: 'philosophy',
     category: 'technology',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'technology'],
     flavorText: 'If it works, it is worth doing.',
     benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
@@ -1409,7 +1409,7 @@ const CARDS = [
     subtype: 'philosophy',
     category: 'technology',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment', 'technology'],
     flavorText: 'The horizon exists to be crossed.',
     benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
@@ -1439,7 +1439,7 @@ const CARDS = [
     subtype: 'philosophy',
     category: 'technology',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'technology'],
     flavorText: 'Move fast enough to grow. Slow enough not to break.',
     benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
@@ -1468,7 +1468,7 @@ const CARDS = [
     subtype: 'philosophy',
     category: 'technology',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'technology'],
     flavorText: 'Knowledge organized is knowledge multiplied.',
     benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
@@ -1498,7 +1498,7 @@ const CARDS = [
     subtype: 'philosophy',
     category: 'technology',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'military', 'technology'],
     flavorText: 'The future demands sacrifice.',
     benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
@@ -1528,7 +1528,7 @@ const CARDS = [
     subtype: 'philosophy',
     category: 'technology',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'technology'],
     flavorText: 'Understanding must come before application.',
     benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
@@ -1557,7 +1557,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'technology',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'technology'],
     flavorText: 'Metal shaped to human will.',
     options: [
       {
@@ -1587,7 +1587,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'technology',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'technology'],
     flavorText: 'Knowledge preserved across generations.',
     options: [
       {
@@ -1618,7 +1618,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'technology',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'military', 'technology'],
     flavorText: 'Building beyond the possible.',
     options: [
       {
@@ -1647,7 +1647,7 @@ const CARDS = [
     subtype: 'institution',
     category: 'technology',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'culture', 'technology'],
     flavorText: 'The language beneath all else.',
     options: [
       {
@@ -1680,7 +1680,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'environment', 'military'],
     flavorText: 'Harsh. Vast. Unyielding.',
     benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
@@ -1710,7 +1710,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'environment', 'military'],
     flavorText: 'High ground commands the horizon.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1740,7 +1740,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment'],
     flavorText: 'Where rivers carve the shape of nations.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -1771,7 +1771,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'environment', 'governance'],
     flavorText: 'The heartland, contested and coveted.',
     benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
@@ -1801,7 +1801,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment', 'military'],
     flavorText: 'The sea gives and the sea takes.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -1832,7 +1832,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment'],
     flavorText: 'Grain and growth, season after season.',
     benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
@@ -1863,7 +1863,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'environment', 'military'],
     flavorText: 'Harsh land builds harder people.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1893,7 +1893,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment'],
     flavorText: 'Where rivers meet, civilizations flourish.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -1924,7 +1924,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 2,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment'],
     flavorText: 'Grain and growth, season after season.',
     benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
@@ -1955,7 +1955,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 1,
-    tags: ['identity'],
+    tags: ['identity', 'environment', 'military'],
     flavorText: 'Harsh land builds harder people.',
     benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
@@ -1985,7 +1985,7 @@ const CARDS = [
     subtype: 'territory',
     category: 'environment',
     value: 3,
-    tags: ['identity'],
+    tags: ['identity', 'economy', 'environment'],
     flavorText: 'Where rivers meet, civilizations flourish.',
     benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
@@ -2020,7 +2020,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 1,
-    tags: ['exchange'],
+    tags: ['exchange', 'culture', 'governance', 'technology'],
     flavorText: 'A well-run state hums like a quiet machine.',
     options: [
       {
@@ -2048,7 +2048,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['exchange'],
+    tags: ['exchange', 'culture', 'economy'],
     flavorText: 'The price of civilization, collected quarterly.',
     options: [
       {
@@ -2077,7 +2077,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'Revenue rises. So does resentment.',
     options: [
       {
@@ -2104,7 +2104,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance'],
     flavorText: 'Popular today. Costly tomorrow.',
     options: [
       {
@@ -2130,7 +2130,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'Revenue rises. So does resentment.',
     options: [
       {
@@ -2157,7 +2157,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance'],
     flavorText: 'Popular today. Costly tomorrow.',
     options: [
       {
@@ -2183,7 +2183,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'environment', 'governance'],
     flavorText: 'A people who celebrate together, endure together.',
     options: [
       {
@@ -2212,7 +2212,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'Victory abroad. Questions at home.',
     options: [
       {
@@ -2241,7 +2241,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 2,
-    tags: ['exchange'],
+    tags: ['exchange', 'culture', 'economy', 'military', 'technology'],
     flavorText: 'An idea that changes everything.',
     options: [
       {
@@ -2269,7 +2269,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'environment', 'technology'],
     flavorText: 'The land provides. For now.',
     options: [
       {
@@ -2326,7 +2326,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'military'],
     flavorText: 'Where institutions fail, the people organize.',
     options: [
       {
@@ -2356,7 +2356,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'environment', 'governance'],
     flavorText: 'Organized labor reshapes the social contract.',
     options: [
       {
@@ -2386,7 +2386,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 1,
-    tags: ['exchange'],
+    tags: ['exchange', 'culture', 'governance', 'military'],
     flavorText: 'Those who uphold the state in its hour of need.',
     options: [
       {
@@ -2416,7 +2416,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'Roads, aqueducts, walls — the skeleton of civilization.',
     options: [
       {
@@ -2444,7 +2444,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['exchange'],
+    tags: ['exchange', 'culture', 'economy', 'governance'],
     flavorText: 'Written rights outlast the rulers who grant them.',
     options: [
       {
@@ -2474,7 +2474,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'environment'],
     flavorText: 'Goods flow where roads and rivers lead.',
     options: [
       {
@@ -2501,7 +2501,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy'],
     flavorText: 'A new stall, a new surplus.',
     options: [
       {
@@ -2530,7 +2530,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 2,
-    tags: ['exchange'],
+    tags: ['exchange', 'culture', 'governance'],
     flavorText: 'When the people speak through art.',
     options: [
       {
@@ -2559,7 +2559,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'culture'],
     flavorText: 'Memory and meaning carried in melody.',
     options: [
       {
@@ -2588,7 +2588,7 @@ const CARDS = [
     subtype: 'utility',
     category: 'military',
     value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'military'],
     flavorText: 'Strength forged through sacrifice and repetition.',
     options: [
       {
@@ -2614,7 +2614,7 @@ const CARDS = [
     subtype: 'utility',
     category: 'military',
     value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'military'],
     flavorText: 'Strength forged through sacrifice and repetition.',
     options: [
       {
@@ -2640,7 +2640,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'military'],
     flavorText: 'Strategy outlasts strength.',
     options: [
       {
@@ -2667,7 +2667,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'military'],
     flavorText: 'Stone and timber between us and them.',
     options: [
       {
@@ -2696,7 +2696,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'technology'],
     flavorText: 'Discovery funded, discovery made.',
     options: [
       {
@@ -2723,7 +2723,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'technology'],
     flavorText: 'To map the world is to begin to master it.',
     options: [
       {
@@ -2752,7 +2752,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'Control the water, control the region.',
     options: [
       {
@@ -2779,7 +2779,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'Every boundary drawn begins a claim.',
     options: [
       {
@@ -2808,7 +2808,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'The people convene. Something shifts.',
     options: [
       {
@@ -2835,7 +2835,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'The state speaks. What it says, holds.',
     options: [
       {
@@ -2864,7 +2864,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'More than needed. For now.',
     options: [
       {
@@ -2891,7 +2891,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy'],
     flavorText: 'The ledger tips in our favor.',
     options: [
       {
@@ -2920,7 +2920,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'environment', 'governance'],
     flavorText: 'Stories outlast stone.',
     options: [
       {
@@ -2949,7 +2949,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'What does not break, tempers.',
     options: [
       {
@@ -2978,7 +2978,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'environment', 'technology'],
     flavorText: 'Where tools are born.',
     options: [
       {
@@ -3005,7 +3005,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'environment', 'technology'],
     flavorText: 'Theory put to work.',
     options: [
       {
@@ -3034,7 +3034,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'environment', 'technology'],
     flavorText: 'What the cold preserves, it preserves forever.',
     options: [
       {
@@ -3061,7 +3061,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'environment', 'technology'],
     flavorText: 'Timber, shelter, shadow — the forest gives without asking.',
     options: [
       {
@@ -3088,7 +3088,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'Wealth buried just beneath the surface.',
     options: [
       {
@@ -3115,7 +3115,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'Medicines, dyes, and poisons — all from the same root.',
     options: [
       {
@@ -3142,7 +3142,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'The foundation of every great civilization.',
     options: [
       {
@@ -3169,7 +3169,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'Clean water is the oldest form of wealth.',
     options: [
       {
@@ -3196,7 +3196,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'The sea feeds those willing to brave it.',
     options: [
       {
@@ -3225,7 +3225,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'The people convene. Something shifts.',
     options: [
       {
@@ -3252,7 +3252,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'The state speaks. What it says, holds.',
     options: [
       {
@@ -3281,7 +3281,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'More than needed. For now.',
     options: [
       {
@@ -3308,7 +3308,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy'],
     flavorText: 'The ledger tips in our favor.',
     options: [
       {
@@ -3336,7 +3336,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'environment', 'governance'],
     flavorText: 'Stories outlast stone.',
     options: [
       {
@@ -3365,7 +3365,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'What does not break, tempers.',
     options: [
       {
@@ -3394,7 +3394,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'environment', 'technology'],
     flavorText: 'Where tools are born.',
     options: [
       {
@@ -3421,7 +3421,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'environment', 'technology'],
     flavorText: 'Theory put to work.',
     options: [
       {
@@ -3450,7 +3450,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'environment', 'technology'],
     flavorText: 'What the cold preserves, it preserves forever.',
     options: [
       {
@@ -3477,7 +3477,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'environment', 'technology'],
     flavorText: 'Timber, shelter, shadow — the forest gives without asking.',
     options: [
       {
@@ -3504,7 +3504,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'Wealth buried just beneath the surface.',
     options: [
       {
@@ -3530,7 +3530,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'Medicines, dyes, and poisons — all from the same root.',
     options: [
       {
@@ -3556,7 +3556,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'The foundation of every great civilization.',
     options: [
       {
@@ -3582,7 +3582,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'Clean water is the oldest form of wealth.',
     options: [
       {
@@ -3608,7 +3608,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'The sea feeds those willing to brave it.',
     options: [
       {
@@ -3636,7 +3636,7 @@ const CARDS = [
     subtype: 'stacking',
     category: null,
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance'],
     flavorText: 'Diplomacy and commerce, two faces of the same coin.',
     options: [
       {
@@ -3664,7 +3664,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance', 'military'],
     flavorText: 'Roads, aqueducts, walls — the skeleton of civilization.',
     options: [
       {
@@ -3692,7 +3692,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['exchange'],
+    tags: ['exchange', 'culture', 'economy', 'governance'],
     flavorText: 'Written rights outlast the rulers who grant them.',
     options: [
       {
@@ -3722,7 +3722,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'environment'],
     flavorText: 'Goods flow where roads and rivers lead.',
     options: [
       {
@@ -3749,7 +3749,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy'],
     flavorText: 'A new stall, a new surplus.',
     options: [
       {
@@ -3777,7 +3777,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 2,
-    tags: ['exchange'],
+    tags: ['exchange', 'culture', 'governance'],
     flavorText: 'When the people speak through art.',
     options: [
       {
@@ -3806,7 +3806,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'culture'],
     flavorText: 'Memory and meaning carried in melody.',
     options: [
       {
@@ -3834,7 +3834,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'military'],
     flavorText: 'Strategy outlasts strength.',
     options: [
       {
@@ -3861,7 +3861,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'military'],
     flavorText: 'Stone and timber between us and them.',
     options: [
       {
@@ -3889,7 +3889,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'technology'],
     flavorText: 'Discovery funded, discovery made.',
     options: [
       {
@@ -3916,7 +3916,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'technology'],
     flavorText: 'To map the world is to begin to master it.',
     options: [
       {
@@ -3944,7 +3944,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'Control the water, control the region.',
     options: [
       {
@@ -3970,7 +3970,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'environment'],
     flavorText: 'Every boundary drawn begins a claim.',
     options: [
       {
@@ -3998,7 +3998,7 @@ const CARDS = [
     subtype: 'stacking',
     category: null,
     value: 1,
-    tags: ['resource'],
+    tags: ['resource', 'economy', 'governance'],
     flavorText: 'Diplomacy and commerce, two faces of the same coin.',
     options: [
       {
@@ -4028,7 +4028,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy'],
     flavorText: 'Labor withheld is power revealed.',
     options: [
       {
@@ -4056,7 +4056,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'military'],
     flavorText: 'When power is seized, not earned.',
     options: [
       {
@@ -4084,7 +4084,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy'],
     flavorText: 'Nature does not negotiate.',
     options: [
       {
@@ -4112,7 +4112,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'governance'],
     flavorText: 'Power rots from the inside.',
     options: [
       {
@@ -4140,7 +4140,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'economy'],
     flavorText: 'Disease spreads where borders cannot.',
     options: [
       {
@@ -4168,7 +4168,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy'],
     flavorText: 'The sky withholds what the earth needs.',
     options: [
       {
@@ -4196,7 +4196,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'governance'],
     flavorText: 'The governed withdraw their consent.',
     options: [
       {
@@ -4225,7 +4225,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'governance'],
     flavorText: 'Power seized in darkness rarely holds in light.',
     options: [
       {
@@ -4257,7 +4257,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'environment', 'military'],
     flavorText: 'The ground beneath certainty gives way.',
     options: [
       { label: 'Option 1 — Struck', description: 'Send to Environment instability.', effect: 'discard_self' },
@@ -4273,7 +4273,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'environment', 'technology'],
     flavorText: "Nature's indifferent fury leaves little standing.",
     options: [
       { label: 'Option 1 — Swept Away', description: 'Send to Environment instability.', effect: 'discard_self' },
@@ -4289,7 +4289,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'environment'],
     flavorText: 'Cold that does not relent. Supplies that do not last.',
     options: [
       { label: 'Option 1 — Endure the Cold', description: 'Send to Environment instability.', effect: 'discard_self' },
@@ -4305,7 +4305,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'environment'],
     flavorText: 'The heat does not break. Crops wither. Tempers rise.',
     options: [
       { label: 'Option 1 — Suffer the Heat', description: 'Send to Environment instability.', effect: 'discard_self' },
@@ -4321,7 +4321,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'environment'],
     flavorText: 'Cold that does not relent. Supplies that do not last.',
     options: [
       { label: 'Option 1 — Endure the Cold', description: 'Send to Environment instability.', effect: 'discard_self' },
@@ -4337,7 +4337,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'environment'],
     flavorText: 'The heat does not break. Crops wither. Tempers rise.',
     options: [
       { label: 'Option 1 — Suffer the Heat', description: 'Send to Environment instability.', effect: 'discard_self' },
@@ -4353,7 +4353,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 3,
-    tags: ['instability', 'event'],
+    tags: ['instability', 'event', 'environment', 'technology'],
     mustPlayWhenDrawn: true,
     mustPlayWhenDrawn: true,
     flavorText: 'What took centuries to grow is gone in a season.',
@@ -4380,7 +4380,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 4,
-    tags: ['instability', 'event'],
+    tags: ['instability', 'event', 'economy', 'environment', 'technology'],
     flavorText: 'When the systems that sustain life begin to fail, no policy can outrun the consequences.',
     mustPlayWhenDrawn: true,
     options: [
@@ -4411,7 +4411,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 3,
-    tags: ['instability', 'event'],
+    tags: ['instability', 'event', 'environment', 'technology'],
     flavorText: 'What took centuries to grow is gone in a season.',
     options: [
       {
@@ -4436,7 +4436,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 4,
-    tags: ['instability', 'event'],
+    tags: ['instability', 'event', 'economy', 'environment', 'technology'],
     flavorText: 'When the systems that sustain life begin to fail, no policy can outrun the consequences.',
     mustPlayWhenDrawn: true,
     options: [
@@ -4467,7 +4467,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'governance',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance'],
     flavorText: 'Factions fracture the halls of power.',
     options: [
       { label: 'Option 1 — Gridlock', description: 'Send to Governance instability.', effect: 'discard_self' },
@@ -4483,7 +4483,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'economy',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance'],
     flavorText: 'Markets contract. Belts tighten.',
     options: [
       { label: 'Option 1 — Downturn', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -4499,7 +4499,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'economy',
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance'],
     flavorText: 'Borrowed prosperity has a due date.',
     options: [
       { label: 'Option 1 — Borrowed Time', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -4515,7 +4515,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'governance',
     value: 1,
-    tags: ['instability'],
+    tags: ['instability', 'governance', 'military'],
     flavorText: 'When order fails, chaos fills the vacuum.',
     options: [
       { label: 'Option 1 — Uncontrolled', description: 'Send to Governance instability.', effect: 'discard_self' },
@@ -4531,7 +4531,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'culture',
     value: 1,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'governance'],
     flavorText: 'A generation questions everything it was taught.',
     options: [
       { label: 'Option 1 — Rising Tension', description: 'Send to Culture instability.', effect: 'discard_self' },
@@ -4547,7 +4547,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'technology'],
     flavorText: 'The path forward goes dark.',
     options: [
       { label: 'Option 1 — Dead End', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -4563,7 +4563,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'governance',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'governance'],
     flavorText: 'The people make their displeasure known.',
     options: [
       { label: 'Option 1 — Popular Anger', description: 'Send to Governance instability.', effect: 'discard_self' },
@@ -4579,7 +4579,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'technology'],
     flavorText: 'Progress brings unintended consequences.',
     options: [
       { label: 'Option 1 — Fallout', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -4595,7 +4595,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'governance',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'governance'],
     flavorText: 'Secrets rarely stay secret.',
     options: [
       { label: 'Option 1 — Exposed', description: 'Send to Governance instability.', effect: 'discard_self' },
@@ -4610,7 +4610,7 @@ const CARDS = [
     id: 'market_crash',
     name: 'Market Crash',
     type: 'event', subtype: 'hazard', category: 'economy', value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance'],
     flavorText: 'Confidence evaporates. Overnight, everything is worth less.',
     options: [
       { label: 'Option 1 — Freefall', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -4623,7 +4623,7 @@ const CARDS = [
     id: 'trade_war',
     name: 'Trade War',
     type: 'event', subtype: 'hazard', category: 'economy', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'military'],
     flavorText: 'Tariffs answered with tariffs. No one wins.',
     options: [
       { label: 'Option 1 — Absorb the Costs', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -4636,7 +4636,7 @@ const CARDS = [
     id: 'supply_shortage',
     name: 'Supply Shortage',
     type: 'event', subtype: 'hazard', category: 'economy', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'technology'],
     flavorText: 'The shelves empty before anyone sees it coming.',
     options: [
       { label: 'Option 1 — Accept the Scarcity', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -4649,7 +4649,7 @@ const CARDS = [
     id: 'hyperinflation',
     name: 'Hyperinflation',
     type: 'event', subtype: 'hazard', category: 'economy', value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'economy'],
     flavorText: 'When money loses meaning, so does everything built on it.',
     options: [
       { label: 'Option 1 — Collapse', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -4664,7 +4664,7 @@ const CARDS = [
     id: 'cultural_suppression',
     name: 'Cultural Suppression',
     type: 'event', subtype: 'hazard', category: 'culture', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'governance'],
     flavorText: 'What cannot be expressed festers into resentment.',
     options: [
       { label: 'Option 1 — Silence Prevails', description: 'Send to Culture instability.', effect: 'discard_self' },
@@ -4677,7 +4677,7 @@ const CARDS = [
     id: 'generational_divide',
     name: 'Generational Divide',
     type: 'event', subtype: 'hazard', category: 'culture', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture'],
     flavorText: 'The old and the young no longer speak the same language.',
     options: [
       { label: 'Option 1 — Let It Fracture', description: 'Send to Culture instability.', effect: 'discard_self' },
@@ -4690,7 +4690,7 @@ const CARDS = [
     id: 'loss_of_faith',
     name: 'Loss of Faith',
     type: 'event', subtype: 'hazard', category: 'culture', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture'],
     flavorText: 'When belief collapses, the structures built on it follow.',
     options: [
       { label: 'Option 1 — Drift', description: 'Send to Culture instability.', effect: 'discard_self' },
@@ -4703,7 +4703,7 @@ const CARDS = [
     id: 'brain_drain',
     name: 'Brain Drain',
     type: 'event', subtype: 'hazard', category: 'culture', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'economy'],
     flavorText: 'The best leave for somewhere they are valued.',
     options: [
       { label: 'Option 1 — Accept the Loss', description: 'Send to Culture instability.', effect: 'discard_self' },
@@ -4718,7 +4718,7 @@ const CARDS = [
     id: 'mutiny',
     name: 'Mutiny',
     type: 'event', subtype: 'hazard', category: 'military', value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'governance', 'military'],
     flavorText: 'When those who carry arms turn them inward.',
     options: [
       { label: 'Option 1 — Lose Control', description: 'Send to Military instability.', effect: 'discard_self' },
@@ -4731,7 +4731,7 @@ const CARDS = [
     id: 'desertion',
     name: 'Desertion',
     type: 'event', subtype: 'hazard', category: 'military', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'military'],
     flavorText: 'Soldiers vote with their feet.',
     options: [
       { label: 'Option 1 — Suffer the Losses', description: 'Send to Military instability.', effect: 'discard_self' },
@@ -4744,7 +4744,7 @@ const CARDS = [
     id: 'border_skirmish',
     name: 'Border Skirmish',
     type: 'event', subtype: 'hazard', category: 'military', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'military'],
     flavorText: 'A small conflict that threatens to become something larger.',
     options: [
       { label: 'Option 1 — Absorb the Blow', description: 'Send to Military instability.', effect: 'discard_self' },
@@ -4757,7 +4757,7 @@ const CARDS = [
     id: 'arms_shortage',
     name: 'Arms Shortage',
     type: 'event', subtype: 'hazard', category: 'military', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'military'],
     flavorText: 'A force without equipment is no force at all.',
     options: [
       { label: 'Option 1 — Go Without', description: 'Send to Military instability.', effect: 'discard_self' },
@@ -4772,7 +4772,7 @@ const CARDS = [
     id: 'remote_attack',
     name: 'Remote Attack',
     type: 'event', subtype: 'hazard', category: 'technology', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'military', 'technology'],
     flavorText: 'The enemy strikes without a face or a border.',
     options: [
       { label: 'Option 1 — Absorb the Breach', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -4785,7 +4785,7 @@ const CARDS = [
     id: 'failed_experiment',
     name: 'Failed Experiment',
     type: 'event', subtype: 'hazard', category: 'technology', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'technology'],
     flavorText: 'Not all progress goes forward.',
     options: [
       { label: 'Option 1 — Write It Off', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -4798,7 +4798,7 @@ const CARDS = [
     id: 'obsolescence',
     name: 'Obsolescence',
     type: 'event', subtype: 'hazard', category: 'technology', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'technology'],
     flavorText: 'What led yesterday falls behind today.',
     options: [
       { label: 'Option 1 — Fall Behind', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -4811,7 +4811,7 @@ const CARDS = [
     id: 'record_breach',
     name: 'Record Breach',
     type: 'event', subtype: 'hazard', category: 'technology', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'governance', 'technology'],
     flavorText: 'Private knowledge made public. Trust, once broken, is slow to rebuild.',
     options: [
       { label: 'Option 1 — Exposed', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -4827,7 +4827,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'governance'],
     flavorText: 'Power rots from the inside.',
     options: [
       {
@@ -4855,7 +4855,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'economy'],
     flavorText: 'Disease spreads where borders cannot.',
     options: [
       {
@@ -4882,7 +4882,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy'],
     flavorText: 'The sky withholds what the earth needs.',
     options: [
       {
@@ -4910,7 +4910,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'governance'],
     flavorText: 'The governed withdraw their consent.',
     options: [
       {
@@ -4939,7 +4939,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'governance'],
     flavorText: 'Power seized in darkness rarely holds in light.',
     options: [
       {
@@ -4971,7 +4971,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'environment', 'military'],
     flavorText: 'The ground beneath certainty gives way.',
     options: [
       { label: 'Option 1 — Struck', description: 'Send to Environment instability.', effect: 'discard_self' },
@@ -4987,7 +4987,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'environment', 'technology'],
     flavorText: "Nature's indifferent fury leaves little standing.",
     options: [
       { label: 'Option 1 — Swept Away', description: 'Send to Environment instability.', effect: 'discard_self' },
@@ -5003,7 +5003,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'governance',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance'],
     flavorText: 'Factions fracture the halls of power.',
     options: [
       { label: 'Option 1 — Gridlock', description: 'Send to Governance instability.', effect: 'discard_self' },
@@ -5019,7 +5019,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'economy',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance'],
     flavorText: 'Markets contract. Belts tighten.',
     options: [
       { label: 'Option 1 — Downturn', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -5035,7 +5035,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'economy',
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance'],
     flavorText: 'Borrowed prosperity has a due date.',
     options: [
       { label: 'Option 1 — Borrowed Time', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -5051,7 +5051,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'governance',
     value: 1,
-    tags: ['instability'],
+    tags: ['instability', 'governance', 'military'],
     flavorText: 'When order fails, chaos fills the vacuum.',
     options: [
       { label: 'Option 1 — Uncontrolled', description: 'Send to Governance instability.', effect: 'discard_self' },
@@ -5067,7 +5067,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'culture',
     value: 1,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'governance'],
     flavorText: 'A generation questions everything it was taught.',
     options: [
       { label: 'Option 1 — Rising Tension', description: 'Send to Culture instability.', effect: 'discard_self' },
@@ -5083,7 +5083,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'technology'],
     flavorText: 'The path forward goes dark.',
     options: [
       { label: 'Option 1 — Dead End', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -5099,7 +5099,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'governance',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'governance'],
     flavorText: 'The people make their displeasure known.',
     options: [
       { label: 'Option 1 — Popular Anger', description: 'Send to Governance instability.', effect: 'discard_self' },
@@ -5115,7 +5115,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'technology'],
     flavorText: 'Progress brings unintended consequences.',
     options: [
       { label: 'Option 1 — Fallout', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -5131,7 +5131,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'governance',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'governance'],
     flavorText: 'Secrets rarely stay secret.',
     options: [
       { label: 'Option 1 — Exposed', description: 'Send to Governance instability.', effect: 'discard_self' },
@@ -5146,7 +5146,7 @@ const CARDS = [
     id: 'market_crash',
     name: 'Market Crash',
     type: 'event', subtype: 'hazard', category: 'economy', value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance'],
     flavorText: 'Confidence evaporates. Overnight, everything is worth less.',
     options: [
       { label: 'Option 1 — Freefall', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -5159,7 +5159,7 @@ const CARDS = [
     id: 'trade_war',
     name: 'Trade War',
     type: 'event', subtype: 'hazard', category: 'economy', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'military'],
     flavorText: 'Tariffs answered with tariffs. No one wins.',
     options: [
       { label: 'Option 1 — Absorb the Costs', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -5172,7 +5172,7 @@ const CARDS = [
     id: 'supply_shortage',
     name: 'Supply Shortage',
     type: 'event', subtype: 'hazard', category: 'economy', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'technology'],
     flavorText: 'The shelves empty before anyone sees it coming.',
     options: [
       { label: 'Option 1 — Accept the Scarcity', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -5185,7 +5185,7 @@ const CARDS = [
     id: 'hyperinflation',
     name: 'Hyperinflation',
     type: 'event', subtype: 'hazard', category: 'economy', value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'economy'],
     flavorText: 'When money loses meaning, so does everything built on it.',
     options: [
       { label: 'Option 1 — Collapse', description: 'Send to Economy instability.', effect: 'discard_self' },
@@ -5200,7 +5200,7 @@ const CARDS = [
     id: 'cultural_suppression',
     name: 'Cultural Suppression',
     type: 'event', subtype: 'hazard', category: 'culture', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'governance'],
     flavorText: 'What cannot be expressed festers into resentment.',
     options: [
       { label: 'Option 1 — Silence Prevails', description: 'Send to Culture instability.', effect: 'discard_self' },
@@ -5213,7 +5213,7 @@ const CARDS = [
     id: 'generational_divide',
     name: 'Generational Divide',
     type: 'event', subtype: 'hazard', category: 'culture', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture'],
     flavorText: 'The old and the young no longer speak the same language.',
     options: [
       { label: 'Option 1 — Let It Fracture', description: 'Send to Culture instability.', effect: 'discard_self' },
@@ -5226,7 +5226,7 @@ const CARDS = [
     id: 'loss_of_faith',
     name: 'Loss of Faith',
     type: 'event', subtype: 'hazard', category: 'culture', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture'],
     flavorText: 'When belief collapses, the structures built on it follow.',
     options: [
       { label: 'Option 1 — Drift', description: 'Send to Culture instability.', effect: 'discard_self' },
@@ -5239,7 +5239,7 @@ const CARDS = [
     id: 'brain_drain',
     name: 'Brain Drain',
     type: 'event', subtype: 'hazard', category: 'culture', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'economy'],
     flavorText: 'The best leave for somewhere they are valued.',
     options: [
       { label: 'Option 1 — Accept the Loss', description: 'Send to Culture instability.', effect: 'discard_self' },
@@ -5254,7 +5254,7 @@ const CARDS = [
     id: 'mutiny',
     name: 'Mutiny',
     type: 'event', subtype: 'hazard', category: 'military', value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'governance', 'military'],
     flavorText: 'When those who carry arms turn them inward.',
     options: [
       { label: 'Option 1 — Lose Control', description: 'Send to Military instability.', effect: 'discard_self' },
@@ -5267,7 +5267,7 @@ const CARDS = [
     id: 'desertion',
     name: 'Desertion',
     type: 'event', subtype: 'hazard', category: 'military', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'military'],
     flavorText: 'Soldiers vote with their feet.',
     options: [
       { label: 'Option 1 — Suffer the Losses', description: 'Send to Military instability.', effect: 'discard_self' },
@@ -5280,7 +5280,7 @@ const CARDS = [
     id: 'border_skirmish',
     name: 'Border Skirmish',
     type: 'event', subtype: 'hazard', category: 'military', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'military'],
     flavorText: 'A small conflict that threatens to become something larger.',
     options: [
       { label: 'Option 1 — Absorb the Blow', description: 'Send to Military instability.', effect: 'discard_self' },
@@ -5293,7 +5293,7 @@ const CARDS = [
     id: 'arms_shortage',
     name: 'Arms Shortage',
     type: 'event', subtype: 'hazard', category: 'military', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'military'],
     flavorText: 'A force without equipment is no force at all.',
     options: [
       { label: 'Option 1 — Go Without', description: 'Send to Military instability.', effect: 'discard_self' },
@@ -5308,7 +5308,7 @@ const CARDS = [
     id: 'remote_attack',
     name: 'Remote Attack',
     type: 'event', subtype: 'hazard', category: 'technology', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'military', 'technology'],
     flavorText: 'The enemy strikes without a face or a border.',
     options: [
       { label: 'Option 1 — Absorb the Breach', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -5321,7 +5321,7 @@ const CARDS = [
     id: 'failed_experiment',
     name: 'Failed Experiment',
     type: 'event', subtype: 'hazard', category: 'technology', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'technology'],
     flavorText: 'Not all progress goes forward.',
     options: [
       { label: 'Option 1 — Write It Off', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -5334,7 +5334,7 @@ const CARDS = [
     id: 'obsolescence',
     name: 'Obsolescence',
     type: 'event', subtype: 'hazard', category: 'technology', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'technology'],
     flavorText: 'What led yesterday falls behind today.',
     options: [
       { label: 'Option 1 — Fall Behind', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -5347,7 +5347,7 @@ const CARDS = [
     id: 'record_breach',
     name: 'Record Breach',
     type: 'event', subtype: 'hazard', category: 'technology', value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'governance', 'technology'],
     flavorText: 'Private knowledge made public. Trust, once broken, is slow to rebuild.',
     options: [
       { label: 'Option 1 — Exposed', description: 'Send to Technology instability.', effect: 'discard_self' },
@@ -5363,7 +5363,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'technology'],
     flavorText: 'Truth becomes a matter of who controls the signal.',
     options: [
       {
@@ -5389,7 +5389,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'technology'],
     flavorText: 'Safety was the promise. Control is the result.',
     options: [
       {
@@ -5416,7 +5416,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'military', 'technology'],
     flavorText: 'The battlefield has no geography. The damage is invisible until it is not.',
     options: [
       {
@@ -5443,7 +5443,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 4,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance', 'technology'],
     flavorText: 'When infrastructure fails, everything built on top of it fails with it.',
     options: [
       {
@@ -5471,7 +5471,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'technology'],
     flavorText: 'Truth becomes a matter of who controls the signal.',
     options: [
       {
@@ -5497,7 +5497,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'technology'],
     flavorText: 'Safety was the promise. Control is the result.',
     options: [
       {
@@ -5524,7 +5524,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'military', 'technology'],
     flavorText: 'The battlefield has no geography. The damage is invisible until it is not.',
     options: [
       {
@@ -5551,7 +5551,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 4,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance', 'technology'],
     flavorText: 'When infrastructure fails, everything built on top of it fails with it.',
     options: [
       {
@@ -5646,7 +5646,7 @@ const CARDS = [
     id: 'consolidation',
     name: 'Consolidation',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'Strength comes from focus, not breadth.',
     options: [
       {
@@ -5667,7 +5667,7 @@ const CARDS = [
     id: 'structural_consolidation',
     name: 'Structural Consolidation',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'True reform costs something. The question is what you are willing to pay.',
     options: [
       {
@@ -5688,7 +5688,7 @@ const CARDS = [
     id: 'managed_decline',
     name: 'Managed Decline',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'Not every battle can be won. Choose where to concede and where to hold.',
     options: [
       {
@@ -5709,7 +5709,7 @@ const CARDS = [
     id: 'rationalization',
     name: 'Rationalization',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'What cannot be justified cannot be sustained.',
     options: [
       {
@@ -5730,7 +5730,7 @@ const CARDS = [
     id: 'austerity',
     name: 'Austerity',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'economy', 'governance'],
     flavorText: 'Short-term pain for long-term stability.',
     options: [
       {
@@ -5751,7 +5751,7 @@ const CARDS = [
     id: 'preparedness',
     name: 'Preparedness',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'The time to repair the roof is when the sun is shining.',
     options: [
       {
@@ -5775,7 +5775,7 @@ const CARDS = [
     id: 'crisis_protocol',
     name: 'Crisis Protocol',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'When the system breaks, the response must be immediate.',
     options: [
       {
@@ -5796,7 +5796,7 @@ const CARDS = [
     id: 'grand_strategy',
     name: 'Grand Strategy',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance', 'military'],
     flavorText: 'Tactics win battles. Strategy wins civilizations.',
     options: [
       {
@@ -5817,7 +5817,7 @@ const CARDS = [
     id: 'redundancy_systems',
     name: 'Redundancy Systems',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance', 'technology'],
     flavorText: 'A civilization without backups is one crisis from collapse.',
     options: [
       {
@@ -5838,7 +5838,7 @@ const CARDS = [
     id: 'adaptive_management',
     name: 'Adaptive Management',
     type: 'event', subtype: 'utility', category: 'governance', value: 2,
-    tags: ['policy'],
+    tags: ['policy', 'economy', 'governance', 'military'],
     flavorText: 'The strongest civilizations are those that learn while moving.',
     options: [
       {
@@ -5862,7 +5862,7 @@ const CARDS = [
     subtype: 'utility',
     category: 'governance',
     value: 3,
-    tags: ['policy'],
+    tags: ['policy', 'governance', 'military'],
     flavorText: 'When the law fails, force fills the vacuum.',
     options: [
       {
@@ -5890,7 +5890,7 @@ const CARDS = [
     id: 'consolidation',
     name: 'Consolidation',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'Strength comes from focus, not breadth.',
     options: [
       {
@@ -5911,7 +5911,7 @@ const CARDS = [
     id: 'structural_consolidation',
     name: 'Structural Consolidation',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'True reform costs something. The question is what you are willing to pay.',
     options: [
       {
@@ -5932,7 +5932,7 @@ const CARDS = [
     id: 'managed_decline',
     name: 'Managed Decline',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'Not every battle can be won. Choose where to concede and where to hold.',
     options: [
       {
@@ -5953,7 +5953,7 @@ const CARDS = [
     id: 'rationalization',
     name: 'Rationalization',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'What cannot be justified cannot be sustained.',
     options: [
       {
@@ -5974,7 +5974,7 @@ const CARDS = [
     id: 'austerity',
     name: 'Austerity',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'economy', 'governance'],
     flavorText: 'Short-term pain for long-term stability.',
     options: [
       {
@@ -5995,7 +5995,7 @@ const CARDS = [
     id: 'preparedness',
     name: 'Preparedness',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'The time to repair the roof is when the sun is shining.',
     options: [
       {
@@ -6019,7 +6019,7 @@ const CARDS = [
     id: 'crisis_protocol',
     name: 'Crisis Protocol',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'When the system breaks, the response must be immediate.',
     options: [
       {
@@ -6040,7 +6040,7 @@ const CARDS = [
     id: 'grand_strategy',
     name: 'Grand Strategy',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance', 'military'],
     flavorText: 'Tactics win battles. Strategy wins civilizations.',
     options: [
       {
@@ -6061,7 +6061,7 @@ const CARDS = [
     id: 'redundancy_systems',
     name: 'Redundancy Systems',
     type: 'event', subtype: 'utility', category: 'governance', value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance', 'technology'],
     flavorText: 'A civilization without backups is one crisis from collapse.',
     options: [
       {
@@ -6082,7 +6082,7 @@ const CARDS = [
     id: 'adaptive_management',
     name: 'Adaptive Management',
     type: 'event', subtype: 'utility', category: 'governance', value: 2,
-    tags: ['policy'],
+    tags: ['policy', 'economy', 'governance', 'military'],
     flavorText: 'The strongest civilizations are those that learn while moving.',
     options: [
       {
@@ -6106,7 +6106,7 @@ const CARDS = [
     subtype: 'utility',
     category: null,
     value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance'],
     flavorText: 'The past is negotiable. The future is not.',
     options: [
       {
@@ -6165,7 +6165,7 @@ const CARDS = [
     subtype: 'utility',
     category: null,
     value: 1,
-    tags: ['policy', 'hostile'],
+    tags: ['policy', 'hostile', 'culture', 'environment'],
     flavorText: 'Territory taken, resources claimed.',
     options: [
       {
@@ -6193,7 +6193,7 @@ const CARDS = [
     subtype: 'utility',
     category: null,
     value: 1,
-    tags: ['policy', 'hostile'],
+    tags: ['policy', 'hostile', 'economy', 'technology'],
     flavorText: 'A border crossed in the night.',
     options: [
       {
@@ -6221,7 +6221,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['exchange', 'hostile'],
+    tags: ['exchange', 'hostile', 'culture', 'economy', 'governance'],
     flavorText: 'Power does not always wear armor.',
     options: [
       {
@@ -6253,7 +6253,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['exchange', 'hostile'],
+    tags: ['exchange', 'hostile', 'culture', 'economy', 'governance'],
     flavorText: 'Power does not always wear armor.',
     options: [
       {
@@ -6285,7 +6285,7 @@ const CARDS = [
     subtype: 'utility',
     category: null,
     value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'culture'],
     flavorText: 'Ideas cross borders more freely than armies.',
     options: [
       {
@@ -6367,7 +6367,7 @@ const CARDS = [
     subtype: 'utility',
     category: 'military',
     value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance', 'military', 'technology'],
     flavorText: 'What is laid down cannot be turned against you.',
     options: [
       {
@@ -6401,7 +6401,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 1,
-    tags: ['instability'],
+    tags: ['instability', 'culture'],
     flavorText: 'When the people move, institutions shake.',
     options: [
       {
@@ -6430,7 +6430,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 3,
-    tags: ['exchange', 'hostile'],
+    tags: ['exchange', 'hostile', 'culture', 'governance', 'military'],
     flavorText: 'Force projected outward reshapes the world within.',
     options: [
       {
@@ -6462,7 +6462,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 3,
-    tags: ['exchange', 'hostile'],
+    tags: ['exchange', 'hostile', 'governance', 'military'],
     flavorText: 'Strike precisely. Strike decisively.',
     options: [
       {
@@ -6497,7 +6497,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['exchange', 'hostile'],
+    tags: ['exchange', 'hostile', 'culture', 'economy', 'governance'],
     flavorText: 'Weapons are just another form of trade.',
     options: [
       {
@@ -6529,7 +6529,7 @@ const CARDS = [
     subtype: 'utility',
     category: 'military',
     value: 1,
-    tags: ['policy'],
+    tags: ['policy', 'governance', 'military', 'technology'],
     flavorText: 'What is laid down cannot be turned against you.',
     options: [
       {
@@ -6563,7 +6563,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 1,
-    tags: ['instability'],
+    tags: ['instability', 'culture'],
     flavorText: 'When the people move, institutions shake.',
     options: [
       {
@@ -6592,7 +6592,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 3,
-    tags: ['exchange', 'hostile'],
+    tags: ['exchange', 'hostile', 'culture', 'governance', 'military'],
     flavorText: 'Force projected outward reshapes the world within.',
     options: [
       {
@@ -6624,7 +6624,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 3,
-    tags: ['exchange', 'hostile'],
+    tags: ['exchange', 'hostile', 'governance', 'military'],
     flavorText: 'Strike precisely. Strike decisively.',
     options: [
       {
@@ -6659,7 +6659,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['exchange', 'hostile'],
+    tags: ['exchange', 'hostile', 'culture', 'economy', 'governance'],
     flavorText: 'Weapons are just another form of trade.',
     options: [
       {
@@ -6720,7 +6720,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 1,
-    tags: ['exchange'],
+    tags: ['exchange', 'economy', 'governance'],
     flavorText: 'Open borders enrich both sides — or so the theory goes.',
     options: [
       {
@@ -6753,7 +6753,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy'],
     flavorText: 'Empty factories, idle fields, unfilled ranks.',
     options: [
       {
@@ -6779,7 +6779,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'economy'],
     flavorText: 'A civilization that cannot sustain itself cannot endure.',
     options: [
       {
@@ -6808,7 +6808,7 @@ const CARDS = [
     subtype: null,
     category: null,
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'economy'],
     flavorText: 'Every wave of new arrivals reshapes what a civilization becomes.',
     options: [
       {
@@ -6836,7 +6836,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'governance'],
     flavorText: 'Where laws are weak, the criminal thrives.',
     options: [
       {
@@ -6864,7 +6864,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'governance', 'military'],
     flavorText: 'Corruption spreads like roots — unseen until the tree falls.',
     options: [
       {
@@ -6891,7 +6891,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 4,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance', 'military'],
     flavorText: 'It does not hide in the shadows. It operates in plain sight.',
     options: [
       {
@@ -6935,7 +6935,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'governance'],
     flavorText: 'Where laws are weak, the criminal thrives.',
     options: [
       {
@@ -6963,7 +6963,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'governance', 'military'],
     flavorText: 'Corruption spreads like roots — unseen until the tree falls.',
     options: [
       {
@@ -6990,7 +6990,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 4,
-    tags: ['instability'],
+    tags: ['instability', 'economy', 'governance', 'military'],
     flavorText: 'It does not hide in the shadows. It operates in plain sight.',
     options: [
       {
@@ -7051,7 +7051,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'economy'],
     flavorText: 'Empty factories, idle fields, unfilled ranks.',
     options: [
       {
@@ -7077,7 +7077,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'culture', 'economy'],
     flavorText: 'A civilization that cannot sustain itself cannot endure.',
     options: [
       {
@@ -7106,7 +7106,7 @@ const CARDS = [
     subtype: null,
     category: null,
     value: 2,
-    tags: ['resource'],
+    tags: ['resource', 'culture', 'economy'],
     flavorText: 'Every wave of new arrivals reshapes what a civilization becomes.',
     options: [
       {
@@ -7134,7 +7134,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'economy'],
     flavorText: 'When the market is a game, only the house wins.',
     options: [
       {
@@ -7160,7 +7160,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'governance'],
     flavorText: 'The state does not fall — it is simply redirected.',
     options: [
       {
@@ -7186,7 +7186,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'culture'],
     flavorText: 'History is rewritten by those who control the present.',
     options: [
       {
@@ -7212,7 +7212,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'military'],
     flavorText: 'Loyalty is the first casualty of a failing state.',
     options: [
       {
@@ -7238,7 +7238,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 2,
-    tags: ['instability'],
+    tags: ['instability', 'environment', 'technology'],
     flavorText: 'What industry discards, the land absorbs.',
     options: [
       {
@@ -7264,7 +7264,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'environment'],
     flavorText: 'What we dump into the ground, we drink tomorrow.',
     options: [
       {
@@ -7290,7 +7290,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 3,
-    tags: ['instability'],
+    tags: ['instability', 'environment'],
     flavorText: 'The cost of growth, deferred to those who cannot pay it.',
     options: [
       {
@@ -7316,7 +7316,7 @@ const CARDS = [
     subtype: 'hazard',
     category: null,
     value: 1,
-    tags: ['instability'],
+    tags: ['instability', 'technology'],
     flavorText: 'No civilization is safe from within.',
     options: [
       {

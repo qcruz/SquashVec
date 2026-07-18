@@ -482,6 +482,41 @@ html, body {
   color: rgba(241,196,15,0.85);
   border-color: rgba(241,196,15,0.3);
 }
+.hc-tag-governance {
+  background: rgba(123,104,238,0.15);
+  color: rgba(123,104,238,0.85);
+  border-color: rgba(123,104,238,0.3);
+}
+
+.hc-tag-economy {
+  background: rgba(60,179,113,0.15);
+  color: rgba(60,179,113,0.85);
+  border-color: rgba(60,179,113,0.3);
+}
+
+.hc-tag-culture {
+  background: rgba(205,133,63,0.15);
+  color: rgba(205,133,63,0.85);
+  border-color: rgba(205,133,63,0.3);
+}
+
+.hc-tag-military {
+  background: rgba(205,92,92,0.15);
+  color: rgba(205,92,92,0.85);
+  border-color: rgba(205,92,92,0.3);
+}
+
+.hc-tag-technology {
+  background: rgba(70,130,180,0.15);
+  color: rgba(70,130,180,0.85);
+  border-color: rgba(70,130,180,0.3);
+}
+
+.hc-tag-environment {
+  background: rgba(46,139,87,0.15);
+  color: rgba(46,139,87,0.85);
+  border-color: rgba(46,139,87,0.3);
+}
 
 .card-tint-green .hc-tag,
 .card-tint-red .hc-tag,
