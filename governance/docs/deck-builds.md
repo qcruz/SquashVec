@@ -365,6 +365,29 @@ Win: any category reaches 20 · Lose: any category drops to 0
 | `event` | 7 | 3 | Must-play when drawn (subset of instability) |
 | **Total occurrences** | **292** | — | *16 slots carry 2 tags* |
 
+### Tag Distribution by Category
+
+*Slots in STARTER_DECK carrying each tag, broken down by card category. Cross = no category (affects any/all). Update whenever STARTER_DECK changes.*
+
+| Category | identity | resource | exchange | policy | instability | hostile | event | Total |
+|----------|:--------:|:--------:|:--------:|:------:|:-----------:|:-------:|:-----:|------:|
+| Governance | 9 | 7 | 8 | 22 | 4 | — | — | 50 |
+| Economy | 10 | 14 | 7 | — | 6 | 3 | — | 40 |
+| Culture | 11 | 6 | 1 | — | 5 | — | — | 23 |
+| Military | 9 | 5 | 4 | 3 | 7 | 4 | — | 32 |
+| Technology | 9 | 6 | 1 | — | 11 | — | — | 27 |
+| Environment | 10 | 38 | — | — | 9 | — | 3 | 60 |
+| Cross | — | 5 | — | 11 | 38 | 2 | 4 | 60 |
+| **Total** | **58** | **81** | **21** | **36** | **80** | **9** | **7** | **292** |
+
+**Balance flags (Build 1):**
+- **Technology** — worst threat ratio: 11 instability vs 7 positive (resource + exchange). No dedicated policy. Most vulnerable to pile-up.
+- **Culture** — thinnest category: 23 total, 6 resource, 1 exchange, no policy.
+- **Environment** — resource-heavy (38) but all +1 value. Good stacking depth, low per-card ceiling.
+- **Cross instability** — 38 slots hit all categories; combined with targeted instability, 29% of the deck is instability.
+
+---
+
 **Multi-tag cards** (count toward each of their tags):
 
 | Card | Tags | Slots |
@@ -620,4 +643,4 @@ Win: any category reaches 20 · Lose: any category drops to 0
 
 ---
 
-*Last updated: 2026-07-18 — Session 8 (added tag distribution + cards-by-tag)*
+*Last updated: 2026-07-18 — Session 8 (tag distribution by category + balance flags)*
