@@ -374,18 +374,18 @@ Win: any category reaches 20 · Lose: any category drops to 0
 
 ### Tag Distribution by Category
 
-*Slots in STARTER_DECK carrying each tag, broken down by card category. Cross = no category (affects any/all). Update whenever STARTER_DECK changes.*
+*Slots in STARTER_DECK carrying each tag, broken down by card category. Cards are double-counted when they carry multiple tags. Semantic tags (identity–event) + category tags (gov–env) shown together. Cross = no category (affects any/all). Update whenever STARTER_DECK changes.*
 
-| Category | identity | resource | exchange | policy | instability | hostile | event | Total |
-|----------|:--------:|:--------:|:--------:|:------:|:-----------:|:-------:|:-----:|------:|
-| Governance | 9 | 7 | 8 | 22 | 4 | — | — | 50 |
-| Economy | 10 | 14 | 7 | — | 6 | 3 | — | 40 |
-| Culture | 11 | 6 | 1 | — | 5 | — | — | 23 |
-| Military | 9 | 5 | 4 | 3 | 7 | 4 | — | 32 |
-| Technology | 9 | 6 | 1 | — | 11 | — | — | 27 |
-| Environment | 10 | 38 | — | — | 9 | — | 3 | 60 |
-| Cross | — | 5 | — | 11 | 38 | 2 | 4 | 60 |
-| **Total** | **58** | **81** | **21** | **36** | **80** | **9** | **7** | **292** |
+| Category | identity | resource | exchange | policy | instability | hostile | event | gov | eco | cul | mil | tec | env | Total |
+|----------|:--------:|:--------:|:--------:|:------:|:-----------:|:-------:|:-----:|:---:|:---:|:---:|:---:|:---:|:---:|------:|
+| Governance | 9 | 7 | 8 | 22 | 4 | — | — | 50 | 14 | 17 | 19 | 3 | 2 | 155 |
+| Economy | 10 | 14 | 7 | — | 6 | 3 | — | 20 | 37 | 5 | 7 | 3 | 9 | 121 |
+| Culture | 11 | 6 | 1 | — | 5 | — | — | 8 | 10 | 23 | 2 | 3 | 3 | 72 |
+| Military | 9 | 5 | 4 | 3 | 7 | 4 | — | 11 | 13 | 4 | 28 | 3 | — | 91 |
+| Technology | 9 | 6 | 1 | — | 11 | — | — | 2 | 18 | 4 | 4 | 27 | 6 | 88 |
+| Environment | 10 | 38 | — | — | 9 | — | 3 | 2 | 10 | 12 | 5 | 16 | 57 | 162 |
+| Cross | — | 5 | — | 11 | 38 | 2 | 4 | 15 | 15 | 11 | 5 | 5 | 4 | 115 |
+| **Total** | **58** | **81** | **21** | **36** | **80** | **9** | **7** | **108** | **117** | **76** | **70** | **60** | **81** | **804** |
 
 **Balance flags (Build 1):**
 - **Technology** — worst threat ratio: 11 instability vs 7 positive (resource + exchange). No dedicated policy. Most vulnerable to pile-up.
