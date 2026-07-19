@@ -7541,7 +7541,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource', 'economy', 'governance'],
+    tags: ['resource', 'hostile', 'economy', 'governance'],
     flavorText: 'The rule-makers become the ruled.',
     options: [
       {
@@ -7572,7 +7572,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 3,
-    tags: ['resource', 'culture', 'governance', 'military'],
+    tags: ['resource', 'hostile', 'culture', 'governance', 'military'],
     flavorText: 'In a crisis, legality bends.',
     options: [
       {
@@ -7606,7 +7606,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 2,
-    tags: ['resource', 'culture', 'governance'],
+    tags: ['resource', 'hostile', 'culture', 'governance'],
     flavorText: 'Shape the story before it shapes you.',
     options: [
       {
@@ -7637,7 +7637,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 3,
-    tags: ['resource', 'culture', 'governance'],
+    tags: ['resource', 'hostile', 'culture', 'governance'],
     flavorText: 'History is written by the victors.',
     options: [
       {
@@ -7670,7 +7670,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource', 'economy', 'governance', 'technology'],
+    tags: ['resource', 'hostile', 'economy', 'governance', 'technology'],
     flavorText: 'No borders in the digital domain.',
     options: [
       {
@@ -7701,7 +7701,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 3,
-    tags: ['resource', 'economy', 'military', 'technology'],
+    tags: ['resource', 'hostile', 'economy', 'military', 'technology'],
     flavorText: 'Ideas, locked behind walls.',
     options: [
       {
@@ -7735,7 +7735,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource', 'economy', 'environment'],
+    tags: ['resource', 'hostile', 'economy', 'environment'],
     flavorText: 'The land gives; we take.',
     options: [
       {
@@ -7766,7 +7766,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 3,
-    tags: ['resource', 'economy', 'environment'],
+    tags: ['resource', 'hostile', 'economy', 'environment'],
     flavorText: 'Progress measured in parts per million.',
     options: [
       {
@@ -7799,7 +7799,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'economy',
     value: 2,
-    tags: ['instability', 'economy', 'governance', 'technology'],
+    tags: ['instability', 'event', 'economy', 'governance', 'technology'],
     mustPlayWhenDrawn: true,
     cooperativeThreshold: 4,
     thresholdCategory: 'economy',
@@ -7830,7 +7830,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'governance',
     value: 2,
-    tags: ['instability', 'economy', 'governance', 'military'],
+    tags: ['instability', 'event', 'economy', 'governance', 'military'],
     mustPlayWhenDrawn: true,
     cooperativeThreshold: 4,
     thresholdCategory: 'governance',
@@ -7861,7 +7861,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'culture',
     value: 2,
-    tags: ['instability', 'culture', 'economy', 'governance'],
+    tags: ['instability', 'event', 'culture', 'economy', 'governance'],
     mustPlayWhenDrawn: true,
     cooperativeThreshold: 4,
     thresholdCategory: 'culture',
@@ -7892,7 +7892,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'military',
     value: 2,
-    tags: ['instability', 'economy', 'military', 'technology'],
+    tags: ['instability', 'event', 'economy', 'military', 'technology'],
     mustPlayWhenDrawn: true,
     cooperativeThreshold: 4,
     thresholdCategory: 'military',
@@ -7923,7 +7923,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'technology',
     value: 2,
-    tags: ['instability', 'economy', 'governance', 'technology'],
+    tags: ['instability', 'event', 'economy', 'governance', 'technology'],
     mustPlayWhenDrawn: true,
     cooperativeThreshold: 4,
     thresholdCategory: 'technology',
@@ -7954,7 +7954,7 @@ const CARDS = [
     subtype: 'hazard',
     category: 'environment',
     value: 3,
-    tags: ['instability', 'economy', 'environment', 'technology'],
+    tags: ['instability', 'event', 'economy', 'environment', 'technology'],
     mustPlayWhenDrawn: true,
     cooperativeThreshold: 5,
     thresholdCategory: 'environment',
@@ -8659,24 +8659,21 @@ const STARTER_DECK = [
   // Stacking events
   'alliance', 'alliance',
   'free_trade_agreement', 'free_trade_agreement',
-  'efficient_administration', 'tax_collection', 'tax_collection', 'tax_increase', 'tax_increase', 'tax_decrease', 'tax_decrease', 'tax_increase', 'tax_increase', 'tax_decrease', 'tax_decrease',
+  'efficient_administration', 'tax_collection', 'tax_collection', 'tax_collection', 'tax_collection','tax_increase', 'tax_increase', 'tax_decrease', 'tax_decrease', 'tax_increase', 'tax_increase', 'tax_decrease', 'tax_decrease',
   'cultural_festival', 'military_campaign',
   'scientific_breakthrough',
   'abundant_harvest', 'abundant_harvest', 'abundant_harvest', 'abundant_harvest',
   'inspiring_speech', 'inspiring_speech',
   'activists', 'activists', 'unions', 'unions', 'loyalists', 'loyalists', 'loyalists', 'loyalists',
   'public_works', 'civic_charter',
-  'trade_routes', 'market_expansion',
+  'trade_routes', 'trade_routes', 'trade_routes','market_expansion',
   'artistic_movement', 'folk_songs',
-  'war_council', 'border_fortification',
-  'research_grants', 'cartography',
+  'war_council', 'war_council', 'war_council','border_fortification', 'border_fortification', 'border_fortification','research_grants', 'cartography',
   'river_network', 'river_network', 'river_network', 'river_network','land_survey', 'land_survey', 'land_survey', 'land_survey','trade_delegation',
   // Resource-focused stacking
   'civic_assembly', 'civic_assembly', 'public_decree', 'public_decree',
-  'surplus_goods', 'surplus_goods', 'trade_surplus', 'trade_surplus',
-  'oral_history', 'oral_history',
-  'battle_hardened', 'battle_hardened',
-  'invention_workshop', 'invention_workshop', 'applied_science', 'applied_science',
+  'surplus_goods', 'surplus_goods', 'surplus_goods', 'surplus_goods','trade_surplus', 'trade_surplus', 'trade_surplus', 'trade_surplus','oral_history', 'oral_history',
+  'battle_hardened', 'battle_hardened', 'battle_hardened', 'battle_hardened','invention_workshop', 'invention_workshop', 'applied_science', 'applied_science',
   'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra','dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
   'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
   'dense_forests', 'dense_forests', 'dense_forests','mineral_deposits', 'mineral_deposits', 'mineral_deposits','rare_plants', 'rare_plants', 'rare_plants','rich_soil', 'rich_soil', 'rich_soil','natural_springs', 'natural_springs', 'natural_springs','coastal_fisheries', 'coastal_fisheries', 'coastal_fisheries',// Must-play events
@@ -8714,7 +8711,7 @@ const STARTER_DECK = [
   'martial_law', 'martial_law',
   'revisionist_history', 'revisionist_history',
   'contingency_planning',
-  'occupation', 'incursion', 'sanctions', 'military_exercise', 'cultural_exchange',
+  'occupation', 'incursion', 'sanctions', 'military_exercise', 'military_exercise', 'military_exercise','cultural_exchange',
   'peace_treaty', 'diplomatic_mission', 'census',
   'disarmament', 'disarmament',
   'destabilization', 'destabilization',
@@ -8810,24 +8807,21 @@ const LEAN_DECK = [
   // Stacking events
   'alliance',
   'free_trade_agreement',
-  'efficient_administration', 'tax_collection', 'tax_increase', 'tax_decrease',
+  'efficient_administration', 'tax_collection', 'tax_collection', 'tax_collection','tax_increase', 'tax_decrease',
   'cultural_festival', 'military_campaign',
   'scientific_breakthrough',
   'abundant_harvest', 'abundant_harvest', 'abundant_harvest', 'abundant_harvest',
   'inspiring_speech',
   'activists', 'unions', 'loyalists',
   'public_works', 'civic_charter',
-  'trade_routes', 'market_expansion',
+  'trade_routes', 'trade_routes', 'trade_routes','market_expansion',
   'artistic_movement', 'folk_songs',
-  'war_council', 'border_fortification',
-  'research_grants', 'cartography',
+  'war_council', 'war_council', 'war_council','border_fortification', 'border_fortification', 'border_fortification','research_grants', 'cartography',
   'river_network', 'river_network', 'river_network', 'river_network','land_survey', 'land_survey', 'land_survey', 'land_survey','trade_delegation',
   // Resource-focused stacking
   'civic_assembly', 'public_decree',
-  'surplus_goods', 'trade_surplus',
-  'oral_history',
-  'battle_hardened',
-  'invention_workshop', 'applied_science',
+  'surplus_goods', 'surplus_goods', 'surplus_goods','trade_surplus', 'trade_surplus', 'trade_surplus','oral_history',
+  'battle_hardened', 'battle_hardened', 'battle_hardened','invention_workshop', 'applied_science',
   'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra','dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
   'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
   'dense_forests', 'dense_forests', 'dense_forests','mineral_deposits', 'mineral_deposits', 'mineral_deposits','rare_plants', 'rare_plants', 'rare_plants','rich_soil', 'rich_soil', 'rich_soil','natural_springs', 'natural_springs', 'natural_springs','coastal_fisheries', 'coastal_fisheries', 'coastal_fisheries',// Must-play events
@@ -8865,7 +8859,7 @@ const LEAN_DECK = [
   'martial_law',
   'revisionist_history',
   'contingency_planning',
-  'occupation', 'incursion', 'sanctions', 'military_exercise', 'cultural_exchange',
+  'occupation', 'incursion', 'sanctions', 'military_exercise', 'military_exercise', 'military_exercise','cultural_exchange',
   'peace_treaty', 'diplomatic_mission', 'census',
   'disarmament',
   'destabilization',

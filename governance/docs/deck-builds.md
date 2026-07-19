@@ -365,9 +365,9 @@ Win: any category reaches 20 · Lose: any category drops to 0
 | `identity` | 40 | 40 | Category cards — permanent base score |
 | `policy` | 50 | 48 | Utility events — board management |
 | `exchange` | 23 | 21 | Stacking events where all options cost a resource |
-| `hostile` | 6 | 6 | Cards with opponent-facing effects *(see note)* |
-| `event` | 3 | 3 | Must-play when drawn (subset of instability) |
-| **Semantic total** | **278** | — | *9 slots carry 2 semantic tags* |
+| `hostile` | 14 | 14 | Cards with opponent-facing effects |
+| `event` | 9 | 9 | Must-play when drawn (subset of instability) |
+| **Semantic total** | **292** | — | *23 slots carry 2 semantic tags* |
 | | | | |
 | `economy` | 124 | 112 | Cards referencing economy in any field |
 | `environment` | 87 | 48 | Cards referencing environment in any field |
@@ -376,22 +376,20 @@ Win: any category reaches 20 · Lose: any category drops to 0
 | `military` | 65 | 55 | Cards referencing military in any field |
 | `technology` | 65 | 54 | Cards referencing technology in any field |
 
-> **Note — hostile tag:** The 8 new session 9 hostile cards (Regulatory Capture, Emergency Powers, Propaganda Campaign, Cultural Erasure, Cyber Attack, Patent Warfare, Resource Extraction, Industrial Pollution) were added *after* `add-tags.py` ran and are missing the `hostile` tag. Only the original 6 (Direct Attack, Arms Package, Destabilization, Sanctions, Occupation, Incursion) carry it. True hostile count should be 14/6 (slots/unique) — fix by re-running `add-tags.py` or manually adding `'hostile'` to those 8 cards.
-
 ### Tag Distribution by Category — LEAN_DECK (active)
 
 *Slots carrying each tag, broken down by card's home category. Cards counted once per tag they carry. `cross` = cards with no home category.*
 
 | Category | identity | resource | exchange | policy | instability | hostile | event | gov | eco | cul | mil | tec | env | Slots |
 |----------|:--------:|:--------:|:--------:|:------:|:-----------:|:-------:|:-----:|:---:|:---:|:---:|:---:|:---:|:---:|------:|
-| Governance | 6 | 5 | 3 | 11 | 7 | — | 1 | 30 | 12 | 10 | 9 | 2 | 1 | 32 |
-| Economy | 6 | 15 | 6 | 9 | 7 | 4 | — | 18 | 41 | 6 | 5 | 5 | 9 | 43 |
-| Culture | 8 | 7 | 3 | 5 | 6 | — | — | 13 | 11 | 28 | 1 | 2 | 2 | 29 |
-| Military | 6 | 12 | 4 | 12 | 6 | 2 | — | 9 | 19 | 6 | 36 | 4 | — | 40 |
-| Technology | 6 | 4 | 5 | 5 | 11 | — | — | 4 | 19 | 3 | 5 | 31 | 3 | 31 |
-| Environment | 8 | 48 | 2 | 5 | 10 | — | 2 | 4 | 14 | 14 | 5 | 19 | 70 | 73 |
+| Governance | 6 | 5 | 3 | 11 | 7 | — | 2 | 30 | 12 | 10 | 9 | 2 | 1 | 32 |
+| Economy | 6 | 15 | 6 | 9 | 7 | 7 | 1 | 18 | 41 | 6 | 5 | 5 | 9 | 43 |
+| Culture | 8 | 7 | 3 | 5 | 6 | 2 | 1 | 13 | 11 | 28 | 1 | 2 | 2 | 29 |
+| Military | 6 | 12 | 4 | 12 | 6 | 4 | 1 | 9 | 19 | 6 | 36 | 4 | — | 40 |
+| Technology | 6 | 4 | 5 | 5 | 11 | — | 1 | 4 | 19 | 3 | 5 | 31 | 3 | 31 |
+| Environment | 8 | 48 | 2 | 5 | 10 | 1 | 3 | 4 | 14 | 14 | 5 | 19 | 70 | 73 |
 | Cross | — | 1 | — | 3 | 17 | — | — | 6 | 8 | 4 | 4 | 2 | 2 | 21 |
-| **Total** | **40** | **92** | **23** | **50** | **64** | **6** | **3** | **84** | **124** | **71** | **65** | **65** | **87** | **269** |
+| **Total** | **40** | **92** | **23** | **50** | **64** | **14** | **9** | **84** | **124** | **71** | **65** | **65** | **87** | **269** |
 
 **Balance flags (LEAN_DECK, Session 10):**
 - **Environment** — dominates resource (48 of 92 resource slots). 73 total slots in 269-card deck (27%). High stacking ceiling, moderate hazard count.
