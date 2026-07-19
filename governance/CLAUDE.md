@@ -121,6 +121,19 @@ When implementing a confirmed card:
 
 ---
 
+## Rules for Design Documentation
+
+> **Never add, modify, or remove content in `docs/design.md` without explicit owner confirmation of the exact wording.**
+
+This applies to all design notes, balance rules, card type definitions, and mechanic descriptions. The process is:
+1. Draft the proposed text in the chat
+2. Get explicit owner approval of the wording
+3. Only then write it to the file and commit
+
+Design notes written without confirmation must be flagged immediately and reverted if the owner requests it.
+
+---
+
 ## Project Structure
 
 ```
