@@ -2844,7 +2844,7 @@ function closeModal() {
 // ─── Autoplay ─────────────────────────────────────────────────────────────────
 
 function blankModeStat() {
-  return { games: 0, wins: 0, losses: 0, turnHistory: [], scoreSpread: [], cardPlays: {}, optionPlays: {}, winCats: {}, loseCats: {} };
+  return { games: 0, wins: 0, losses: 0, turnHistory: [], scoreSpread: [], cardPlays: {}, optionPlays: {}, tagPlays: {}, winCats: {}, loseCats: {} };
 }
 
 const AUTO = {
@@ -2960,8 +2960,8 @@ function exportAutoStats() {
   URL.revokeObjectURL(url);
 }
 
-function renderModeStats(s, modeName) {
-  if (s.games === 0) return `<div class="astat-mode-empty">${modeName}: no data</div>`;
+function renderModeStats(s, modeName, extraHeader) {
+  if (s.games === 0) return `<div class="astat-mode-empty">${modeName}: no data yet</div>`;
 
   const wr = ((s.wins / s.games) * 100).toFixed(1) + '%';
   const avg = s.turnHistory.length
@@ -2972,6 +2972,7 @@ function renderModeStats(s, modeName) {
   const winEntries = Object.entries(s.winCats).sort((a, b) => b[1] - a[1]);
   const loseEntries = Object.entries(s.loseCats).sort((a, b) => b[1] - a[1]);
   const topCards = Object.entries(s.cardPlays).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const topTags = Object.entries(s.tagPlays || {}).sort((a, b) => b[1] - a[1]).slice(0, 15);
 
   const optionsByCard = {};
   Object.entries(s.optionPlays).forEach(([key, n]) => {
@@ -2994,9 +2995,12 @@ function renderModeStats(s, modeName) {
     }).join(' / ');
     return `<div class="astat-row"><span class="astat-label">${c ? c.name : id}</span><span class="astat-value">${n} (${pct}%/g)${optStr ? ' — ' + optStr : ''}</span></div>`;
   }).join('');
+  const tagRows = topTags.map(([tag, n]) =>
+    `<div class="astat-row"><span class="astat-label">${tag}</span><span class="astat-value">${n}</span></div>`
+  ).join('');
 
   return `
-    <div class="astat-mode-header">${modeName}</div>
+    <div class="astat-mode-header">${modeName}${extraHeader ? ' ' + extraHeader : ''}</div>
     <div class="astat-row"><span class="astat-label">Games</span><span class="astat-value">${s.games}</span></div>
     <div class="astat-row"><span class="astat-label">Wins / Losses</span><span class="astat-value">${s.wins} / ${s.losses} &nbsp;(${wr} win rate)</span></div>
     <div class="astat-row"><span class="astat-label">Avg turns/game</span><span class="astat-value">${avg}</span></div>
@@ -3013,14 +3017,16 @@ function renderModeStats(s, modeName) {
       <div class="astat-section-title">Top cards played (option breakdown)</div>
       ${cardRows}
     </div>
+    <div class="astat-section">
+      <div class="astat-section-title">Tag plays</div>
+      ${tagRows || '<span class="astat-muted">—</span>'}
+    </div>
   `;
 }
 
 function updateAutoStatsDisplay() {
-  const sr = AUTO.stats.random;
-  const sg = AUTO.stats.generalist;
-  const sm = AUTO.stats.maximizer;
-  const totalGames = sr.games + sg.games + sm.games;
+  const activeS = AUTO.stats[AUTO.mode];
+  const totalGames = AUTO.stats.random.games + AUTO.stats.generalist.games + AUTO.stats.maximizer.games;
 
   const bar = document.getElementById('autoplay-bar');
   const statsSection = document.getElementById('auto-stats-section');
@@ -3032,8 +3038,7 @@ function updateAutoStatsDisplay() {
   bar.classList.remove('hidden');
   statsSection.classList.remove('hidden');
 
-  // Header bar — combined summary
-  const activeS = AUTO.stats[AUTO.mode];
+  // Header bar — active mode summary
   const wr = activeS.games ? ((activeS.wins / activeS.games) * 100).toFixed(1) + '%' : '—';
   const avg = activeS.turnHistory.length
     ? (activeS.turnHistory.reduce((a, b) => a + b, 0) / activeS.turnHistory.length).toFixed(1) : '—';
@@ -3050,14 +3055,13 @@ function updateAutoStatsDisplay() {
     ? 'Top: ' + topEntries.map(([id, n]) => { const c = CARDS.find(c => c.id === id); return `${c ? c.name : id} (${n})`; }).join(' · ')
     : '';
 
-  // Detailed panel — three columns
-  const maxTgt = AUTO.targetCategory ? ` <span class="astat-muted">(targeting ${cap(AUTO.targetCategory)})</span>` : '';
+  // Detailed panel — single column for active mode
+  const modeName = AUTO.mode.charAt(0).toUpperCase() + AUTO.mode.slice(1);
+  const extraHeader = (AUTO.mode === 'maximizer' && AUTO.targetCategory)
+    ? `<span class="astat-muted">(targeting ${cap(AUTO.targetCategory)})</span>`
+    : '';
   document.getElementById('auto-stats-body').innerHTML = `
-    <div class="astat-three-col">
-      <div class="astat-col">${renderModeStats(sr, 'Random')}</div>
-      <div class="astat-col">${renderModeStats(sg, 'Generalist')}</div>
-      <div class="astat-col">${renderModeStats(sm, 'Maximizer')}${maxTgt}</div>
-    </div>
+    <div class="astat-col">${renderModeStats(activeS, modeName, extraHeader)}</div>
   `;
 }
 
@@ -3342,11 +3346,12 @@ function autoSelectAndPlay(handIdx) {
   }
   G.selectedOption = chosen.oi;
 
-  // Track card and option play (per mode)
+  // Track card, option, and tag plays (per mode)
   const ms = AUTO.stats[AUTO.mode];
   ms.cardPlays[card.id] = (ms.cardPlays[card.id] || 0) + 1;
   const optKey = `${card.id}:${chosen.oi}`;
   ms.optionPlays[optKey] = (ms.optionPlays[optKey] || 0) + 1;
+  (card.tags || []).forEach(tag => { ms.tagPlays[tag] = (ms.tagPlays[tag] || 0) + 1; });
 
   confirmPlay();
 }
