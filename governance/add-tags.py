@@ -47,6 +47,17 @@ TAG_OVERRIDES = {
     'census':                 ['policy'],
     'disarmament':            ['policy'],
     'restitution':            ['policy'],
+    # New exchange cards
+    'heritage_fund':          ['exchange'],
+    'cultural_diplomacy':     ['exchange'],
+    'land_reclamation':       ['exchange'],
+    'conservation_program':   ['exchange'],
+    'conscription':           ['exchange'],
+    'arms_trade':             ['exchange'],
+    'patent_license':         ['exchange'],
+    'venture_capital':        ['exchange'],
+    'technology_transfer':    ['exchange'],
+    'automation_drive':       ['exchange'],
 }
 
 def semantic_tags(card_id, card_type, card_subtype):

@@ -2261,6 +2261,133 @@ const CARDS = [
     ],
     discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
   },
+  {
+    id: 'patent_license',
+    name: 'Patent License',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'technology',
+    value: 1,
+    tags: ['exchange', 'economy', 'technology'],
+    flavorText: 'Knowledge moves where capital flows.',
+    options: [
+      {
+        label: 'Option 1 — License In',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Place this card on your Technology stack (+1).',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'economy',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — License Out',
+        description: 'Remove the oldest Technology resource from your stack and shuffle it into the draw deck. Place this card on your Economy stack (+1).',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'technology',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'venture_capital',
+    name: 'Venture Capital',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'technology',
+    value: 2,
+    tags: ['exchange', 'economy', 'technology'],
+    flavorText: 'Bet on the future.',
+    options: [
+      {
+        label: 'Option 1 — Fund R&D',
+        description: 'Remove the oldest Economy resource from your stack. Discard 1 card from your hand. Place this card on your Technology stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'economy',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Portfolio Exit',
+        description: 'Remove the oldest Technology resource from your stack. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'technology',
+        targetCategory: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'technology_transfer',
+    name: 'Technology Transfer',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'technology',
+    value: 2,
+    tags: ['exchange', 'governance', 'military', 'technology'],
+    flavorText: 'Innovation crosses borders when incentives align.',
+    options: [
+      {
+        label: 'Option 1 — Defense Spinoff',
+        description: 'Remove the oldest Military resource from your stack. Discard 1 card from your hand. Place this card on your Technology stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'military',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Public Funding',
+        description: 'Remove the oldest Governance resource from your stack. Discard 1 card from your hand. Place this card on your Technology stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'technology',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'automation_drive',
+    name: 'Automation Drive',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'technology',
+    value: 2,
+    tags: ['exchange', 'economy', 'technology'],
+    flavorText: 'Efficiency demands sacrifice.',
+    options: [
+      {
+        label: 'Option 1 — Mechanize',
+        description: 'Remove the oldest Economy resource from your stack. Discard 1 card from your hand. Place this card on your Technology stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'economy',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Optimize Systems',
+        description: 'Remove the oldest Technology resource from your stack. Discard 1 card from your hand. Place this card on your Technology stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'technology',
+        targetCategory: 'technology',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
 
   {
     id: 'abundant_harvest',
@@ -2551,6 +2678,68 @@ const CARDS = [
     ],
     discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
   },
+  {
+    id: 'heritage_fund',
+    name: 'Heritage Fund',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'culture',
+    value: 1,
+    tags: ['exchange', 'culture', 'economy', 'governance'],
+    flavorText: 'Culture grows where resources are invested.',
+    options: [
+      {
+        label: 'Option 1 — Economic Subsidy',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Place this card on your Culture stack (+1).',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'economy',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — State Program',
+        description: 'Remove the oldest Governance resource from your stack and shuffle it into the draw deck. Place this card on your Culture stack (+1).',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'governance',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'cultural_diplomacy',
+    name: 'Cultural Diplomacy',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'culture',
+    value: 2,
+    tags: ['exchange', 'culture', 'economy', 'governance'],
+    flavorText: 'Nations shape each other through the exchange of ideas.',
+    options: [
+      {
+        label: 'Option 1 — Joint Investment',
+        description: 'Remove the oldest Economy resource from your stack. Discard 1 card from your hand. Place this card on your Culture stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'economy',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — State Directive',
+        description: 'Remove the oldest Governance resource from your stack. Discard 1 card from your hand. Place this card on your Culture stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'governance_instability', label: 'Governance Instability' },
+    ],
+    requires: null,
+  },
 
   {
     id: 'folk_songs',
@@ -2658,6 +2847,68 @@ const CARDS = [
       },
     ],
     discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+  {
+    id: 'conscription',
+    name: 'Conscription',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 1,
+    tags: ['exchange', 'culture', 'economy', 'military'],
+    flavorText: 'When the call comes, everyone answers.',
+    options: [
+      {
+        label: 'Option 1 — Economic Levy',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Place this card on your Military stack (+1).',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'economy',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Call to Arms',
+        description: 'Remove the oldest Culture resource from your stack and shuffle it into the draw deck. Place this card on your Military stack (+1).',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'culture',
+        targetCategory: 'military',
+      },
+    ],
+    discardTo: [
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'arms_trade',
+    name: 'Arms Trade',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 2,
+    tags: ['exchange', 'economy', 'military'],
+    flavorText: 'Every weapon sold is a policy statement.',
+    options: [
+      {
+        label: 'Option 1 — Export Surplus',
+        description: 'Remove the oldest Military resource from your stack. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'military',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Import Weapons',
+        description: 'Remove the oldest Economy resource from your stack. Discard 1 card from your hand. Place this card on your Military stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'economy',
+        targetCategory: 'military',
+      },
+    ],
+    discardTo: [
+      { target: 'military_instability', label: 'Military Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
   },
 
   {
@@ -2770,6 +3021,68 @@ const CARDS = [
       },
     ],
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+  {
+    id: 'land_reclamation',
+    name: 'Land Reclamation',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 1,
+    tags: ['exchange', 'economy', 'environment', 'technology'],
+    flavorText: 'Restoration begins with investment.',
+    options: [
+      {
+        label: 'Option 1 — Funding Drive',
+        description: 'Remove the oldest Economy resource from your stack and shuffle it into the draw deck. Place this card on your Environment stack (+1).',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'economy',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Tech Remediation',
+        description: 'Remove the oldest Technology resource from your stack and shuffle it into the draw deck. Place this card on your Environment stack (+1).',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'technology',
+        targetCategory: 'environment',
+      },
+    ],
+    discardTo: [
+      { target: 'environment_instability', label: 'Environment Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'conservation_program',
+    name: 'Conservation Program',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 2,
+    tags: ['exchange', 'economy', 'environment', 'governance'],
+    flavorText: 'The land repays those who protect it.',
+    options: [
+      {
+        label: 'Option 1 — National Preserve',
+        description: 'Remove the oldest Economy resource from your stack. Discard 1 card from your hand. Place this card on your Environment stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'economy',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Policy Initiative',
+        description: 'Remove the oldest Governance resource from your stack. Discard 1 card from your hand. Place this card on your Environment stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'environment',
+      },
+    ],
+    discardTo: [
+      { target: 'environment_instability', label: 'Environment Instability' },
+      { target: 'governance_instability', label: 'Governance Instability' },
+    ],
+    requires: null,
   },
 
   {
@@ -7442,4 +7755,18 @@ const STARTER_DECK = [
   'grand_strategy', 'grand_strategy',
   'redundancy_systems', 'redundancy_systems',
   'adaptive_management', 'adaptive_management',
+  // Culture exchange (new)
+  'heritage_fund',
+  'cultural_diplomacy',
+  // Environment exchange (new)
+  'land_reclamation',
+  'conservation_program',
+  // Military exchange (new)
+  'conscription', 'conscription',
+  'arms_trade',
+  // Technology exchange (new)
+  'patent_license', 'patent_license',
+  'venture_capital', 'venture_capital',
+  'technology_transfer',
+  'automation_drive',
 ];

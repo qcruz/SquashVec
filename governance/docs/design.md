@@ -310,11 +310,37 @@ Six categories must be managed simultaneously. Letting one category slide create
 | Stacking (free) | Nothing | +1 to +2 on own category |
 | Stacking (redirectable) | Pay 1 own resource | +1 on any category |
 | Stacking (cross-category) | Pay 1 other resource | +2 on target category |
+| Exchange (value 1) | Remove 1 stack card | +1 on target category |
+| Exchange (value 2) | Remove 1 stack card + discard 1 hand card | +2 on target category |
+| Exchange (value 3) | Remove 2+ stack cards | +3 on target category |
 | Utility (single action) | None | Remove 1 instability OR draw 1–2 |
 | Utility (resource cost) | Pay 1 resource | Remove 2–3 instability |
 | Hazard (mitigatable) | Pay 1 resource | Avoid instability pile (card goes to deck) |
 | Hazard (multi-resource) | Pay 2–3 resources | Avoid instability pile |
 | Identity | Pay 1–2 resources | +1 to +5 on category (permanent while active) |
+
+### Exchange Card Balance Rule
+
+An exchange card with value N must cost the player at least N cards removed from play (stack removals + hand discards). The raw score trade is at best break-even in isolation — value comes exclusively from identity multipliers, cross-category combos, and stack composition.
+
+**Exchange cards should never be a net positive in isolation.** If a player gains +2 from placing an exchange card but only paid 1 stack card of value 1, the raw result is +1 — a small gain. The design target is break-even or slight loss, so that the win condition comes from building synergies, not from grinding individual cards.
+
+### Intended Difficulty Curve
+
+This game is designed so skill determines outcome:
+
+- **Random play** — always lose. Uncoordinated stacking can't outpace instability accumulation over a full deck cycle.
+- **Maximize each category score blindly** — ~50% win rate. Score-maximizing play is coherent but doesn't exploit cross-category combos or manage threat priorities.
+- **Identify and execute cross-category combos** — meaningful win advantage. Players who build toward synergies (Alliance + Free Trade Agreement, identity stacks + exchange chains, instability mitigation timed to hazard density) will see consistent improvement.
+
+### Culture and Environment Exchange Count
+
+Culture and Environment intentionally have low exchange card counts. These categories represent ingrained social fabric and physical landscape — they respond slowly to directed human intervention. Players primarily influence them through:
+- Identity cards (long-term institutional framing)
+- Passive cross-category stacking (e.g. environment stacking events that also reference culture/technology)
+- Occasional targeted exchange (limited options, always costly)
+
+This asymmetry is a design feature, not a gap.
 
 ---
 
@@ -344,4 +370,4 @@ Alliance (Governance stacking event, +2) anchors a family of cards whose effects
 
 ---
 
-*Last updated: 2026-07-15 — Session 7 design questions resolved*
+*Last updated: 2026-07-18 — Session 8: exchange balance rule, difficulty curve, culture/environment design note*

@@ -17,7 +17,7 @@
 
 ## Current Build — Build 1 (2026-07-15)
 
-**Deck size:** 276 slots · 167 unique card IDs
+**Deck size:** 289 slots · 177 unique card IDs
 **Composition:** 80 hazards (29%) · 108 stacking/territory (39%) · 44 utility/philosophy (16%) · 38 identity (14%) · 6 other (2%)
 **Hazard:utility ratio:** 1.8×
 **Status:** First finalized build. Deck rebalanced from 308-slot bloated build (4.6× hazard:utility ratio). Doubled management philosophy cards. Removed duplicated hazard sections.
@@ -360,17 +360,17 @@ Win: any category reaches 20 · Lose: any category drops to 0
 | `instability` | 80 | 57 | Hazard events — score threats |
 | `identity` | 58 | 41 | Category cards — permanent base score |
 | `policy` | 36 | 22 | Utility events — board management |
-| `exchange` | 21 | 12 | Stacking events where all options cost a resource |
+| `exchange` | 34 | 22 | Stacking events where all options cost a resource |
 | `hostile` | 9 | 6 | Cards with opponent-facing effects |
 | `event` | 7 | 3 | Must-play when drawn (subset of instability) |
-| **Semantic total** | **292** | — | *16 slots carry 2 semantic tags* |
+| **Semantic total** | **305** | — | *18 slots carry 2 semantic tags* |
 | | | | |
-| `governance` | 108 | 66 | Cards referencing governance in any field |
-| `economy` | 117 | 78 | Cards referencing economy in any field |
-| `environment` | 81 | 38 | Cards referencing environment in any field |
-| `culture` | 76 | 47 | Cards referencing culture in any field |
-| `military` | 70 | 45 | Cards referencing military in any field |
-| `technology` | 60 | 38 | Cards referencing technology in any field |
+| `governance` | 112 | 68 | Cards referencing governance in any field |
+| `economy` | 129 | 86 | Cards referencing economy in any field |
+| `environment` | 83 | 40 | Cards referencing environment in any field |
+| `culture` | 80 | 50 | Cards referencing culture in any field |
+| `military` | 74 | 47 | Cards referencing military in any field |
+| `technology` | 67 | 42 | Cards referencing technology in any field |
 
 ### Tag Distribution by Category
 
@@ -380,12 +380,12 @@ Win: any category reaches 20 · Lose: any category drops to 0
 |----------|:--------:|:--------:|:--------:|:------:|:-----------:|:-------:|:-----:|:---:|:---:|:---:|:---:|:---:|:---:|------:|
 | Governance | 9 | 7 | 8 | 22 | 4 | — | — | 50 | 14 | 17 | 19 | 3 | 2 | 155 |
 | Economy | 10 | 14 | 7 | — | 6 | 3 | — | 20 | 37 | 5 | 7 | 3 | 9 | 121 |
-| Culture | 11 | 6 | 1 | — | 5 | — | — | 8 | 10 | 23 | 2 | 3 | 3 | 72 |
-| Military | 9 | 5 | 4 | 3 | 7 | 4 | — | 11 | 13 | 4 | 28 | 3 | — | 91 |
-| Technology | 9 | 6 | 1 | — | 11 | — | — | 2 | 18 | 4 | 4 | 27 | 6 | 88 |
-| Environment | 10 | 38 | — | — | 9 | — | 3 | 2 | 10 | 12 | 5 | 16 | 57 | 162 |
+| Culture | 11 | 6 | 3 | — | 5 | — | — | 10 | 12 | 25 | 2 | 3 | 3 | 80 |
+| Military | 9 | 5 | 7 | 3 | 7 | 4 | — | 11 | 16 | 6 | 31 | 3 | — | 102 |
+| Technology | 9 | 6 | 7 | — | 11 | — | — | 3 | 23 | 4 | 5 | 33 | 6 | 107 |
+| Environment | 10 | 38 | 2 | — | 9 | — | 3 | 3 | 12 | 12 | 5 | 17 | 59 | 170 |
 | Cross | — | 5 | — | 11 | 38 | 2 | 4 | 15 | 15 | 11 | 5 | 5 | 4 | 115 |
-| **Total** | **58** | **81** | **21** | **36** | **80** | **9** | **7** | **108** | **117** | **76** | **70** | **60** | **81** | **804** |
+| **Total** | **58** | **81** | **34** | **36** | **80** | **9** | **7** | **112** | **129** | **80** | **74** | **67** | **83** | **850** |
 
 **Balance flags (Build 1):**
 - **Technology** — worst threat ratio: 11 instability vs 7 positive (resource + exchange). No dedicated policy. Most vulnerable to pile-up.
@@ -407,7 +407,7 @@ Win: any category reaches 20 · Lose: any category drops to 0
 | Technology | 2 | 18 | 4 | 4 | **27** | 6 |
 | Environment | 2 | 10 | 12 | 5 | 16 | **57** |
 | Cross | 15 | 15 | 11 | 5 | 5 | 4 |
-| **Total** | **108** | **117** | **76** | **70** | **60** | **81** |
+| **Total** | **112** | **129** | **80** | **74** | **67** | **83** |
 
 *Bold = self-tag (home category). Rows sum to more than Total because one card can carry multiple category tags.*
 
@@ -674,4 +674,4 @@ Win: any category reaches 20 · Lose: any category drops to 0
 
 ---
 
-*Last updated: 2026-07-18 — Session 8 (tag distribution by category, cross-category connections, category tags on all cards)*
+*Last updated: 2026-07-18 — Session 8 (10 new exchange cards; exchange balanced to 8/7/7/7/3/2 by category; design notes added)*

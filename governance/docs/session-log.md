@@ -37,6 +37,13 @@
 - **Added tag color CSS** — `.hc-tag-exchange` (blue), 6 category classes: `.hc-tag-governance` (purple), `.hc-tag-economy` (green), `.hc-tag-culture` (brown), `.hc-tag-military` (red), `.hc-tag-technology` (blue), `.hc-tag-environment` (dark green)
 - **Updated game.js** tag rendering — both renderHand() and library overlay now detect category tags and apply `hc-tag-{category}` class
 - **Updated deck-builds.md** — added Tag Distribution by Category table, Cards by Tag section, Cross-Category Tag Connections table, balance flags. Fixed hostile section primary tags (exchange, not resource)
+- **Added 10 new exchange cards** to balance exchange counts to 8/7/7/7/3/2 across categories
+  - Culture: Heritage Fund ×1 (value 1), Cultural Diplomacy ×1 (value 2)
+  - Environment: Land Reclamation ×1 (value 1), Conservation Program ×1 (value 2)
+  - Military: Conscription ×2 (value 1), Arms Trade ×1 (value 2)
+  - Technology: Patent License ×2 (value 1), Venture Capital ×2 (value 2), Technology Transfer ×1 (value 2), Automation Drive ×1 (value 2)
+- **STARTER_DECK** grows from 276 → 289 slots; 295 total card definitions
+- **design.md** updated with exchange balance rule, difficulty curve, culture/environment design rationale
 
 ---
 
