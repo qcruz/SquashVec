@@ -15,12 +15,14 @@
 
 ---
 
-## Current Build — Build 1 (2026-07-15)
+## Current Build — LEAN_DECK (active as of Session 9, 2026-07-19)
 
-**Deck size:** 289 slots · 177 unique card IDs
-**Composition:** 80 hazards (29%) · 108 stacking/territory (39%) · 44 utility/philosophy (16%) · 38 identity (14%) · 6 other (2%)
-**Hazard:utility ratio:** 1.8×
-**Status:** First finalized build. Deck rebalanced from 308-slot bloated build (4.6× hazard:utility ratio). Doubled management philosophy cards. Removed duplicated hazard sections.
+**Deck size:** 269 slots · ~220 unique card IDs
+**Composition:** 64 instability (24%) · 92 resource (34%) · 50 policy (19%) · 40 identity (15%) · 23 exchange (9%) · 6 global/event (2%)
+**Hazard:policy ratio:** 1.3×
+**Status:** Deduplicated build — all duplicate cards removed except 10 natural resource stacking cards (frozen_tundra, dense_forests, mineral_deposits, rare_plants, rich_soil, natural_springs, coastal_fisheries, land_survey, river_network, abundant_harvest) which keep their full multi-copy counts. Loaded in `newGameState()` as `LEAN_DECK`.
+
+> **STARTER_DECK** (363 slots, full multi-copy build) also defined in cards.js. To switch: change `LEAN_DECK` → `STARTER_DECK` in `newGameState()`.
 
 ### Scoring Formula
 ```
@@ -352,49 +354,52 @@ Win: any category reaches 20 · Lose: any category drops to 0
 
 ---
 
-### By Tag
+### By Tag — LEAN_DECK (active, 269 slots)
+
+*Computed from live cards.js. Updated Session 10, 2026-07-19.*
 
 | Tag | Slots | Unique Cards | Notes |
 |-----|-------|--------------|-------|
-| `resource` | 81 | 35 | Stacking events with at least one free-stack option |
-| `instability` | 80 | 57 | Hazard events — score threats |
-| `identity` | 58 | 41 | Category cards — permanent base score |
-| `policy` | 36 | 22 | Utility events — board management |
-| `exchange` | 34 | 22 | Stacking events where all options cost a resource |
-| `hostile` | 9 | 6 | Cards with opponent-facing effects |
-| `event` | 7 | 3 | Must-play when drawn (subset of instability) |
-| **Semantic total** | **305** | — | *18 slots carry 2 semantic tags* |
+| `resource` | 92 | 43 | Stacking events with at least one free-stack option |
+| `instability` | 64 | 64 | Hazard events — score threats |
+| `identity` | 40 | 40 | Category cards — permanent base score |
+| `policy` | 50 | 48 | Utility events — board management |
+| `exchange` | 23 | 21 | Stacking events where all options cost a resource |
+| `hostile` | 6 | 6 | Cards with opponent-facing effects *(see note)* |
+| `event` | 3 | 3 | Must-play when drawn (subset of instability) |
+| **Semantic total** | **278** | — | *9 slots carry 2 semantic tags* |
 | | | | |
-| `governance` | 112 | 68 | Cards referencing governance in any field |
-| `economy` | 129 | 86 | Cards referencing economy in any field |
-| `environment` | 83 | 40 | Cards referencing environment in any field |
-| `culture` | 80 | 50 | Cards referencing culture in any field |
-| `military` | 74 | 47 | Cards referencing military in any field |
-| `technology` | 67 | 42 | Cards referencing technology in any field |
+| `economy` | 124 | 112 | Cards referencing economy in any field |
+| `environment` | 87 | 48 | Cards referencing environment in any field |
+| `governance` | 84 | 80 | Cards referencing governance in any field |
+| `culture` | 71 | 58 | Cards referencing culture in any field |
+| `military` | 65 | 55 | Cards referencing military in any field |
+| `technology` | 65 | 54 | Cards referencing technology in any field |
 
-### Tag Distribution by Category
+> **Note — hostile tag:** The 8 new session 9 hostile cards (Regulatory Capture, Emergency Powers, Propaganda Campaign, Cultural Erasure, Cyber Attack, Patent Warfare, Resource Extraction, Industrial Pollution) were added *after* `add-tags.py` ran and are missing the `hostile` tag. Only the original 6 (Direct Attack, Arms Package, Destabilization, Sanctions, Occupation, Incursion) carry it. True hostile count should be 14/6 (slots/unique) — fix by re-running `add-tags.py` or manually adding `'hostile'` to those 8 cards.
 
-*Slots in STARTER_DECK carrying each tag, broken down by card category. Cards are double-counted when they carry multiple tags. Semantic tags (identity–event) + category tags (gov–env) shown together. Cross = no category (affects any/all). Update whenever STARTER_DECK changes.*
+### Tag Distribution by Category — LEAN_DECK (active)
 
-| Category | identity | resource | exchange | policy | instability | hostile | event | gov | eco | cul | mil | tec | env | Total |
+*Slots carrying each tag, broken down by card's home category. Cards counted once per tag they carry. `cross` = cards with no home category.*
+
+| Category | identity | resource | exchange | policy | instability | hostile | event | gov | eco | cul | mil | tec | env | Slots |
 |----------|:--------:|:--------:|:--------:|:------:|:-----------:|:-------:|:-----:|:---:|:---:|:---:|:---:|:---:|:---:|------:|
-| Governance | 9 | 7 | 8 | 22 | 4 | — | — | 50 | 14 | 17 | 19 | 3 | 2 | 155 |
-| Economy | 10 | 14 | 7 | 7 | 6 | 3 | — | 22 | 44 | 5 | 7 | 3 | 9 | 137 |
-| Culture | 11 | 6 | 3 | 7 | 5 | — | — | 11 | 13 | 32 | 2 | 3 | 3 | 96 |
-| Military | 9 | 5 | 7 | 10 | 7 | 4 | — | 11 | 18 | 6 | 38 | 3 | — | 118 |
-| Technology | 9 | 6 | 7 | 7 | 11 | — | — | 3 | 25 | 4 | 5 | 40 | 6 | 123 |
-| Environment | 10 | 38 | 2 | 7 | 9 | — | 3 | 3 | 14 | 12 | 5 | 17 | 66 | 186 |
-| Cross | — | 5 | — | 11 | 38 | 2 | 4 | 15 | 15 | 11 | 5 | 5 | 4 | 115 |
-| **Total** | **58** | **81** | **34** | **71** | **80** | **9** | **7** | **115** | **143** | **87** | **81** | **74** | **90** | **930** |
+| Governance | 6 | 5 | 3 | 11 | 7 | — | 1 | 30 | 12 | 10 | 9 | 2 | 1 | 32 |
+| Economy | 6 | 15 | 6 | 9 | 7 | 4 | — | 18 | 41 | 6 | 5 | 5 | 9 | 43 |
+| Culture | 8 | 7 | 3 | 5 | 6 | — | — | 13 | 11 | 28 | 1 | 2 | 2 | 29 |
+| Military | 6 | 12 | 4 | 12 | 6 | 2 | — | 9 | 19 | 6 | 36 | 4 | — | 40 |
+| Technology | 6 | 4 | 5 | 5 | 11 | — | — | 4 | 19 | 3 | 5 | 31 | 3 | 31 |
+| Environment | 8 | 48 | 2 | 5 | 10 | — | 2 | 4 | 14 | 14 | 5 | 19 | 70 | 73 |
+| Cross | — | 1 | — | 3 | 17 | — | — | 6 | 8 | 4 | 4 | 2 | 2 | 21 |
+| **Total** | **40** | **92** | **23** | **50** | **64** | **6** | **3** | **84** | **124** | **71** | **65** | **65** | **87** | **269** |
 
-*Updated Session 8 (2026-07-18): +35 policy slots across Economy/Culture/Military/Technology/Environment.*
-
-**Balance flags (Build 1, updated):**
-- **Technology** — 11 instability vs 7 policy (new) + 6 resource + 7 exchange = much improved. Was the most vulnerable; now has recovery parity with other non-Governance categories.
-- **Culture** — still thin on resource (6) and exchange (3). Policy cards now present but low stacking ceiling remains.
-- **Environment** — resource-heavy (38) with 7 new policy cards. Good recovery depth now. Per-card value still low (+1 each).
-- **Cross instability** — 38 slots hit all categories; combined with targeted instability, 24% of the 324-slot deck is instability (down from 29%).
-- **Governance** — dominates policy (22 slots vs 7–10 elsewhere). Intended asymmetry — see design.md.
+**Balance flags (LEAN_DECK, Session 10):**
+- **Environment** — dominates resource (48 of 92 resource slots). 73 total slots in 269-card deck (27%). High stacking ceiling, moderate hazard count.
+- **Technology** — 11 instability vs only 4 resource + 5 exchange. Most hazard-heavy category relative to recovery options. Policy (5) partially compensates.
+- **Culture** — thin on exchange (3) and policy (5). Low stacking ceiling. Vulnerable if identity goes down.
+- **Economy** — well-rounded: 15 resource, 6 exchange, 9 policy, 7 instability. Strongest recovery profile after Governance.
+- **Governance** — 11 policy slots (highest non-cross). Board-management dominant.
+- **Cross instability** — 17 hazard slots spread across all categories; 64 total instability = 24% of deck.
 
 ---
 ### Cross-Category Tag Connections
@@ -677,4 +682,4 @@ Win: any category reaches 20 · Lose: any category drops to 0
 
 ---
 
-*Last updated: 2026-07-18 — Session 8 (10 new exchange cards; exchange balanced to 8/7/7/7/3/2 by category; design notes added)*
+*Last updated: 2026-07-19 — Session 10 (tag distribution recomputed from live cards.js for LEAN_DECK 269 slots; STARTER_DECK 363 slots noted)*
