@@ -1,6 +1,6 @@
 # Governance — Full Card List
 *Complete reference for all cards in the starter deck. Update this file whenever cards.js changes.*
-*Last updated: 210 cards total.*
+*Last updated: Session 10 — 334 card definitions, 363 STARTER_DECK slots / 269 LEAN_DECK slots.*
 
 ---
 
@@ -301,22 +301,23 @@
 ---
 
 ## DECK COMPOSITION SUMMARY
-*Last updated: Session 9, 2026-07-19*
+*Last updated: Session 10, 2026-07-19*
 
-> **Note:** The detailed card-by-card rows above are from Session 3 and are partially stale. The summary counts below reflect the actual current `cards.js` state (334 definitions, 338 STARTER_DECK slots / 244 LEAN_DECK slots).
+> **Note:** The detailed card-by-card rows above are from Session 3 and are partially stale. The summary counts below reflect the actual current `cards.js` state (334 definitions, 363 STARTER_DECK slots / 269 LEAN_DECK slots).
 
 | Type                          | Unique Cards | STARTER_DECK | LEAN_DECK |
 |-------------------------------|-------------|--------------|-----------|
 | Identity (category) cards     | ~45         | ~55          | ~45       |
-| Stacking events (resource)    | ~80         | ~120         | ~90       |
-| Stacking events (exchange)    | ~35         | ~40          | ~35       |
+| Stacking events (resource)    | ~80         | ~135         | ~95       |
+| Stacking events (exchange)    | ~35         | ~45          | ~35       |
 | Hazard events (incl. must-play)| ~55        | ~130         | ~75       |
 | Utility events (policy)       | ~55         | ~80          | ~55       |
 | Hostile events                | 14          | 14           | 14        |
 | Global event cards            | 6           | 6            | 6         |
 | Utility events (other)        | ~15         | ~20          | ~15       |
-| **Total**                     | **~305**    | **338**      | **244**   |
+| **Total**                     | **~305**    | **363**      | **269**   |
 
+*Session 10 changes: environmental resource cards +1 each, military/economy resource cards +2 each (both decks).*
 *Exact per-card counts available from `cards.js` STARTER_DECK array.*
 
 ### Key Additions Since Session 3 (not in rows above)
