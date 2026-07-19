@@ -4,6 +4,28 @@
 
 ---
 
+## Session 10 — 2026-07-19
+
+**Focus:** AI mode expansion, deck tuning, tag play tracking, stats display simplification
+
+### Changes
+- **Renamed maximize AI → generalist**; all references updated in `AUTO`, button IDs, `autoPlayStep`, `resolveAutoPendingAction`, stats keys
+- **Added maximizer AI mode**: randomly selects a target category at game start (re-randomized after each game); uses `estimateOptionDeltaMaximizer` which wraps `estimateOptionDelta` with ±4/3/5 bias for target-aligned plays; `preferTarget`/`avoidTarget` helpers route all pending-action decisions
+- **`estimateOptionDeltaMaximizer(card, opt, targetCat)`** — new function; overlays target-category bias on top of standard `estimateOptionDelta` scores
+- **Added maximizer button** to header controls in `index.html`; removed maximize button
+- **Environmental resource counts bumped +1** per card (frozen_tundra, dense_forests, mineral_deposits, rare_plants, rich_soil, natural_springs, coastal_fisheries → 5×; land_survey, river_network → 4×; abundant_harvest → 5×) in both STARTER_DECK and LEAN_DECK
+- **Military/economy resource counts bumped +2** per card (war_council, military_exercise, border_fortification, battle_hardened, surplus_goods, trade_surplus, tax_collection, trade_routes) in both decks
+- **STARTER_DECK** 338 → 363 slots; **LEAN_DECK** 244 → 269 slots
+- **Tag play tracking**: each card played in autoplay increments `AUTO.stats[mode].tagPlays[tag]` for every tag on the card (tracked in `autoSelectAndPlay`)
+- **`blankModeStat()`** now includes `tagPlays: {}` field
+- **Stats display simplified to single active-mode column**: `updateAutoStatsDisplay` now renders only `AUTO.stats[AUTO.mode]`; removed three-column layout and `.astat-three-col`
+- **`renderModeStats`** now includes a "Tag plays" section (top 15 tags by play count); accepts optional `extraHeader` for mode-specific context (e.g. maximizer target category)
+
+### Deck State
+363 STARTER_DECK slots / 269 LEAN_DECK slots (active), 334 total card definitions
+
+---
+
 ## Session 9 — 2026-07-19
 
 **Focus:** Hostile card expansion, global event card mechanic, lean deck build

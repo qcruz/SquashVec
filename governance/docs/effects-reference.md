@@ -423,4 +423,31 @@ These effects are **disabled** (grayed out) when requirements aren't met:
 | `remove_four_stack_cards_then_bottom` | Each named stack meets count requirement |
 | `move_newest_resource_to_sparse_stack` | At least one valid (source ≥ 1, target exactly 1) pair |
 | `strip_stack_to_oldest_and_instab` | At least one stack with 2+ resources |
+| `global_event_escape` | Always eligible |
+| `global_event_penalty` | Always eligible |
 | All others | Always eligible |
+
+---
+
+## Autoplay Stats — Data Model
+
+Each autoplay mode (`random`, `generalist`, `maximizer`) has its own stat block in `AUTO.stats[mode]`:
+
+```js
+{
+  games: 0,           // total games completed
+  wins: 0,
+  losses: 0,
+  turnHistory: [],    // G.turn at end of each game
+  scoreSpread: [],    // max(categoryScores) − min(categoryScores) at game end
+  cardPlays: {},      // { cardId: playCount }
+  optionPlays: {},    // { 'cardId:optionIndex': playCount }
+  tagPlays: {},       // { tagName: playCount } — incremented per tag on every card played
+  winCats: {},        // { categoryId: winCount } — category that triggered the win
+  loseCats: {},       // { categoryId: lossCount }
+}
+```
+
+**Tag play tracking:** Every time a card is played via `autoSelectAndPlay`, all tags on the card increment their counter in `ms.tagPlays`. This accumulates across the entire run and is displayed in the stats panel as "Tag plays" (top 15 by count).
+
+**Stats display:** The detail panel shows a single column for the currently active mode. Switching modes immediately reflects that mode's accumulated data. Header bar stats (games/wins/losses/win rate/avg turns) also reflect the active mode only.
