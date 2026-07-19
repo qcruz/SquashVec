@@ -344,6 +344,35 @@ This asymmetry is a design feature, not a gap.
 
 ---
 
+### Policy Card Design Rules
+
+Policy cards are utility events that manage the relationship between a category's resource stack and its instability pile. Every policy card has exactly two options representing opposite strategic choices.
+
+**Option A — Pay material, remove instability (conservative):**
+The primary cost is stack resources. A minority variant (~2 cards per category) uses hand discards instead.
+- *Resource cost variant:* Remove N stack cards from [category] → remove N instability from [category] pile, shuffle self into deck
+- *Hand cost variant:* Discard N hand cards → remove N instability from [category] pile, shuffle self into deck
+
+**Option B — Spend instability, gain material (aggressive):**
+Remove N instability from [category] pile → gain N material (draw cards OR place this card on [category] stack as a resource)
+
+**Level tiers** (determined by the card's `value` field — not tagged, tracked by design only):
+
+| Level | Value | Option A cost | Option B cost | Effect magnitude |
+|-------|-------|---------------|---------------|-----------------|
+| 1 | 1 | Remove 1 stack card OR discard 1 hand card | Remove 1 instability | ±1 card |
+| 2 | 2 | Remove 2 stack cards OR discard 2 hand cards | Remove 2 instability | ±2 cards |
+| 3 | 3 | Remove 3 stack cards OR discard 3 hand cards | Remove 3 instability | ±3 cards |
+
+**Trade-off is 1:1 by card count at every level.** The player's choice is direction: spend resources to clear threats (Option A) or clear threats to gain resources (Option B). Neither option is strictly better — the right choice depends on current stack depth, instability pile size, and how close each category is to its score thresholds.
+
+**Each category's policy set should include:**
+- At least one card at each level (1, 2, 3)
+- Primarily resource-cost variants for Option A
+- ~2 hand-discard variants per category mixed in for variety
+
+---
+
 ---
 
 ## Planned Mechanics — Confirmed, Pending Implementation
