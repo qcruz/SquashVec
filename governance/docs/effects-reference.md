@@ -319,6 +319,27 @@ Take a resource card from one of `sourceCategories` and move it to the Economy s
 - `sourceCategories: string[]`
 - `afterEffect?: string` — `'remove_military_discard_self'` requires Military stack ≥ 1
 
+**`global_event_escape`**
+Individual escape option for global event cards. First checks the card's cooperative threshold (handled automatically at the top of `resolveEventCard` — if met the card is negated before this runs). If not negated, pays the escape cost; if payment fails, applies the penalty instead.
+- `escapeCost: string[]` — list of 3 category names to remove oldest resource from (e.g. `['economy', 'governance', 'technology']`)
+- Card-level properties used: `cooperativeThreshold`, `thresholdCategory`, `penaltyCategory`, `penaltyCount`, `penaltyType`
+- *Always eligible (`canPlayOption` returns true)*
+
+**`global_event_penalty`**
+Penalty option for global event cards. Cooperative threshold is checked automatically before this runs (see note above). If not negated, applies the penalty directly.
+- Card-level properties used: `penaltyType`, `penaltyCategory`, `penaltyCount`
+- `penaltyType: 'remove_stack'` (default) — removes N oldest resources from `penaltyCategory` stack → deck
+- `penaltyType: 'deck_to_instability'` — takes N cards from draw deck top → `penaltyCategory` instability pile
+- *Always eligible (`canPlayOption` returns true)*
+
+> **Global event card properties** (set on the card object, not the option):
+> - `cooperativeThreshold: number` — deck count of `thresholdCategory`-tagged cards needed to auto-negate
+> - `thresholdCategory: string` — tag name to count in the draw deck
+> - `penaltyCategory: string` — category affected by the penalty
+> - `penaltyCount: number` — number of cards/resources affected
+> - `penaltyType: 'remove_stack' | 'deck_to_instability'`
+> - `mustPlayWhenDrawn: true` — required on all global event cards
+
 **`discard_self`**
 Simply discard this card using `discardTo`. No additional effect.
 

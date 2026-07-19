@@ -4,6 +4,33 @@
 
 ---
 
+## Session 9 — 2026-07-19
+
+**Focus:** Hostile card expansion, global event card mechanic, lean deck build
+
+### Changes
+- **Added 8 hostile cards** — 2 per category previously at 0 hostile (Governance, Culture, Technology, Environment):
+  - *Value 2 stacking (exchange pattern):* Regulatory Capture (Gov), Propaganda Campaign (Cul), Cyber Attack (Tec), Resource Extraction (Env) — pay own resource + discard hand → stack on cross category, OR remove cross instability + discard hand → stack on own category
+  - *Value 3 stacking (destabilization pattern):* Emergency Powers (Gov), Cultural Erasure (Cul), Patent Warfare (Tec), Industrial Pollution (Env) — pay own resource → place self in target instability (−3), OR pay cross resource → stack +3 on own category
+- **Added 6 global event cards** — 1 per category, `subtype: 'hazard'`, `mustPlayWhenDrawn: true`:
+  - Global Recession (Economy), Constitutional Crisis (Governance), Mass Uprising (Culture), Arms Escalation (Military), Tech Collapse (Technology), Climate Crisis (Environment, threshold 5, penalty 3)
+  - Mechanic: cooperative threshold auto-negate fires before options (counts matching-tag cards in draw deck); Opt 1 pays 3 resources to escape individually; Opt 2 takes penalty (remove_stack or deck_to_instability)
+  - Constitutional Crisis and Arms Escalation use `deck_to_instability` penalty; all others use `remove_stack`
+- **2 new game.js effects:** `global_event_escape`, `global_event_penalty`
+- **New helper:** `applyGlobalEventPenalty(card)` — reads `card.penaltyType`, `card.penaltyCategory`, `card.penaltyCount`
+- **Cooperative threshold pre-check** added at top of `resolveEventCard` — fires for any card with `card.cooperativeThreshold` set; auto-negates and discards card if deck count ≥ threshold
+- **STARTER_DECK** grows 324 → 338 slots; 334 total card definitions
+- **Added `LEAN_DECK`** constant (244 slots) — all duplicates removed except 10 natural resource stacking cards (frozen_tundra, dense_forests, mineral_deposits, rare_plants, rich_soil, natural_springs, coastal_fisheries, land_survey, river_network, abundant_harvest). Game switched to `LEAN_DECK` for testing.
+
+### Deck State
+338 STARTER_DECK slots / 244 LEAN_DECK slots (active), 334 total card definitions
+
+### Notes
+- To switch back to full deck: change `LEAN_DECK` → `STARTER_DECK` in `newGameState()` in game.js
+- Global event cooperative threshold uses tag-count in draw deck — higher card diversity in deck = less risk of triggering global penalties
+
+---
+
 ## Session 8 — 2026-07-17
 
 **Focus:** Card tag system — design, implementation, display

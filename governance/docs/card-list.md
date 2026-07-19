@@ -273,20 +273,49 @@
 
 ---
 
+### Hostile Cards Added Session 9
+
+| Card | Category | Value | Deck | Opt 1 | Opt 2 |
+|------|----------|-------|------|-------|-------|
+| Regulatory Capture | Governance | 2 | ×1 | Pay Gov resource + discard hand → stack +2 on Economy | Remove Economy instability + discard hand → stack +2 on Governance |
+| Emergency Powers | Governance | 3 | ×1 | Pay Gov resource → place self in Culture instability (−3) | Pay Military resource → stack +3 on Governance |
+| Propaganda Campaign | Culture | 2 | ×1 | Pay Culture resource + discard hand → stack +2 on Governance | Remove Governance instability + discard hand → stack +2 on Culture |
+| Cultural Erasure | Culture | 3 | ×1 | Pay Culture resource → place self in Governance instability (−3) | Pay Governance resource → stack +3 on Culture |
+| Cyber Attack | Technology | 2 | ×1 | Pay Tech resource + discard hand → stack +2 on Economy | Remove Governance instability + discard hand → stack +2 on Technology |
+| Patent Warfare | Technology | 3 | ×1 | Pay Tech resource → place self in Economy instability (−3) | Pay Military resource → stack +3 on Technology |
+| Resource Extraction | Environment | 2 | ×1 | Pay Env resource + discard hand → stack +2 on Economy | Remove Economy instability + discard hand → stack +2 on Environment |
+| Industrial Pollution | Environment | 3 | ×1 | Pay Env resource → place self in Economy instability (−3) | Pay Economy resource → stack +3 on Environment |
+
+### Global Event Cards Added Session 9
+*All are `subtype: 'hazard'`, `mustPlayWhenDrawn: true`. Cooperative threshold auto-negates before options are evaluated. Opt 1 = individual escape (pay 3 resources); Opt 2 = accept penalty.*
+
+| Card | Category | Value | Deck | Threshold | Penalty | Escape Cost |
+|------|----------|-------|------|-----------|---------|-------------|
+| Global Recession | Economy | 2 | ×1 | 4 Economy cards in deck | Remove 2 Economy from stack | 1 Economy + 1 Governance + 1 Technology |
+| Constitutional Crisis | Governance | 2 | ×1 | 4 Governance cards in deck | Top 2 deck cards → Governance instability | 1 Governance + 1 Military + 1 Economy |
+| Mass Uprising | Culture | 2 | ×1 | 4 Culture cards in deck | Remove 2 Culture from stack | 1 Culture + 1 Governance + 1 Economy |
+| Arms Escalation | Military | 2 | ×1 | 4 Military cards in deck | Top 2 deck cards → Military instability | 1 Military + 1 Economy + 1 Technology |
+| Tech Collapse | Technology | 2 | ×1 | 4 Technology cards in deck | Remove 2 Technology from stack | 1 Technology + 1 Economy + 1 Governance |
+| Climate Crisis | Environment | 3 | ×1 | **5** Environment cards in deck | Remove **3** Environment from stack | 1 Environment + 1 Economy + 1 Technology |
+
+---
+
 ## DECK COMPOSITION SUMMARY
-*Last updated: Session 8, 2026-07-18*
+*Last updated: Session 9, 2026-07-19*
 
-> **Note:** The detailed card-by-card rows above are from Session 3 and are partially stale. The summary counts below reflect the actual current `cards.js` state (320 definitions, 324 STARTER_DECK slots).
+> **Note:** The detailed card-by-card rows above are from Session 3 and are partially stale. The summary counts below reflect the actual current `cards.js` state (334 definitions, 338 STARTER_DECK slots / 244 LEAN_DECK slots).
 
-| Type                          | Unique Cards | Copies in Deck |
-|-------------------------------|-------------|----------------|
-| Identity (category) cards     | ~45         | ~55            |
-| Stacking events (resource)    | ~80         | ~120           |
-| Stacking events (exchange)    | ~35         | ~40            |
-| Hazard events (incl. must-play)| ~55        | ~130           |
-| Utility events (policy)       | ~55         | ~80            |
-| Utility events (other)        | ~15         | ~20            |
-| **Total**                     | **~285**    | **324**        |
+| Type                          | Unique Cards | STARTER_DECK | LEAN_DECK |
+|-------------------------------|-------------|--------------|-----------|
+| Identity (category) cards     | ~45         | ~55          | ~45       |
+| Stacking events (resource)    | ~80         | ~120         | ~90       |
+| Stacking events (exchange)    | ~35         | ~40          | ~35       |
+| Hazard events (incl. must-play)| ~55        | ~130         | ~75       |
+| Utility events (policy)       | ~55         | ~80          | ~55       |
+| Hostile events                | 14          | 14           | 14        |
+| Global event cards            | 6           | 6            | 6         |
+| Utility events (other)        | ~15         | ~20          | ~15       |
+| **Total**                     | **~305**    | **338**      | **244**   |
 
 *Exact per-card counts available from `cards.js` STARTER_DECK array.*
 
