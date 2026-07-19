@@ -8670,21 +8670,16 @@ const STARTER_DECK = [
   'artistic_movement', 'folk_songs',
   'war_council', 'border_fortification',
   'research_grants', 'cartography',
-  'river_network', 'river_network', 'river_network',
-  'land_survey', 'land_survey', 'land_survey',
-  'trade_delegation',
+  'river_network', 'river_network', 'river_network', 'river_network','land_survey', 'land_survey', 'land_survey', 'land_survey','trade_delegation',
   // Resource-focused stacking
   'civic_assembly', 'civic_assembly', 'public_decree', 'public_decree',
   'surplus_goods', 'surplus_goods', 'trade_surplus', 'trade_surplus',
   'oral_history', 'oral_history',
   'battle_hardened', 'battle_hardened',
   'invention_workshop', 'invention_workshop', 'applied_science', 'applied_science',
-  'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra',
-  'dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
+  'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra','dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
   'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
-  'dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
-  'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
-  // Must-play events
+  'dense_forests', 'dense_forests', 'dense_forests','mineral_deposits', 'mineral_deposits', 'mineral_deposits','rare_plants', 'rare_plants', 'rare_plants','rich_soil', 'rich_soil', 'rich_soil','natural_springs', 'natural_springs', 'natural_springs','coastal_fisheries', 'coastal_fisheries', 'coastal_fisheries',// Must-play events
   'indecisiveness', 'indecisiveness', 'indecisiveness', 'indecisiveness',
   // Hazard events — natural/environmental
   'worker_strike', 'worker_strike',
@@ -8826,21 +8821,16 @@ const LEAN_DECK = [
   'artistic_movement', 'folk_songs',
   'war_council', 'border_fortification',
   'research_grants', 'cartography',
-  'river_network', 'river_network', 'river_network',
-  'land_survey', 'land_survey', 'land_survey',
-  'trade_delegation',
+  'river_network', 'river_network', 'river_network', 'river_network','land_survey', 'land_survey', 'land_survey', 'land_survey','trade_delegation',
   // Resource-focused stacking
   'civic_assembly', 'public_decree',
   'surplus_goods', 'trade_surplus',
   'oral_history',
   'battle_hardened',
   'invention_workshop', 'applied_science',
-  'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra',
-  'dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
+  'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra','dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
   'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
-  'dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
-  'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
-  // Must-play events
+  'dense_forests', 'dense_forests', 'dense_forests','mineral_deposits', 'mineral_deposits', 'mineral_deposits','rare_plants', 'rare_plants', 'rare_plants','rich_soil', 'rich_soil', 'rich_soil','natural_springs', 'natural_springs', 'natural_springs','coastal_fisheries', 'coastal_fisheries', 'coastal_fisheries',// Must-play events
   'indecisiveness',
   // Hazard events — natural/environmental
   'worker_strike',
