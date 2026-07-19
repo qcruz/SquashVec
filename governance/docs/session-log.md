@@ -31,7 +31,7 @@
 ### Notes
 - Tag definitions confirmed: resource, instability, identity, policy, structure (unused), global (unused), event (must-play), hostile
 
-**Session 8 continued (2026-07-18):**
+**Session 8 continued (2026-07-18, part 1):**
 - **Refined tag taxonomy** — split `resource` into `resource` (free-stack, 81 slots) vs `exchange` (all options cost something, 21 slots). Updated TAG_OVERRIDES for alliance, free_trade_agreement, tax_collection, efficient_administration, loyalists, civic_charter, artistic_movement, scientific_breakthrough, direct_attack/arms_package/sanctions/destabilization
 - **Added category tags to every card** — each card now tagged with every category name referenced in its definition (id, category, costCategory, discardTo, options). Written as Python script `governance/add-tags.py`; revised to use full card block (not truncated block) to catch costCategory/discardTo references after the value line
 - **Added tag color CSS** — `.hc-tag-exchange` (blue), 6 category classes: `.hc-tag-governance` (purple), `.hc-tag-economy` (green), `.hc-tag-culture` (brown), `.hc-tag-military` (red), `.hc-tag-technology` (blue), `.hc-tag-environment` (dark green)
@@ -44,6 +44,24 @@
   - Technology: Patent License ×2 (value 1), Venture Capital ×2 (value 2), Technology Transfer ×1 (value 2), Automation Drive ×1 (value 2)
 - **STARTER_DECK** grows from 276 → 289 slots; 295 total card definitions
 - **design.md** updated with exchange balance rule, difficulty curve, culture/environment design rationale
+
+**Session 8 continued (2026-07-18, part 2):**
+- **Replaced unapproved policy card design note** in `docs/design.md` with owner-confirmed wording covering cost weight, cross-category costs, option directions (Opt A: pay resources/hand → remove instability; Opt B: place self in instability → draw cards), and level tiers 1–3
+- **Added `docs/CLAUDE.md` rule** — never write to design.md without explicit owner confirmation of exact wording
+- **Implemented 25 policy cards** — 5 per category (Economy, Culture, Military, Technology, Environment):
+  - Level 1 resource (×2 each): Market Correction, Social Harmony, Ceasefire, Patent Reform, Conservation Policy
+  - Level 1 hand-discard (×1 each): Deficit Spending, Populist Appeal, Fortified Peace, Open Source Initiative, Controlled Burn
+  - Level 2 own (×2 each): Debt Restructuring, Cultural Reconciliation, War of Attrition, R&D Investment, Ecological Restoration
+  - Level 2 cross-category (×1 each): Fiscal Consolidation, National Reckoning, Force Projection, Digital Transformation, Climate Accord
+  - Level 3 (×1 each): Economic Overhaul, Cultural Renaissance, Total Mobilization, Technological Revolution, New Deal
+- **3 new game.js effects:**
+  - `draw_n_then_place_in_instability` — draw N cards, place self in category instability (Opt B)
+  - `discard_hand_then_remove_instability` — discard 1 hand card → remove N instability from target category (level-1 hand Opt A)
+  - `remove_two_stack_cards_then_remove_instability` — auto-pay 2 resources from specified stacks → remove N instability (cross-category and level-3 Opt A)
+- **Modified** `remove_stack_card_then_remove_instability` to support `targetCategory`, `stackEnd: 'newest'`, and `afterShuffle` parameters
+- **STARTER_DECK** grows from 289 → 324 slots; 320 total card definitions
+- **docs/effects-reference.md** updated with 4 new/modified effect entries
+- **docs/planned-cards.md** — all 25 policy card drafts marked ✅ Implemented
 
 ---
 

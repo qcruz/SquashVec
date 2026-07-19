@@ -274,17 +274,19 @@
 ---
 
 ## DECK COMPOSITION SUMMARY
-*Last updated: Session 6, 2026-07-15*
+*Last updated: Session 8, 2026-07-18*
 
-> **Note:** The detailed card-by-card rows above are from Session 3 and are partially stale — many new cards were added in Sessions 4 and 5. The summary counts below reflect the actual current `cards.js` state.
+> **Note:** The detailed card-by-card rows above are from Session 3 and are partially stale. The summary counts below reflect the actual current `cards.js` state (320 definitions, 324 STARTER_DECK slots).
 
 | Type                          | Unique Cards | Copies in Deck |
 |-------------------------------|-------------|----------------|
 | Identity (category) cards     | ~45         | ~55            |
-| Stacking events               | ~35         | ~65            |
+| Stacking events (resource)    | ~80         | ~120           |
+| Stacking events (exchange)    | ~35         | ~40            |
 | Hazard events (incl. must-play)| ~55        | ~130           |
-| Utility events                | ~30         | ~55            |
-| **Total**                     | **165**     | **303**        |
+| Utility events (policy)       | ~55         | ~80            |
+| Utility events (other)        | ~15         | ~20            |
+| **Total**                     | **~285**    | **324**        |
 
 *Exact per-card counts available from `cards.js` STARTER_DECK array.*
 
@@ -310,6 +312,49 @@
 | Surveillance State | Hazard | +3 | Technology/Economy instability |
 | Cyber Warfare | Hazard | +3 | Technology instability |
 | Technological Collapse | Hazard | +4 | Technology instability, must-play |
+| Heritage Fund | Exchange | 1 | Culture/Economy exchange |
+| Cultural Diplomacy | Exchange | 2 | Culture/Governance exchange |
+| Land Reclamation | Exchange | 1 | Environment/Economy exchange |
+| Conservation Program | Exchange | 2 | Environment/Governance exchange |
+| Conscription | Exchange | 1 | Military/Culture exchange (×2) |
+| Arms Trade | Exchange | 2 | Military/Economy exchange |
+| Patent License | Exchange | 1 | Technology/Economy exchange (×2) |
+| Venture Capital | Exchange | 2 | Technology/Economy exchange (×2) |
+| Technology Transfer | Exchange | 2 | Technology/Economy exchange |
+| Automation Drive | Exchange | 2 | Technology/Economy exchange |
+| Alliance | Stacking | +2 | Governance; anchors coalition synergy |
+| Free Trade Agreement | Stacking | +1 | Economy; free when Alliance in any stack |
+| Martial Law | Utility | 3 | Governance; clears all Crime instability |
+
+### Policy Cards Added Session 8 (Economy / Culture / Military / Technology / Environment)
+
+| Card | Cat | Value | Deck | Opt A | Opt B |
+|------|-----|-------|------|-------|-------|
+| Market Correction | Economy | 1 | ×2 | Pay newest Eco → remove 1 Eco instability | Draw 1, self → Eco instability |
+| Deficit Spending | Economy | 1 | ×1 | Discard 1 hand → remove 1 Eco instability | Draw 1, self → Eco instability |
+| Debt Restructuring | Economy | 2 | ×2 | Pay oldest Eco → remove 2 Eco instability | Draw 2, self → Eco instability |
+| Fiscal Consolidation | Economy | 2 | ×1 | Pay Eco+Gov → remove 3 Eco instability | Draw 2, self → Eco instability |
+| Economic Overhaul | Economy | 3 | ×1 | Pay oldest Eco+Gov → remove 4 Eco instability | Draw 3, self → Eco instability |
+| Social Harmony | Culture | 1 | ×2 | Pay newest Cul → remove 1 Cul instability | Draw 1, self → Cul instability |
+| Populist Appeal | Culture | 1 | ×1 | Discard 1 hand → remove 1 Cul instability | Draw 1, self → Cul instability |
+| Cultural Reconciliation | Culture | 2 | ×2 | Pay oldest Cul → remove 2 Cul instability | Draw 2, self → Cul instability |
+| National Reckoning | Culture | 2 | ×1 | Pay Cul+Gov → remove 3 Cul instability | Draw 2, self → Cul instability |
+| Cultural Renaissance | Culture | 3 | ×1 | Pay oldest Cul+Eco → remove 4 Cul instability | Draw 3, self → Cul instability |
+| Ceasefire | Military | 1 | ×2 | Pay newest Mil → remove 1 Mil instability | Draw 1, self → Mil instability |
+| Fortified Peace | Military | 1 | ×1 | Discard 1 hand → remove 1 Mil instability | Draw 1, self → Mil instability |
+| War of Attrition | Military | 2 | ×2 | Pay oldest Mil → remove 2 Mil instability | Draw 2, self → Mil instability |
+| Force Projection | Military | 2 | ×1 | Pay Mil+Eco → remove 3 Mil instability | Draw 2, self → Mil instability |
+| Total Mobilization | Military | 3 | ×1 | Pay oldest Mil+Eco → remove 4 Mil instability | Draw 3, self → Mil instability |
+| Patent Reform | Technology | 1 | ×2 | Pay newest Tec → remove 1 Tec instability | Draw 1, self → Tec instability |
+| Open Source Initiative | Technology | 1 | ×1 | Discard 1 hand → remove 1 Tec instability | Draw 1, self → Tec instability |
+| R&D Investment | Technology | 2 | ×2 | Pay oldest Tec → remove 2 Tec instability | Draw 2, self → Tec instability |
+| Digital Transformation | Technology | 2 | ×1 | Pay Tec+Eco → remove 3 Tec instability | Draw 2, self → Tec instability |
+| Technological Revolution | Technology | 3 | ×1 | Pay oldest Tec+Eco → remove 4 Tec instability | Draw 3, self → Tec instability |
+| Conservation Policy | Environment | 1 | ×2 | Pay newest Env → remove 1 Env instability | Draw 1, self → Env instability |
+| Controlled Burn | Environment | 1 | ×1 | Discard 1 hand → remove 1 Env instability | Draw 1, self → Env instability |
+| Ecological Restoration | Environment | 2 | ×2 | Pay oldest Env → remove 2 Env instability | Draw 2, self → Env instability |
+| Climate Accord | Environment | 2 | ×1 | Pay Env+Eco → remove 3 Env instability | Draw 2, self → Env instability |
+| New Deal | Environment | 3 | ×1 | Pay oldest Env+Eco → remove 4 Env instability | Draw 3, self → Env instability |
 
 ### WIN/LOSE Thresholds
 - **Win:** Any category reaches **20** points
