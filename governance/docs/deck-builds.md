@@ -379,19 +379,22 @@ Win: any category reaches 20 · Lose: any category drops to 0
 | Category | identity | resource | exchange | policy | instability | hostile | event | gov | eco | cul | mil | tec | env | Total |
 |----------|:--------:|:--------:|:--------:|:------:|:-----------:|:-------:|:-----:|:---:|:---:|:---:|:---:|:---:|:---:|------:|
 | Governance | 9 | 7 | 8 | 22 | 4 | — | — | 50 | 14 | 17 | 19 | 3 | 2 | 155 |
-| Economy | 10 | 14 | 7 | — | 6 | 3 | — | 20 | 37 | 5 | 7 | 3 | 9 | 121 |
-| Culture | 11 | 6 | 3 | — | 5 | — | — | 10 | 12 | 25 | 2 | 3 | 3 | 80 |
-| Military | 9 | 5 | 7 | 3 | 7 | 4 | — | 11 | 16 | 6 | 31 | 3 | — | 102 |
-| Technology | 9 | 6 | 7 | — | 11 | — | — | 3 | 23 | 4 | 5 | 33 | 6 | 107 |
-| Environment | 10 | 38 | 2 | — | 9 | — | 3 | 3 | 12 | 12 | 5 | 17 | 59 | 170 |
+| Economy | 10 | 14 | 7 | 7 | 6 | 3 | — | 22 | 44 | 5 | 7 | 3 | 9 | 137 |
+| Culture | 11 | 6 | 3 | 7 | 5 | — | — | 11 | 13 | 32 | 2 | 3 | 3 | 96 |
+| Military | 9 | 5 | 7 | 10 | 7 | 4 | — | 11 | 18 | 6 | 38 | 3 | — | 118 |
+| Technology | 9 | 6 | 7 | 7 | 11 | — | — | 3 | 25 | 4 | 5 | 40 | 6 | 123 |
+| Environment | 10 | 38 | 2 | 7 | 9 | — | 3 | 3 | 14 | 12 | 5 | 17 | 66 | 186 |
 | Cross | — | 5 | — | 11 | 38 | 2 | 4 | 15 | 15 | 11 | 5 | 5 | 4 | 115 |
-| **Total** | **58** | **81** | **34** | **36** | **80** | **9** | **7** | **112** | **129** | **80** | **74** | **67** | **83** | **850** |
+| **Total** | **58** | **81** | **34** | **71** | **80** | **9** | **7** | **115** | **143** | **87** | **81** | **74** | **90** | **930** |
 
-**Balance flags (Build 1):**
-- **Technology** — worst threat ratio: 11 instability vs 7 positive (resource + exchange). No dedicated policy. Most vulnerable to pile-up.
-- **Culture** — thinnest category: 23 total, 6 resource, 1 exchange, no policy.
-- **Environment** — resource-heavy (38) but all +1 value. Good stacking depth, low per-card ceiling.
-- **Cross instability** — 38 slots hit all categories; combined with targeted instability, 29% of the deck is instability.
+*Updated Session 8 (2026-07-18): +35 policy slots across Economy/Culture/Military/Technology/Environment.*
+
+**Balance flags (Build 1, updated):**
+- **Technology** — 11 instability vs 7 policy (new) + 6 resource + 7 exchange = much improved. Was the most vulnerable; now has recovery parity with other non-Governance categories.
+- **Culture** — still thin on resource (6) and exchange (3). Policy cards now present but low stacking ceiling remains.
+- **Environment** — resource-heavy (38) with 7 new policy cards. Good recovery depth now. Per-card value still low (+1 each).
+- **Cross instability** — 38 slots hit all categories; combined with targeted instability, 24% of the 324-slot deck is instability (down from 29%).
+- **Governance** — dominates policy (22 slots vs 7–10 elsewhere). Intended asymmetry — see design.md.
 
 ---
 ### Cross-Category Tag Connections
@@ -401,13 +404,13 @@ Win: any category reaches 20 · Lose: any category drops to 0
 | Home | gov | eco | cul | mil | tec | env |
 |------|:---:|:---:|:---:|:---:|:---:|:---:|
 | Governance | **50** | 14 | 17 | 19 | 3 | 2 |
-| Economy | 20 | **37** | 5 | 7 | 3 | 9 |
-| Culture | 8 | 10 | **23** | 2 | 3 | 3 |
-| Military | 11 | 13 | 4 | **28** | 3 | — |
-| Technology | 2 | 18 | 4 | 4 | **27** | 6 |
-| Environment | 2 | 10 | 12 | 5 | 16 | **57** |
+| Economy | 22 | **44** | 5 | 7 | 3 | 9 |
+| Culture | 11 | 13 | **32** | 2 | 3 | 3 |
+| Military | 11 | 18 | 6 | **38** | 3 | — |
+| Technology | 3 | 25 | 4 | 5 | **40** | 6 |
+| Environment | 3 | 14 | 12 | 5 | 17 | **66** |
 | Cross | 15 | 15 | 11 | 5 | 5 | 4 |
-| **Total** | **112** | **129** | **80** | **74** | **67** | **83** |
+| **Total** | **115** | **143** | **87** | **81** | **74** | **90** |
 
 *Bold = self-tag (home category). Rows sum to more than Total because one card can carry multiple category tags.*
 
