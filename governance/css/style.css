@@ -732,6 +732,7 @@ html, body {
 .astat-cat-chip.chip-lose { border-color: #c0392b; color: #e74c3c; }
 
 .astat-two-col { display: flex; gap: 16px; }
+.astat-three-col { display: flex; gap: 12px; }
 .astat-col { flex: 1; min-width: 0; }
 .astat-mode-header {
   font-size: 10px; font-family: var(--font-mono); text-transform: uppercase;

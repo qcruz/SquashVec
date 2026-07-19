@@ -2852,8 +2852,9 @@ const AUTO = {
   interval: null,
   speed: 200,
   mode: 'random',
+  targetCategory: null,   // set when maximizer mode starts a new game
   batch: { active: false, target: 0 },
-  stats: { random: blankModeStat(), maximize: blankModeStat() },
+  stats: { random: blankModeStat(), generalist: blankModeStat(), maximizer: blankModeStat() },
 };
 
 function randFrom(arr) {
@@ -2891,11 +2892,17 @@ function setAutoSpeed(ms) {
 function setAutoMode(mode) {
   AUTO.mode = mode;
   document.getElementById('auto-mode-random').classList.toggle('active', mode === 'random');
-  document.getElementById('auto-mode-maximize').classList.toggle('active', mode === 'maximize');
+  document.getElementById('auto-mode-generalist').classList.toggle('active', mode === 'generalist');
+  document.getElementById('auto-mode-maximizer').classList.toggle('active', mode === 'maximizer');
+  if (mode === 'maximizer' && !AUTO.targetCategory) {
+    AUTO.targetCategory = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
+    addLog(`Maximizer: targeting ${cap(AUTO.targetCategory)}.`);
+  }
 }
 
 function resetAutoStats() {
-  AUTO.stats = { random: blankModeStat(), maximize: blankModeStat() };
+  AUTO.stats = { random: blankModeStat(), generalist: blankModeStat(), maximizer: blankModeStat() };
+  AUTO.targetCategory = null;
   updateAutoStatsDisplay();
 }
 
@@ -2908,8 +2915,14 @@ function recordAutoGameResult(result, cat) {
   const scores = CATEGORIES.map(c => categoryScore(c));
   s.scoreSpread.push(Math.max(...scores) - Math.min(...scores));
 
+  // Maximizer: pick a new random target for the next game
+  if (AUTO.mode === 'maximizer') {
+    AUTO.targetCategory = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
+    addLog(`Maximizer: targeting ${cap(AUTO.targetCategory)} next game.`);
+  }
+
   if (AUTO.batch.active) {
-    const totalGames = AUTO.stats.random.games + AUTO.stats.maximize.games;
+    const totalGames = AUTO.stats.random.games + AUTO.stats.generalist.games + AUTO.stats.maximizer.games;
     const batchStart = AUTO.batch.startGames;
     if (totalGames - batchStart >= AUTO.batch.target) {
       AUTO.batch.active = false;
@@ -2924,7 +2937,7 @@ function startBatchRun(n) {
   if (!n || n < 1) return;
   AUTO.batch.active = true;
   AUTO.batch.target = n;
-  AUTO.batch.startGames = AUTO.stats.random.games + AUTO.stats.maximize.games;
+  AUTO.batch.startGames = AUTO.stats.random.games + AUTO.stats.generalist.games + AUTO.stats.maximizer.games;
   const prevSpeed = AUTO.speed;
   setAutoSpeed(20);
   if (!AUTO.running) toggleAutoplay();
@@ -2935,7 +2948,8 @@ function exportAutoStats() {
   const data = {
     exportedAt: new Date().toISOString(),
     random: AUTO.stats.random,
-    maximize: AUTO.stats.maximize,
+    generalist: AUTO.stats.generalist,
+    maximizer: AUTO.stats.maximizer,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -3004,8 +3018,9 @@ function renderModeStats(s, modeName) {
 
 function updateAutoStatsDisplay() {
   const sr = AUTO.stats.random;
-  const sm = AUTO.stats.maximize;
-  const totalGames = sr.games + sm.games;
+  const sg = AUTO.stats.generalist;
+  const sm = AUTO.stats.maximizer;
+  const totalGames = sr.games + sg.games + sm.games;
 
   const bar = document.getElementById('autoplay-bar');
   const statsSection = document.getElementById('auto-stats-section');
@@ -3035,11 +3050,13 @@ function updateAutoStatsDisplay() {
     ? 'Top: ' + topEntries.map(([id, n]) => { const c = CARDS.find(c => c.id === id); return `${c ? c.name : id} (${n})`; }).join(' · ')
     : '';
 
-  // Detailed panel — two sections side by side
+  // Detailed panel — three columns
+  const maxTgt = AUTO.targetCategory ? ` <span class="astat-muted">(targeting ${cap(AUTO.targetCategory)})</span>` : '';
   document.getElementById('auto-stats-body').innerHTML = `
-    <div class="astat-two-col">
+    <div class="astat-three-col">
       <div class="astat-col">${renderModeStats(sr, 'Random')}</div>
-      <div class="astat-col">${renderModeStats(sm, 'Maximize')}</div>
+      <div class="astat-col">${renderModeStats(sg, 'Generalist')}</div>
+      <div class="astat-col">${renderModeStats(sm, 'Maximizer')}${maxTgt}</div>
     </div>
   `;
 }
@@ -3188,6 +3205,47 @@ function estimateOptionDelta(card, opt) {
   return val * 0.5;
 }
 
+function estimateOptionDeltaMaximizer(card, opt, targetCat) {
+  const base = estimateOptionDelta(card, opt);
+  const eff = opt.effect || '';
+
+  // Stacking directly onto target category — high priority
+  const stackingEffects = ['stack_on_category', 'stack_bonus', 'stack_on_any_modal', 'stack_bonus_any',
+    'replace_plus_stack_bonus', 'replace_plus_stack_cost', 'replace_plus_draw',
+    'replace_plus_remove_instability', 'replace_consume_env',
+    'remove_stack_card_then_stack_on_category', 'remove_stack_card_then_discard_hand_then_stack',
+    'remove_instability_then_discard_hand_then_stack', 'remove_stack_card_then_remove_or_identity_then_stack'];
+  if (stackingEffects.includes(eff) && opt.targetCategory === targetCat) return base + 4;
+
+  // Identity card for target category — high priority
+  if (card.type === 'category' && card.category === targetCat) return base + 3;
+
+  // Policy: removing instability from target category — protect it
+  const instabRemovalEffects = ['remove_stack_card_then_remove_instability',
+    'remove_two_stack_cards_then_remove_instability', 'discard_hand_then_remove_instability'];
+  if (instabRemovalEffects.includes(eff) && opt.targetCategory === targetCat) return base + 3;
+
+  // General instability removal when target category pile is threatened — moderate boost
+  if ((eff === 'remove_instability_modal' || eff === 'remove_two_instability_modal') &&
+      G.categories[targetCat].instability.length > 0) return base + 2;
+
+  // Placing instability onto target category — strongly avoid
+  if (opt.targetInstability === targetCat) return base - 5;
+
+  // Paying target category's resources as cost — penalise
+  if (opt.sourceCategory === targetCat) return base - 3;
+  if ((opt.stacks || []).includes(targetCat)) return base - 3;
+
+  // Global event penalising target category — always escape if possible
+  if (card.penaltyCategory === targetCat && eff === 'global_event_escape') return base + 4;
+  if (card.penaltyCategory === targetCat && eff === 'global_event_penalty') return base - 4;
+
+  // Policy card that creates instability in target category (draw_n_then_place_in_instability)
+  if (eff === 'draw_n_then_place_in_instability' && opt.targetInstability === targetCat) return base - 4;
+
+  return base;
+}
+
 function autoPlayStep() {
   if (!G || G.phase === 'won' || G.phase === 'lost') {
     const end = checkEndConditions();
@@ -3226,7 +3284,7 @@ function autoPlayStep() {
     return;
   }
 
-  if (AUTO.mode === 'maximize') {
+  if (AUTO.mode === 'generalist') {
     // Score each card by its best eligible option's estimated delta
     let bestEntry = null;
     let bestDelta = -Infinity;
@@ -3239,10 +3297,21 @@ function autoPlayStep() {
       if (delta > bestDelta) { bestDelta = delta; bestEntry = entry; }
     }
     // Only pass if every playable option would hurt us (delta < -1) — otherwise play best
-    if (!bestEntry || bestDelta < -1) {
-      passTurn();
-      return;
+    if (!bestEntry || bestDelta < -1) { passTurn(); return; }
+    autoSelectAndPlay(bestEntry.i);
+  } else if (AUTO.mode === 'maximizer') {
+    const tgt = AUTO.targetCategory || CATEGORIES[0];
+    let bestEntry = null;
+    let bestDelta = -Infinity;
+    for (const entry of playable) {
+      const eligibleOpts = (entry.card.options || [])
+        .map((opt, oi) => ({ opt, oi }))
+        .filter(({ opt }) => canPlayOption(entry.card, opt));
+      if (!eligibleOpts.length) continue;
+      const delta = Math.max(...eligibleOpts.map(({ opt }) => estimateOptionDeltaMaximizer(entry.card, opt, tgt)));
+      if (delta > bestDelta) { bestDelta = delta; bestEntry = entry; }
     }
+    if (!bestEntry || bestDelta < -2) { passTurn(); return; }
     autoSelectAndPlay(bestEntry.i);
   } else {
     if (Math.random() < 0.12) { passTurn(); return; }
@@ -3259,9 +3328,14 @@ function autoSelectAndPlay(handIdx) {
     .filter(({ opt }) => canPlayOption(card, opt));
 
   let chosen;
-  if (AUTO.mode === 'maximize' && eligible.length) {
+  if (AUTO.mode === 'generalist' && eligible.length) {
     chosen = eligible.reduce((best, e) =>
       estimateOptionDelta(card, e.opt) >= estimateOptionDelta(card, best.opt) ? e : best
+    );
+  } else if (AUTO.mode === 'maximizer' && eligible.length) {
+    const tgt = AUTO.targetCategory || CATEGORIES[0];
+    chosen = eligible.reduce((best, e) =>
+      estimateOptionDeltaMaximizer(card, e.opt, tgt) >= estimateOptionDeltaMaximizer(card, best.opt, tgt) ? e : best
     );
   } else {
     chosen = eligible.length ? randFrom(eligible) : { oi: 0 };
@@ -3281,7 +3355,9 @@ function resolveAutoPendingAction() {
   const action = G.pendingAction;
   const { type, card } = action;
 
-  const maximize = AUTO.mode === 'maximize';
+  const smart = AUTO.mode === 'generalist' || AUTO.mode === 'maximizer';
+  const isMaximizer = AUTO.mode === 'maximizer';
+  const tgtCat = AUTO.targetCategory || CATEGORIES[0];
 
   // Helper: category with highest score (most buffer, best candidate to absorb instability)
   const highestScoreCat = cats => cats.reduce((a, b) => categoryScore(b) > categoryScore(a) ? b : a);
@@ -3292,20 +3368,31 @@ function resolveAutoPendingAction() {
     const sum = c => G.categories[c].instability.reduce((n, x) => n + (x.value || 0), 0);
     return sum(b) > sum(a) ? b : a;
   });
+  // Maximizer helper: prefer target category if present in list, else fall back to fn(cats)
+  const preferTarget = (cats, fallback) => (isMaximizer && cats.includes(tgtCat)) ? tgtCat : fallback(cats);
+  // Maximizer helper: avoid target category — pick from non-target first, else use fn
+  const avoidTarget = (cats, fallback) => {
+    if (!isMaximizer) return fallback(cats);
+    const nonTgt = cats.filter(c => c !== tgtCat);
+    return nonTgt.length ? fallback(nonTgt) : fallback(cats);
+  };
 
   // Hand discard routing (multi-discardTo modal)
   if (action.routingCard) {
     const dests = action.routingCard.discardTo;
     let dest;
-    if (maximize && dests && dests.length) {
-      // Prefer shuffle_to_deck; among instability targets pick highest-score category (most buffer)
+    if (smart && dests && dests.length) {
+      // Prefer shuffle_to_deck; among instability targets pick highest-score non-target category
       const shuffleDest = dests.find(d => d.target === 'shuffle_to_deck');
       if (shuffleDest) {
         dest = shuffleDest;
       } else {
         const instabDests = dests.filter(d => d.target.endsWith('_instability'));
         if (instabDests.length) {
-          dest = instabDests.reduce((best, d) => {
+          // Maximizer: avoid dumping into target category instability
+          const safe = isMaximizer ? instabDests.filter(d => !d.target.startsWith(tgtCat)) : instabDests;
+          const pool = safe.length ? safe : instabDests;
+          dest = pool.reduce((best, d) => {
             const cat = d.target.replace('_instability', '');
             const bestCat = best.target.replace('_instability', '');
             return categoryScore(cat) > categoryScore(bestCat) ? d : best;
@@ -3324,9 +3411,9 @@ function resolveAutoPendingAction() {
   switch (type) {
     case 'stack_self_on_any': {
       const cats = action.choices || CATEGORIES;
-      if (maximize) {
-        // Push highest-score category toward WIN_SCORE
-        const best = cats.reduce((a, b) => categoryScore(b) > categoryScore(a) ? b : a);
+      if (smart) {
+        // Maximizer: prefer target category if available; else highest-score category
+        const best = preferTarget(cats, highestScoreCat);
         resolveStackOnAny(best);
       } else {
         resolveStackOnAny(randFrom(cats));
@@ -3340,17 +3427,21 @@ function resolveAutoPendingAction() {
     case 'discard_replaced_card': {
       const dests = card.discardTo;
       let dest;
-      if (maximize && dests && dests.length) {
+      if (smart && dests && dests.length) {
         const shuffleDest = dests.find(d => d.target === 'shuffle_to_deck');
         if (shuffleDest) {
           dest = shuffleDest;
         } else {
           const instabDests = dests.filter(d => d.target.endsWith('_instability'));
-          dest = instabDests.length ? instabDests.reduce((best, d) => {
-            const cat = d.target.replace('_instability', '');
-            const bestCat = best.target.replace('_instability', '');
-            return categoryScore(cat) > categoryScore(bestCat) ? d : best;
-          }) : randFrom(dests);
+          if (instabDests.length) {
+            const safe = isMaximizer ? instabDests.filter(d => !d.target.startsWith(tgtCat)) : instabDests;
+            const pool = safe.length ? safe : instabDests;
+            dest = pool.reduce((best, d) => {
+              const cat = d.target.replace('_instability', '');
+              const bestCat = best.target.replace('_instability', '');
+              return categoryScore(cat) > categoryScore(bestCat) ? d : best;
+            });
+          } else { dest = randFrom(dests); }
         }
       } else {
         dest = dests && dests.length ? randFrom(dests) : { target: 'shuffle_to_deck' };
@@ -3365,7 +3456,7 @@ function resolveAutoPendingAction() {
         continueHandDiscardChain();
         break;
       }
-      if (maximize) {
+      if (smart) {
         // Discard the hand card with the lowest estimated value (hazards > resources)
         let worstIdx = 0;
         let worstDelta = Infinity;
@@ -3392,41 +3483,41 @@ function resolveAutoPendingAction() {
         break;
       }
       // Maximize: remove from the most dangerous pile (lowest score = most at risk)
-      const target = maximize ? lowestScoreCat(eligible) : randFrom(eligible);
+      const target = smart ? preferTarget(eligible, lowestScoreCat) : randFrom(eligible);
       resolveRemoveInstability(target, action.maxRemove);
       break;
     }
     case 'remove_lowest_instability': {
       const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
       if (!eligible.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
-      resolveRemoveLowestInstability(maximize ? lowestScoreCat(eligible) : randFrom(eligible));
+      resolveRemoveLowestInstability(smart ? preferTarget(eligible, lowestScoreCat) : randFrom(eligible));
       break;
     }
     case 'move_instability_src': {
       const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0);
       if (!eligible.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
-      // Maximize: move FROM the category with highest total instability (relieve most pressure)
-      resolveMoveInstabilitySrc(maximize ? mostInstabCat(eligible) : randFrom(eligible));
+      // Move FROM the category with highest total instability (relieve most pressure)
+      resolveMoveInstabilitySrc(smart ? mostInstabCat(eligible) : randFrom(eligible));
       break;
     }
     case 'move_instability_dest': {
       const opts = CATEGORIES.filter(c => c !== action.srcCat);
-      // Maximize: dump into category with most buffer (highest score)
-      resolveMoveInstabilityDest(maximize ? highestScoreCat(opts) : randFrom(opts));
+      // Dump into highest-score category (most buffer); maximizer avoids target category
+      resolveMoveInstabilityDest(smart ? avoidTarget(opts, highestScoreCat) : randFrom(opts));
       break;
     }
     case 'remove_two_instability': {
       const picked = action.picked || [];
       const eligible = CATEGORIES.filter(c => G.categories[c].instability.length > 0 && !picked.includes(c));
       if (!eligible.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
-      pickTwoInstability(maximize ? lowestScoreCat(eligible) : randFrom(eligible));
+      pickTwoInstability(smart ? preferTarget(eligible, lowestScoreCat) : randFrom(eligible));
       break;
     }
     case 'take_resource_to_economy': {
       const cats = action.sourceCategories.filter(c => G.categories[c].stack.length > 0);
       if (!cats.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
-      // Maximize: take from the highest-score category (can afford to lose it)
-      const cat = maximize ? highestScoreCat(cats) : randFrom(cats);
+      // Take from highest-score category (can afford it); maximizer avoids target category
+      const cat = smart ? avoidTarget(cats, highestScoreCat) : randFrom(cats);
       const idx = Math.floor(Math.random() * G.categories[cat].stack.length);
       resolveTakeResource(cat, idx);
       break;
@@ -3434,8 +3525,7 @@ function resolveAutoPendingAction() {
     case 'restitution_pick_resource': {
       const eligible = CATEGORIES.filter(c => G.categories[c].stack.length > 0);
       if (!eligible.length) { proceedToRestitutionInstability(); break; }
-      // Maximize: take from the highest-score category (least harmful loss)
-      resolvePickAnyResource(maximize ? highestScoreCat(eligible) : randFrom(eligible));
+      resolvePickAnyResource(smart ? avoidTarget(eligible, highestScoreCat) : randFrom(eligible));
       break;
     }
     case 'managed_pick_newest_res': {
@@ -3444,8 +3534,7 @@ function resolveAutoPendingAction() {
         G.pendingAction = { type: 'managed_pick_instab', card, remaining: 1 };
         render(); showManagedInstabModal(card, 1); break;
       }
-      // Maximize: take newest from highest-score stack (least important to lose)
-      resolvePickNewestResource(maximize ? highestScoreCat(eligible) : randFrom(eligible));
+      resolvePickNewestResource(smart ? avoidTarget(eligible, highestScoreCat) : randFrom(eligible));
       break;
     }
     case 'managed_pick_instab': {
@@ -3456,15 +3545,14 @@ function resolveAutoPendingAction() {
         addLog(`${card.name} placed at bottom of deck.`);
         afterCardResolved(); break;
       }
-      // Maximize: remove from the most dangerous pile (lowest score)
-      resolveManagedInstab(maximize ? lowestScoreCat(eligible) : randFrom(eligible));
+      resolveManagedInstab(smart ? preferTarget(eligible, lowestScoreCat) : randFrom(eligible));
       break;
     }
     case 'rationalize_strip_pick': {
       const eligible = CATEGORIES.filter(c => G.categories[c].stack.length >= 2);
       if (!eligible.length) { showStripStackModal(card); break; }
-      // Maximize: strip the category with highest score (most redundant resources, least harm to lose)
-      resolveStripStack(maximize ? highestScoreCat(eligible) : randFrom(eligible));
+      // Strip highest-score (most redundant); maximizer strips non-target first
+      resolveStripStack(smart ? avoidTarget(eligible, highestScoreCat) : randFrom(eligible));
       break;
     }
     case 'rationalize_res_pick': {
@@ -3473,8 +3561,7 @@ function resolveAutoPendingAction() {
         G.pendingAction = { type: 'rationalize_instab_pick', card };
         render(); showRationalizeInstabModal(card); break;
       }
-      // Maximize: remove from the highest-score stack (least valuable to lose)
-      resolveRationalizeRes(maximize ? highestScoreCat(eligible) : randFrom(eligible));
+      resolveRationalizeRes(smart ? avoidTarget(eligible, highestScoreCat) : randFrom(eligible));
       break;
     }
     case 'rationalize_instab_pick': {
@@ -3485,8 +3572,7 @@ function resolveAutoPendingAction() {
         addLog(`${card.name} placed at bottom of deck.`);
         afterCardResolved(); break;
       }
-      // Maximize: remove from the most dangerous pile (lowest score)
-      resolveRationalizeInstab(maximize ? lowestScoreCat(eligible) : randFrom(eligible));
+      resolveRationalizeInstab(smart ? preferTarget(eligible, lowestScoreCat) : randFrom(eligible));
       break;
     }
     case 'austerity_pick_res': {
@@ -3495,8 +3581,7 @@ function resolveAutoPendingAction() {
         G.pendingAction = { type: 'austerity_pick_pile', card };
         render(); showAusterityClearPileModal(card); break;
       }
-      // Maximize: take from highest-score stack (can afford the loss most)
-      resolveAusterityRes(maximize ? highestScoreCat(eligible) : randFrom(eligible));
+      resolveAusterityRes(smart ? avoidTarget(eligible, highestScoreCat) : randFrom(eligible));
       break;
     }
     case 'austerity_pick_pile': {
@@ -3507,10 +3592,10 @@ function resolveAutoPendingAction() {
         addLog(`${card.name} placed at bottom of deck.`);
         afterCardResolved(); break;
       }
-      // Maximize: clear the pile with the highest total instability value
+      // Clear the pile with highest total instability; maximizer prioritises target category pile
       const pileVal = c => G.categories[c].instability.reduce((n, rc) => n + (rc.value || 0), 0);
-      const bestPile = maximize
-        ? eligible.reduce((a, b) => pileVal(b) > pileVal(a) ? b : a)
+      const bestPile = smart
+        ? preferTarget(eligible, cats => cats.reduce((a, b) => pileVal(b) > pileVal(a) ? b : a))
         : randFrom(eligible);
       resolveAusterityClearPile(bestPile);
       break;
@@ -3518,79 +3603,79 @@ function resolveAutoPendingAction() {
     case 'move_resource_pick_source': {
       const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
       if (!srcs.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
-      resolveMoveResourceSrc(maximize ? highestScoreCat(srcs) : randFrom(srcs));
+      resolveMoveResourceSrc(smart ? avoidTarget(srcs, highestScoreCat) : randFrom(srcs));
       break;
     }
     case 'move_resource_pick_target': {
       const { srcCat } = action;
       const tgts = CATEGORIES.filter(c => c !== srcCat && G.categories[c].stack.length === 1);
       if (!tgts.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
-      resolveMoveResourceTgt(maximize ? highestScoreCat(tgts) : randFrom(tgts));
+      resolveMoveResourceTgt(smart ? preferTarget(tgts, highestScoreCat) : randFrom(tgts));
       break;
     }
     case 'move_newest_res_any_src': {
       const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
       if (!srcs.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
-      resolveMoveNewestResSrc(maximize ? highestScoreCat(srcs) : randFrom(srcs));
+      resolveMoveNewestResSrc(smart ? avoidTarget(srcs, highestScoreCat) : randFrom(srcs));
       break;
     }
     case 'move_newest_res_any_tgt': {
       const { srcCat } = action;
       const tgts = CATEGORIES.filter(c => c !== srcCat);
       if (!tgts.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
-      resolveMoveNewestResTgt(maximize ? highestScoreCat(tgts) : randFrom(tgts));
+      resolveMoveNewestResTgt(smart ? preferTarget(tgts, highestScoreCat) : randFrom(tgts));
       break;
     }
     case 'move_newest_instab_src': {
       const srcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
       if (!srcs.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
-      resolveMoveNewestInstabSrc(maximize ? mostInstabCat(srcs) : randFrom(srcs));
+      resolveMoveNewestInstabSrc(smart ? mostInstabCat(srcs) : randFrom(srcs));
       break;
     }
     case 'move_newest_instab_tgt': {
       const { srcCat } = action;
       const tgts = CATEGORIES.filter(c => c !== srcCat);
       if (!tgts.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
-      // Dump instability into the highest-score category (most buffer to absorb it)
-      resolveMoveNewestInstabTgt(maximize ? highestScoreCat(tgts) : randFrom(tgts));
+      // Dump instability into category with most buffer; maximizer avoids target category
+      resolveMoveNewestInstabTgt(smart ? avoidTarget(tgts, highestScoreCat) : randFrom(tgts));
       break;
     }
     case 'mvr_instab__res_src': {
       const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
       if (!srcs.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
-      resolveMvrInstabResSrc(maximize ? highestScoreCat(srcs) : randFrom(srcs));
+      resolveMvrInstabResSrc(smart ? avoidTarget(srcs, highestScoreCat) : randFrom(srcs));
       break;
     }
     case 'mvr_instab__res_tgt': {
       const { srcCat } = action;
       const tgts = CATEGORIES.filter(c => c !== srcCat);
       if (!tgts.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
-      resolveMvrInstabResTgt(maximize ? highestScoreCat(tgts) : randFrom(tgts));
+      resolveMvrInstabResTgt(smart ? preferTarget(tgts, highestScoreCat) : randFrom(tgts));
       break;
     }
     case 'mvr_instab__instab_src': {
       const srcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
       if (!srcs.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
-      resolveMvrInstabInstabSrc(maximize ? mostInstabCat(srcs) : randFrom(srcs));
+      resolveMvrInstabInstabSrc(smart ? mostInstabCat(srcs) : randFrom(srcs));
       break;
     }
     case 'mvr_instab__instab_tgt': {
       const { instabSrcCat } = action;
       const tgts = CATEGORIES.filter(c => c !== instabSrcCat);
       if (!tgts.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
-      resolveMvrInstabInstabTgt(maximize ? highestScoreCat(tgts) : randFrom(tgts));
+      resolveMvrInstabInstabTgt(smart ? avoidTarget(tgts, highestScoreCat) : randFrom(tgts));
       break;
     }
     case 'rmr_instab__res_src': {
       const srcs = CATEGORIES.filter(c => G.categories[c].stack.length >= 1);
       if (!srcs.length) { G.pendingAction = null; applyCardSelfDiscard(card); afterCardResolved(); break; }
-      resolveRmrInstabResSrc(maximize ? highestScoreCat(srcs) : randFrom(srcs));
+      resolveRmrInstabResSrc(smart ? avoidTarget(srcs, highestScoreCat) : randFrom(srcs));
       break;
     }
     case 'rmr_instab__instab_src': {
       const srcs = CATEGORIES.filter(c => G.categories[c].instability.length >= 1);
       if (!srcs.length) { G.pendingAction = null; G.deck.push(card); addLog(`${card.name} placed at bottom of deck.`); afterCardResolved(); break; }
-      resolveRmrInstabInstabSrc(maximize ? lowestScoreCat(srcs) : randFrom(srcs));
+      resolveRmrInstabInstabSrc(smart ? preferTarget(srcs, lowestScoreCat) : randFrom(srcs));
       break;
     }
     default: {
