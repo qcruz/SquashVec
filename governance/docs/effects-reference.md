@@ -70,11 +70,36 @@ Player picks a source category then a destination; oldest instability card is mo
 > Resource costs take either the **oldest** (default) or **newest** card from the stack, depending on the `stackEnd` parameter.
 
 **`remove_stack_card_then_remove_instability`**
-Take the oldest resource from `sourceCategory` stack → deck. Then remove N instability from any category → deck.
+Take the oldest (or newest) resource from `sourceCategory` stack → deck. Then remove N instability from any category (or a specific one) → deck.
 - `sourceCategory: string`
 - `maxRemove?: number` (default 1)
+- `targetCategory?: string` — if set, restricts instability removal to that category's pile
+- `stackEnd?: 'newest'` — if set, takes the newest resource instead of oldest
+- `afterShuffle?: boolean` — if true, shuffles this card into the deck after instability removal
 - `selfDiscardFlow?: boolean`
 - *Requires: `G.categories[sourceCategory].stack.length >= 1`*
+
+**`remove_two_stack_cards_then_remove_instability`**
+Auto-takes the oldest resource from each of 2 specified stacks → deck. Then removes N instability from a specific category pile → deck. Shuffles this card into the deck.
+- `stacks: string[]` — array of exactly 2 category names (may repeat for 2 from same category)
+- `targetCategory: string` — instability pile to clear
+- `maxRemove?: number` (default 1)
+- *Requires: each named category stack meets count requirements*
+- *Used by: cross-category and level-3 policy cards*
+
+**`discard_hand_then_remove_instability`**
+Player discards 1 card from hand. Then removes N instability from a specific category pile → deck. Shuffles this card into the deck.
+- `targetCategory: string` — instability pile to clear
+- `maxRemove?: number` (default 1)
+- *Requires: hand ≥ 1 card*
+- *Used by: hand-discard variant policy cards (level 1)*
+
+**`draw_n_then_place_in_instability`**
+Draw N cards. Place this card in the specified instability pile.
+- `drawCount: number` — cards to draw
+- `targetInstability: string` — instability pile destination
+- *Always eligible*
+- *Used by: Option B of all policy cards*
 
 **`remove_stack_card_then_shuffle_self`**
 Take the oldest resource from `sourceCategory` stack → deck. Shuffle this card into the deck.

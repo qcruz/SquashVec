@@ -621,8 +621,49 @@ function resolveEventCard(card, opt) {
         applyCardSelfDiscard(card);
         break;
       }
-      G.pendingAction = { type: 'remove_stack_then_instability', card, sourceCategory: srcCat, maxRemove: opt.maxRemove || 1, selfDiscardFlow: !!opt.selfDiscardFlow };
+      G.pendingAction = { type: 'remove_stack_then_instability', card, sourceCategory: srcCat, maxRemove: opt.maxRemove || 1, selfDiscardFlow: !!opt.selfDiscardFlow, targetCategory: opt.targetCategory || null, afterShuffle: !!opt.afterShuffle, stackEnd: opt.stackEnd || null };
       render(); showRemoveStackModal(card, srcCat, null); return;
+    }
+
+    case 'remove_two_stack_cards_then_remove_instability': {
+      const stacks2 = opt.stacks || [];
+      const filterCat2 = opt.targetCategory || null;
+      const maxRemove2 = opt.maxRemove || 1;
+      for (const cat of stacks2) {
+        if (!G.categories[cat].stack.length) {
+          addLog(`${card.name}: No cards in ${cap(cat)} stack — cannot play.`);
+          applyCardSelfDiscard(card); return;
+        }
+      }
+      for (const cat of stacks2) {
+        const removed = G.categories[cat].stack.shift();
+        G.deck.push(removed); shuffle(G.deck);
+        addLog(`${removed.name} removed from ${cap(cat)} stack → deck.`);
+      }
+      G.pendingAction = { type: 'remove_instability', card, maxRemove: maxRemove2, afterShuffle: true, filter: filterCat2 };
+      render(); showInstabilityModal(card, maxRemove2, filterCat2); return;
+    }
+
+    case 'discard_hand_then_remove_instability': {
+      const filterCat3 = opt.targetCategory || null;
+      const maxRemove3 = opt.maxRemove || 1;
+      if (!G.hand.length) {
+        addLog(`${card.name}: No cards in hand to discard — cannot play.`);
+        applyCardSelfDiscard(card); break;
+      }
+      G.pendingAction = { type: 'discard_hand_cards', card, remaining: 1, afterRemoveInstability: filterCat3, maxRemoveInstability: maxRemove3 };
+      render(); showDiscardHandModal(card, 1); return;
+    }
+
+    case 'draw_n_then_place_in_instability': {
+      const drawN = opt.drawCount || 1;
+      const tgtInstab = opt.targetInstability;
+      for (let i = 0; i < drawN; i++) drawCard();
+      addLog(`${card.name}: Drew ${drawN} card${drawN > 1 ? 's' : ''}.`);
+      G.categories[tgtInstab].instability.push(card);
+      addLog(`${card.name} → ${cap(tgtInstab)} instability.`);
+      G.pendingAction = null;
+      afterCardResolved(); return;
     }
 
     case 'discard_self':
@@ -1537,6 +1578,11 @@ function continueHandDiscardChain() {
     G.categories[action.afterInstability].instability.push(action.card);
     addLog(`${action.card.name} → ${cap(action.afterInstability)} instability.`);
     afterCardResolved();
+  } else if (action.afterRemoveInstability) {
+    const filterCat = action.afterRemoveInstability;
+    const maxRemove = action.maxRemoveInstability || 1;
+    G.pendingAction = { type: 'remove_instability', card: action.card, maxRemove, afterShuffle: true, filter: filterCat };
+    render(); showInstabilityModal(action.card, maxRemove, filterCat); return;
   } else if (action.alreadyPlaced) {
     afterCardResolved();
   } else {
@@ -1570,9 +1616,9 @@ function resolveRemoveStackCard(idx) {
     G.pendingAction = { type: 'stack_self_on_any', card, bonusValue: card.value, choices };
     render(); showStackOnAnyModal(card, card.value, choices); return;
   } else if (type === 'remove_stack_then_instability') {
-    const { maxRemove, selfDiscardFlow } = G.pendingAction;
-    G.pendingAction = { type: 'remove_instability', card, maxRemove, selfDiscardFlow };
-    render(); showInstabilityModal(card, maxRemove, null); return;
+    const { maxRemove, selfDiscardFlow, targetCategory, afterShuffle } = G.pendingAction;
+    G.pendingAction = { type: 'remove_instability', card, maxRemove, selfDiscardFlow, afterShuffle, filter: targetCategory };
+    render(); showInstabilityModal(card, maxRemove, targetCategory); return;
   } else if (type === 'remove_stack_shuffle_self') {
     G.pendingAction = null;
     G.deck.push(card); shuffle(G.deck);
@@ -2209,6 +2255,13 @@ function canPlayOption(card, opt) {
     case 'remove_stack_card_then_remove_or_identity_then_stack':
     case 'remove_stack_card_then_remove_crime_instability':
       return G.categories[opt.sourceCategory].stack.length >= 1;
+    case 'remove_two_stack_cards_then_remove_instability': {
+      const reqCounts = {};
+      (opt.stacks || []).forEach(c => { reqCounts[c] = (reqCounts[c] || 0) + 1; });
+      return Object.entries(reqCounts).every(([c, n]) => G.categories[c].stack.length >= n);
+    }
+    case 'discard_hand_then_remove_instability':
+      return G.hand.length >= 1;
     case 'remove_multi_stack_then_remove_crime_instability': {
       const _reqCrime = {};
       (opt.stacks || []).forEach(c => _reqCrime[c] = (_reqCrime[c] || 0) + 1);
@@ -3005,6 +3058,20 @@ function estimateOptionDelta(card, opt) {
     return hasSrc ? (tgtCat ? val - 1 : -1) : -5;
   }
   if (eff === 'remove_stack_card_then_remove_instability') return 1;
+  if (eff === 'remove_two_stack_cards_then_remove_instability') {
+    const filterCat = opt.targetCategory;
+    const instabCount = filterCat ? G.categories[filterCat].instability.length : CATEGORIES.reduce((n, c) => n + G.categories[c].instability.length, 0);
+    return instabCount > 0 ? (opt.maxRemove || 1) * 1.5 - 2 : -2;
+  }
+  if (eff === 'discard_hand_then_remove_instability') {
+    const filterCat = opt.targetCategory;
+    const instabCount = filterCat ? G.categories[filterCat].instability.length : CATEGORIES.reduce((n, c) => n + G.categories[c].instability.length, 0);
+    return instabCount > 0 ? 0.5 : -1;
+  }
+  if (eff === 'draw_n_then_place_in_instability') {
+    const drawN = opt.drawCount || 1;
+    return drawN * 0.7 - (card.value || 1) * 1.2;
+  }
   if (eff === 'remove_stack_card_then_remove_or_identity_then_stack') return val - 1;
   if (eff === 'remove_stack_card_then_discard_hand_then_stack') return val - 2;
   if (eff === 'remove_instability_then_discard_hand_then_stack') return val;

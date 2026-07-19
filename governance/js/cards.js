@@ -6197,6 +6197,541 @@ const CARDS = [
     ],
   },
 
+  // ─── Economy Policy Cards ────────────────────────────────────────────────────
+
+  {
+    id: 'market_correction',
+    name: 'Market Correction',
+    type: 'event', subtype: 'utility', category: 'economy', value: 1,
+    tags: ['policy', 'economy'],
+    flavorText: 'Markets correct. The question is who pays the price.',
+    options: [
+      {
+        label: 'Option 1 — Tighten Supply',
+        description: 'Remove the newest Economy resource from your stack → remove 1 Economy instability, shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'economy', targetCategory: 'economy', maxRemove: 1, stackEnd: 'newest', afterShuffle: true,
+      },
+      {
+        label: 'Option 2 — Stimulus',
+        description: 'Draw 1 card. Place this card in Economy instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 1, targetInstability: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'deficit_spending',
+    name: 'Deficit Spending',
+    type: 'event', subtype: 'utility', category: 'economy', value: 1,
+    tags: ['policy', 'economy'],
+    flavorText: 'Borrow against the future to stabilize the present.',
+    options: [
+      {
+        label: 'Option 1 — Budget Cuts',
+        description: 'Discard 1 card from your hand → remove 1 Economy instability, shuffle this card into the deck.',
+        effect: 'discard_hand_then_remove_instability', targetCategory: 'economy', maxRemove: 1,
+      },
+      {
+        label: 'Option 2 — Spend Forward',
+        description: 'Draw 1 card. Place this card in Economy instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 1, targetInstability: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'debt_restructuring',
+    name: 'Debt Restructuring',
+    type: 'event', subtype: 'utility', category: 'economy', value: 2,
+    tags: ['policy', 'economy'],
+    flavorText: 'Old debts can be reordered. They cannot be erased.',
+    options: [
+      {
+        label: 'Option 1 — Austerity Path',
+        description: 'Remove the oldest Economy resource from your stack → remove up to 2 Economy instability, shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'economy', targetCategory: 'economy', maxRemove: 2, afterShuffle: true,
+      },
+      {
+        label: 'Option 2 — Inflate Away',
+        description: 'Draw 2 cards. Place this card in Economy instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 2, targetInstability: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'fiscal_consolidation',
+    name: 'Fiscal Consolidation',
+    type: 'event', subtype: 'utility', category: 'economy', value: 2,
+    tags: ['policy', 'economy', 'governance'],
+    flavorText: 'Fiscal discipline requires political will.',
+    options: [
+      {
+        label: 'Option 1 — Cross-Sector Reform',
+        description: 'Remove the oldest Economy resource and oldest Governance resource from your stacks → remove up to 3 Economy instability, shuffle this card into the deck.',
+        effect: 'remove_two_stack_cards_then_remove_instability', stacks: ['economy', 'governance'], targetCategory: 'economy', maxRemove: 3,
+      },
+      {
+        label: 'Option 2 — Emergency Liquidity',
+        description: 'Draw 2 cards. Place this card in Economy instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 2, targetInstability: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'economic_overhaul',
+    name: 'Economic Overhaul',
+    type: 'event', subtype: 'utility', category: 'economy', value: 3,
+    tags: ['policy', 'economy', 'governance'],
+    flavorText: 'Total restructuring demands sacrifice from every sector.',
+    options: [
+      {
+        label: 'Option 1 — Full Reform',
+        description: 'Remove the oldest Economy resource and oldest Governance resource from your stacks → remove up to 4 Economy instability, shuffle this card into the deck.',
+        effect: 'remove_two_stack_cards_then_remove_instability', stacks: ['economy', 'governance'], targetCategory: 'economy', maxRemove: 4,
+      },
+      {
+        label: 'Option 2 — Print and Hope',
+        description: 'Draw 3 cards. Place this card in Economy instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 3, targetInstability: 'economy',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // ─── Culture Policy Cards ─────────────────────────────────────────────────────
+
+  {
+    id: 'social_harmony',
+    name: 'Social Harmony',
+    type: 'event', subtype: 'utility', category: 'culture', value: 1,
+    tags: ['policy', 'culture'],
+    flavorText: 'Cohesion is not built in crisis — it is spent there.',
+    options: [
+      {
+        label: 'Option 1 — Invest in Unity',
+        description: 'Remove the newest Culture resource from your stack → remove 1 Culture instability, shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'culture', targetCategory: 'culture', maxRemove: 1, stackEnd: 'newest', afterShuffle: true,
+      },
+      {
+        label: 'Option 2 — Let Tensions Rise',
+        description: 'Draw 1 card. Place this card in Culture instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 1, targetInstability: 'culture',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'populist_appeal',
+    name: 'Populist Appeal',
+    type: 'event', subtype: 'utility', category: 'culture', value: 1,
+    tags: ['policy', 'culture'],
+    flavorText: 'The crowd demands a voice. The price of listening is often culture itself.',
+    options: [
+      {
+        label: 'Option 1 — Appeasement',
+        description: 'Discard 1 card from your hand → remove 1 Culture instability, shuffle this card into the deck.',
+        effect: 'discard_hand_then_remove_instability', targetCategory: 'culture', maxRemove: 1,
+      },
+      {
+        label: 'Option 2 — Stoke the Crowd',
+        description: 'Draw 1 card. Place this card in Culture instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 1, targetInstability: 'culture',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'cultural_reconciliation',
+    name: 'Cultural Reconciliation',
+    type: 'event', subtype: 'utility', category: 'culture', value: 2,
+    tags: ['policy', 'culture'],
+    flavorText: 'Reconciliation costs more than silence, and lasts longer.',
+    options: [
+      {
+        label: 'Option 1 — Truth Commission',
+        description: 'Remove the oldest Culture resource from your stack → remove up to 2 Culture instability, shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'culture', targetCategory: 'culture', maxRemove: 2, afterShuffle: true,
+      },
+      {
+        label: 'Option 2 — Bury the Past',
+        description: 'Draw 2 cards. Place this card in Culture instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 2, targetInstability: 'culture',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'national_reckoning',
+    name: 'National Reckoning',
+    type: 'event', subtype: 'utility', category: 'culture', value: 2,
+    tags: ['policy', 'culture', 'governance'],
+    flavorText: 'A civilization that cannot face its history cannot build its future.',
+    options: [
+      {
+        label: 'Option 1 — State Apology',
+        description: 'Remove the oldest Culture resource and oldest Governance resource from your stacks → remove up to 3 Culture instability, shuffle this card into the deck.',
+        effect: 'remove_two_stack_cards_then_remove_instability', stacks: ['culture', 'governance'], targetCategory: 'culture', maxRemove: 3,
+      },
+      {
+        label: 'Option 2 — Deny and Deflect',
+        description: 'Draw 2 cards. Place this card in Culture instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 2, targetInstability: 'culture',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'cultural_renaissance',
+    name: 'Cultural Renaissance',
+    type: 'event', subtype: 'utility', category: 'culture', value: 3,
+    tags: ['policy', 'culture', 'economy'],
+    flavorText: 'Renewal requires destroying what came before.',
+    options: [
+      {
+        label: 'Option 1 — Full Investment',
+        description: 'Remove the oldest Culture resource and oldest Economy resource from your stacks → remove up to 4 Culture instability, shuffle this card into the deck.',
+        effect: 'remove_two_stack_cards_then_remove_instability', stacks: ['culture', 'economy'], targetCategory: 'culture', maxRemove: 4,
+      },
+      {
+        label: 'Option 2 — Creative Destruction',
+        description: 'Draw 3 cards. Place this card in Culture instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 3, targetInstability: 'culture',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // ─── Military Policy Cards ────────────────────────────────────────────────────
+
+  {
+    id: 'ceasefire',
+    name: 'Ceasefire',
+    type: 'event', subtype: 'utility', category: 'military', value: 1,
+    tags: ['policy', 'military'],
+    flavorText: 'Silence on the battlefield is not peace. It is preparation.',
+    options: [
+      {
+        label: 'Option 1 — Stand Down',
+        description: 'Remove the newest Military resource from your stack → remove 1 Military instability, shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'military', targetCategory: 'military', maxRemove: 1, stackEnd: 'newest', afterShuffle: true,
+      },
+      {
+        label: 'Option 2 — Rearm',
+        description: 'Draw 1 card. Place this card in Military instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 1, targetInstability: 'military',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'fortified_peace',
+    name: 'Fortified Peace',
+    type: 'event', subtype: 'utility', category: 'military', value: 1,
+    tags: ['policy', 'military'],
+    flavorText: 'Peace maintained by force is still force.',
+    options: [
+      {
+        label: 'Option 1 — Diplomatic Concession',
+        description: 'Discard 1 card from your hand → remove 1 Military instability, shuffle this card into the deck.',
+        effect: 'discard_hand_then_remove_instability', targetCategory: 'military', maxRemove: 1,
+      },
+      {
+        label: 'Option 2 — Escalate',
+        description: 'Draw 1 card. Place this card in Military instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 1, targetInstability: 'military',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'war_of_attrition',
+    name: 'War of Attrition',
+    type: 'event', subtype: 'utility', category: 'military', value: 2,
+    tags: ['policy', 'military'],
+    flavorText: 'The side that can endure longest does not win — it merely survives.',
+    options: [
+      {
+        label: 'Option 1 — Grind It Out',
+        description: 'Remove the oldest Military resource from your stack → remove up to 2 Military instability, shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'military', targetCategory: 'military', maxRemove: 2, afterShuffle: true,
+      },
+      {
+        label: 'Option 2 — Press the Offensive',
+        description: 'Draw 2 cards. Place this card in Military instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 2, targetInstability: 'military',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'force_projection',
+    name: 'Force Projection',
+    type: 'event', subtype: 'utility', category: 'military', value: 2,
+    tags: ['policy', 'economy', 'military'],
+    flavorText: 'Power abroad requires solvency at home.',
+    options: [
+      {
+        label: 'Option 1 — Sustained Campaign',
+        description: 'Remove the oldest Military resource and oldest Economy resource from your stacks → remove up to 3 Military instability, shuffle this card into the deck.',
+        effect: 'remove_two_stack_cards_then_remove_instability', stacks: ['military', 'economy'], targetCategory: 'military', maxRemove: 3,
+      },
+      {
+        label: 'Option 2 — Overextend',
+        description: 'Draw 2 cards. Place this card in Military instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 2, targetInstability: 'military',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'total_mobilization',
+    name: 'Total Mobilization',
+    type: 'event', subtype: 'utility', category: 'military', value: 3,
+    tags: ['policy', 'economy', 'military'],
+    flavorText: 'Every sector is conscripted. There are no civilians in a total war.',
+    options: [
+      {
+        label: 'Option 1 — War Economy',
+        description: 'Remove the oldest Military resource and oldest Economy resource from your stacks → remove up to 4 Military instability, shuffle this card into the deck.',
+        effect: 'remove_two_stack_cards_then_remove_instability', stacks: ['military', 'economy'], targetCategory: 'military', maxRemove: 4,
+      },
+      {
+        label: 'Option 2 — Mass Conscription',
+        description: 'Draw 3 cards. Place this card in Military instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 3, targetInstability: 'military',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // ─── Technology Policy Cards ──────────────────────────────────────────────────
+
+  {
+    id: 'patent_reform',
+    name: 'Patent Reform',
+    type: 'event', subtype: 'utility', category: 'technology', value: 1,
+    tags: ['policy', 'technology'],
+    flavorText: 'Who owns knowledge shapes what gets built.',
+    options: [
+      {
+        label: 'Option 1 — Open Licensing',
+        description: 'Remove the newest Technology resource from your stack → remove 1 Technology instability, shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'technology', targetCategory: 'technology', maxRemove: 1, stackEnd: 'newest', afterShuffle: true,
+      },
+      {
+        label: 'Option 2 — Monopolize',
+        description: 'Draw 1 card. Place this card in Technology instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 1, targetInstability: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'open_source_initiative',
+    name: 'Open Source Initiative',
+    type: 'event', subtype: 'utility', category: 'technology', value: 1,
+    tags: ['policy', 'technology'],
+    flavorText: 'Shared infrastructure raises all boats — and removes some moats.',
+    options: [
+      {
+        label: 'Option 1 — Release the Codebase',
+        description: 'Discard 1 card from your hand → remove 1 Technology instability, shuffle this card into the deck.',
+        effect: 'discard_hand_then_remove_instability', targetCategory: 'technology', maxRemove: 1,
+      },
+      {
+        label: 'Option 2 — Rapid Proliferation',
+        description: 'Draw 1 card. Place this card in Technology instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 1, targetInstability: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'rd_investment',
+    name: 'R&D Investment',
+    type: 'event', subtype: 'utility', category: 'technology', value: 2,
+    tags: ['policy', 'technology'],
+    flavorText: 'Discovery cannot be scheduled, but it can be funded.',
+    options: [
+      {
+        label: 'Option 1 — Long-Term Program',
+        description: 'Remove the oldest Technology resource from your stack → remove up to 2 Technology instability, shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'technology', targetCategory: 'technology', maxRemove: 2, afterShuffle: true,
+      },
+      {
+        label: 'Option 2 — Moonshot',
+        description: 'Draw 2 cards. Place this card in Technology instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 2, targetInstability: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'digital_transformation',
+    name: 'Digital Transformation',
+    type: 'event', subtype: 'utility', category: 'technology', value: 2,
+    tags: ['policy', 'economy', 'technology'],
+    flavorText: 'Digitizing the economy creates efficiencies and dependencies in equal measure.',
+    options: [
+      {
+        label: 'Option 1 — Infrastructure Overhaul',
+        description: 'Remove the oldest Technology resource and oldest Economy resource from your stacks → remove up to 3 Technology instability, shuffle this card into the deck.',
+        effect: 'remove_two_stack_cards_then_remove_instability', stacks: ['technology', 'economy'], targetCategory: 'technology', maxRemove: 3,
+      },
+      {
+        label: 'Option 2 — Move Fast',
+        description: 'Draw 2 cards. Place this card in Technology instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 2, targetInstability: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'technological_revolution',
+    name: 'Technological Revolution',
+    type: 'event', subtype: 'utility', category: 'technology', value: 3,
+    tags: ['policy', 'economy', 'technology'],
+    flavorText: 'Every revolution obsoletes those who built what it replaces.',
+    options: [
+      {
+        label: 'Option 1 — Systematic Upgrade',
+        description: 'Remove the oldest Technology resource and oldest Economy resource from your stacks → remove up to 4 Technology instability, shuffle this card into the deck.',
+        effect: 'remove_two_stack_cards_then_remove_instability', stacks: ['technology', 'economy'], targetCategory: 'technology', maxRemove: 4,
+      },
+      {
+        label: 'Option 2 — Disruption Wave',
+        description: 'Draw 3 cards. Place this card in Technology instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 3, targetInstability: 'technology',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // ─── Environment Policy Cards ─────────────────────────────────────────────────
+
+  {
+    id: 'conservation_policy',
+    name: 'Conservation Policy',
+    type: 'event', subtype: 'utility', category: 'environment', value: 1,
+    tags: ['policy', 'environment'],
+    flavorText: 'What is preserved today is not lost to tomorrow.',
+    options: [
+      {
+        label: 'Option 1 — Land Protection',
+        description: 'Remove the newest Environment resource from your stack → remove 1 Environment instability, shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'environment', targetCategory: 'environment', maxRemove: 1, stackEnd: 'newest', afterShuffle: true,
+      },
+      {
+        label: 'Option 2 — Exploit First',
+        description: 'Draw 1 card. Place this card in Environment instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 1, targetInstability: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'controlled_burn',
+    name: 'Controlled Burn',
+    type: 'event', subtype: 'utility', category: 'environment', value: 1,
+    tags: ['policy', 'environment'],
+    flavorText: 'Sometimes you must burn what you built to prevent a larger fire.',
+    options: [
+      {
+        label: 'Option 1 — Prescribed Burn',
+        description: 'Discard 1 card from your hand → remove 1 Environment instability, shuffle this card into the deck.',
+        effect: 'discard_hand_then_remove_instability', targetCategory: 'environment', maxRemove: 1,
+      },
+      {
+        label: 'Option 2 — Let It Burn',
+        description: 'Draw 1 card. Place this card in Environment instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 1, targetInstability: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'ecological_restoration',
+    name: 'Ecological Restoration',
+    type: 'event', subtype: 'utility', category: 'environment', value: 2,
+    tags: ['policy', 'environment'],
+    flavorText: 'Restoration requires removing what replaced what was lost.',
+    options: [
+      {
+        label: 'Option 1 — Rewild',
+        description: 'Remove the oldest Environment resource from your stack → remove up to 2 Environment instability, shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_remove_instability', sourceCategory: 'environment', targetCategory: 'environment', maxRemove: 2, afterShuffle: true,
+      },
+      {
+        label: 'Option 2 — Strip and Recover',
+        description: 'Draw 2 cards. Place this card in Environment instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 2, targetInstability: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'climate_accord',
+    name: 'Climate Accord',
+    type: 'event', subtype: 'utility', category: 'environment', value: 2,
+    tags: ['policy', 'economy', 'environment'],
+    flavorText: 'Every signatory trades short-term cost for long-term survival.',
+    options: [
+      {
+        label: 'Option 1 — Binding Commitment',
+        description: 'Remove the oldest Environment resource and oldest Economy resource from your stacks → remove up to 3 Environment instability, shuffle this card into the deck.',
+        effect: 'remove_two_stack_cards_then_remove_instability', stacks: ['environment', 'economy'], targetCategory: 'environment', maxRemove: 3,
+      },
+      {
+        label: 'Option 2 — Withdraw',
+        description: 'Draw 2 cards. Place this card in Environment instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 2, targetInstability: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'new_deal',
+    name: 'New Deal',
+    type: 'event', subtype: 'utility', category: 'environment', value: 3,
+    tags: ['policy', 'economy', 'environment'],
+    flavorText: 'Rebuilding the relationship between civilization and its environment demands everything.',
+    options: [
+      {
+        label: 'Option 1 — Full Transition',
+        description: 'Remove the oldest Environment resource and oldest Economy resource from your stacks → remove up to 4 Environment instability, shuffle this card into the deck.',
+        effect: 'remove_two_stack_cards_then_remove_instability', stacks: ['environment', 'economy'], targetCategory: 'environment', maxRemove: 4,
+      },
+      {
+        label: 'Option 2 — Promise and Delay',
+        description: 'Draw 3 cards. Place this card in Environment instability.',
+        effect: 'draw_n_then_place_in_instability', drawCount: 3, targetInstability: 'environment',
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
   // ─── Management Philosophy — Governance Utility Cards ──────────────────────
 
   {
@@ -7744,6 +8279,36 @@ const STARTER_DECK = [
   'destabilization', 'destabilization',
   'direct_attack', 'direct_attack', 'arms_package', 'arms_package',
   'restitution', 'restitution',
+  // Economy policy cards
+  'market_correction', 'market_correction',
+  'deficit_spending',
+  'debt_restructuring', 'debt_restructuring',
+  'fiscal_consolidation',
+  'economic_overhaul',
+  // Culture policy cards
+  'social_harmony', 'social_harmony',
+  'populist_appeal',
+  'cultural_reconciliation', 'cultural_reconciliation',
+  'national_reckoning',
+  'cultural_renaissance',
+  // Military policy cards
+  'ceasefire', 'ceasefire',
+  'fortified_peace',
+  'war_of_attrition', 'war_of_attrition',
+  'force_projection',
+  'total_mobilization',
+  // Technology policy cards
+  'patent_reform', 'patent_reform',
+  'open_source_initiative',
+  'rd_investment', 'rd_investment',
+  'digital_transformation',
+  'technological_revolution',
+  // Environment policy cards
+  'conservation_policy', 'conservation_policy',
+  'controlled_burn',
+  'ecological_restoration', 'ecological_restoration',
+  'climate_accord',
+  'new_deal',
   // Management philosophy (2× each — primary recovery tools)
   'consolidation', 'consolidation',
   'structural_consolidation', 'structural_consolidation',

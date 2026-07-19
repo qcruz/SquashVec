@@ -36,9 +36,18 @@ Status tags: `[idea]` `[draft]` `[ready]` `✅ Approved` `✅ Implemented`
 |------|--------|---------|
 | Foreign Investment | `[idea]` | Stack +2 on Economy AND +1 on any other category. |
 | Monopoly | `[idea]` | Stack +4 on Economy. Place 1 Governance instability. |
-| Debt Restructuring | `[idea]` | Remove up to 3 Economy instability. Add 1 Governance instability. |
 | Trade Embargo | `[idea]` | Discard any 1 resource card from any stack. Draw 2. |
 | Black Market | `[idea]` | Stack +1 on Economy without paying a resource cost. Place 1 Governance instability. |
+
+### Policy Cards
+
+| Name | Level | Status | Concept |
+|------|-------|--------|---------|
+| Market Correction | 1 | `✅ Implemented` | Opt A: Pay newest Economy → remove 1 Economy instability, shuffle self. Opt B: Draw 1, place self in Economy instability. |
+| Deficit Spending | 1 (hand) | `✅ Implemented` | Opt A: Discard 1 hand card → remove 1 Economy instability, shuffle self. Opt B: Draw 1, place self in Economy instability. |
+| Debt Restructuring | 2 | `✅ Implemented` | Opt A: Pay oldest Economy → remove 2 Economy instability, shuffle self. Opt B: Draw 2, place self in Economy instability. |
+| Fiscal Austerity | 2 (cross) | `✅ Implemented` | Opt A: Pay Economy + Governance → remove 3 Economy instability, shuffle self. Opt B: Draw 2, place self in Economy instability. |
+| Economic Overhaul | 3 | `✅ Implemented` | Opt A: Pay oldest Economy + oldest Governance → remove 4 Economy instability, shuffle self. Opt B: Draw 3, place self in Economy instability. |
 
 ---
 
@@ -52,6 +61,16 @@ Status tags: `[idea]` `[draft]` `[ready]` `✅ Approved` `✅ Implemented`
 | Diaspora | `[idea]` | Remove 2 Culture instability. Stack +1 on any category for each removed. |
 | Pilgrimage | `[idea]` | Draw 2. If one is a Governance identity, play it for free. Discard self. |
 
+### Policy Cards
+
+| Name | Level | Status | Concept |
+|------|-------|--------|---------|
+| Social Harmony | 1 | `✅ Implemented` | Opt A: Pay newest Culture → remove 1 Culture instability, shuffle self. Opt B: Draw 1, place self in Culture instability. |
+| Populist Appeal | 1 (hand) | `✅ Implemented` | Opt A: Discard 1 hand card → remove 1 Culture instability, shuffle self. Opt B: Draw 1, place self in Culture instability. |
+| Cultural Reconciliation | 2 | `✅ Implemented` | Opt A: Pay oldest Culture → remove 2 Culture instability, shuffle self. Opt B: Draw 2, place self in Culture instability. |
+| National Reckoning | 2 (cross) | `✅ Implemented` | Opt A: Pay Culture + Governance → remove 3 Culture instability, shuffle self. Opt B: Draw 2, place self in Culture instability. |
+| Cultural Renaissance | 3 | `✅ Implemented` | Opt A: Pay oldest Culture + oldest Economy → remove 4 Culture instability, shuffle self. Opt B: Draw 3, place self in Culture instability. |
+
 ---
 
 ## Military
@@ -60,11 +79,18 @@ Status tags: `[idea]` `[draft]` `[ready]` `✅ Approved` `✅ Implemented`
 |------|--------|---------|
 | Surprise Attack | `[draft]` | Military stacking event (value 3). **Solo Opt 1:** Pay 1 Military resource → stack +3 on Military immediately (no cost modal — the surprise is the payoff). **Solo Opt 2:** Pay 1 Governance resource → stack +2 on any category of choice. **Multiplayer:** Opt 1 moves the oldest resource from an opponent's chosen category stack to your Military stack instead. Thematically: an internal rapid deployment or border raid. |
 | Occupation | `[draft]` | Military stacking event (value 2). **Solo Opt 1:** Pay 1 Military + 1 Governance → stack +2 on Military AND remove 1 Military instability. **Solo Opt 2:** Pay 2 Military resources → stack +2 on Environment (territory secured). **Multiplayer:** Opt 1 places 1 instability into an opponent's Military pile instead of removing your own. Thematically: military occupation of territory. |
-| Fortified Peace | `[idea]` | Needs redesign — original concept used a passive. New direction: one-time effect. Pay 1 Military → remove 2 Military instability. Opt 2: stack +1 on Military, shuffle self into deck. |
-| War of Attrition | `[idea]` | Remove 2 Military resources. Remove 3 instability cards from any category. |
-| Conscription | `[idea]` | Pay 1 Culture resource. Stack +2 on Military. |
 | Peace Dividend | `[idea]` | Remove Military identity from play (discard). Remove 2 Military instability. Draw 2. |
 | Strategic Reserve | `[idea]` | Needs redesign — original concept used a delayed effect ("next turn"). New direction: draw-based. Pay 1 Military resource → draw 2 cards. Opt 2: stack +1 on Military AND +1 on Governance. |
+
+### Policy Cards
+
+| Name | Level | Status | Concept |
+|------|-------|--------|---------|
+| Ceasefire | 1 | `✅ Implemented` | Opt A: Pay newest Military → remove 1 Military instability, shuffle self. Opt B: Draw 1, place self in Military instability. |
+| Fortified Peace | 1 (hand) | `✅ Implemented` | Opt A: Discard 1 hand card → remove 1 Military instability, shuffle self. Opt B: Draw 1, place self in Military instability. |
+| War of Attrition | 2 | `✅ Implemented` | Opt A: Pay oldest Military → remove 2 Military instability, shuffle self. Opt B: Draw 2, place self in Military instability. |
+| Force Projection | 2 (cross) | `✅ Implemented` | Opt A: Pay Military + Economy → remove 3 Military instability, shuffle self. Opt B: Draw 2, place self in Military instability. |
+| Total Mobilization | 3 | `✅ Implemented` | Opt A: Pay oldest Military + oldest Economy → remove 4 Military instability, shuffle self. Opt B: Draw 3, place self in Military instability. |
 
 ---
 
@@ -78,6 +104,16 @@ Status tags: `[idea]` `[draft]` `[ready]` `✅ Approved` `✅ Implemented`
 | Paradigm Shift | `[idea]` | Discard your active Technology identity. Remove 2 Technology instability. Draw 3. |
 | Great Expedition | `[idea]` | Reveal top 5 cards of deck. Keep 2, shuffle the rest. |
 
+### Policy Cards
+
+| Name | Level | Status | Concept |
+|------|-------|--------|---------|
+| Patent Reform | 1 | `✅ Implemented` | Opt A: Pay newest Technology → remove 1 Technology instability, shuffle self. Opt B: Draw 1, place self in Technology instability. |
+| Open Source Initiative | 1 (hand) | `✅ Implemented` | Opt A: Discard 1 hand card → remove 1 Technology instability, shuffle self. Opt B: Draw 1, place self in Technology instability. |
+| R&D Investment | 2 | `✅ Implemented` | Opt A: Pay oldest Technology → remove 2 Technology instability, shuffle self. Opt B: Draw 2, place self in Technology instability. |
+| Digital Transformation | 2 (cross) | `✅ Implemented` | Opt A: Pay Technology + Economy → remove 3 Technology instability, shuffle self. Opt B: Draw 2, place self in Technology instability. |
+| Technological Revolution | 3 | `✅ Implemented` | Opt A: Pay oldest Technology + oldest Economy → remove 4 Technology instability, shuffle self. Opt B: Draw 3, place self in Technology instability. |
+
 ---
 
 ## Environment
@@ -87,8 +123,17 @@ Status tags: `[idea]` `[draft]` `[ready]` `✅ Approved` `✅ Implemented`
 | Climate Stability | `[idea]` | Passive while in Environment stack: Environment hazards are reduced by 1 value. |
 | Rewilding | `[idea]` | Move any Economy resource card to your Environment stack instead. |
 | Natural Abundance | `[idea]` | Stack +1 on Environment for each resource already in Environment stack (max +4). |
-| Controlled Burn | `[idea]` | Remove all cards from Environment instability. Place 1 Economy instability. |
 | Ancient Grove | `[idea]` | Stack +3 on Environment. Cannot be removed from stack unless Environment identity is replaced. |
+
+### Policy Cards
+
+| Name | Level | Status | Concept |
+|------|-------|--------|---------|
+| Conservation Policy | 1 | `✅ Implemented` | Opt A: Pay newest Environment → remove 1 Environment instability, shuffle self. Opt B: Draw 1, place self in Environment instability. |
+| Controlled Burn | 1 (hand) | `✅ Implemented` | Opt A: Discard 1 hand card → remove 1 Environment instability, shuffle self. Opt B: Draw 1, place self in Environment instability. |
+| Ecological Restoration | 2 | `✅ Implemented` | Opt A: Pay oldest Environment → remove 2 Environment instability, shuffle self. Opt B: Draw 2, place self in Environment instability. |
+| Climate Accord | 2 (cross) | `✅ Implemented` | Opt A: Pay Environment + Economy → remove 3 Environment instability, shuffle self. Opt B: Draw 2, place self in Environment instability. |
+| Green New Deal | 3 | `✅ Implemented` | Opt A: Pay oldest Environment + oldest Economy → remove 4 Environment instability, shuffle self. Opt B: Draw 3, place self in Environment instability. |
 
 ---
 
