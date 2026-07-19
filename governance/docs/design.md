@@ -344,31 +344,28 @@ This asymmetry is a design feature, not a gap.
 
 ---
 
-### Policy Card Design Rules
+### Policy Card Design Rules *(Applies to policy-tagged utility cards only.)*
 
-Policy cards are utility events that manage the relationship between a category's resource stack and its instability pile. Every policy card has exactly two options representing opposite strategic choices.
+Policy cards trade costs — resource removals or hand discards — for instability removal or material gain. The key design variable is **cost weight**.
 
-**Option A — Pay material, remove instability (conservative):**
-The primary cost is stack resources. A minority variant (~2 cards per category) uses hand discards instead.
-- *Resource cost variant:* Remove N stack cards from [category] → remove N instability from [category] pile, shuffle self into deck
-- *Hand cost variant:* Discard N hand cards → remove N instability from [category] pile, shuffle self into deck
+**Resource removal cost weight:**
+- Removing **newest** resource: lighter cost
+- Removing **oldest** resource: heavier cost — roughly equivalent to removing 2 instability cards
 
-**Option B — Spend instability, gain material (aggressive):**
-Remove N instability from [category] pile → gain N material (draw cards OR place this card on [category] stack as a resource)
+**Cross-category costs:** When beyond own category, Governance and Economy are default secondary cost categories. Example: Technology policy may cost 1 Technology + 1 Economy → remove 2 Technology instability.
 
-**Level tiers** (determined by the card's `value` field — not tagged, tracked by design only):
+**Option directions:**
+- Pay resources or hand cards → remove instability
+- **Discard/create instability → gain material (draw cards or stack a resource)**
 
-| Level | Value | Option A cost | Option B cost | Effect magnitude |
-|-------|-------|---------------|---------------|-----------------|
-| 1 | 1 | Remove 1 stack card OR discard 1 hand card | Remove 1 instability | ±1 card |
-| 2 | 2 | Remove 2 stack cards OR discard 2 hand cards | Remove 2 instability | ±2 cards |
-| 3 | 3 | Remove 3 stack cards OR discard 3 hand cards | Remove 3 instability | ±3 cards |
-
-**Trade-off is 1:1 by card count at every level.** The player's choice is direction: spend resources to clear threats (Option A) or clear threats to gain resources (Option B). Neither option is strictly better — the right choice depends on current stack depth, instability pile size, and how close each category is to its score thresholds.
+**Level tiers** (card `value` field):
+- Level 1 (value 1): single cost → 1–2 instability or minor gain
+- Level 2 (value 2): cross-category cost, or 1 old resource → 2 instabilities, or combined
+- Level 3 (value 3): multi-resource cost → large clearance or significant material
 
 **Each category's policy set should include:**
 - At least one card at each level (1, 2, 3)
-- Primarily resource-cost variants for Option A
+- Primarily resource-cost Option A variants
 - ~2 hand-discard variants per category mixed in for variety
 
 ---
