@@ -21,7 +21,7 @@ const CAT_ICONS = {
 let G = null;
 
 function newGameState() {
-  const deck = buildDeck(STARTER_DECK);
+  const deck = buildDeck(LEAN_DECK);
   const hand = [];
   for (let i = 0; i < HAND_SIZE; i++) { if (deck.length) hand.push(deck.shift()); }
 
@@ -419,6 +419,19 @@ function removeCrimeInstability(cardName) {
 function resolveEventCard(card, opt) {
   addLog(`Event: ${card.name}`);
 
+  // Global event — cooperative threshold auto-negate
+  if (card.cooperativeThreshold !== undefined) {
+    const threshCat = card.thresholdCategory;
+    const thresh = card.cooperativeThreshold;
+    const deckCount = G.deck.filter(c => c.tags && c.tags.includes(threshCat)).length;
+    if (deckCount >= thresh) {
+      addLog(`${card.name}: Cooperative threshold met (${deckCount}/${thresh} ${cap(threshCat)} cards in deck) — effect negated.`);
+      applyCardSelfDiscard(card);
+      afterCardResolved();
+      return;
+    }
+  }
+
   switch (opt.effect) {
 
     case 'stack_on_category': {
@@ -664,6 +677,31 @@ function resolveEventCard(card, opt) {
       addLog(`${card.name} → ${cap(tgtInstab)} instability.`);
       G.pendingAction = null;
       afterCardResolved(); return;
+    }
+
+    case 'global_event_escape': {
+      // Cooperative threshold already checked above — here the player pays to escape
+      const escapeCost = opt.escapeCost || [];
+      const canEscape = escapeCost.every(cat => G.categories[cat].stack.length > 0);
+      if (!canEscape) {
+        addLog(`${card.name}: Cannot pay escape cost — applying penalty.`);
+        applyGlobalEventPenalty(card);
+      } else {
+        for (const cat of escapeCost) {
+          const removed = G.categories[cat].stack.shift();
+          G.deck.push(removed); shuffle(G.deck);
+          addLog(`${removed.name} removed from ${cap(cat)} stack → deck.`);
+        }
+        addLog(`${card.name}: Escaped — penalty avoided.`);
+        applyCardSelfDiscard(card);
+      }
+      afterCardResolved(); break;
+    }
+
+    case 'global_event_penalty': {
+      // Cooperative threshold already checked above — apply penalty directly
+      applyGlobalEventPenalty(card);
+      afterCardResolved(); break;
     }
 
     case 'discard_self':
@@ -2185,6 +2223,31 @@ function resolveTakeResource(cat, idx) {
   resolveAfterTake(card, afterEffect);
 }
 
+function applyGlobalEventPenalty(card) {
+  const penaltyType = card.penaltyType || 'remove_stack';
+  const targetCategory = card.penaltyCategory;
+  const count = card.penaltyCount || 2;
+  if (penaltyType === 'remove_stack') {
+    const stack = G.categories[targetCategory].stack;
+    const actual = Math.min(count, stack.length);
+    for (let i = 0; i < actual; i++) {
+      const res = stack.shift();
+      G.deck.push(res); shuffle(G.deck);
+      addLog(`${res.name} removed from ${cap(targetCategory)} stack → deck.`);
+    }
+    addLog(`${card.name}: Penalty — ${actual} ${cap(targetCategory)} resource(s) shuffled to deck.`);
+  } else if (penaltyType === 'deck_to_instability') {
+    const actual = Math.min(count, G.deck.length);
+    for (let i = 0; i < actual; i++) {
+      const drawn = G.deck.shift();
+      G.categories[targetCategory].instability.push(drawn);
+      addLog(`${drawn.name} → ${cap(targetCategory)} instability.`);
+    }
+    addLog(`${card.name}: Penalty — ${actual} deck card(s) moved to ${cap(targetCategory)} instability.`);
+  }
+  applyCardSelfDiscard(card);
+}
+
 function resolveAfterTake(card, afterEffect) {
   G.pendingAction = null;
   if (afterEffect === 'remove_military_discard_self') {
@@ -2262,6 +2325,9 @@ function canPlayOption(card, opt) {
     }
     case 'discard_hand_then_remove_instability':
       return G.hand.length >= 1;
+    case 'global_event_escape':
+    case 'global_event_penalty':
+      return true;
     case 'remove_multi_stack_then_remove_crime_instability': {
       const _reqCrime = {};
       (opt.stacks || []).forEach(c => _reqCrime[c] = (_reqCrime[c] || 0) + 1);
@@ -3072,6 +3138,17 @@ function estimateOptionDelta(card, opt) {
     const drawN = opt.drawCount || 1;
     return drawN * 0.7 - (card.value || 1) * 1.2;
   }
+  if (eff === 'global_event_escape') {
+    const escapeCost = opt.escapeCost || [];
+    const canEscape = escapeCost.every(cat => G.categories[cat].stack.length > 0);
+    return canEscape ? 1 : -(card.penaltyCount || 2) * 1.5;
+  }
+  if (eff === 'global_event_penalty') {
+    const thresh = card.cooperativeThreshold || 4;
+    const threshCat = card.thresholdCategory;
+    const deckCount = G.deck.filter(c => c.tags && c.tags.includes(threshCat)).length;
+    return deckCount >= thresh ? 2 : -(card.penaltyCount || 2) * 1.5;
+  }
   if (eff === 'remove_stack_card_then_remove_or_identity_then_stack') return val - 1;
   if (eff === 'remove_stack_card_then_discard_hand_then_stack') return val - 2;
   if (eff === 'remove_instability_then_discard_hand_then_stack') return val;
@@ -3533,18 +3610,19 @@ function resolveAutoPendingAction() {
 // ─── Card Library ─────────────────────────────────────────────────────────────
 
 function showLibrary() {
-  // Build sorted unique card list from STARTER_DECK
+  // Build sorted unique card list from active deck
+  const activeDeck = typeof LEAN_DECK !== 'undefined' ? LEAN_DECK : STARTER_DECK;
   const seen = new Set();
   const counts = {};
-  STARTER_DECK.forEach(id => { counts[id] = (counts[id] || 0) + 1; });
-  const uniqueIds = STARTER_DECK.filter(id => { if (seen.has(id)) return false; seen.add(id); return true; });
+  activeDeck.forEach(id => { counts[id] = (counts[id] || 0) + 1; });
+  const uniqueIds = activeDeck.filter(id => { if (seen.has(id)) return false; seen.add(id); return true; });
   const cards = uniqueIds
     .map(id => CARDS.find(c => c.id === id))
     .filter(Boolean)
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const subtitle = document.getElementById('library-subtitle');
-  subtitle.textContent = `${cards.length} unique cards · ${STARTER_DECK.length} total in deck`;
+  subtitle.textContent = `${cards.length} unique cards · ${activeDeck.length} total in deck`;
 
   const ROW_SIZE = 8;
   let html = '';

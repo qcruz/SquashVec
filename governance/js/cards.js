@@ -7532,6 +7532,452 @@ const CARDS = [
     ],
   },
 
+  // ─── Governance Hostile Cards ────────────────────────────────────────────────
+
+  {
+    id: 'regulatory_capture',
+    name: 'Regulatory Capture',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 2,
+    tags: ['resource', 'economy', 'governance'],
+    flavorText: 'The rule-makers become the ruled.',
+    options: [
+      {
+        label: 'Option 1 — Favorable Ruling',
+        description: 'Remove 1 Governance resource. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Institutional Drain',
+        description: 'Remove 1 Economy instability. Discard 1 card from your hand. Place this card on your Governance stack (+2).',
+        effect: 'remove_instability_then_discard_hand_then_stack',
+        instabilityCategory: 'economy',
+        targetCategory: 'governance',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+  },
+
+  {
+    id: 'emergency_powers',
+    name: 'Emergency Powers',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 3,
+    tags: ['resource', 'culture', 'governance', 'military'],
+    flavorText: 'In a crisis, legality bends.',
+    options: [
+      {
+        label: 'Option 1 — Declare Emergency',
+        description: 'Remove 1 Governance resource. Place this card in Culture Instability (−3).',
+        effect: 'remove_stack_card_then_place_in_instability',
+        sourceCategory: 'governance',
+        targetInstability: 'culture',
+      },
+      {
+        label: 'Option 2 — Seize Control',
+        description: 'Remove 1 Military resource. Stack this card as +3 on Governance.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'military',
+        targetCategory: 'governance',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+  },
+
+  // ─── Culture Hostile Cards ───────────────────────────────────────────────────
+
+  {
+    id: 'propaganda_campaign',
+    name: 'Propaganda Campaign',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'culture',
+    value: 2,
+    tags: ['resource', 'culture', 'governance'],
+    flavorText: 'Shape the story before it shapes you.',
+    options: [
+      {
+        label: 'Option 1 — Narrative Control',
+        description: 'Remove 1 Culture resource. Discard 1 card from your hand. Place this card on your Governance stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'culture',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Undermine Dissent',
+        description: 'Remove 1 Governance instability. Discard 1 card from your hand. Place this card on your Culture stack (+2).',
+        effect: 'remove_instability_then_discard_hand_then_stack',
+        instabilityCategory: 'governance',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  {
+    id: 'cultural_erasure',
+    name: 'Cultural Erasure',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'culture',
+    value: 3,
+    tags: ['resource', 'culture', 'governance'],
+    flavorText: 'History is written by the victors.',
+    options: [
+      {
+        label: 'Option 1 — Suppress',
+        description: 'Remove 1 Culture resource. Place this card in Governance Instability (−3).',
+        effect: 'remove_stack_card_then_place_in_instability',
+        sourceCategory: 'culture',
+        targetInstability: 'governance',
+      },
+      {
+        label: 'Option 2 — Rewrite History',
+        description: 'Remove 1 Governance resource. Stack this card as +3 on Culture.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'governance',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+  },
+
+  // ─── Technology Hostile Cards ────────────────────────────────────────────────
+
+  {
+    id: 'cyber_attack',
+    name: 'Cyber Attack',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 2,
+    tags: ['resource', 'economy', 'governance', 'technology'],
+    flavorText: 'No borders in the digital domain.',
+    options: [
+      {
+        label: 'Option 1 — System Breach',
+        description: 'Remove 1 Technology resource. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'technology',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Data Exfiltration',
+        description: 'Remove 1 Governance instability. Discard 1 card from your hand. Place this card on your Technology stack (+2).',
+        effect: 'remove_instability_then_discard_hand_then_stack',
+        instabilityCategory: 'governance',
+        targetCategory: 'technology',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+  },
+
+  {
+    id: 'patent_warfare',
+    name: 'Patent Warfare',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 3,
+    tags: ['resource', 'economy', 'military', 'technology'],
+    flavorText: 'Ideas, locked behind walls.',
+    options: [
+      {
+        label: 'Option 1 — IP Lockdown',
+        description: 'Remove 1 Technology resource. Place this card in Economy Instability (−3).',
+        effect: 'remove_stack_card_then_place_in_instability',
+        sourceCategory: 'technology',
+        targetInstability: 'economy',
+      },
+      {
+        label: 'Option 2 — Market Block',
+        description: 'Remove 1 Military resource. Stack this card as +3 on Technology.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'military',
+        targetCategory: 'technology',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+  },
+
+  // ─── Environment Hostile Cards ───────────────────────────────────────────────
+
+  {
+    id: 'resource_extraction',
+    name: 'Resource Extraction',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 2,
+    tags: ['resource', 'economy', 'environment'],
+    flavorText: 'The land gives; we take.',
+    options: [
+      {
+        label: 'Option 1 — Forced Exploitation',
+        description: 'Remove 1 Environment resource. Discard 1 card from your hand. Place this card on your Economy stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'environment',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Debt for Nature',
+        description: 'Remove 1 Economy instability. Discard 1 card from your hand. Place this card on your Environment stack (+2).',
+        effect: 'remove_instability_then_discard_hand_then_stack',
+        instabilityCategory: 'economy',
+        targetCategory: 'environment',
+      },
+    ],
+    discardTo: [
+      { target: 'environment_instability', label: 'Environment Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+  },
+
+  {
+    id: 'industrial_pollution',
+    name: 'Industrial Pollution',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 3,
+    tags: ['resource', 'economy', 'environment'],
+    flavorText: 'Progress measured in parts per million.',
+    options: [
+      {
+        label: 'Option 1 — Externalize Costs',
+        description: 'Remove 1 Environment resource. Place this card in Economy Instability (−3).',
+        effect: 'remove_stack_card_then_place_in_instability',
+        sourceCategory: 'environment',
+        targetInstability: 'economy',
+      },
+      {
+        label: 'Option 2 — Greenwash',
+        description: 'Remove 1 Economy resource. Stack this card as +3 on Environment.',
+        effect: 'remove_stack_card_then_stack_on_category',
+        sourceCategory: 'economy',
+        targetCategory: 'environment',
+      },
+    ],
+    discardTo: [
+      { target: 'environment_instability', label: 'Environment Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+  },
+
+  // ─── Global Event Cards ──────────────────────────────────────────────────────
+
+  {
+    id: 'global_recession',
+    name: 'Global Recession',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'economy',
+    value: 2,
+    tags: ['instability', 'economy', 'governance', 'technology'],
+    mustPlayWhenDrawn: true,
+    cooperativeThreshold: 4,
+    thresholdCategory: 'economy',
+    penaltyCategory: 'economy',
+    penaltyCount: 2,
+    penaltyType: 'remove_stack',
+    flavorText: 'Markets fall. Everyone suffers.',
+    options: [
+      {
+        label: 'Option 1 — Emergency Response',
+        description: 'Pay 1 Economy + 1 Governance + 1 Technology resource to avert the impact. (If 4+ Economy cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_escape',
+        escapeCost: ['economy', 'governance', 'technology'],
+      },
+      {
+        label: 'Option 2 — Accept the Loss',
+        description: 'Remove 2 Economy resources from your stack (shuffled to deck). (If 4+ Economy cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_penalty',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+  },
+
+  {
+    id: 'constitutional_crisis',
+    name: 'Constitutional Crisis',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'governance',
+    value: 2,
+    tags: ['instability', 'economy', 'governance', 'military'],
+    mustPlayWhenDrawn: true,
+    cooperativeThreshold: 4,
+    thresholdCategory: 'governance',
+    penaltyCategory: 'governance',
+    penaltyCount: 2,
+    penaltyType: 'deck_to_instability',
+    flavorText: 'When the law breaks, everything else follows.',
+    options: [
+      {
+        label: 'Option 1 — Restore Order',
+        description: 'Pay 1 Governance + 1 Military + 1 Economy resource to contain the crisis. (If 4+ Governance cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_escape',
+        escapeCost: ['governance', 'military', 'economy'],
+      },
+      {
+        label: 'Option 2 — Let It Burn',
+        description: 'Draw the top 2 cards from the deck and place them in Governance Instability. (If 4+ Governance cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_penalty',
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+  },
+
+  {
+    id: 'mass_uprising',
+    name: 'Mass Uprising',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'culture',
+    value: 2,
+    tags: ['instability', 'culture', 'economy', 'governance'],
+    mustPlayWhenDrawn: true,
+    cooperativeThreshold: 4,
+    thresholdCategory: 'culture',
+    penaltyCategory: 'culture',
+    penaltyCount: 2,
+    penaltyType: 'remove_stack',
+    flavorText: 'Discontent has a tipping point.',
+    options: [
+      {
+        label: 'Option 1 — Concessions',
+        description: 'Pay 1 Culture + 1 Governance + 1 Economy resource to defuse tensions. (If 4+ Culture cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_escape',
+        escapeCost: ['culture', 'governance', 'economy'],
+      },
+      {
+        label: 'Option 2 — Suppress',
+        description: 'Remove 2 Culture resources from your stack (shuffled to deck). (If 4+ Culture cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_penalty',
+      },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+  },
+
+  {
+    id: 'arms_escalation',
+    name: 'Arms Escalation',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'military',
+    value: 2,
+    tags: ['instability', 'economy', 'military', 'technology'],
+    mustPlayWhenDrawn: true,
+    cooperativeThreshold: 4,
+    thresholdCategory: 'military',
+    penaltyCategory: 'military',
+    penaltyCount: 2,
+    penaltyType: 'deck_to_instability',
+    flavorText: 'Every escalation demands a response.',
+    options: [
+      {
+        label: 'Option 1 — Stand Down',
+        description: 'Pay 1 Military + 1 Economy + 1 Technology resource to de-escalate. (If 4+ Military cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_escape',
+        escapeCost: ['military', 'economy', 'technology'],
+      },
+      {
+        label: 'Option 2 — Match the Threat',
+        description: 'Draw the top 2 cards from the deck and place them in Military Instability. (If 4+ Military cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_penalty',
+      },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+  },
+
+  {
+    id: 'tech_collapse',
+    name: 'Tech Collapse',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 2,
+    tags: ['instability', 'economy', 'governance', 'technology'],
+    mustPlayWhenDrawn: true,
+    cooperativeThreshold: 4,
+    thresholdCategory: 'technology',
+    penaltyCategory: 'technology',
+    penaltyCount: 2,
+    penaltyType: 'remove_stack',
+    flavorText: 'Systems fail. Dependencies cascade.',
+    options: [
+      {
+        label: 'Option 1 — Emergency Patch',
+        description: 'Pay 1 Technology + 1 Economy + 1 Governance resource to contain the failure. (If 4+ Technology cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_escape',
+        escapeCost: ['technology', 'economy', 'governance'],
+      },
+      {
+        label: 'Option 2 — Accept Downtime',
+        description: 'Remove 2 Technology resources from your stack (shuffled to deck). (If 4+ Technology cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_penalty',
+      },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+  },
+
+  {
+    id: 'climate_crisis',
+    name: 'Climate Crisis',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'environment',
+    value: 3,
+    tags: ['instability', 'economy', 'environment', 'technology'],
+    mustPlayWhenDrawn: true,
+    cooperativeThreshold: 5,
+    thresholdCategory: 'environment',
+    penaltyCategory: 'environment',
+    penaltyCount: 3,
+    penaltyType: 'remove_stack',
+    flavorText: 'The bill arrives for decades of deferred costs.',
+    options: [
+      {
+        label: 'Option 1 — Emergency Investment',
+        description: 'Pay 1 Environment + 1 Economy + 1 Technology resource to mitigate the impact. (If 5+ Environment cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_escape',
+        escapeCost: ['environment', 'economy', 'technology'],
+      },
+      {
+        label: 'Option 2 — Absorb the Damage',
+        description: 'Remove 3 Environment resources from your stack (shuffled to deck). (If 5+ Environment cards are in the draw deck, this card is negated automatically.)',
+        effect: 'global_event_penalty',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+  },
+
   {
     id: 'census',
     name: 'Census',
@@ -8278,6 +8724,17 @@ const STARTER_DECK = [
   'disarmament', 'disarmament',
   'destabilization', 'destabilization',
   'direct_attack', 'direct_attack', 'arms_package', 'arms_package',
+  // Hostile cards — governance
+  'regulatory_capture', 'emergency_powers',
+  // Hostile cards — culture
+  'propaganda_campaign', 'cultural_erasure',
+  // Hostile cards — technology
+  'cyber_attack', 'patent_warfare',
+  // Hostile cards — environment
+  'resource_extraction', 'industrial_pollution',
+  // Global event cards (1 copy each)
+  'global_recession', 'constitutional_crisis', 'mass_uprising',
+  'arms_escalation', 'tech_collapse', 'climate_crisis',
   'restitution', 'restitution',
   // Economy policy cards
   'market_correction', 'market_correction',
@@ -8335,3 +8792,161 @@ const STARTER_DECK = [
   'technology_transfer',
   'automation_drive',
 ];
+const LEAN_DECK = [
+
+  // Governance (9)
+  'democracy', 'theocracy',
+  'republic', 'oligarchy', 'constitutional_monarchy', 'dictatorship', 'populist_governance',
+  // Economy (9)
+  'free_trade', 'industrial_expansion', 'green_investment',
+  'agrarian_economy', 'command_economy', 'banking_system',
+  // Culture (10)
+  'matriarchy', 'patriarchy', 'higher_education', 'renaissance_culture',
+  'oral_tradition', 'religious_order', 'merchant_class', 'enlightenment',
+  // Military (8)
+  'aggressive_doctrine', 'protectorate',
+  'defensive_doctrine', 'adaptable_force', 'proportional_response', 'overwhelming_force',
+  // Technology (8)
+  'pragmatism', 'explore_the_unknown',
+  'cautious_progress', 'systematic_inquiry', 'progress_at_all_costs', 'theoretical_foundations',
+  // Environment (9)
+  'the_great_north', 'the_highlands', 'the_waterlands', 'the_union', 'oceana',
+  'the_fertile_plains', 'the_desert_wastes', 'the_river_delta',
+  // Stacking events
+  'alliance',
+  'free_trade_agreement',
+  'efficient_administration', 'tax_collection', 'tax_increase', 'tax_decrease',
+  'cultural_festival', 'military_campaign',
+  'scientific_breakthrough',
+  'abundant_harvest', 'abundant_harvest', 'abundant_harvest', 'abundant_harvest',
+  'inspiring_speech',
+  'activists', 'unions', 'loyalists',
+  'public_works', 'civic_charter',
+  'trade_routes', 'market_expansion',
+  'artistic_movement', 'folk_songs',
+  'war_council', 'border_fortification',
+  'research_grants', 'cartography',
+  'river_network', 'river_network', 'river_network',
+  'land_survey', 'land_survey', 'land_survey',
+  'trade_delegation',
+  // Resource-focused stacking
+  'civic_assembly', 'public_decree',
+  'surplus_goods', 'trade_surplus',
+  'oral_history',
+  'battle_hardened',
+  'invention_workshop', 'applied_science',
+  'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra',
+  'dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
+  'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
+  'dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
+  'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
+  // Must-play events
+  'indecisiveness',
+  // Hazard events — natural/environmental
+  'worker_strike',
+  'political_assassination',
+  'flood',
+  'corruption', 'epidemic', 'drought', 'rebellion', 'coup_attempt',
+  'earthquake', 'tornado', 'harsh_winter', 'scorched_summer',
+  'forest_fire', 'environmental_collapse',
+  // Hazard events — social/political
+  'political_strife', 'crime_wave', 'public_backlash', 'leaked_report',
+  'recession', 'national_debt', 'market_crash', 'trade_war', 'supply_shortage', 'hyperinflation',
+  'youthful_dissent', 'cultural_suppression', 'generational_divide', 'loss_of_faith', 'brain_drain',
+  // Hazard events — technology/research
+  'stalled_research', 'adverse_side_effects', 'remote_attack', 'failed_experiment', 'obsolescence', 'record_breach',
+  'misinformation', 'surveillance_state', 'cyber_warfare', 'technological_collapse',
+  // Hazard events — military
+  'mutiny', 'desertion', 'border_skirmish', 'arms_shortage',
+  // Hazard events — targeted
+  'social_upheaval',
+  'sabotage',
+  'insider_trading', 'state_capture', 'cultural_purge', 'treason',
+  'pollution', 'toxic_spill',
+  // Crime arc
+  'crime',
+  'criminal_conspiracy',
+  'organized_crime',
+  // Labor & population
+  'labor_shortage',
+  'population_decline',
+  'immigration',
+  // Utility events
+  'martial_law',
+  'revisionist_history',
+  'contingency_planning',
+  'occupation', 'incursion', 'sanctions', 'military_exercise', 'cultural_exchange',
+  'peace_treaty', 'diplomatic_mission', 'census',
+  'disarmament',
+  'destabilization',
+  'direct_attack', 'arms_package',
+  // Hostile cards — governance
+  'regulatory_capture', 'emergency_powers',
+  // Hostile cards — culture
+  'propaganda_campaign', 'cultural_erasure',
+  // Hostile cards — technology
+  'cyber_attack', 'patent_warfare',
+  // Hostile cards — environment
+  'resource_extraction', 'industrial_pollution',
+  // Global event cards (1 copy each)
+  'global_recession', 'constitutional_crisis', 'mass_uprising',
+  'arms_escalation', 'tech_collapse', 'climate_crisis',
+  'restitution',
+  // Economy policy cards
+  'market_correction',
+  'deficit_spending',
+  'debt_restructuring',
+  'fiscal_consolidation',
+  'economic_overhaul',
+  // Culture policy cards
+  'social_harmony',
+  'populist_appeal',
+  'cultural_reconciliation',
+  'national_reckoning',
+  'cultural_renaissance',
+  // Military policy cards
+  'ceasefire',
+  'fortified_peace',
+  'war_of_attrition',
+  'force_projection',
+  'total_mobilization',
+  // Technology policy cards
+  'patent_reform',
+  'open_source_initiative',
+  'rd_investment',
+  'digital_transformation',
+  'technological_revolution',
+  // Environment policy cards
+  'conservation_policy',
+  'controlled_burn',
+  'ecological_restoration',
+  'climate_accord',
+  'new_deal',
+  // Management philosophy (2× each — primary recovery tools)
+  'consolidation',
+  'structural_consolidation',
+  'managed_decline',
+  'rationalization',
+  'austerity',
+  'preparedness',
+  'crisis_protocol',
+  'grand_strategy',
+  'redundancy_systems',
+  'adaptive_management',
+  // Culture exchange (new)
+  'heritage_fund',
+  'cultural_diplomacy',
+  // Environment exchange (new)
+  'land_reclamation',
+  'conservation_program',
+  // Military exchange (new)
+  'conscription',
+  'arms_trade',
+  // Technology exchange (new)
+  'patent_license',
+  'venture_capital',
+  'technology_transfer',
+  'automation_drive',
+
+];
+
