@@ -2326,6 +2326,7 @@ function canPlayOption(card, opt) {
     case 'discard_hand_then_remove_instability':
       return G.hand.length >= 1;
     case 'global_event_escape':
+      return (opt.escapeCost || []).every(cat => G.categories[cat].stack.length > 0);
     case 'global_event_penalty':
       return true;
     case 'remove_multi_stack_then_remove_crime_instability': {
