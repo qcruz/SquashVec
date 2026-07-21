@@ -4,6 +4,25 @@
 
 ---
 
+## Session 11 — 2026-07-20
+
+**Focus:** Duplicate-option audit and fixes
+
+### Changes
+- **Audited all cards for identical options** — identified 3 cards where both options produced the same output (different conditions or costs but identical destination/result):
+  - `research_grants`: both options stacked on Technology (+2); Option 2 was strictly better (free)
+  - `activists`: both options stacked on Culture (+1); only condition differed
+  - `unions`: both options stacked on Governance (+1); only condition differed
+- **`research_grants` Option 2 — Redirect Grants**: changed from free `stack_on_category` → Technology to `pay_own_stack_then_stack_on_any` paying Technology, stacking on Economy or Culture (+2). Now mirrors `cartography` Option 2 pattern — meaningful tradeoff between building Technology (Option 1, costs Economy) vs redirecting grants cross-category (Option 2, costs Technology)
+- **`activists` Option 2 — Military Protest**: changed `targetCategory` from `culture` → `military`. Now: Option 1 builds Culture if Culture has instability; Option 2 builds Military if Military has instability. Meaningful divergent outcomes.
+- **`unions` Option 2 — Environmental Advocacy**: changed `targetCategory` from `governance` → `environment`. Now: Option 1 builds Governance if Economy has instability; Option 2 builds Environment if Environment has instability. Meaningful divergent outcomes.
+- No new effects used — all three fixes use already-implemented effect types
+
+### Deck State
+363 STARTER_DECK slots / 276 LEAN_DECK slots (active), 334 total card definitions
+
+---
+
 ## Session 10 — 2026-07-19
 
 **Focus:** AI mode expansion, deck tuning, tag play tracking, stats display simplification
