@@ -6,7 +6,7 @@
 
 ## Session 11 — 2026-07-20
 
-**Focus:** Duplicate-option audit and fixes
+**Focus:** Duplicate-option audit and fixes; exchange card strategic optionality audit
 
 ### Changes
 - **Audited all cards for identical options** — identified 3 cards where both options produced the same output (different conditions or costs but identical destination/result):
@@ -17,6 +17,20 @@
 - **`activists` Option 2 — Military Protest**: changed `targetCategory` from `culture` → `military`. Now: Option 1 builds Culture if Culture has instability; Option 2 builds Military if Military has instability. Meaningful divergent outcomes.
 - **`unions` Option 2 — Environmental Advocacy**: changed `targetCategory` from `governance` → `environment`. Now: Option 1 builds Governance if Economy has instability; Option 2 builds Environment if Environment has instability. Meaningful divergent outcomes.
 - No new effects used — all three fixes use already-implemented effect types
+
+### Exchange Card Optionality Audit
+- **Reviewed all 22 exchange-tagged card definitions** for strategic optionality
+- **14 cards** already had meaningful option divergence (different destinations, mirror swaps, or instability-clear vs stack-build choices) — no changes needed
+- **8 cards** had same-destination options (different payment source but identical output category) — all updated so Option 2 routes to a new category, creating genuine routing decisions:
+  - `efficient_administration` Opt2: pay Culture → Governance → **Economy** (+1)
+  - `heritage_fund` Opt2: pay Governance → Culture → **Economy** (+1); discardTo adds economy_instability
+  - `conscription` Opt2 "Civic Duty": pay Culture → Military → **Governance** (+1); discardTo adds governance_instability; label renamed from "Call to Arms"
+  - `land_reclamation` Opt2: pay Technology → Environment → **Culture** (+1); discardTo adds culture_instability
+  - `technology_transfer` Opt2: pay Governance → Technology → **Economy** (+2); discardTo swaps military_instability → economy_instability
+  - `cultural_diplomacy` Opt2 "Military Alliance": pay Governance → Culture → **Military** (+2); discardTo swaps governance_instability → military_instability; label renamed from "State Directive"
+  - `conservation_program` Opt2 "Cultural Heritage Initiative": pay Governance → Environment → **Culture** (+2); discardTo swaps governance_instability → culture_instability; label renamed from "Policy Initiative"
+  - `automation_drive` Opt2: pay Technology → Technology → **Economy** (+2); discardTo already had economy_instability ✅
+- Rule confirmed: Option 2 destination must never match its own payment source category
 
 ### Deck State
 363 STARTER_DECK slots / 276 LEAN_DECK slots (active), 334 total card definitions
