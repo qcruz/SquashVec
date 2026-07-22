@@ -8559,7 +8559,7 @@ const CARDS = [
     id: 'electoral_mandate',
     name: 'Electoral Mandate',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'governance'],
+    tags: ['policy', 'governance', 'exp'],
     flavorText: 'A mandate from the people carries an obligation to spend it.',
     options: [
       {
@@ -8583,7 +8583,7 @@ const CARDS = [
     id: 'holy_decree',
     name: 'Holy Decree',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'governance'],
+    tags: ['policy', 'governance', 'exp'],
     flavorText: 'Divine law leaves little room for negotiation.',
     options: [
       {
@@ -8607,7 +8607,7 @@ const CARDS = [
     id: 'senate_motion',
     name: 'Senate Motion',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'governance'],
+    tags: ['policy', 'governance', 'exp'],
     flavorText: 'Every vote in the legislature is one not spent on progress.',
     options: [
       {
@@ -8631,7 +8631,7 @@ const CARDS = [
     id: 'closed_circle',
     name: 'Closed Circle',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'governance'],
+    tags: ['policy', 'governance', 'exp'],
     flavorText: 'Power concentrates. Everything else gets squeezed out.',
     options: [
       {
@@ -8655,7 +8655,7 @@ const CARDS = [
     id: 'royal_assent',
     name: 'Royal Assent',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'governance'],
+    tags: ['policy', 'governance', 'exp'],
     flavorText: 'The crown endorses. The army stands down.',
     options: [
       {
@@ -8679,7 +8679,7 @@ const CARDS = [
     id: 'iron_will',
     name: 'Iron Will',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'governance'],
+    tags: ['policy', 'governance', 'exp'],
     flavorText: 'Conformity is the price of order.',
     options: [
       {
@@ -8703,7 +8703,7 @@ const CARDS = [
     id: 'rally_the_base',
     name: 'Rally the Base',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'governance'],
+    tags: ['policy', 'governance', 'exp'],
     flavorText: 'The crowd roars. The land pays.',
     options: [
       {
@@ -8729,7 +8729,7 @@ const CARDS = [
     id: 'open_market',
     name: 'Open Market',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'economy'],
+    tags: ['policy', 'economy', 'exp'],
     flavorText: 'What the market opens, it also extracts.',
     options: [
       {
@@ -8753,7 +8753,7 @@ const CARDS = [
     id: 'factory_output',
     name: 'Factory Output',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'economy'],
+    tags: ['policy', 'economy', 'exp'],
     flavorText: 'The smoke is the price of progress.',
     options: [
       {
@@ -8777,7 +8777,7 @@ const CARDS = [
     id: 'carbon_budget',
     name: 'Carbon Budget',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'economy'],
+    tags: ['policy', 'economy', 'exp'],
     flavorText: 'Restraint costs politically. It pays planetarily.',
     options: [
       {
@@ -8801,7 +8801,7 @@ const CARDS = [
     id: 'harvest_season',
     name: 'Harvest Season',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'economy'],
+    tags: ['policy', 'economy', 'exp'],
     flavorText: 'The plow outlasts the sword.',
     options: [
       {
@@ -8825,7 +8825,7 @@ const CARDS = [
     id: 'state_directive',
     name: 'State Directive',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'economy'],
+    tags: ['policy', 'economy', 'exp'],
     flavorText: 'The plan supersedes the individual.',
     options: [
       {
@@ -8849,7 +8849,7 @@ const CARDS = [
     id: 'credit_expansion',
     name: 'Credit Expansion',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'economy'],
+    tags: ['policy', 'economy', 'exp'],
     flavorText: 'Money borrowed is power deferred.',
     options: [
       {
@@ -8875,7 +8875,7 @@ const CARDS = [
     id: 'community_council',
     name: 'Community Council',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'culture'],
+    tags: ['policy', 'culture', 'exp'],
     flavorText: 'Consensus takes time. Wars take soldiers.',
     options: [
       {
@@ -8899,7 +8899,7 @@ const CARDS = [
     id: 'established_order',
     name: 'Established Order',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'culture'],
+    tags: ['policy', 'culture', 'exp'],
     flavorText: 'Tradition has a price. So does breaking it.',
     options: [
       {
@@ -8923,7 +8923,7 @@ const CARDS = [
     id: 'academic_program',
     name: 'Academic Program',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'culture'],
+    tags: ['policy', 'culture', 'exp'],
     flavorText: 'Knowledge is the only investment that compounds without limit.',
     options: [
       {
@@ -8947,7 +8947,7 @@ const CARDS = [
     id: 'patron_of_the_arts',
     name: 'Patron of the Arts',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'culture'],
+    tags: ['policy', 'culture', 'exp'],
     flavorText: 'Genius blooms where swords are set aside.',
     options: [
       {
@@ -8971,7 +8971,7 @@ const CARDS = [
     id: 'living_memory',
     name: 'Living Memory',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'culture'],
+    tags: ['policy', 'culture', 'exp'],
     flavorText: 'What the elders remember, no archive can hold.',
     options: [
       {
@@ -8995,7 +8995,7 @@ const CARDS = [
     id: 'charitable_works',
     name: 'Charitable Works',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'culture'],
+    tags: ['policy', 'culture', 'exp'],
     flavorText: 'The tithe builds the church. The church builds the state.',
     options: [
       {
@@ -9019,7 +9019,7 @@ const CARDS = [
     id: 'commercial_charter',
     name: 'Commercial Charter',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'culture'],
+    tags: ['policy', 'culture', 'exp'],
     flavorText: 'Merchants make treaties where armies make graves.',
     options: [
       {
@@ -9043,7 +9043,7 @@ const CARDS = [
     id: 'natural_philosophy',
     name: 'Natural Philosophy',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'culture'],
+    tags: ['policy', 'culture', 'exp'],
     flavorText: 'Reason dismantles thrones. It also arms revolutions.',
     options: [
       {
@@ -9069,7 +9069,7 @@ const CARDS = [
     id: 'forward_advance',
     name: 'Forward Advance',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'military'],
+    tags: ['policy', 'military', 'exp'],
     flavorText: 'The land gives way to the campaign.',
     options: [
       {
@@ -9093,7 +9093,7 @@ const CARDS = [
     id: 'treaty_obligations',
     name: 'Treaty Obligations',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'military'],
+    tags: ['policy', 'military', 'exp'],
     flavorText: 'A signed agreement costs gold. Breaking it costs more.',
     options: [
       {
@@ -9117,7 +9117,7 @@ const CARDS = [
     id: 'fortification',
     name: 'Fortification',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'military'],
+    tags: ['policy', 'military', 'exp'],
     flavorText: 'Walls are expensive. Invasions are more so.',
     options: [
       {
@@ -9141,7 +9141,7 @@ const CARDS = [
     id: 'tactical_redeployment',
     name: 'Tactical Redeployment',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'military'],
+    tags: ['policy', 'military', 'exp'],
     flavorText: 'A force that can pivot is a force that endures.',
     options: [
       {
@@ -9165,7 +9165,7 @@ const CARDS = [
     id: 'measured_action',
     name: 'Measured Action',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'military'],
+    tags: ['policy', 'military', 'exp'],
     flavorText: 'Restraint, practiced long enough, becomes culture.',
     options: [
       {
@@ -9189,7 +9189,7 @@ const CARDS = [
     id: 'total_war',
     name: 'Total War',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'military'],
+    tags: ['policy', 'military', 'exp'],
     flavorText: 'Everything bends to the war effort. Everything.',
     options: [
       {
@@ -9215,7 +9215,7 @@ const CARDS = [
     id: 'applied_solutions',
     name: 'Applied Solutions',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'technology'],
+    tags: ['policy', 'technology', 'exp'],
     flavorText: 'Efficiency above aesthetics. Results above tradition.',
     options: [
       {
@@ -9239,7 +9239,7 @@ const CARDS = [
     id: 'frontier_science',
     name: 'Frontier Science',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'technology'],
+    tags: ['policy', 'technology', 'exp'],
     flavorText: 'Discovery requires moving beyond what has already been mapped.',
     options: [
       {
@@ -9263,7 +9263,7 @@ const CARDS = [
     id: 'risk_assessment',
     name: 'Risk Assessment',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'technology'],
+    tags: ['policy', 'technology', 'exp'],
     flavorText: 'Safety frameworks take time to build. Accidents happen faster.',
     options: [
       {
@@ -9287,7 +9287,7 @@ const CARDS = [
     id: 'research_protocol',
     name: 'Research Protocol',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'technology'],
+    tags: ['policy', 'technology', 'exp'],
     flavorText: 'The method precedes the discovery.',
     options: [
       {
@@ -9311,7 +9311,7 @@ const CARDS = [
     id: 'breakthrough',
     name: 'Breakthrough',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'technology'],
+    tags: ['policy', 'technology', 'exp'],
     flavorText: 'What it enables, it does not control.',
     options: [
       {
@@ -9335,7 +9335,7 @@ const CARDS = [
     id: 'academic_consensus',
     name: 'Academic Consensus',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'technology'],
+    tags: ['policy', 'technology', 'exp'],
     flavorText: 'Slow knowledge. Durable knowledge.',
     options: [
       {
@@ -9361,7 +9361,7 @@ const CARDS = [
     id: 'harsh_terrain',
     name: 'Harsh Terrain',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'environment'],
+    tags: ['policy', 'environment', 'exp'],
     flavorText: 'The north does not produce wealth. It produces endurance.',
     options: [
       {
@@ -9385,7 +9385,7 @@ const CARDS = [
     id: 'highland_law',
     name: 'Highland Law',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'environment'],
+    tags: ['policy', 'environment', 'exp'],
     flavorText: 'Clans write law with elevation, not ink.',
     options: [
       {
@@ -9409,7 +9409,7 @@ const CARDS = [
     id: 'river_trade',
     name: 'River Trade',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'environment'],
+    tags: ['policy', 'environment', 'exp'],
     flavorText: 'The river does not take sides. Commerce does.',
     options: [
       {
@@ -9433,7 +9433,7 @@ const CARDS = [
     id: 'federal_compact',
     name: 'Federal Compact',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'environment'],
+    tags: ['policy', 'environment', 'exp'],
     flavorText: 'Unity requires someone to give something up.',
     options: [
       {
@@ -9457,7 +9457,7 @@ const CARDS = [
     id: 'maritime_routes',
     name: 'Maritime Routes',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'environment'],
+    tags: ['policy', 'environment', 'exp'],
     flavorText: 'The sea routes bypass every land-bound authority.',
     options: [
       {
@@ -9481,7 +9481,7 @@ const CARDS = [
     id: 'grain_surplus',
     name: 'Grain Surplus',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'environment'],
+    tags: ['policy', 'environment', 'exp'],
     flavorText: 'A full granary argues better than any general.',
     options: [
       {
@@ -9505,7 +9505,7 @@ const CARDS = [
     id: 'desert_adaptation',
     name: 'Desert Adaptation',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'environment'],
+    tags: ['policy', 'environment', 'exp'],
     flavorText: 'Scarcity is the mother of invention.',
     options: [
       {
@@ -9529,7 +9529,7 @@ const CARDS = [
     id: 'delta_culture',
     name: 'Delta Culture',
     type: 'event', subtype: 'utility', category: null, value: 1,
-    tags: ['policy', 'environment'],
+    tags: ['policy', 'environment', 'exp'],
     flavorText: 'Where rivers meet, civilizations bloom.',
     options: [
       {
