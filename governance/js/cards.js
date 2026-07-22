@@ -3200,8 +3200,8 @@ const CARDS = [
   // — Military resource-focused stacking events —
 
   {
-    id: 'battle_hardened',
-    name: 'Battle Hardened',
+    id: 'veteran_forces',
+    name: 'Veteran Forces',
     type: 'event',
     subtype: 'stacking',
     category: 'military',
@@ -3614,33 +3614,6 @@ const CARDS = [
   },
 
   // — Military resource-focused stacking events —
-
-  {
-    id: 'battle_hardened',
-    name: 'Battle Hardened',
-    type: 'event',
-    subtype: 'stacking',
-    category: 'military',
-    value: 1,
-    tags: ['resource', 'economy', 'governance', 'military'],
-    flavorText: 'What does not break, tempers.',
-    options: [
-      {
-        label: 'Option 1 — Harden the Forces',
-        description: 'Stack on your active Military card. Adds +1 to Military score.',
-        effect: 'stack_on_category',
-        targetCategory: 'military',
-      },
-      {
-        label: 'Option 2 — Focus Elsewhere',
-        description: 'Remove 1 Military resource from your stack and shuffle it into the draw deck. Stack this card on Economy or Governance as a +1 resource.',
-        effect: 'pay_own_stack_then_stack_on_any',
-        ownCategory: 'military',
-        choices: ['economy', 'governance'],
-      },
-    ],
-    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
-  },
 
   // — Technology resource-focused stacking events —
 
@@ -5103,33 +5076,6 @@ const CARDS = [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
-  },
-
-  {
-    id: 'epidemic',
-    name: 'Epidemic',
-    type: 'event',
-    subtype: 'hazard',
-    category: null,
-    value: 2,
-    tags: ['instability', 'culture', 'economy'],
-    flavorText: 'Disease spreads where borders cannot.',
-    options: [
-      {
-        label: 'Option 1 — Suffer the Outbreak',
-        description: 'Place into Culture Instability (−2). The epidemic ravages your population.',
-        effect: 'place_self_to_instability',
-        targetInstability: 'culture',
-      },
-      {
-        label: 'Option 2 — Quarantine',
-        description: 'Discard this card. Add −1 to Economy Instability instead (emergency medical spending).',
-        effect: 'suppress_hazard',
-        altInstability: 'economy',
-        altValue: 1,
-      },
-    ],
-    discardTo: [{ target: 'discard_pile', label: 'Discard Pile' }],
   },
 
   {
@@ -9683,7 +9629,7 @@ const STARTER_DECK = [
   // Resource-focused stacking
   'civic_assembly', 'civic_assembly', 'public_decree', 'public_decree',
   'surplus_goods', 'surplus_goods', 'surplus_goods', 'surplus_goods','trade_surplus', 'trade_surplus', 'trade_surplus', 'trade_surplus','oral_history', 'oral_history',
-  'battle_hardened', 'battle_hardened', 'battle_hardened', 'battle_hardened','invention_workshop', 'invention_workshop', 'applied_science', 'applied_science',
+  'veteran_forces', 'veteran_forces', 'veteran_forces', 'veteran_forces','invention_workshop', 'invention_workshop', 'applied_science', 'applied_science',
   'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra','dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
   'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
   'dense_forests', 'dense_forests', 'dense_forests','mineral_deposits', 'mineral_deposits', 'mineral_deposits','rare_plants', 'rare_plants', 'rare_plants','rich_soil', 'rich_soil', 'rich_soil','natural_springs', 'natural_springs', 'natural_springs','coastal_fisheries', 'coastal_fisheries', 'coastal_fisheries',// Must-play events
@@ -9831,7 +9777,7 @@ const LEAN_DECK = [
   // Resource-focused stacking
   'civic_assembly', 'public_decree',
   'surplus_goods', 'trade_surplus', 'oral_history',
-  'battle_hardened', 'battle_hardened', 'battle_hardened','invention_workshop', 'applied_science',
+  'veteran_forces', 'veteran_forces', 'veteran_forces','invention_workshop', 'applied_science',
   'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra','dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
   'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
   'dense_forests', 'dense_forests', 'dense_forests','mineral_deposits', 'mineral_deposits', 'mineral_deposits','rare_plants', 'rare_plants', 'rare_plants','rich_soil', 'rich_soil', 'rich_soil','natural_springs', 'natural_springs', 'natural_springs','coastal_fisheries', 'coastal_fisheries', 'coastal_fisheries',// Must-play events
