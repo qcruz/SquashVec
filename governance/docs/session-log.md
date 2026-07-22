@@ -4,6 +4,55 @@
 
 ---
 
+## Session 12 — 2026-07-21
+
+**Focus:** New event cards (Purge, Dissent); identity management redesign; 41 identity companion cards
+
+### New Cards — Purge & Dissent
+- **`purge`** (governance stacking, value 2, exchange+hostile): Opt1 "Political Purge" — pay Economy, place on Governance (+2) or shuffle back (`remove_stack_card_and_optionally_place_self`). Opt2 "Show of Strength" — pay Military + discard hand card, place on Culture (+2) (`remove_stack_card_then_discard_hand_then_stack`). discardTo: governance, culture, economy instability.
+- **`dissent`** (utility, value 1, policy+culture+governance): Opt1 "Speak Out" — shuffle 2 hand cards into deck, draw 2, self → culture instability (new effect). Opt2 "Channel It" — pay Governance, shuffle self into deck. discardTo: culture, military instability.
+- Both added to LEAN_DECK (272 slots after these two)
+
+### New Effect — `shuffle_hand_draw_self_to_instability`
+- Implemented in `game.js`: player picks N hand cards to shuffle into deck (not discard), then draws N, then self goes to specified instability pile
+- New `showShuffleHandModal` function — distinct modal text ("shuffle into deck" vs "discard")
+- `pickDiscardHand` updated with `shuffleHandBack` flag to route selected hand cards to deck
+- `continueHandDiscardChain` updated with `shuffleHandBack` modal routing + `drawAfter/toInstability` terminal handler
+
+### Identity Management Redesign
+- **Removed deck-search effects from all identity cards**: deleted all `benefit: { description, resourceCategory, count }` properties across all 41 identity cards in all 6 categories
+- **Removed `applyIdentityBenefit()` function** from `game.js` and its call site in `resolveReplaceOrStack`
+- **Removed `benefitHTML` display block** from card detail renderer
+- Identity cards now provide a flat score boost only (value unchanged)
+
+### New Effect — `remove_newest_resource_and_oldest_instability`
+- Implemented in `game.js`: removes newest (top) resource from `targetCategory` stack → deck, then removes oldest instability from same category's pile → deck (if any). Card uses `discardTo` after.
+- `canPlayOption` requires `targetCategory` stack ≥ 1
+- Used by all 41 identity companion cards (Opt 1)
+
+### Identity Companion Cards (41 new cards)
+One companion card per identity. Design rules: Opt 1 drains a fixed category (not the identity's own), Opt 2 places as +1 resource on another fixed category if the matching identity is active (otherwise shuffles to deck). Drain ≠ produce. Each identity group collectively covers all 5 other categories as Opt 2 targets.
+
+Added to `cards.js` and LEAN_DECK (1 copy each):
+
+| Group | Cards |
+|-------|-------|
+| Governance (7) | electoral_mandate, holy_decree, senate_motion, closed_circle, royal_assent, iron_will, rally_the_base |
+| Economy (6) | open_market, factory_output, carbon_budget, harvest_season, state_directive, credit_expansion |
+| Culture (8) | community_council, established_order, academic_program, patron_of_the_arts, living_memory, charitable_works, commercial_charter, natural_philosophy |
+| Military (6) | forward_advance, treaty_obligations, fortification, tactical_redeployment, measured_action, total_war |
+| Technology (6) | applied_solutions, frontier_science, risk_assessment, research_protocol, breakthrough, academic_consensus |
+| Environment (8) | harsh_terrain, highland_law, river_trade, federal_compact, maritime_routes, grain_surplus, desert_adaptation, delta_culture |
+
+### Deck State
+363 STARTER_DECK slots / **313 LEAN_DECK slots** (active), 375+ total card definitions
+
+### Pending
+- Scapegoating card design pending approval
+- Censorship, Revolution, Gunboat Diplomacy still in review queue
+
+---
+
 ## Session 11 — 2026-07-20
 
 **Focus:** Duplicate-option audit and fixes; exchange card strategic optionality audit

@@ -282,6 +282,19 @@ Take the oldest resource from Military stack → deck. Discard 1 card from hand.
 Player picks N cards from hand to discard. Then shuffles this card into the deck (ignores `discardTo`).
 - `count?: number` (default 1)
 
+**`remove_newest_resource_and_oldest_instability`**
+Remove the newest (top) resource card from `targetCategory` stack → deck. Then remove the oldest (bottom) instability card from `targetCategory` pile → deck (if any). Card then uses `discardTo`.
+- `targetCategory: string` — category to affect (both stack and instability pile)
+- *Requires: `targetCategory` stack ≥ 1*
+- *Used by: all 41 identity companion cards (Opt 1)*
+
+**`shuffle_hand_draw_self_to_instability`**
+Player picks N cards from hand to shuffle into the draw deck (not discarded). Then draws N cards. Places this card into the specified instability pile.
+- `count?: number` (default 2) — cards to shuffle from hand and then draw
+- `instabilityCategory: string` — instability pile to place this card in
+- *Always eligible. If hand is empty, skips the shuffle step and draws immediately.*
+- *Used by: Dissent Opt 1*
+
 **`draw_and_shuffle_self`**
 Draw 1 card. Shuffle this card into the deck.
 

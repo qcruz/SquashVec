@@ -788,6 +788,41 @@ function resolveEventCard(card, opt) {
       render(); showDiscardHandModal(card, count); return;
     }
 
+    case 'shuffle_hand_draw_self_to_instability': {
+      const drawCount = opt.count || 2;
+      const instabCat = opt.instabilityCategory;
+      const shuffleCount = Math.min(drawCount, G.hand.length);
+      if (shuffleCount <= 0) {
+        for (let i = 0; i < drawCount; i++) drawCard();
+        G.categories[instabCat].instability.push(card);
+        addLog(`${card.name}: No hand cards to shuffle — drew ${drawCount}. → ${cap(instabCat)} instability.`);
+        afterCardResolved(); break;
+      }
+      G.pendingAction = { type: 'discard_hand_cards', card, remaining: shuffleCount, shuffleHandBack: true, drawAfter: drawCount, toInstability: instabCat };
+      render(); showShuffleHandModal(card, shuffleCount); return;
+    }
+
+    case 'remove_newest_resource_and_oldest_instability': {
+      const tgtCat = opt.targetCategory;
+      const stack = G.categories[tgtCat].stack;
+      if (!stack.length) {
+        addLog(`${card.name}: No ${cap(tgtCat)} resources to remove.`);
+        applyCardSelfDiscard(card); break;
+      }
+      const removed = stack.pop();
+      G.deck.push(removed); shuffle(G.deck);
+      addLog(`${removed.name} (newest ${cap(tgtCat)} resource) → deck.`);
+      const instab = G.categories[tgtCat].instability;
+      if (instab.length) {
+        const removedInstab = instab.shift();
+        G.deck.push(removedInstab); shuffle(G.deck);
+        addLog(`${removedInstab.name} (oldest ${cap(tgtCat)} instability) → deck.`);
+      }
+      applyCardSelfDiscard(card);
+      afterCardResolved();
+      break;
+    }
+
     case 'remove_stack_card_then_remove_n_from_stack': {
       const srcCat = opt.sourceCategory;
       const stack = G.categories[srcCat].stack;
@@ -1555,10 +1590,32 @@ function showDiscardHandModal(card, remaining) {
   `);
 }
 
+function showShuffleHandModal(card, remaining) {
+  const btns = G.hand.map((c, i) => {
+    const color = c.category ? CAT_COLORS[c.category] : '#777';
+    const typeLabel = c.type === 'category' ? `${cap(c.category)} Identity` : `${cap(c.subtype || 'event')} event`;
+    return `<button class="opt-btn" style="border-left:3px solid ${color}" onclick="pickDiscardHand(${i})">
+      <strong style="color:${color}">${c.name}</strong>
+      <small>${typeLabel}</small>
+    </button>`;
+  }).join('');
+  openModal(`
+    <div class="modal-card-name">${card.name}</div>
+    <p class="modal-sub">Choose ${remaining} card${remaining > 1 ? 's' : ''} from your hand to shuffle into the deck.</p>
+    <div class="opt-list">${btns}</div>
+  `);
+}
+
 function pickDiscardHand(i) {
   const action = G.pendingAction;
   const discarded = G.hand.splice(i, 1)[0];
   action.remaining--;
+  if (action.shuffleHandBack) {
+    G.deck.push(discarded); shuffle(G.deck);
+    addLog(`${discarded.name} shuffled into the deck.`);
+    continueHandDiscardChain();
+    return;
+  }
   const dest = discarded.discardTo;
   if (!dest || dest.length === 0) {
     G.deck.push(discarded); shuffle(G.deck);
@@ -1599,7 +1656,11 @@ function resolveHandDiscardDest(target) {
 function continueHandDiscardChain() {
   const action = G.pendingAction;
   if (action.remaining > 0) {
-    showDiscardHandModal(action.card, action.remaining);
+    if (action.shuffleHandBack) {
+      showShuffleHandModal(action.card, action.remaining);
+    } else {
+      showDiscardHandModal(action.card, action.remaining);
+    }
     return;
   }
   closeModal();
@@ -1622,6 +1683,12 @@ function continueHandDiscardChain() {
     G.pendingAction = { type: 'remove_instability', card: action.card, maxRemove, afterShuffle: true, filter: filterCat };
     render(); showInstabilityModal(action.card, maxRemove, filterCat); return;
   } else if (action.alreadyPlaced) {
+    afterCardResolved();
+  } else if (action.drawAfter && action.toInstability) {
+    for (let i = 0; i < action.drawAfter; i++) drawCard();
+    addLog(`${action.card.name}: Drew ${action.drawAfter} card(s).`);
+    G.categories[action.toInstability].instability.push(action.card);
+    addLog(`${action.card.name} → ${cap(action.toInstability)} instability.`);
     afterCardResolved();
   } else {
     applyCardSelfDiscard(action.card);
@@ -2142,29 +2209,6 @@ function showReplaceOrStackModal(card, cat) {
   resolveReplaceOrStack('replace');
 }
 
-function applyIdentityBenefit(card) {
-  if (!card.benefit) return;
-  const { resourceCategory, count } = card.benefit;
-  const found = [];
-  const rest = [];
-  for (const c of G.deck) {
-    if (found.length < count && c.type === 'event' && c.subtype === 'stacking' && c.category === resourceCategory) {
-      found.push(c);
-    } else {
-      rest.push(c);
-    }
-  }
-  G.deck = rest;
-  shuffle(G.deck);
-  found.forEach(c => G.hand.push(c));
-  if (found.length > 0) {
-    addLog(`${card.name} benefit: ${found.map(c => c.name).join(', ')} added to hand.`);
-  } else {
-    addLog(`${card.name} benefit: No ${cap(resourceCategory)} resources found in deck.`);
-  }
-}
-
-
 function resolveReplaceOrStack(choice) {
   closeModal();
   const { card, targetCategory, bonusInstabilityRemoval } = G.pendingAction;
@@ -2177,9 +2221,6 @@ function resolveReplaceOrStack(choice) {
     G.deck.push(oldest); shuffle(G.deck);
     addLog(`Bonus: ${oldest.name} removed from ${cap(cat)} instability → deck.`);
   }
-
-  // Identity benefit: search deck for matching resources
-  applyIdentityBenefit(card);
 
   if (choice === 'replace') {
     const catState = G.categories[cat];
@@ -2307,6 +2348,8 @@ function canPlayOption(card, opt) {
       _cats2.forEach(c => _req2[c] = (_req2[c] || 0) + 1);
       return Object.entries(_req2).every(([c, n]) => G.categories[c].stack.length >= n);
     }
+    case 'remove_newest_resource_and_oldest_instability':
+      return G.categories[opt.targetCategory].stack.length >= 1;
     case 'remove_stack_card_and_optionally_place_self':
     case 'remove_stack_card_then_shuffle_self':
     case 'remove_stack_card_then_remove_instability':
@@ -2750,12 +2793,6 @@ function renderDetailFrame(card, color, location, readonly) {
       <span class="detail-section-label">Must Be Played When Drawn</span>
     </div>` : '';
 
-  const benefitHTML = card.benefit ? `
-    <div class="detail-benefit">
-      <span class="detail-section-label">Identity Benefit</span>
-      <div>Adds up to ${card.benefit.count} ${cap(card.benefit.resourceCategory)} resource card${card.benefit.count > 1 ? 's' : ''} from the deck to your hand when played.</div>
-    </div>` : '';
-
   const reqHTML = card.requires ? `
     <div class="detail-requires ${canPlayCard(card) ? 'req-met' : 'req-unmet'}">
       <span class="detail-section-label">Requires</span>
@@ -2805,7 +2842,6 @@ function renderDetailFrame(card, color, location, readonly) {
         ${card.value > 0 ? `<div class="detail-value" style="color:${color}">+${card.value}</div>` : ''}
       </div>
       ${mustPlayHTML}
-      ${benefitHTML}
       ${reqHTML}
       ${optionsHTML}
       ${discardHTML}

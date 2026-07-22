@@ -22,7 +22,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power derived from the consent of the governed.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Reform',
@@ -53,7 +52,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Divine law made civil law.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Decree',
@@ -115,7 +113,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power through representation, not birth.',
-    benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
       {
         label: 'Option 1 — Establish the Republic',
@@ -146,7 +143,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Power consolidated among the few.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Consolidate Power',
@@ -177,7 +173,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'A crown constrained by law.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Ratify the Constitution',
@@ -207,7 +202,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'governance', 'military'],
     flavorText: 'Order through absolute authority.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Seize Control',
@@ -237,7 +231,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power drawn from the anger of the many.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Rise of the People',
@@ -266,7 +259,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power through representation, not birth.',
-    benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
       {
         label: 'Option 1 — Establish the Republic',
@@ -297,7 +289,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Power consolidated among the few.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Consolidate Power',
@@ -328,7 +319,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'A crown constrained by law.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Ratify the Constitution',
@@ -358,7 +348,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'governance', 'military'],
     flavorText: 'Order through absolute authority.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Seize Control',
@@ -388,7 +377,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power drawn from the anger of the many.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Rise of the People',
@@ -421,7 +409,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Open markets, open opportunities.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Open Markets',
@@ -451,7 +438,6 @@ const CARDS = [
     value: 4,
     tags: ['identity', 'economy', 'environment', 'technology'],
     flavorText: 'Growth demands sacrifice — usually someone else\'s.',
-    benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
       {
         label: 'Option 1 — Expand Industry',
@@ -483,7 +469,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Prosperity that does not cost the earth.',
-    benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
       {
         label: 'Option 1 — Sustainable Growth',
@@ -513,7 +498,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'The earth sustains all.',
-    benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
       {
         label: 'Option 1 — Work the Land',
@@ -544,7 +528,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Resources directed by the state.',
-    benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
       {
         label: 'Option 1 — Central Planning',
@@ -575,7 +558,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Capital creates capital.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Charter the Banks',
@@ -605,7 +587,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'The earth sustains all.',
-    benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
       {
         label: 'Option 1 — Work the Land',
@@ -636,7 +617,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Resources directed by the state.',
-    benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
       {
         label: 'Option 1 — Central Planning',
@@ -667,7 +647,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Capital creates capital.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Charter the Banks',
@@ -701,7 +680,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'culture', 'economy'],
     flavorText: 'Society shaped by those who sustain it.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Establish',
@@ -731,7 +709,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'culture', 'economy'],
     flavorText: 'Order imposed from the top down.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Assert Order',
@@ -761,7 +738,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'culture', 'economy', 'technology'],
     flavorText: 'Knowledge compounds.',
-    benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
       {
         label: 'Option 1 — Found Institutions',
@@ -791,7 +767,6 @@ const CARDS = [
     value: 5,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'When art, science, and governance align.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Cultural Apex',
@@ -822,7 +797,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'culture', 'economy'],
     flavorText: 'Knowledge passed by word of mouth.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Preserve the Stories',
@@ -852,7 +826,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'culture', 'economy', 'governance'],
     flavorText: 'Belief structures that outlast empires.',
-    benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
       {
         label: 'Option 1 — Found the Order',
@@ -883,7 +856,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'culture', 'economy'],
     flavorText: 'Wealth as social currency.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Rise of Commerce',
@@ -914,7 +886,6 @@ const CARDS = [
     value: 4,
     tags: ['identity', 'culture', 'technology'],
     flavorText: 'Reason as the highest authority.',
-    benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
       {
         label: 'Option 1 — Age of Reason',
@@ -945,7 +916,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'culture', 'economy'],
     flavorText: 'Knowledge passed by word of mouth.',
-    benefit: { description: 'You may take the first two Culture resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'culture', count: 2 },
     options: [
       {
         label: 'Option 1 — Preserve the Stories',
@@ -975,7 +945,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'culture', 'economy', 'governance'],
     flavorText: 'Belief structures that outlast empires.',
-    benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
       {
         label: 'Option 1 — Found the Order',
@@ -1006,7 +975,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'culture', 'economy'],
     flavorText: 'Wealth as social currency.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Rise of Commerce',
@@ -1037,7 +1005,6 @@ const CARDS = [
     value: 4,
     tags: ['identity', 'culture', 'technology'],
     flavorText: 'Reason as the highest authority.',
-    benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
       {
         label: 'Option 1 — Age of Reason',
@@ -1072,7 +1039,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'culture', 'military'],
     flavorText: 'Security through shields, not swords.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Conscript',
@@ -1102,7 +1068,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Strike first. Strike hard. Leave no doubt.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Honor the Tradition',
@@ -1132,7 +1097,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Hold the line. Let them come to us.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Hold the Line',
@@ -1162,7 +1126,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Neither sword nor shield — both, as the moment demands.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Launch the Fleet',
@@ -1193,7 +1156,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Match every blow. No more, no less.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Commission the Army',
@@ -1223,7 +1185,6 @@ const CARDS = [
     value: 4,
     tags: ['identity', 'military', 'technology'],
     flavorText: 'Bring enough, and leave no question unanswered.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Build the Corps',
@@ -1255,7 +1216,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Hold the line. Let them come to us.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Hold the Line',
@@ -1285,7 +1245,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Neither sword nor shield — both, as the moment demands.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Launch the Fleet',
@@ -1316,7 +1275,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Match every blow. No more, no less.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Commission the Army',
@@ -1346,7 +1304,6 @@ const CARDS = [
     value: 4,
     tags: ['identity', 'military', 'technology'],
     flavorText: 'Bring enough, and leave no question unanswered.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Build the Corps',
@@ -1382,7 +1339,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'economy', 'technology'],
     flavorText: 'If it works, it is worth doing.',
-    benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
       {
         label: 'Option 1 — Apply What Works',
@@ -1411,7 +1367,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'environment', 'technology'],
     flavorText: 'The horizon exists to be crossed.',
-    benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
       {
         label: 'Option 1 — Push the Frontier',
@@ -1441,7 +1396,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'technology'],
     flavorText: 'Move fast enough to grow. Slow enough not to break.',
-    benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
       {
         label: 'Option 1 — Steady Advance',
@@ -1470,7 +1424,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'technology'],
     flavorText: 'Knowledge organized is knowledge multiplied.',
-    benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
       {
         label: 'Option 1 — Establish the Method',
@@ -1500,7 +1453,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'military', 'technology'],
     flavorText: 'The future demands sacrifice.',
-    benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
       {
         label: 'Option 1 — Push Without Limits',
@@ -1530,7 +1482,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'culture', 'technology'],
     flavorText: 'Understanding must come before application.',
-    benefit: { description: 'You may take the first two Technology resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'technology', count: 2 },
     options: [
       {
         label: 'Option 1 — Build the Framework',
@@ -1682,7 +1633,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'environment', 'military'],
     flavorText: 'Harsh. Vast. Unyielding.',
-    benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
       {
         label: 'Option 1 — Settle',
@@ -1712,7 +1662,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'environment', 'military'],
     flavorText: 'High ground commands the horizon.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Claim',
@@ -1742,7 +1691,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Where rivers carve the shape of nations.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Settle',
@@ -1773,7 +1721,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'environment', 'governance'],
     flavorText: 'The heartland, contested and coveted.',
-    benefit: { description: 'You may take the first two Governance resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'governance', count: 2 },
     options: [
       {
         label: 'Option 1 — Unify',
@@ -1803,7 +1750,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'economy', 'environment', 'military'],
     flavorText: 'The sea gives and the sea takes.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Coastal Claim',
@@ -1834,7 +1780,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Grain and growth, season after season.',
-    benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
       {
         label: 'Option 1 — Settle the Plains',
@@ -1865,7 +1810,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'environment', 'military'],
     flavorText: 'Harsh land builds harder people.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Endure the Waste',
@@ -1895,7 +1839,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Where rivers meet, civilizations flourish.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Settle the Delta',
@@ -1926,7 +1869,6 @@ const CARDS = [
     value: 2,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Grain and growth, season after season.',
-    benefit: { description: 'You may take the first two Environment resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'environment', count: 2 },
     options: [
       {
         label: 'Option 1 — Settle the Plains',
@@ -1957,7 +1899,6 @@ const CARDS = [
     value: 1,
     tags: ['identity', 'environment', 'military'],
     flavorText: 'Harsh land builds harder people.',
-    benefit: { description: 'You may take the first two Military resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'military', count: 2 },
     options: [
       {
         label: 'Option 1 — Endure the Waste',
@@ -1987,7 +1928,6 @@ const CARDS = [
     value: 3,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Where rivers meet, civilizations flourish.',
-    benefit: { description: 'You may take the first two Economy resource cards from the draw deck and add them to your hand. Shuffle the draw deck.', resourceCategory: 'economy', count: 2 },
     options: [
       {
         label: 'Option 1 — Settle the Delta',
@@ -8607,6 +8547,1072 @@ const CARDS = [
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // IDENTITY COMPANIONS — one per identity card
+  // Opt 1: remove newest resource + oldest instability from a fixed category
+  // Opt 2: if matching identity is active, place as resource on target stack
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // — Governance identity companions —
+
+  {
+    id: 'electoral_mandate',
+    name: 'Electoral Mandate',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'governance'],
+    flavorText: 'A mandate from the people carries an obligation to spend it.',
+    options: [
+      {
+        label: 'Option 1 — Civil Drawdown',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Electoral Dividend',
+        description: 'If Democracy is active, place this card on your Culture stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+        condition: { active_identity_is: { category: 'governance', id: 'democracy' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'holy_decree',
+    name: 'Holy Decree',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'governance'],
+    flavorText: 'Divine law leaves little room for negotiation.',
+    options: [
+      {
+        label: 'Option 1 — Tithe',
+        description: 'Remove the newest Economy resource from your stack and the oldest Economy instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Holy War',
+        description: 'If Theocracy is active, place this card on your Military stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'military',
+        condition: { active_identity_is: { category: 'governance', id: 'theocracy' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'senate_motion',
+    name: 'Senate Motion',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'governance'],
+    flavorText: 'Every vote in the legislature is one not spent on progress.',
+    options: [
+      {
+        label: 'Option 1 — Regulatory Delay',
+        description: 'Remove the newest Technology resource from your stack and the oldest Technology instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Commerce Act',
+        description: 'If Republic is active, place this card on your Economy stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { active_identity_is: { category: 'governance', id: 'republic' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'closed_circle',
+    name: 'Closed Circle',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'governance'],
+    flavorText: 'Power concentrates. Everything else gets squeezed out.',
+    options: [
+      {
+        label: 'Option 1 — Cultural Suppression',
+        description: 'Remove the newest Culture resource from your stack and the oldest Culture instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Proprietary Advantage',
+        description: 'If Oligarchy is active, place this card on your Technology stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+        condition: { active_identity_is: { category: 'governance', id: 'oligarchy' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'royal_assent',
+    name: 'Royal Assent',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'governance'],
+    flavorText: 'The crown endorses. The army stands down.',
+    options: [
+      {
+        label: 'Option 1 — Demobilization',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Crown Estates',
+        description: 'If Constitutional Monarchy is active, place this card on your Environment stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+        condition: { active_identity_is: { category: 'governance', id: 'constitutional_monarchy' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'iron_will',
+    name: 'Iron Will',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'governance'],
+    flavorText: 'Conformity is the price of order.',
+    options: [
+      {
+        label: 'Option 1 — Cultural Crackdown',
+        description: 'Remove the newest Culture resource from your stack and the oldest Culture instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Military Build',
+        description: 'If Dictatorship is active, place this card on your Military stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'military',
+        condition: { active_identity_is: { category: 'governance', id: 'dictatorship' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'rally_the_base',
+    name: 'Rally the Base',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'governance'],
+    flavorText: 'The crowd roars. The land pays.',
+    options: [
+      {
+        label: 'Option 1 — Resource Nationalism',
+        description: 'Remove the newest Environment resource from your stack and the oldest Environment instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Populist Culture',
+        description: 'If Populist Governance is active, place this card on your Culture stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+        condition: { active_identity_is: { category: 'governance', id: 'populist_governance' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // — Economy identity companions —
+
+  {
+    id: 'open_market',
+    name: 'Open Market',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'economy'],
+    flavorText: 'What the market opens, it also extracts.',
+    options: [
+      {
+        label: 'Option 1 — Resource Extraction',
+        description: 'Remove the newest Environment resource from your stack and the oldest Environment instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Cultural Exchange',
+        description: 'If Free Trade is active, place this card on your Culture stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+        condition: { active_identity_is: { category: 'economy', id: 'free_trade' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'factory_output',
+    name: 'Factory Output',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'economy'],
+    flavorText: 'The smoke is the price of progress.',
+    options: [
+      {
+        label: 'Option 1 — Industrial Pollution',
+        description: 'Remove the newest Environment resource from your stack and the oldest Environment instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Military-Industrial Complex',
+        description: 'If Industrial Expansion is active, place this card on your Military stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'military',
+        condition: { active_identity_is: { category: 'economy', id: 'industrial_expansion' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'carbon_budget',
+    name: 'Carbon Budget',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'economy'],
+    flavorText: 'Restraint costs politically. It pays planetarily.',
+    options: [
+      {
+        label: 'Option 1 — Regulatory Overhead',
+        description: 'Remove the newest Governance resource from your stack and the oldest Governance instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Green Infrastructure',
+        description: 'If Green Investment is active, place this card on your Environment stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+        condition: { active_identity_is: { category: 'economy', id: 'green_investment' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'harvest_season',
+    name: 'Harvest Season',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'economy'],
+    flavorText: 'The plow outlasts the sword.',
+    options: [
+      {
+        label: 'Option 1 — Peaceful Commons',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Folk Traditions',
+        description: 'If Agrarian Economy is active, place this card on your Culture stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+        condition: { active_identity_is: { category: 'economy', id: 'agrarian_economy' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'state_directive',
+    name: 'State Directive',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'economy'],
+    flavorText: 'The plan supersedes the individual.',
+    options: [
+      {
+        label: 'Option 1 — Cultural Conformity',
+        description: 'Remove the newest Culture resource from your stack and the oldest Culture instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — State Authority',
+        description: 'If Command Economy is active, place this card on your Governance stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+        condition: { active_identity_is: { category: 'economy', id: 'command_economy' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'credit_expansion',
+    name: 'Credit Expansion',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'economy'],
+    flavorText: 'Money borrowed is power deferred.',
+    options: [
+      {
+        label: 'Option 1 — Defense Diversion',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Fintech Investment',
+        description: 'If Banking System is active, place this card on your Technology stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+        condition: { active_identity_is: { category: 'economy', id: 'banking_system' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // — Culture identity companions —
+
+  {
+    id: 'community_council',
+    name: 'Community Council',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'culture'],
+    flavorText: 'Consensus takes time. Wars take soldiers.',
+    options: [
+      {
+        label: 'Option 1 — Demilitarize',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Cooperative Economy',
+        description: 'If Matriarchy is active, place this card on your Economy stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { active_identity_is: { category: 'culture', id: 'matriarchy' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'established_order',
+    name: 'Established Order',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'culture'],
+    flavorText: 'Tradition has a price. So does breaking it.',
+    options: [
+      {
+        label: 'Option 1 — Economic Constraint',
+        description: 'Remove the newest Economy resource from your stack and the oldest Economy instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hierarchical Order',
+        description: 'If Patriarchy is active, place this card on your Governance stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+        condition: { active_identity_is: { category: 'culture', id: 'patriarchy' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'academic_program',
+    name: 'Academic Program',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'culture'],
+    flavorText: 'Knowledge is the only investment that compounds without limit.',
+    options: [
+      {
+        label: 'Option 1 — Tuition Cost',
+        description: 'Remove the newest Economy resource from your stack and the oldest Economy instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Research Output',
+        description: 'If Higher Education is active, place this card on your Technology stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+        condition: { active_identity_is: { category: 'culture', id: 'higher_education' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'patron_of_the_arts',
+    name: 'Patron of the Arts',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'culture'],
+    flavorText: 'Genius blooms where swords are set aside.',
+    options: [
+      {
+        label: 'Option 1 — Peace Dividend',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Technical Patronage',
+        description: 'If Renaissance Culture is active, place this card on your Technology stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+        condition: { active_identity_is: { category: 'culture', id: 'renaissance_culture' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'living_memory',
+    name: 'Living Memory',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'culture'],
+    flavorText: 'What the elders remember, no archive can hold.',
+    options: [
+      {
+        label: 'Option 1 — Reject the Written Word',
+        description: 'Remove the newest Technology resource from your stack and the oldest Technology instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Land Connection',
+        description: 'If Oral Tradition is active, place this card on your Environment stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+        condition: { active_identity_is: { category: 'culture', id: 'oral_tradition' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'charitable_works',
+    name: 'Charitable Works',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'culture'],
+    flavorText: 'The tithe builds the church. The church builds the state.',
+    options: [
+      {
+        label: 'Option 1 — Church Levy',
+        description: 'Remove the newest Economy resource from your stack and the oldest Economy instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Social Order',
+        description: 'If Religious Order is active, place this card on your Governance stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+        condition: { active_identity_is: { category: 'culture', id: 'religious_order' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'commercial_charter',
+    name: 'Commercial Charter',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'culture'],
+    flavorText: 'Merchants make treaties where armies make graves.',
+    options: [
+      {
+        label: 'Option 1 — Stand Down',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Market Network',
+        description: 'If Merchant Class is active, place this card on your Economy stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { active_identity_is: { category: 'culture', id: 'merchant_class' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'natural_philosophy',
+    name: 'Natural Philosophy',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'culture'],
+    flavorText: 'Reason dismantles thrones. It also arms revolutions.',
+    options: [
+      {
+        label: 'Option 1 — Challenge Authority',
+        description: 'Remove the newest Governance resource from your stack and the oldest Governance instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Revolutionary Vanguard',
+        description: 'If Enlightenment is active, place this card on your Military stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'military',
+        condition: { active_identity_is: { category: 'culture', id: 'enlightenment' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // — Military identity companions —
+
+  {
+    id: 'forward_advance',
+    name: 'Forward Advance',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'military'],
+    flavorText: 'The land gives way to the campaign.',
+    options: [
+      {
+        label: 'Option 1 — Scorched Earth',
+        description: 'Remove the newest Environment resource from your stack and the oldest Environment instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — War Spoils',
+        description: 'If Aggressive Doctrine is active, place this card on your Economy stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { active_identity_is: { category: 'military', id: 'aggressive_doctrine' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'treaty_obligations',
+    name: 'Treaty Obligations',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'military'],
+    flavorText: 'A signed agreement costs gold. Breaking it costs more.',
+    options: [
+      {
+        label: 'Option 1 — Protection Cost',
+        description: 'Remove the newest Economy resource from your stack and the oldest Economy instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Territorial Stewardship',
+        description: 'If Protectorate is active, place this card on your Environment stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+        condition: { active_identity_is: { category: 'military', id: 'protectorate' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'fortification',
+    name: 'Fortification',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'military'],
+    flavorText: 'Walls are expensive. Invasions are more so.',
+    options: [
+      {
+        label: 'Option 1 — Defense Spending',
+        description: 'Remove the newest Economy resource from your stack and the oldest Economy instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Weapons R&D',
+        description: 'If Defensive Doctrine is active, place this card on your Technology stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+        condition: { active_identity_is: { category: 'military', id: 'defensive_doctrine' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'tactical_redeployment',
+    name: 'Tactical Redeployment',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'military'],
+    flavorText: 'A force that can pivot is a force that endures.',
+    options: [
+      {
+        label: 'Option 1 — Civil Disruption',
+        description: 'Remove the newest Culture resource from your stack and the oldest Culture instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Civil-Military Integration',
+        description: 'If Adaptable Force is active, place this card on your Governance stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+        condition: { active_identity_is: { category: 'military', id: 'adaptable_force' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'measured_action',
+    name: 'Measured Action',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'military'],
+    flavorText: 'Restraint, practiced long enough, becomes culture.',
+    options: [
+      {
+        label: 'Option 1 — Political Capital',
+        description: 'Remove the newest Governance resource from your stack and the oldest Governance instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Civil Freedoms',
+        description: 'If Proportional Response is active, place this card on your Culture stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+        condition: { active_identity_is: { category: 'military', id: 'proportional_response' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'total_war',
+    name: 'Total War',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'military'],
+    flavorText: 'Everything bends to the war effort. Everything.',
+    options: [
+      {
+        label: 'Option 1 — Emergency Powers',
+        description: 'Remove the newest Governance resource from your stack and the oldest Governance instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — War Economy',
+        description: 'If Overwhelming Force is active, place this card on your Economy stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { active_identity_is: { category: 'military', id: 'overwhelming_force' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // — Technology identity companions —
+
+  {
+    id: 'applied_solutions',
+    name: 'Applied Solutions',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'technology'],
+    flavorText: 'Efficiency above aesthetics. Results above tradition.',
+    options: [
+      {
+        label: 'Option 1 — Cultural Trade-off',
+        description: 'Remove the newest Culture resource from your stack and the oldest Culture instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Economic Yield',
+        description: 'If Pragmatism is active, place this card on your Economy stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { active_identity_is: { category: 'technology', id: 'pragmatism' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'frontier_science',
+    name: 'Frontier Science',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'technology'],
+    flavorText: 'Discovery requires moving beyond what has already been mapped.',
+    options: [
+      {
+        label: 'Option 1 — Regulatory Bypass',
+        description: 'Remove the newest Governance resource from your stack and the oldest Governance instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — New Territory',
+        description: 'If Explore the Unknown is active, place this card on your Environment stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'environment',
+        condition: { active_identity_is: { category: 'technology', id: 'explore_the_unknown' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'risk_assessment',
+    name: 'Risk Assessment',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'technology'],
+    flavorText: 'Safety frameworks take time to build. Accidents happen faster.',
+    options: [
+      {
+        label: 'Option 1 — Economic Drag',
+        description: 'Remove the newest Economy resource from your stack and the oldest Economy instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Regulatory Framework',
+        description: 'If Cautious Progress is active, place this card on your Governance stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+        condition: { active_identity_is: { category: 'technology', id: 'cautious_progress' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'research_protocol',
+    name: 'Research Protocol',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'technology'],
+    flavorText: 'The method precedes the discovery.',
+    options: [
+      {
+        label: 'Option 1 — Grant Spending',
+        description: 'Remove the newest Economy resource from your stack and the oldest Economy instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Scientific Culture',
+        description: 'If Systematic Inquiry is active, place this card on your Culture stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+        condition: { active_identity_is: { category: 'technology', id: 'systematic_inquiry' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'breakthrough',
+    name: 'Breakthrough',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'technology'],
+    flavorText: 'What it enables, it does not control.',
+    options: [
+      {
+        label: 'Option 1 — Environmental Cost',
+        description: 'Remove the newest Environment resource from your stack and the oldest Environment instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Weapons Application',
+        description: 'If Progress at All Costs is active, place this card on your Military stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'military',
+        condition: { active_identity_is: { category: 'technology', id: 'progress_at_all_costs' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'academic_consensus',
+    name: 'Academic Consensus',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'technology'],
+    flavorText: 'Slow knowledge. Durable knowledge.',
+    options: [
+      {
+        label: 'Option 1 — Military Diversion',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Applied Commerce',
+        description: 'If Theoretical Foundations is active, place this card on your Economy stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { active_identity_is: { category: 'technology', id: 'theoretical_foundations' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  // — Environment identity companions —
+
+  {
+    id: 'harsh_terrain',
+    name: 'Harsh Terrain',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'environment'],
+    flavorText: 'The north does not produce wealth. It produces endurance.',
+    options: [
+      {
+        label: 'Option 1 — Economic Hardship',
+        description: 'Remove the newest Economy resource from your stack and the oldest Economy instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Northern Resilience',
+        description: 'If The Great North is active, place this card on your Military stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'military',
+        condition: { active_identity_is: { category: 'environment', id: 'the_great_north' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'highland_law',
+    name: 'Highland Law',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'environment'],
+    flavorText: 'Clans write law with elevation, not ink.',
+    options: [
+      {
+        label: 'Option 1 — Standing Down',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Clan Governance',
+        description: 'If The Highlands is active, place this card on your Governance stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+        condition: { active_identity_is: { category: 'environment', id: 'the_highlands' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'river_trade',
+    name: 'River Trade',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'environment'],
+    flavorText: 'The river does not take sides. Commerce does.',
+    options: [
+      {
+        label: 'Option 1 — Demobilization',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Trade Routes',
+        description: 'If The Waterlands is active, place this card on your Economy stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { active_identity_is: { category: 'environment', id: 'the_waterlands' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'federal_compact',
+    name: 'Federal Compact',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'environment'],
+    flavorText: 'Unity requires someone to give something up.',
+    options: [
+      {
+        label: 'Option 1 — Cultural Compromise',
+        description: 'Remove the newest Culture resource from your stack and the oldest Culture instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Federal Authority',
+        description: 'If The Union is active, place this card on your Governance stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+        condition: { active_identity_is: { category: 'environment', id: 'the_union' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'maritime_routes',
+    name: 'Maritime Routes',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'environment'],
+    flavorText: 'The sea routes bypass every land-bound authority.',
+    options: [
+      {
+        label: 'Option 1 — Regulatory Bypass',
+        description: 'Remove the newest Governance resource from your stack and the oldest Governance instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Seafaring Culture',
+        description: 'If Oceana is active, place this card on your Culture stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+        condition: { active_identity_is: { category: 'environment', id: 'oceana' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'grain_surplus',
+    name: 'Grain Surplus',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'environment'],
+    flavorText: 'A full granary argues better than any general.',
+    options: [
+      {
+        label: 'Option 1 — Administrative Burden',
+        description: 'Remove the newest Governance resource from your stack and the oldest Governance instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Agricultural Wealth',
+        description: 'If The Fertile Plains is active, place this card on your Economy stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { active_identity_is: { category: 'environment', id: 'the_fertile_plains' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'desert_adaptation',
+    name: 'Desert Adaptation',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'environment'],
+    flavorText: 'Scarcity is the mother of invention.',
+    options: [
+      {
+        label: 'Option 1 — Cultural Austerity',
+        description: 'Remove the newest Culture resource from your stack and the oldest Culture instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Survival Technology',
+        description: 'If The Desert Wastes is active, place this card on your Technology stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+        condition: { active_identity_is: { category: 'environment', id: 'the_desert_wastes' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'delta_culture',
+    name: 'Delta Culture',
+    type: 'event', subtype: 'utility', category: null, value: 1,
+    tags: ['policy', 'environment'],
+    flavorText: 'Where rivers meet, civilizations bloom.',
+    options: [
+      {
+        label: 'Option 1 — Peaceful Trade',
+        description: 'Remove the newest Military resource from your stack and the oldest Military instability → deck.',
+        effect: 'remove_newest_resource_and_oldest_instability',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — River Civilization',
+        description: 'If The River Delta is active, place this card on your Culture stack (+1). Otherwise, shuffle into the deck.',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+        condition: { active_identity_is: { category: 'environment', id: 'the_river_delta' } },
+      },
+    ],
+    discardTo: [{ target: 'shuffle_to_deck', label: 'Shuffle into deck' }],
+  },
+
+  {
+    id: 'purge',
+    name: 'Purge',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'governance',
+    value: 2,
+    tags: ['exchange', 'hostile', 'governance', 'economy', 'culture', 'military'],
+    flavorText: 'Power secured through elimination of the disloyal.',
+    options: [
+      {
+        label: 'Option 1 — Political Purge',
+        description: 'Remove the oldest Economy resource from your stack. Place this card on your Governance stack (+2). You may instead shuffle this card into the deck.',
+        effect: 'remove_stack_card_and_optionally_place_self',
+        sourceCategory: 'economy',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Show of Strength',
+        description: 'Remove the oldest Military resource from your stack. Discard 1 card from your hand. Place this card on your Culture stack (+2).',
+        effect: 'remove_stack_card_then_discard_hand_then_stack',
+        sourceCategory: 'military',
+        targetCategory: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'dissent',
+    name: 'Dissent',
+    type: 'event',
+    subtype: 'utility',
+    category: null,
+    value: 1,
+    tags: ['policy', 'culture', 'governance'],
+    flavorText: 'The voice of the people does not silence itself.',
+    options: [
+      {
+        label: 'Option 1 — Speak Out',
+        description: 'Shuffle 2 cards from your hand into the deck and draw 2 cards. Place this card into Culture instability.',
+        effect: 'shuffle_hand_draw_self_to_instability',
+        count: 2,
+        instabilityCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Channel It',
+        description: 'Remove the oldest Governance resource from your stack. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'governance',
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
   {
     id: 'sabotage',
     name: 'Sabotage',
@@ -8868,8 +9874,9 @@ const LEAN_DECK = [
   'disarmament',
   'destabilization',
   'direct_attack', 'arms_package', 'arms_package',
+  'dissent',
   // Hostile cards — governance
-  'regulatory_capture', 'emergency_powers',
+  'purge', 'regulatory_capture', 'emergency_powers',
   // Hostile cards — culture
   'propaganda_campaign', 'cultural_erasure',
   // Hostile cards — technology
@@ -8935,6 +9942,13 @@ const LEAN_DECK = [
   'venture_capital',
   'technology_transfer',
   'automation_drive',
+  // Identity companion cards (1 per identity)
+  'electoral_mandate', 'holy_decree', 'senate_motion', 'closed_circle', 'royal_assent', 'iron_will', 'rally_the_base',
+  'open_market', 'factory_output', 'carbon_budget', 'harvest_season', 'state_directive', 'credit_expansion',
+  'community_council', 'established_order', 'academic_program', 'patron_of_the_arts', 'living_memory', 'charitable_works', 'commercial_charter', 'natural_philosophy',
+  'forward_advance', 'treaty_obligations', 'fortification', 'tactical_redeployment', 'measured_action', 'total_war',
+  'applied_solutions', 'frontier_science', 'risk_assessment', 'research_protocol', 'breakthrough', 'academic_consensus',
+  'harsh_terrain', 'highland_law', 'river_trade', 'federal_compact', 'maritime_routes', 'grain_surplus', 'desert_adaptation', 'delta_culture',
 
 ];
 
