@@ -4,6 +4,31 @@
 
 ---
 
+## Session 13 — 2026-07-21
+
+**Focus:** Autoplay AI update — generalist rewrite, tie-breaking, new effect valuation
+
+### Generalist AI — Card Selection Rewrite
+- **New priority logic** replaces "pick highest delta, pass if < -1":
+  - Identifies `worstInstabCat` (most instability) and `weakestResCat` (shortest stack) each step
+  - Instability-clearing effects get +10 score boost if targeting worst pile, +5 otherwise
+  - Resource-building effects targeting weakest stack get +3 boost
+  - Pass threshold changed from `delta < -1` → `delta < 0` (only pass if every card is a net loss)
+- AI now plays significantly more cards per turn, prioritizing board health over greedy single-card scoring
+
+### Option Tie-Breaking (Generalist + Maximizer)
+- `autoSelectAndPlay`: replaced `>=` reduce (always picked last tied option) with random selection among all options within 0.01 of the max delta
+- Same change applied to maximizer mode
+
+### New `estimateOptionDelta` Handlers
+- `remove_newest_resource_and_oldest_instability`: returns +1 if target category has instability (worth it), -1 if not (trades resource for nothing)
+- `shuffle_hand_draw_self_to_instability`: returns `-(val * 0.75)` — hand cycling is neutral but self lands in instability, so AI avoids it unless forced
+
+### Deck State (unchanged)
+363 STARTER_DECK / **313 LEAN_DECK** (active)
+
+---
+
 ## Session 12 — 2026-07-21
 
 **Focus:** New event cards (Purge, Dissent); identity management redesign; 41 identity companion cards

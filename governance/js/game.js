@@ -3242,6 +3242,17 @@ function estimateOptionDelta(card, opt) {
     return crimeCount * 2 - costCount;
   }
 
+  if (eff === 'remove_newest_resource_and_oldest_instability') {
+    const tgtCat = opt.targetCategory;
+    const hasInstab = tgtCat && G.categories[tgtCat].instability.length > 0;
+    return hasInstab ? 1 : -1;
+  }
+
+  if (eff === 'shuffle_hand_draw_self_to_instability') {
+    // Cycles hand cards (roughly neutral) but places self in instability — net negative
+    return -(val * 0.75);
+  }
+
   // Default: estimate based on card value
   return val * 0.5;
 }
@@ -3326,19 +3337,66 @@ function autoPlayStep() {
   }
 
   if (AUTO.mode === 'generalist') {
-    // Score each card by its best eligible option's estimated delta
+    // Identify board priorities
+    const worstInstabCat = CATEGORIES.reduce((a, b) =>
+      G.categories[b].instability.length > G.categories[a].instability.length ? b : a
+    );
+    const weakestResCat = CATEGORIES.reduce((a, b) =>
+      G.categories[b].stack.length < G.categories[a].stack.length ? b : a
+    );
+    const hasInstability = G.categories[worstInstabCat].instability.length > 0;
+
+    // Instability-clearing effect tags (priority 1)
+    const instabClearEffects = new Set([
+      'remove_instability_modal', 'remove_lowest_instability_modal',
+      'remove_two_instability_modal', 'suppress_hazard',
+      'remove_newest_resource_and_oldest_instability',
+      'remove_stack_card_then_remove_instability',
+      'discard_hand_then_remove_instability',
+      'remove_two_stack_cards_then_remove_instability',
+    ]);
+    // Resource-building effect tags (priority 2)
+    const stackBuildEffects = new Set([
+      'stack_on_category', 'stack_bonus', 'replace_plus_stack_bonus',
+      'replace_plus_stack_cost', 'replace_plus_remove_instability',
+      'stack_on_any_modal', 'stack_bonus_any', 'replace_plus_draw',
+      'replace_consume_env', 'pay_own_stack_then_stack_on_any',
+    ]);
+
     let bestEntry = null;
-    let bestDelta = -Infinity;
+    let bestScore = -Infinity;
+
     for (const entry of playable) {
       const eligibleOpts = (entry.card.options || [])
         .map((opt, oi) => ({ opt, oi }))
         .filter(({ opt }) => canPlayOption(entry.card, opt));
       if (!eligibleOpts.length) continue;
+
       const delta = Math.max(...eligibleOpts.map(({ opt }) => estimateOptionDelta(entry.card, opt)));
-      if (delta > bestDelta) { bestDelta = delta; bestEntry = entry; }
+      if (delta < 0) continue; // skip net-loss cards
+
+      // Pick best eligible option for priority analysis
+      const topOpt = eligibleOpts.reduce((a, b) =>
+        estimateOptionDelta(entry.card, b.opt) > estimateOptionDelta(entry.card, a.opt) ? b : a
+      ).opt;
+      const eff = topOpt.effect || '';
+      const tgt = topOpt.targetCategory;
+
+      let score = delta;
+      // Boost: instability-clearing (higher if targeting worst pile)
+      if (hasInstability && instabClearEffects.has(eff)) {
+        score += (tgt === worstInstabCat || !tgt) ? 10 : 5;
+      }
+      // Boost: building weakest resource stack
+      if (stackBuildEffects.has(eff) && (!tgt || tgt === weakestResCat)) {
+        score += 3;
+      }
+
+      if (score > bestScore) { bestScore = score; bestEntry = entry; }
     }
-    // Only pass if every playable option would hurt us (delta < -1) — otherwise play best
-    if (!bestEntry || bestDelta < -1) { passTurn(); return; }
+
+    // Pass only if every playable card causes a net score loss
+    if (!bestEntry) { passTurn(); return; }
     autoSelectAndPlay(bestEntry.i);
   } else if (AUTO.mode === 'maximizer') {
     const tgt = AUTO.targetCategory || CATEGORIES[0];
@@ -3370,14 +3428,16 @@ function autoSelectAndPlay(handIdx) {
 
   let chosen;
   if (AUTO.mode === 'generalist' && eligible.length) {
-    chosen = eligible.reduce((best, e) =>
-      estimateOptionDelta(card, e.opt) >= estimateOptionDelta(card, best.opt) ? e : best
-    );
+    const deltas = eligible.map(e => estimateOptionDelta(card, e.opt));
+    const maxDelta = Math.max(...deltas);
+    const tied = eligible.filter((_, i) => deltas[i] >= maxDelta - 0.01);
+    chosen = randFrom(tied);
   } else if (AUTO.mode === 'maximizer' && eligible.length) {
     const tgt = AUTO.targetCategory || CATEGORIES[0];
-    chosen = eligible.reduce((best, e) =>
-      estimateOptionDeltaMaximizer(card, e.opt, tgt) >= estimateOptionDeltaMaximizer(card, best.opt, tgt) ? e : best
-    );
+    const deltas = eligible.map(e => estimateOptionDeltaMaximizer(card, e.opt, tgt));
+    const maxDelta = Math.max(...deltas);
+    const tied = eligible.filter((_, i) => deltas[i] >= maxDelta - 0.01);
+    chosen = randFrom(tied);
   } else {
     chosen = eligible.length ? randFrom(eligible) : { oi: 0 };
   }
