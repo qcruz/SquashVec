@@ -19,7 +19,11 @@ Additional +2 governance non-economy resources:
 - `alliance`: ×2 → ×3
 - `loyalists`: ×5 → ×6
 
-LEAN_DECK total: ~334 slots. STARTER_DECK unchanged.
+Additional +1 military and +1 technology non-economy resources:
+- `war_council`: ×3 → ×4
+- `research_grants`: ×3 → ×4
+
+LEAN_DECK total: ~336 slots. STARTER_DECK unchanged.
 
 ---
 
