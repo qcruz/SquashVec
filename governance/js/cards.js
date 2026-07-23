@@ -9699,6 +9699,9 @@ const STARTER_DECK = [
   'technology_transfer',
   'automation_drive',
 ];
+// BALANCED BUILD — STAGE 1 — 2026-07-22
+// Snapshot: 328 slots. Governance/culture/tech/env resources balanced.
+// Identity companions (41), policy cards (5×5), hostile/global events included.
 const LEAN_DECK = [
 
   // Governance (9)
