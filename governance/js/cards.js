@@ -9734,13 +9734,13 @@ const LEAN_DECK = [
   'public_works', 'public_works', 'public_works', 'public_works', 'civic_charter', 'civic_charter', 'civic_charter', 'civic_charter',
   'trade_routes', 'market_expansion',
   'artistic_movement', 'artistic_movement', 'artistic_movement', 'folk_songs', 'folk_songs', 'folk_songs', 'folk_songs',
-  'war_council', 'war_council', 'war_council','border_fortification', 'border_fortification', 'border_fortification','research_grants', 'research_grants', 'research_grants', 'cartography', 'cartography', 'cartography', 'cartography',
+  'war_council', 'war_council', 'war_council','border_fortification', 'border_fortification', 'border_fortification','research_grants', 'research_grants', 'research_grants', 'cartography', 'cartography', 'cartography', 'cartography', 'cartography',
   'river_network', 'river_network', 'river_network', 'river_network', 'river_network','land_survey', 'land_survey', 'land_survey', 'land_survey', 'land_survey','trade_delegation',
   // Resource-focused stacking
   'civic_assembly', 'civic_assembly', 'civic_assembly', 'civic_assembly', 'public_decree', 'public_decree', 'public_decree', 'public_decree',
   'surplus_goods', 'trade_surplus', 'oral_history', 'oral_history', 'oral_history', 'oral_history',
   'veteran_forces', 'veteran_forces', 'veteran_forces','invention_workshop', 'invention_workshop', 'invention_workshop', 'applied_science', 'applied_science', 'applied_science',
-  'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra','dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
+  'frozen_tundra', 'frozen_tundra', 'frozen_tundra', 'frozen_tundra','dense_forests', 'dense_forests', 'mineral_deposits', 'mineral_deposits',
   'rare_plants', 'rare_plants', 'rich_soil', 'rich_soil', 'natural_springs', 'natural_springs', 'coastal_fisheries', 'coastal_fisheries',
   'dense_forests', 'dense_forests', 'dense_forests','mineral_deposits', 'mineral_deposits', 'mineral_deposits','rare_plants', 'rare_plants', 'rare_plants','rich_soil', 'rich_soil', 'rich_soil','natural_springs', 'natural_springs', 'natural_springs','coastal_fisheries', 'coastal_fisheries', 'coastal_fisheries',// Must-play events
   'indecisiveness',
@@ -9848,7 +9848,7 @@ const LEAN_DECK = [
   // Technology exchange (new)
   'patent_license',
   'venture_capital',
-  'technology_transfer', 'technology_transfer',
+  'technology_transfer', 'technology_transfer', 'technology_transfer',
   'automation_drive',
   // Identity companion cards (1 per identity)
   'electoral_mandate', 'holy_decree', 'senate_motion', 'closed_circle', 'royal_assent', 'iron_will', 'rally_the_base',

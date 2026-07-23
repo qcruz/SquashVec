@@ -3032,9 +3032,11 @@ function renderModeStats(s, modeName, extraHeader) {
     }).join(' / ');
     return `<div class="astat-row"><span class="astat-label">${c ? c.name : id}</span><span class="astat-value">${n} (${pct}%/g)${optStr ? ' — ' + optStr : ''}</span></div>`;
   }).join('');
-  const tagRows = topTags.map(([tag, n]) =>
-    `<div class="astat-row"><span class="astat-label">${tag}</span><span class="astat-value">${n}</span></div>`
-  ).join('');
+  const totalTagPlays = Object.values(s.tagPlays || {}).reduce((a, b) => a + b, 0);
+  const tagRows = topTags.map(([tag, n]) => {
+    const pct = totalTagPlays > 0 ? ((n / totalTagPlays) * 100).toFixed(1) : '0.0';
+    return `<div class="astat-row"><span class="astat-label">${tag}</span><span class="astat-value">${pct}%</span></div>`;
+  }).join('');
 
   return `
     <div class="astat-mode-header">${modeName}${extraHeader ? ' ' + extraHeader : ''}</div>
