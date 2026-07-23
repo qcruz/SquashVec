@@ -4,6 +4,21 @@
 
 ---
 
+## Session 14 — 2026-07-23
+
+**Focus:** LEAN_DECK non-economy resource tuning (governance + military)
+
+### LEAN_DECK Resource Count Increases
+Added +1 copy of each non-economy governance and military stacking card:
+- `alliance`: ×1 → ×2
+- `efficient_administration`: ×4 → ×5
+- `loyalists`: ×4 → ×5
+- `border_fortification`: ×4 → ×5
+
+LEAN_DECK total: ~332 slots. STARTER_DECK unchanged.
+
+---
+
 ## Session 13 — 2026-07-21
 
 **Focus:** Autoplay AI update — generalist rewrite, tie-breaking, new effect valuation
