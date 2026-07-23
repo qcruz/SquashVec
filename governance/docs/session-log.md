@@ -15,7 +15,11 @@ Added +1 copy of each non-economy governance and military stacking card:
 - `loyalists`: ×4 → ×5
 - `border_fortification`: ×4 → ×5
 
-LEAN_DECK total: ~332 slots. STARTER_DECK unchanged.
+Additional +2 governance non-economy resources:
+- `alliance`: ×2 → ×3
+- `loyalists`: ×5 → ×6
+
+LEAN_DECK total: ~334 slots. STARTER_DECK unchanged.
 
 ---
 
