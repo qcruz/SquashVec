@@ -24,8 +24,21 @@
 - `remove_newest_resource_and_oldest_instability`: returns +1 if target category has instability (worth it), -1 if not (trades resource for nothing)
 - `shuffle_hand_draw_self_to_instability`: returns `-(val * 0.75)` — hand cycling is neutral but self lands in instability, so AI avoids it unless forced
 
-### Deck State (unchanged)
-363 STARTER_DECK / **313 LEAN_DECK** (active)
+### Resource Card Count Increases
+Bulked up culture and technology stacking pools to match environment depth:
+- **Culture**: cultural_festival ×4, artistic_movement ×3, folk_songs ×4, oral_history ×4 (STARTER); similar in LEAN
+- **Technology**: research_grants ×4, cartography ×4, invention_workshop ×4, applied_science ×4 (STARTER)
+
+### Bug Fixes
+- **Epidemic blank card**: duplicate definition at line ~5108 had invalid `discardTo: 'discard_pile'`, overwriting the correct definition in the card lookup map. Second definition removed.
+- **Battle Hardened → Veteran Forces**: past-tense card name renamed; duplicate definition removed; deck arrays updated.
+- **Expression card Opt2 redesign**: all 41 companion card Opt2s changed from conditional identity-stacking to `draw_and_shuffle_self` (recirculate). Autoplay now always plays these.
+
+### Deck State
+383 STARTER_DECK / **328 LEAN_DECK** (active)
+
+### Docs Updated
+- `card-list.md`: header counts, composition table, Battle Hardened → Veteran Forces
 
 ---
 

@@ -1,6 +1,6 @@
 # Governance — Full Card List
 *Complete reference for all cards in the starter deck. Update this file whenever cards.js changes.*
-*Last updated: Session 10 — 334 card definitions, 363 STARTER_DECK slots / 269 LEAN_DECK slots.*
+*Last updated: Session 13 — 375+ card definitions, 383 STARTER_DECK slots / 328 LEAN_DECK slots.*
 
 ---
 
@@ -123,7 +123,7 @@
 | Military Campaign     | +2    | Stack on Military (free)               | Pay Military → stack anywhere     |
 | War Council           | +2    | Pay Economy → +2 Military             | Stack on Military (free)          |
 | Border Fortification  | +1    | Stack on Military (free)               | Pay Military → stack anywhere     |
-| Battle Hardened       | +1    | Stack on Military (free)               | Pay Military → stack anywhere     |
+| Veteran Forces        | +1    | Stack on Military (free)               | Pay Military → stack anywhere     |
 | Scientific Breakthrough| +2   | Pay Economy → +2 Technology           | Pay Culture → +2 Military         |
 | Destabilization       | +3    | Pay Military → place in Culture instability (−3) | Pay Governance → +3 Culture |
 | Direct Attack         | +3    | Pay 2 Military (or 1 Military + identity) → +3 Governance | Pay Military + 1 Governance (or Governance identity) → +3 Military |
@@ -301,24 +301,27 @@
 ---
 
 ## DECK COMPOSITION SUMMARY
-*Last updated: Session 10, 2026-07-19*
+*Last updated: Session 13, 2026-07-22*
 
-> **Note:** The detailed card-by-card rows above are from Session 3 and are partially stale. The summary counts below reflect the actual current `cards.js` state (334 definitions, 363 STARTER_DECK slots / 269 LEAN_DECK slots).
+> **Note:** The detailed card-by-card rows above are partially stale (last fully synced Session 3). The summary counts below reflect the actual current `cards.js` state.
 
 | Type                          | Unique Cards | STARTER_DECK | LEAN_DECK |
 |-------------------------------|-------------|--------------|-----------|
-| Identity (category) cards     | ~45         | ~55          | ~45       |
-| Stacking events (resource)    | ~80         | ~135         | ~95       |
+| Identity (category) cards     | 41          | ~55          | 41        |
+| Identity companion cards (exp)| 41          | 41           | 41        |
+| Stacking events (resource)    | ~40         | ~160         | ~120      |
 | Stacking events (exchange)    | ~35         | ~45          | ~35       |
 | Hazard events (incl. must-play)| ~55        | ~130         | ~75       |
-| Utility events (policy)       | ~55         | ~80          | ~55       |
+| Utility events (policy)       | 25          | ~50          | 25        |
 | Hostile events                | 14          | 14           | 14        |
 | Global event cards            | 6           | 6            | 6         |
-| Utility events (other)        | ~15         | ~20          | ~15       |
-| **Total**                     | **~305**    | **363**      | **269**   |
+| Utility events (other)        | ~25         | ~30          | ~25       |
+| **Total**                     | **375+**    | **383**      | **328**   |
 
-*Session 10 changes: environmental resource cards +1 each, military/economy resource cards +2 each (both decks).*
-*Exact per-card counts available from `cards.js` STARTER_DECK array.*
+*Session 13: culture/tech resource copies heavily increased (4× each in STARTER, 3× each in LEAN).*
+*Session 12: added 41 identity companion cards (exp tag); purge + dissent utility cards.*
+*Session 11+: hostile events, global events, policy cards (5 per category), management philosophy cards.*
+*Exact per-card counts available from `cards.js` deck arrays.*
 
 ### Key Additions Since Session 3 (not in rows above)
 | Card | Type | Value | Notes |
