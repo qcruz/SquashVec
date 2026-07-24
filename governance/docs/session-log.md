@@ -23,7 +23,10 @@ Additional +1 military and +1 technology non-economy resources:
 - `war_council`: ×3 → ×4
 - `research_grants`: ×3 → ×4
 
-LEAN_DECK total: ~336 slots. STARTER_DECK unchanged.
+Additional +2 military non-economy, non-governance resources:
+- `border_fortification`: ×5 → ×7 (only qualifying card in category)
+
+LEAN_DECK total: ~338 slots. STARTER_DECK unchanged.
 
 ---
 
