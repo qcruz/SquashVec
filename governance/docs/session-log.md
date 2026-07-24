@@ -28,6 +28,18 @@ Additional +2 military non-economy, non-governance resources:
 
 LEAN_DECK total: ~338 slots. STARTER_DECK unchanged.
 
+### Economy+Resource Card Reduction
+Reduced all multi-copy economy+resource tagged cards by 1 to thin the economy tag concentration:
+- `war_council` ×4 → ×3
+- `civic_assembly` ×4 → ×3
+- `public_decree` ×4 → ×3
+- `public_works` ×4 → ×3
+- `research_grants` ×4 → ×3
+- `unions` ×4 → ×3
+- `applied_science` ×3 → ×2
+- `invention_workshop` ×3 → ×2
+- `veteran_forces` ×3 → ×2
+
 ### Additional Culture Non-Economy Resources
 - `folk_songs`: ×5 → ×6
 - `oral_history`: ×5 → ×6
