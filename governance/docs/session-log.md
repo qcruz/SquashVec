@@ -28,6 +28,12 @@ Additional +2 military non-economy, non-governance resources:
 
 LEAN_DECK total: ~338 slots. STARTER_DECK unchanged.
 
+### Additional Culture Non-Economy Resources
+- `folk_songs`: ×5 → ×6
+- `oral_history`: ×5 → ×6
+
+LEAN_DECK total: ~340 slots.
+
 ### Identity Card Opt2 Fix
 All 20 primary identity cards had `draw_and_discard_self` on Option 2 instead of `draw_and_shuffle_self`. Replaced all instances — description updated to "Draw 1 card. Shuffle this card into the deck." Consistent with companion card Opt2 behaviour.
 
