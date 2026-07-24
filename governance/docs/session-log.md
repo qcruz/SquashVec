@@ -6,7 +6,7 @@
 
 ## Session 14 — 2026-07-23
 
-**Focus:** LEAN_DECK non-economy resource tuning (governance + military)
+**Focus:** LEAN_DECK non-economy resource tuning (governance + military); identity card Opt2 fix
 
 ### LEAN_DECK Resource Count Increases
 Added +1 copy of each non-economy governance and military stacking card:
@@ -27,6 +27,9 @@ Additional +2 military non-economy, non-governance resources:
 - `border_fortification`: ×5 → ×7 (only qualifying card in category)
 
 LEAN_DECK total: ~338 slots. STARTER_DECK unchanged.
+
+### Identity Card Opt2 Fix
+All 20 primary identity cards had `draw_and_discard_self` on Option 2 instead of `draw_and_shuffle_self`. Replaced all instances — description updated to "Draw 1 card. Shuffle this card into the deck." Consistent with companion card Opt2 behaviour.
 
 ---
 
