@@ -2432,6 +2432,14 @@ function canPlayOption(card, opt) {
       return true;
     case 'remove_three_resources_clear_one_pile':
       return true;
+    case 'remove_two_resources_remove_instability_shuffle_self': {
+      const totalRes2 = CATEGORIES.reduce((n, c) => n + G.categories[c].stack.length, 0);
+      return totalRes2 >= 2;
+    }
+    case 'remove_one_resource_remove_instability_discard_self': {
+      const totalRes1 = CATEGORIES.reduce((n, c) => n + G.categories[c].stack.length, 0);
+      return totalRes1 >= 1;
+    }
     default:
       return true;
   }
