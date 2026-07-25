@@ -224,7 +224,7 @@ const CARDS = [
 
   {
     id: 'populist_governance',
-    name: 'Populist Governance',
+    name: 'Populism',
     type: 'category',
     subtype: 'institution',
     category: 'governance',
@@ -370,7 +370,7 @@ const CARDS = [
 
   {
     id: 'populist_governance',
-    name: 'Populist Governance',
+    name: 'Populism',
     type: 'category',
     subtype: 'institution',
     category: 'governance',
@@ -1119,7 +1119,7 @@ const CARDS = [
 
   {
     id: 'adaptable_force',
-    name: 'Adaptable Force',
+    name: 'Mobile Doctrine',
     type: 'category',
     subtype: 'institution',
     category: 'military',
@@ -1238,7 +1238,7 @@ const CARDS = [
 
   {
     id: 'adaptable_force',
-    name: 'Adaptable Force',
+    name: 'Mobile Doctrine',
     type: 'category',
     subtype: 'institution',
     category: 'military',
@@ -1389,7 +1389,7 @@ const CARDS = [
 
   {
     id: 'cautious_progress',
-    name: 'Cautious Progress',
+    name: 'Incremental Reform',
     type: 'category',
     subtype: 'philosophy',
     category: 'technology',
@@ -1475,7 +1475,7 @@ const CARDS = [
 
   {
     id: 'theoretical_foundations',
-    name: 'Theoretical Foundations',
+    name: 'Pure Research',
     type: 'category',
     subtype: 'philosophy',
     category: 'technology',
@@ -2331,7 +2331,7 @@ const CARDS = [
 
   {
     id: 'abundant_harvest',
-    name: 'Abundant Harvest',
+    name: 'Bumper Crop',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -3286,7 +3286,7 @@ const CARDS = [
 
   {
     id: 'frozen_tundra',
-    name: 'Frozen Tundra',
+    name: 'Arctic Reaches',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -3313,7 +3313,7 @@ const CARDS = [
 
   {
     id: 'dense_forests',
-    name: 'Dense Forests',
+    name: 'Old Growth',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -3367,7 +3367,7 @@ const CARDS = [
 
   {
     id: 'rare_plants',
-    name: 'Rare Plants',
+    name: 'Wild Botanicals',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -3394,7 +3394,7 @@ const CARDS = [
 
   {
     id: 'rich_soil',
-    name: 'Rich Soil',
+    name: 'Black Earth',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -3421,7 +3421,7 @@ const CARDS = [
 
   {
     id: 'natural_springs',
-    name: 'Natural Springs',
+    name: 'Highland Springs',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -3675,7 +3675,7 @@ const CARDS = [
 
   {
     id: 'frozen_tundra',
-    name: 'Frozen Tundra',
+    name: 'Arctic Reaches',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -3702,7 +3702,7 @@ const CARDS = [
 
   {
     id: 'dense_forests',
-    name: 'Dense Forests',
+    name: 'Old Growth',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -3755,7 +3755,7 @@ const CARDS = [
 
   {
     id: 'rare_plants',
-    name: 'Rare Plants',
+    name: 'Wild Botanicals',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -3781,7 +3781,7 @@ const CARDS = [
 
   {
     id: 'rich_soil',
-    name: 'Rich Soil',
+    name: 'Black Earth',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -3807,7 +3807,7 @@ const CARDS = [
 
   {
     id: 'natural_springs',
-    name: 'Natural Springs',
+    name: 'Highland Springs',
     type: 'event',
     subtype: 'stacking',
     category: 'environment',
@@ -4804,7 +4804,7 @@ const CARDS = [
 
   {
     id: 'adverse_side_effects',
-    name: 'Adverse Side Effects',
+    name: 'Unintended Consequences',
     type: 'event',
     subtype: 'hazard',
     category: 'technology',
@@ -5039,7 +5039,7 @@ const CARDS = [
 
   {
     id: 'record_breach',
-    name: 'Record Breach',
+    name: 'Data Breach',
     type: 'event', subtype: 'hazard', category: 'technology', value: 2,
     tags: ['instability', 'governance', 'technology'],
     flavorText: 'Private knowledge made public. Trust, once broken, is slow to rebuild.',
@@ -5313,7 +5313,7 @@ const CARDS = [
 
   {
     id: 'adverse_side_effects',
-    name: 'Adverse Side Effects',
+    name: 'Unintended Consequences',
     type: 'event',
     subtype: 'hazard',
     category: 'technology',
@@ -5548,7 +5548,7 @@ const CARDS = [
 
   {
     id: 'record_breach',
-    name: 'Record Breach',
+    name: 'Data Breach',
     type: 'event', subtype: 'hazard', category: 'technology', value: 2,
     tags: ['instability', 'governance', 'technology'],
     flavorText: 'Private knowledge made public. Trust, once broken, is slow to rebuild.',

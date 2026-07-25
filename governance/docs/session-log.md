@@ -28,6 +28,21 @@ Additional +2 military non-economy, non-governance resources:
 
 LEAN_DECK total: ~338 slots. STARTER_DECK unchanged.
 
+### Card Renames
+Thematic naming pass across the deck:
+- Populist Governance → Populism
+- Adaptable Force → Mobile Doctrine
+- Cautious Progress → Incremental Reform
+- Theoretical Foundations → Pure Research
+- Abundant Harvest → Bumper Crop (Grain Surplus was taken by an existing utility card)
+- Frozen Tundra → Arctic Reaches
+- Dense Forests → Old Growth
+- Rare Plants → Wild Botanicals
+- Rich Soil → Black Earth
+- Natural Springs → Highland Springs
+- Record Breach → Data Breach
+- Adverse Side Effects → Unintended Consequences
+
 ### Economy+Resource Card Reduction
 Reduced all multi-copy economy+resource tagged cards by 1 to thin the economy tag concentration:
 - `war_council` ×4 → ×3
