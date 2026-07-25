@@ -19,7 +19,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 2,
+    value: 1,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power derived from the consent of the governed.',
     options: [
@@ -50,7 +50,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 2,
+    value: 1,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Divine law made civil law.',
     options: [
@@ -112,7 +112,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 2,
+    value: 1,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power through representation, not birth.',
     options: [
@@ -143,7 +143,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Power consolidated among the few.',
     options: [
@@ -174,7 +174,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 3,
+    value: 1,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'A crown constrained by law.',
     options: [
@@ -204,7 +204,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 3,
+    value: 1,
     tags: ['identity', 'governance', 'military'],
     flavorText: 'Order through absolute authority.',
     options: [
@@ -234,7 +234,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 2,
+    value: 1,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power drawn from the anger of the many.',
     options: [
@@ -262,7 +262,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 2,
+    value: 1,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power through representation, not birth.',
     options: [
@@ -294,7 +294,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Power consolidated among the few.',
     options: [
@@ -325,7 +325,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 3,
+    value: 1,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'A crown constrained by law.',
     options: [
@@ -355,7 +355,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 3,
+    value: 1,
     tags: ['identity', 'governance', 'military'],
     flavorText: 'Order through absolute authority.',
     options: [
@@ -385,7 +385,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'governance',
-    value: 2,
+    value: 1,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'Power drawn from the anger of the many.',
     options: [
@@ -417,7 +417,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'economy',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Open markets, open opportunities.',
     options: [
@@ -448,7 +448,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'economy',
-    value: 4,
+    value: 1,
     tags: ['identity', 'economy', 'environment', 'technology'],
     flavorText: 'Growth demands sacrifice — usually someone else\'s.',
     options: [
@@ -480,7 +480,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'economy',
-    value: 3,
+    value: 1,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Prosperity that does not cost the earth.',
     options: [
@@ -541,7 +541,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'economy',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Resources directed by the state.',
     options: [
@@ -572,7 +572,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'economy',
-    value: 3,
+    value: 1,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Capital creates capital.',
     options: [
@@ -633,7 +633,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'economy',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Resources directed by the state.',
     options: [
@@ -664,7 +664,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'economy',
-    value: 3,
+    value: 1,
     tags: ['identity', 'economy', 'governance'],
     flavorText: 'Capital creates capital.',
     options: [
@@ -698,7 +698,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'culture',
-    value: 2,
+    value: 1,
     tags: ['identity', 'culture', 'economy'],
     flavorText: 'Society shaped by those who sustain it.',
     options: [
@@ -728,7 +728,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'culture',
-    value: 2,
+    value: 1,
     tags: ['identity', 'culture', 'economy'],
     flavorText: 'Order imposed from the top down.',
     options: [
@@ -758,7 +758,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'culture',
-    value: 3,
+    value: 1,
     tags: ['identity', 'culture', 'economy', 'technology'],
     flavorText: 'Knowledge compounds.',
     options: [
@@ -788,7 +788,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'culture',
-    value: 5,
+    value: 1,
     tags: ['identity', 'culture', 'governance'],
     flavorText: 'When art, science, and governance align.',
     options: [
@@ -849,7 +849,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'culture',
-    value: 2,
+    value: 1,
     tags: ['identity', 'culture', 'economy', 'governance'],
     flavorText: 'Belief structures that outlast empires.',
     options: [
@@ -880,7 +880,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'culture',
-    value: 3,
+    value: 1,
     tags: ['identity', 'culture', 'economy'],
     flavorText: 'Wealth as social currency.',
     options: [
@@ -911,7 +911,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'culture',
-    value: 4,
+    value: 1,
     tags: ['identity', 'culture', 'technology'],
     flavorText: 'Reason as the highest authority.',
     options: [
@@ -972,7 +972,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'culture',
-    value: 2,
+    value: 1,
     tags: ['identity', 'culture', 'economy', 'governance'],
     flavorText: 'Belief structures that outlast empires.',
     options: [
@@ -1003,7 +1003,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'culture',
-    value: 3,
+    value: 1,
     tags: ['identity', 'culture', 'economy'],
     flavorText: 'Wealth as social currency.',
     options: [
@@ -1034,7 +1034,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'culture',
-    value: 4,
+    value: 1,
     tags: ['identity', 'culture', 'technology'],
     flavorText: 'Reason as the highest authority.',
     options: [
@@ -1099,7 +1099,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'military',
-    value: 3,
+    value: 1,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Strike first. Strike hard. Leave no doubt.',
     options: [
@@ -1159,7 +1159,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'military',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Neither sword nor shield — both, as the moment demands.',
     options: [
@@ -1190,7 +1190,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'military',
-    value: 3,
+    value: 1,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Match every blow. No more, no less.',
     options: [
@@ -1220,7 +1220,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'military',
-    value: 4,
+    value: 1,
     tags: ['identity', 'military', 'technology'],
     flavorText: 'Bring enough, and leave no question unanswered.',
     options: [
@@ -1282,7 +1282,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'military',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Neither sword nor shield — both, as the moment demands.',
     options: [
@@ -1313,7 +1313,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'military',
-    value: 3,
+    value: 1,
     tags: ['identity', 'economy', 'military'],
     flavorText: 'Match every blow. No more, no less.',
     options: [
@@ -1343,7 +1343,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'military',
-    value: 4,
+    value: 1,
     tags: ['identity', 'military', 'technology'],
     flavorText: 'Bring enough, and leave no question unanswered.',
     options: [
@@ -1408,7 +1408,7 @@ const CARDS = [
     type: 'category',
     subtype: 'philosophy',
     category: 'technology',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'environment', 'technology'],
     flavorText: 'The horizon exists to be crossed.',
     options: [
@@ -1438,7 +1438,7 @@ const CARDS = [
     type: 'category',
     subtype: 'philosophy',
     category: 'technology',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'technology'],
     flavorText: 'Move fast enough to grow. Slow enough not to break.',
     options: [
@@ -1467,7 +1467,7 @@ const CARDS = [
     type: 'category',
     subtype: 'philosophy',
     category: 'technology',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'technology'],
     flavorText: 'Knowledge organized is knowledge multiplied.',
     options: [
@@ -1497,7 +1497,7 @@ const CARDS = [
     type: 'category',
     subtype: 'philosophy',
     category: 'technology',
-    value: 3,
+    value: 1,
     tags: ['identity', 'military', 'technology'],
     flavorText: 'The future demands sacrifice.',
     options: [
@@ -1527,7 +1527,7 @@ const CARDS = [
     type: 'category',
     subtype: 'philosophy',
     category: 'technology',
-    value: 3,
+    value: 1,
     tags: ['identity', 'culture', 'technology'],
     flavorText: 'Understanding must come before application.',
     options: [
@@ -1556,7 +1556,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'technology',
-    value: 2,
+    value: 1,
     tags: ['identity', 'technology'],
     flavorText: 'Metal shaped to human will.',
     options: [
@@ -1587,7 +1587,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'technology',
-    value: 2,
+    value: 1,
     tags: ['identity', 'technology'],
     flavorText: 'Knowledge preserved across generations.',
     options: [
@@ -1619,7 +1619,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'technology',
-    value: 3,
+    value: 1,
     tags: ['identity', 'military', 'technology'],
     flavorText: 'Building beyond the possible.',
     options: [
@@ -1649,7 +1649,7 @@ const CARDS = [
     type: 'category',
     subtype: 'institution',
     category: 'technology',
-    value: 3,
+    value: 1,
     tags: ['identity', 'culture', 'technology'],
     flavorText: 'The language beneath all else.',
     options: [
@@ -1713,7 +1713,7 @@ const CARDS = [
     type: 'category',
     subtype: 'territory',
     category: 'environment',
-    value: 2,
+    value: 1,
     tags: ['identity', 'environment', 'military'],
     flavorText: 'High ground commands the horizon.',
     options: [
@@ -1743,7 +1743,7 @@ const CARDS = [
     type: 'category',
     subtype: 'territory',
     category: 'environment',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Where rivers carve the shape of nations.',
     options: [
@@ -1774,7 +1774,7 @@ const CARDS = [
     type: 'category',
     subtype: 'territory',
     category: 'environment',
-    value: 3,
+    value: 1,
     tags: ['identity', 'environment', 'governance'],
     flavorText: 'The heartland, contested and coveted.',
     options: [
@@ -1804,7 +1804,7 @@ const CARDS = [
     type: 'category',
     subtype: 'territory',
     category: 'environment',
-    value: 3,
+    value: 1,
     tags: ['identity', 'economy', 'environment', 'military'],
     flavorText: 'The sea gives and the sea takes.',
     options: [
@@ -1835,7 +1835,7 @@ const CARDS = [
     type: 'category',
     subtype: 'territory',
     category: 'environment',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Grain and growth, season after season.',
     options: [
@@ -1896,7 +1896,7 @@ const CARDS = [
     type: 'category',
     subtype: 'territory',
     category: 'environment',
-    value: 3,
+    value: 1,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Where rivers meet, civilizations flourish.',
     options: [
@@ -1927,7 +1927,7 @@ const CARDS = [
     type: 'category',
     subtype: 'territory',
     category: 'environment',
-    value: 2,
+    value: 1,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Grain and growth, season after season.',
     options: [
@@ -1988,7 +1988,7 @@ const CARDS = [
     type: 'category',
     subtype: 'territory',
     category: 'environment',
-    value: 3,
+    value: 1,
     tags: ['identity', 'economy', 'environment'],
     flavorText: 'Where rivers meet, civilizations flourish.',
     options: [

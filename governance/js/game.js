@@ -2613,21 +2613,9 @@ function renderCategories() {
     // Active card HTML
     let activeHTML = `<div class="empty-slot">— No card active —</div>`;
     if (s.active) {
-      const bonus = identityBonusValue(cat);
-      const ib = s.active.identityBonus;
-      const tagLabel = ib ? cap(ib.tag) : '';
-      const bonusDesc = ib
-        ? (ib.type === 'stack_tag'
-            ? `+${bonus} · ${tagLabel}-tagged stack`
-            : `+${bonus} · ${tagLabel} instab. reduction`)
-        : '';
-      const bonusHTML = ib
-        ? `<div class="ipc-bonus">${bonusDesc}</div>`
-        : '';
       activeHTML = `<div class="in-play-card" style="border-left-color:${color}" onclick="viewCard_global('active','${cat}')">
         <div class="ipc-name">${s.active.name}</div>
         <div class="ipc-value">+${s.active.value}</div>
-        ${bonusHTML}
       </div>`;
     }
 

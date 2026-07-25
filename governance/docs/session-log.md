@@ -28,6 +28,9 @@ Additional +2 military non-economy, non-governance resources:
 
 LEAN_DECK total: ~338 slots. STARTER_DECK unchanged.
 
+### Identity Card Value Reset
+All identity card base values set to 1. Strategic differentiation comes entirely from the identityBonus mechanic. Board panel shows live total score (which includes the bonus); detail view shows the bonus description.
+
 ### Identity Passive Bonus Mechanic
 All 45 base identity cards now carry an `identityBonus` field. While active, each identity applies a permanent score modifier:
 - **stack_tag**: +1 for each resource in this category's stack tagged with the specified tag
