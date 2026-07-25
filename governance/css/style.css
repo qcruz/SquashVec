@@ -1002,6 +1002,14 @@ html, body {
   color: var(--danger);
 }
 
+.detail-identity-bonus {
+  font-size: 12px;
+  color: var(--gold);
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+  line-height: 1.5;
+}
+
 .detail-discard {
   font-size: 11px;
   color: var(--text-muted);

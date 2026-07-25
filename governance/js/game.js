@@ -2615,8 +2615,14 @@ function renderCategories() {
     if (s.active) {
       const bonus = identityBonusValue(cat);
       const ib = s.active.identityBonus;
-      const bonusHTML = (bonus > 0 && ib)
-        ? `<div class="ipc-bonus">+${bonus} ${cap(ib.tag)}-tagged ${ib.type === 'stack_tag' ? 'stack' : 'instab.'}</div>`
+      const tagLabel = ib ? cap(ib.tag) : '';
+      const bonusDesc = ib
+        ? (ib.type === 'stack_tag'
+            ? `+${bonus} · ${tagLabel}-tagged stack`
+            : `+${bonus} · ${tagLabel} instab. reduction`)
+        : '';
+      const bonusHTML = ib
+        ? `<div class="ipc-bonus">${bonusDesc}</div>`
         : '';
       activeHTML = `<div class="in-play-card" style="border-left-color:${color}" onclick="viewCard_global('active','${cat}')">
         <div class="ipc-name">${s.active.name}</div>
@@ -2835,7 +2841,7 @@ function renderDetailFrame(card, color, location, readonly) {
              style="${isSelected ? `border-color:${color}` : ''}"
              ${readonly || !eligible ? '' : `onclick="setSelectedOption(${oi})"`}>
           <div class="detail-opt-label">${opt.label}</div>
-          <div class="detail-opt-desc">${opt.description}${opt.effect === 'replace_plus_stack_cost' ? ' <em>Bonus: removes the oldest instability from this category (if any).</em>' : ''} ${ineligibleNote}${unmetNote}</div>
+          <div class="detail-opt-desc">${opt.description}${opt.effect === 'replace_plus_stack_cost' ? ' <em>Also removes the oldest instability from this category (if any).</em>' : ''} ${ineligibleNote}${unmetNote}</div>
         </div>`;
     });
     optionsHTML += `</div>`;
@@ -2848,6 +2854,18 @@ function renderDetailFrame(card, color, location, readonly) {
       <span class="detail-section-label">Discard Options (chosen when removed from play)</span>
       <div>${card.discardTo.map(d => d.label + (d.bonus ? ' — draw 1 card' : '')).join(' &nbsp;·&nbsp; ')}</div>
     </div>` : '';
+
+  const identityBonusHTML = card.identityBonus ? (() => {
+    const ib = card.identityBonus;
+    const tagLabel = ib.tag.charAt(0).toUpperCase() + ib.tag.slice(1);
+    const desc = ib.type === 'stack_tag'
+      ? `+1 for all ${tagLabel}-tagged resources in this stack`
+      : `−1 from all ${tagLabel}-tagged instabilities in this pile`;
+    return `<div class="detail-identity-bonus">
+      <span class="detail-section-label">Identity Bonus (while active)</span>
+      <div>${desc}</div>
+    </div>`;
+  })() : '';
 
   return `
     <div class="detail-location">${location}</div>
@@ -2863,6 +2881,7 @@ function renderDetailFrame(card, color, location, readonly) {
       ${mustPlayHTML}
       ${reqHTML}
       ${optionsHTML}
+      ${identityBonusHTML}
       ${discardHTML}
       ${card.flavorText ? `<div class="detail-flavor">"${card.flavorText}"</div>` : ''}
     </div>`;
