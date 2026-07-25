@@ -62,12 +62,25 @@ function shuffle(arr) {
 
 // ─── Scoring ──────────────────────────────────────────────────────────────────
 
+function identityBonusValue(cat) {
+  const s = G.categories[cat];
+  if (!s.active || !s.active.identityBonus) return 0;
+  const { type, tag } = s.active.identityBonus;
+  if (type === 'stack_tag') {
+    return s.stack.filter(c => c.tags && c.tags.includes(tag)).length;
+  }
+  if (type === 'instability_tag') {
+    return s.instability.filter(c => c.tags && c.tags.includes(tag)).length;
+  }
+  return 0;
+}
+
 function categoryScore(cat) {
   const s = G.categories[cat];
   const active = s.active ? s.active.value : 0;
   const stacked = s.stack.reduce((n, c) => n + (c.value || 0), 0);
   const instab = s.instability.reduce((n, c) => n + (c.value || 0), 0);
-  return BASE_SCORE + active + stacked - instab;
+  return BASE_SCORE + active + stacked + identityBonusValue(cat) - instab;
 }
 
 function checkEndConditions() {
@@ -2600,9 +2613,15 @@ function renderCategories() {
     // Active card HTML
     let activeHTML = `<div class="empty-slot">— No card active —</div>`;
     if (s.active) {
+      const bonus = identityBonusValue(cat);
+      const ib = s.active.identityBonus;
+      const bonusHTML = (bonus > 0 && ib)
+        ? `<div class="ipc-bonus">+${bonus} ${cap(ib.tag)}-tagged ${ib.type === 'stack_tag' ? 'stack' : 'instab.'}</div>`
+        : '';
       activeHTML = `<div class="in-play-card" style="border-left-color:${color}" onclick="viewCard_global('active','${cat}')">
         <div class="ipc-name">${s.active.name}</div>
         <div class="ipc-value">+${s.active.value}</div>
+        ${bonusHTML}
       </div>`;
     }
 

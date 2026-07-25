@@ -40,6 +40,7 @@ const CARDS = [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'culture_instability', label: 'Culture Instability', bonus: 'draw_1' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'culture' },
     requires: null,
   },
 
@@ -70,6 +71,7 @@ const CARDS = [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'culture' },
     requires: null,
   },
 
@@ -131,6 +133,7 @@ const CARDS = [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -161,6 +164,7 @@ const CARDS = [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -190,6 +194,7 @@ const CARDS = [
     discardTo: [
       { target: 'governance_instability', label: 'Governance Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -219,6 +224,7 @@ const CARDS = [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'military_instability', label: 'Military Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'military' },
     requires: null,
   },
 
@@ -277,6 +283,8 @@ const CARDS = [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'governance' },
+    identityBonus: { type: 'instability_tag', tag: 'military' },
     requires: null,
   },
 
@@ -307,6 +315,7 @@ const CARDS = [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -336,6 +345,7 @@ const CARDS = [
     discardTo: [
       { target: 'governance_instability', label: 'Governance Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -365,6 +375,7 @@ const CARDS = [
       { target: 'governance_instability', label: 'Governance Instability' },
       { target: 'military_instability', label: 'Military Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'military' },
     requires: null,
   },
 
@@ -426,6 +437,8 @@ const CARDS = [
     discardTo: [
       { target: 'shuffle_to_deck', label: 'Shuffle into deck' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'military' },
+    identityBonus: { type: 'stack_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -457,6 +470,7 @@ const CARDS = [
       { target: 'economy_instability', label: 'Economy Instability' },
       { target: 'environment_instability', label: 'Environment Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'technology' },
     requires: null,
   },
 
@@ -486,6 +500,7 @@ const CARDS = [
     discardTo: [
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'environment' },
     requires: null,
   },
 
@@ -516,6 +531,7 @@ const CARDS = [
       { target: 'economy_instability', label: 'Economy Instability' },
       { target: 'environment_instability', label: 'Environment Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'environment' },
     requires: null,
   },
 
@@ -546,6 +562,7 @@ const CARDS = [
       { target: 'economy_instability', label: 'Economy Instability' },
       { target: 'governance_instability', label: 'Governance Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -575,6 +592,7 @@ const CARDS = [
     discardTo: [
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -605,6 +623,7 @@ const CARDS = [
       { target: 'economy_instability', label: 'Economy Instability' },
       { target: 'environment_instability', label: 'Environment Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'environment' },
     requires: null,
   },
 
@@ -635,6 +654,7 @@ const CARDS = [
       { target: 'economy_instability', label: 'Economy Instability' },
       { target: 'governance_instability', label: 'Governance Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -664,6 +684,7 @@ const CARDS = [
     discardTo: [
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -697,6 +718,7 @@ const CARDS = [
     discardTo: [
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'culture' },
     requires: null,
   },
 
@@ -726,6 +748,7 @@ const CARDS = [
     discardTo: [
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'military' },
     requires: null,
   },
 
@@ -755,6 +778,7 @@ const CARDS = [
     discardTo: [
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'technology' },
     requires: null,
   },
 
@@ -785,6 +809,7 @@ const CARDS = [
     discardTo: [
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -814,6 +839,7 @@ const CARDS = [
     discardTo: [
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'military' },
     requires: null,
   },
 
@@ -844,6 +870,7 @@ const CARDS = [
       { target: 'culture_instability', label: 'Culture Instability' },
       { target: 'governance_instability', label: 'Governance Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -874,6 +901,7 @@ const CARDS = [
       { target: 'culture_instability', label: 'Culture Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -904,6 +932,7 @@ const CARDS = [
     discardTo: [
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'technology' },
     requires: null,
   },
 
@@ -933,6 +962,7 @@ const CARDS = [
     discardTo: [
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'military' },
     requires: null,
   },
 
@@ -963,6 +993,7 @@ const CARDS = [
       { target: 'culture_instability', label: 'Culture Instability' },
       { target: 'governance_instability', label: 'Governance Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -993,6 +1024,7 @@ const CARDS = [
       { target: 'culture_instability', label: 'Culture Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -1023,6 +1055,7 @@ const CARDS = [
     discardTo: [
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'technology' },
     requires: null,
   },
 
@@ -1056,6 +1089,7 @@ const CARDS = [
     discardTo: [
       { target: 'military_instability', label: 'Military Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'military' },
     requires: null,
   },
 
@@ -1085,6 +1119,7 @@ const CARDS = [
     discardTo: [
       { target: 'military_instability', label: 'Military Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'environment' },
     requires: null,
   },
 
@@ -1114,6 +1149,7 @@ const CARDS = [
     discardTo: [
       { target: 'military_instability', label: 'Military Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'environment' },
     requires: null,
   },
 
@@ -1144,6 +1180,7 @@ const CARDS = [
       { target: 'military_instability', label: 'Military Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'technology' },
     requires: null,
   },
 
@@ -1173,6 +1210,7 @@ const CARDS = [
     discardTo: [
       { target: 'military_instability', label: 'Military Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -1204,6 +1242,7 @@ const CARDS = [
       { target: 'military_instability', label: 'Military Instability' },
       { target: 'technology_instability', label: 'Technology Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -1233,6 +1272,7 @@ const CARDS = [
     discardTo: [
       { target: 'military_instability', label: 'Military Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'environment' },
     requires: null,
   },
 
@@ -1263,6 +1303,7 @@ const CARDS = [
       { target: 'military_instability', label: 'Military Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'technology' },
     requires: null,
   },
 
@@ -1292,6 +1333,7 @@ const CARDS = [
     discardTo: [
       { target: 'military_instability', label: 'Military Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -1323,6 +1365,7 @@ const CARDS = [
       { target: 'military_instability', label: 'Military Instability' },
       { target: 'technology_instability', label: 'Technology Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -1355,6 +1398,7 @@ const CARDS = [
     discardTo: [
       { target: 'technology_instability', label: 'Technology Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'technology' },
     requires: null,
   },
 
@@ -1384,6 +1428,7 @@ const CARDS = [
       { target: 'technology_instability', label: 'Technology Instability' },
       { target: 'environment_instability', label: 'Environment Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'environment' },
     requires: null,
   },
 
@@ -1412,6 +1457,7 @@ const CARDS = [
     discardTo: [
       { target: 'technology_instability', label: 'Technology Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -1441,6 +1487,7 @@ const CARDS = [
       { target: 'technology_instability', label: 'Technology Instability' },
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -1470,6 +1517,7 @@ const CARDS = [
       { target: 'technology_instability', label: 'Technology Instability' },
       { target: 'environment_instability', label: 'Environment Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'military' },
     requires: null,
   },
 
@@ -1498,6 +1546,7 @@ const CARDS = [
     discardTo: [
       { target: 'technology_instability', label: 'Technology Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'culture' },
     requires: null,
   },
 
@@ -1528,6 +1577,7 @@ const CARDS = [
     discardTo: [
       { target: 'technology_instability', label: 'Technology Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -1559,6 +1609,7 @@ const CARDS = [
       { target: 'technology_instability', label: 'Technology Instability' },
       { target: 'culture_instability', label: 'Culture Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'culture' },
     requires: null,
   },
 
@@ -1588,6 +1639,7 @@ const CARDS = [
     discardTo: [
       { target: 'technology_instability', label: 'Technology Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'military' },
     requires: null,
   },
 
@@ -1617,6 +1669,7 @@ const CARDS = [
     discardTo: [
       { target: 'technology_instability', label: 'Technology Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -1650,6 +1703,7 @@ const CARDS = [
     discardTo: [
       { target: 'environment_instability', label: 'Environment Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'environment' },
     requires: null,
   },
 
@@ -1679,6 +1733,7 @@ const CARDS = [
     discardTo: [
       { target: 'environment_instability', label: 'Environment Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'military' },
     requires: null,
   },
 
@@ -1709,6 +1764,7 @@ const CARDS = [
       { target: 'environment_instability', label: 'Environment Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -1738,6 +1794,7 @@ const CARDS = [
     discardTo: [
       { target: 'environment_instability', label: 'Environment Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'governance' },
     requires: null,
   },
 
@@ -1768,6 +1825,7 @@ const CARDS = [
       { target: 'environment_instability', label: 'Environment Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'economy' },
     requires: null,
   },
 
@@ -1798,6 +1856,7 @@ const CARDS = [
       { target: 'environment_instability', label: 'Environment Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'culture' },
     requires: null,
   },
 
@@ -1827,6 +1886,7 @@ const CARDS = [
     discardTo: [
       { target: 'environment_instability', label: 'Environment Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'military' },
     requires: null,
   },
 
@@ -1857,6 +1917,7 @@ const CARDS = [
       { target: 'environment_instability', label: 'Environment Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'technology' },
     requires: null,
   },
 
@@ -1887,6 +1948,7 @@ const CARDS = [
       { target: 'environment_instability', label: 'Environment Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'culture' },
     requires: null,
   },
 
@@ -1916,6 +1978,7 @@ const CARDS = [
     discardTo: [
       { target: 'environment_instability', label: 'Environment Instability' },
     ],
+    identityBonus: { type: 'instability_tag', tag: 'military' },
     requires: null,
   },
 
@@ -1946,6 +2009,7 @@ const CARDS = [
       { target: 'environment_instability', label: 'Environment Instability' },
       { target: 'economy_instability', label: 'Economy Instability' },
     ],
+    identityBonus: { type: 'stack_tag', tag: 'technology' },
     requires: null,
   },
 

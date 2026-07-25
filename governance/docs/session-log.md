@@ -28,6 +28,17 @@ Additional +2 military non-economy, non-governance resources:
 
 LEAN_DECK total: ~338 slots. STARTER_DECK unchanged.
 
+### Identity Passive Bonus Mechanic
+All 45 base identity cards now carry an `identityBonus` field. While active, each identity applies a permanent score modifier:
+- **stack_tag**: +1 for each resource in this category's stack tagged with the specified tag
+- **instability_tag**: +1 (reduction) for each instability in this pile tagged with the specified tag
+
+Score formula updated: `BASE + identity + stack + identityBonus - instability`
+
+Bonus displayed on the active card panel as `+N Tag-tagged stack/instab.`
+
+4 undocumented technology identities discovered and included: Iron Working, Written Records, Advanced Engineering, Mathematics.
+
 ### Card Renames
 Thematic naming pass across the deck:
 - Populist Governance → Populism

@@ -227,6 +227,14 @@ html, body {
   color: var(--win);
 }
 
+.ipc-bonus {
+  font-size: 10px;
+  color: var(--gold);
+  font-family: var(--font-mono);
+  margin-top: 2px;
+  width: 100%;
+}
+
 .ipc-passive {
   font-size: 8px;
   color: var(--gold);
