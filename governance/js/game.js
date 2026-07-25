@@ -2613,9 +2613,11 @@ function renderCategories() {
     // Active card HTML
     let activeHTML = `<div class="empty-slot">— No card active —</div>`;
     if (s.active) {
+      const bonus = identityBonusValue(cat);
+      const effectiveValue = s.active.value + bonus;
       activeHTML = `<div class="in-play-card" style="border-left-color:${color}" onclick="viewCard_global('active','${cat}')">
         <div class="ipc-name">${s.active.name}</div>
-        <div class="ipc-value">+${s.active.value}</div>
+        <div class="ipc-value">+${effectiveValue}</div>
       </div>`;
     }
 
