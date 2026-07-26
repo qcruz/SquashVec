@@ -2630,6 +2630,11 @@ function endTurn() {
   G.selectedCardIndex = null;
   G.selectedOption = 0;
   G.viewingCard = null;
+  if (AUTO.running) {
+    const ms = AUTO.stats[AUTO.mode];
+    ms.handSizeSum += G.hand.length;
+    ms.handSizeSamples++;
+  }
   G.turn++;
   const end = checkEndConditions();
   if (end) { G.phase = end.result; render(); showEndModal(end); return; }
@@ -2981,7 +2986,7 @@ function closeModal() {
 // ─── Autoplay ─────────────────────────────────────────────────────────────────
 
 function blankModeStat() {
-  return { games: 0, wins: 0, losses: 0, turnHistory: [], scoreSpread: [], cardPlays: {}, optionPlays: {}, tagPlays: {}, winCats: {}, loseCats: {} };
+  return { games: 0, wins: 0, losses: 0, turnHistory: [], scoreSpread: [], cardPlays: {}, optionPlays: {}, tagPlays: {}, winCats: {}, loseCats: {}, handSizeSum: 0, handSizeSamples: 0 };
 }
 
 const AUTO = {
@@ -3105,6 +3110,8 @@ function renderModeStats(s, modeName, extraHeader) {
     ? (s.turnHistory.reduce((a, b) => a + b, 0) / s.turnHistory.length).toFixed(1) : '—';
   const avgSpread = s.scoreSpread.length
     ? (s.scoreSpread.reduce((a, b) => a + b, 0) / s.scoreSpread.length).toFixed(1) : '—';
+  const avgHand = s.handSizeSamples > 0
+    ? (s.handSizeSum / s.handSizeSamples).toFixed(2) : '—';
 
   const winEntries = Object.entries(s.winCats).sort((a, b) => b[1] - a[1]);
   const loseEntries = Object.entries(s.loseCats).sort((a, b) => b[1] - a[1]);
@@ -3143,6 +3150,7 @@ function renderModeStats(s, modeName, extraHeader) {
     <div class="astat-row"><span class="astat-label">Games</span><span class="astat-value">${s.games}</span></div>
     <div class="astat-row"><span class="astat-label">Wins / Losses</span><span class="astat-value">${s.wins} / ${s.losses} &nbsp;(${wr} win rate)</span></div>
     <div class="astat-row"><span class="astat-label">Avg turns/game</span><span class="astat-value">${avg}</span></div>
+    <div class="astat-row"><span class="astat-label">Avg hand size (turn start)</span><span class="astat-value">${avgHand}</span></div>
     <div class="astat-row"><span class="astat-label">Avg score spread</span><span class="astat-value">${avgSpread} &nbsp;<span class="astat-muted">(max−min cat score at game end)</span></span></div>
     <div class="astat-section">
       <div class="astat-section-title">Win by category</div>
