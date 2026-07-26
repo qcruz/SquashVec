@@ -2996,7 +2996,7 @@ const AUTO = {
   mode: 'random',
   targetCategory: null,   // set when maximizer mode starts a new game
   batch: { active: false, target: 0 },
-  stats: { random: blankModeStat(), generalist: blankModeStat(), maximizer: blankModeStat() },
+  stats: { random: blankModeStat(), generalist: blankModeStat(), maximizer: blankModeStat(), longform: blankModeStat() },
 };
 
 function randFrom(arr) {
@@ -3036,6 +3036,7 @@ function setAutoMode(mode) {
   document.getElementById('auto-mode-random').classList.toggle('active', mode === 'random');
   document.getElementById('auto-mode-generalist').classList.toggle('active', mode === 'generalist');
   document.getElementById('auto-mode-maximizer').classList.toggle('active', mode === 'maximizer');
+  document.getElementById('auto-mode-longform').classList.toggle('active', mode === 'longform');
   if (mode === 'maximizer' && !AUTO.targetCategory) {
     AUTO.targetCategory = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
     addLog(`Maximizer: targeting ${cap(AUTO.targetCategory)}.`);
@@ -3043,7 +3044,7 @@ function setAutoMode(mode) {
 }
 
 function resetAutoStats() {
-  AUTO.stats = { random: blankModeStat(), generalist: blankModeStat(), maximizer: blankModeStat() };
+  AUTO.stats = { random: blankModeStat(), generalist: blankModeStat(), maximizer: blankModeStat(), longform: blankModeStat() };
   AUTO.targetCategory = null;
   updateAutoStatsDisplay();
 }
@@ -3064,7 +3065,7 @@ function recordAutoGameResult(result, cat) {
   }
 
   if (AUTO.batch.active) {
-    const totalGames = AUTO.stats.random.games + AUTO.stats.generalist.games + AUTO.stats.maximizer.games;
+    const totalGames = AUTO.stats.random.games + AUTO.stats.generalist.games + AUTO.stats.maximizer.games + AUTO.stats.longform.games;
     const batchStart = AUTO.batch.startGames;
     if (totalGames - batchStart >= AUTO.batch.target) {
       AUTO.batch.active = false;
@@ -3173,7 +3174,7 @@ function renderModeStats(s, modeName, extraHeader) {
 
 function updateAutoStatsDisplay() {
   const activeS = AUTO.stats[AUTO.mode];
-  const totalGames = AUTO.stats.random.games + AUTO.stats.generalist.games + AUTO.stats.maximizer.games;
+  const totalGames = AUTO.stats.random.games + AUTO.stats.generalist.games + AUTO.stats.maximizer.games + AUTO.stats.longform.games;
 
   const bar = document.getElementById('autoplay-bar');
   const statsSection = document.getElementById('auto-stats-section');
@@ -3428,6 +3429,94 @@ function estimateOptionDeltaMaximizer(card, opt, targetCat) {
   return base;
 }
 
+// Returns true if playing this option would push any category to the win threshold (20).
+function wouldCauseWin(card, opt) {
+  const eff = opt.effect || '';
+  const stackingEffects = [
+    'stack_on_category', 'stack_bonus', 'stack_on_any_modal', 'stack_bonus_any',
+    'replace_plus_stack_bonus', 'replace_plus_stack_cost', 'replace_plus_draw',
+    'replace_plus_remove_instability', 'replace_consume_env',
+    'pay_own_stack_then_stack_on_any', 'stack_on_category_then_discard_hand',
+    'remove_three_from_one_stack_then_stack',
+  ];
+  if (!stackingEffects.includes(eff)) return false;
+  const tgt = opt.targetCategory || opt.ownCategory || card.category;
+  if (!tgt || !G.categories[tgt]) return false;
+  return categoryScore(tgt) + (card.value || 1) >= 20;
+}
+
+// Longform: maximise survival turns. Avoid winning, prioritise instability removal,
+// penalise options that grow stacks near the cap, and factor in hand-size risk.
+function estimateOptionDeltaLongform(card, opt) {
+  const eff = opt.effect || '';
+  const val = card.value || 1;
+  const handSize = G.hand.length;
+
+  // Hard block: never push a category to the win threshold
+  if (wouldCauseWin(card, opt)) return -999;
+
+  // Instability removal — highest priority; weight heavily
+  const instabClearEffects = [
+    'remove_instability_modal', 'remove_lowest_instability_modal',
+    'remove_two_instability_modal', 'suppress_hazard',
+    'remove_newest_resource_and_oldest_instability',
+    'remove_stack_card_then_remove_instability',
+    'discard_hand_then_remove_instability',
+    'remove_two_stack_cards_then_remove_instability',
+    'remove_two_newest_resources_remove_instability',
+    'remove_all_oldest_then_remove_two_instability',
+    'remove_three_from_stack_remove_two_instab',
+    'remove_one_from_each_stack_and_each_instab',
+    'remove_three_resources_clear_one_pile',
+    'remove_stack_card_then_remove_crime_instability',
+    'remove_multi_stack_then_remove_crime_instability',
+  ];
+  const totalInstab = CATEGORIES.reduce((n, c) => n + G.categories[c].instability.length, 0);
+  if (instabClearEffects.includes(eff)) {
+    const removed = eff.includes('two') ? 2 : eff.includes('three') ? 3 : eff.includes('pile') ? 4 : 1;
+    return 4 + Math.min(removed * 2, totalInstab * 1.5);
+  }
+
+  // Score-buffering stacking: only worthwhile if that category has buffer below cap
+  const tgt = opt.targetCategory || opt.ownCategory || card.category;
+  if (tgt && G.categories[tgt]) {
+    const score = categoryScore(tgt);
+    const headroom = 20 - score;
+    // Strongly prefer stacking only on categories with plenty of headroom
+    if (headroom <= 3) return -10;           // avoid stacking near cap
+    if (headroom <= 6) return 0.5 * val;    // cautious — reduced reward
+  }
+
+  // Management / utility — valuable for board control without winning
+  const managementEffects = [
+    'managed', 'rationalize', 'austerity',
+    'move_newest_resource_any', 'move_newest_instability_any',
+    'move_newest_resource_then_move_newest_instability',
+    'remove_newest_resource_then_remove_newest_instability',
+    'strip_stack_to_oldest_and_instab',
+    'remove_two_newest_resources_remove_instability',
+  ];
+  if (managementEffects.includes(eff)) return 2;
+
+  // Draw effects — useful if hand is lean; less so when hand is already large
+  if (eff === 'draw_and_shuffle_self' || eff === 'draw_and_discard_self') {
+    return handSize < 4 ? 1.5 : 0.5;
+  }
+
+  // Hand-size risk penalty: cards that shuffle back without effect are undesirable
+  // when hand is already large (each held card raises wipe risk)
+  const handRisk = Math.max(0, handSize - 3) * 0.4;
+  if (eff === 'shuffle_self_to_deck') return -handRisk;
+
+  // Hazard acceptance (place_self_to_instability) — unavoidable; score by severity
+  if (eff === 'place_self_to_instability' || eff === 'global_event_penalty') return -(val * 1.2);
+
+  // Default: use base delta but suppress any net-positive stacking gains
+  const base = estimateOptionDelta(card, opt);
+  // Apply hand-size discount: larger hand = more urgency, but don't inflate stacking
+  return base - handRisk * 0.5;
+}
+
 function autoPlayStep() {
   if (!G || G.phase === 'won' || G.phase === 'lost') {
     const end = checkEndConditions();
@@ -3542,6 +3631,20 @@ function autoPlayStep() {
     }
     if (!bestEntry || bestDelta < -2) { passTurn(); return; }
     autoSelectAndPlay(bestEntry.i);
+  } else if (AUTO.mode === 'longform') {
+    let bestEntry = null;
+    let bestDelta = -Infinity;
+    for (const entry of playable) {
+      const eligibleOpts = (entry.card.options || [])
+        .map((opt, oi) => ({ opt, oi }))
+        .filter(({ opt }) => canPlayOption(entry.card, opt));
+      if (!eligibleOpts.length) continue;
+      const delta = Math.max(...eligibleOpts.map(({ opt }) => estimateOptionDeltaLongform(entry.card, opt)));
+      if (delta > bestDelta) { bestDelta = delta; bestEntry = entry; }
+    }
+    // Pass only if every option is a hard win-block (-999) or strongly negative
+    if (!bestEntry || bestDelta <= -10) { passTurn(); return; }
+    autoSelectAndPlay(bestEntry.i);
   } else {
     if (Math.random() < 0.12) { passTurn(); return; }
     autoSelectAndPlay(randFrom(playable).i);
@@ -3559,6 +3662,11 @@ function autoSelectAndPlay(handIdx) {
   let chosen;
   if (AUTO.mode === 'generalist' && eligible.length) {
     const deltas = eligible.map(e => estimateOptionDelta(card, e.opt));
+    const maxDelta = Math.max(...deltas);
+    const tied = eligible.filter((_, i) => deltas[i] >= maxDelta - 0.01);
+    chosen = randFrom(tied);
+  } else if (AUTO.mode === 'longform' && eligible.length) {
+    const deltas = eligible.map(e => estimateOptionDeltaLongform(card, e.opt));
     const maxDelta = Math.max(...deltas);
     const tied = eligible.filter((_, i) => deltas[i] >= maxDelta - 0.01);
     chosen = randFrom(tied);
