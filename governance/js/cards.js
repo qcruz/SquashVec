@@ -2480,6 +2480,197 @@ const CARDS = [
     ],
   },
 
+  // Exchange cards — instability-gated stacking (holdable until condition met)
+  {
+    id: 'diaspora',
+    name: 'Diaspora',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'culture',
+    value: 1,
+    tags: ['resource', 'culture', 'economy', 'exchange'],
+    flavorText: 'Where governance crumbles, peoples scatter and rebuild.',
+    options: [
+      {
+        label: 'Option 1 — Cultural Refuge',
+        description: 'If you have instability in your Governance pile, place this card in your Culture Stack (+1).',
+        effect: 'stack_on_category',
+        targetCategory: 'culture',
+        condition: { instabilityExists: 'governance' },
+      },
+      {
+        label: 'Option 2 — Labor Migration',
+        description: 'If you have instability in your Military pile, place this card in your Economy Stack (+1).',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { instabilityExists: 'military' },
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'war_profiteers',
+    name: 'War Profiteers',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 1,
+    tags: ['resource', 'economy', 'military', 'exchange'],
+    flavorText: 'Every conflict creates a market.',
+    options: [
+      {
+        label: 'Option 1 — Arms Trade',
+        description: 'If you have instability in your Military pile, place this card in your Economy Stack (+1).',
+        effect: 'stack_on_category',
+        targetCategory: 'economy',
+        condition: { instabilityExists: 'military' },
+      },
+      {
+        label: 'Option 2 — Conscription Economy',
+        description: 'If you have instability in your Economy pile, place this card in your Military Stack (+1).',
+        effect: 'stack_on_category',
+        targetCategory: 'military',
+        condition: { instabilityExists: 'economy' },
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'crisis_mandate',
+    name: 'Crisis Mandate',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'governance',
+    value: 1,
+    tags: ['resource', 'governance', 'technology', 'exchange'],
+    flavorText: 'Necessity breeds institutional resolve.',
+    options: [
+      {
+        label: 'Option 1 — Power Consolidation',
+        description: 'If you have instability in your Governance pile, place this card in your Technology Stack (+1).',
+        effect: 'stack_on_category',
+        targetCategory: 'technology',
+        condition: { instabilityExists: 'governance' },
+      },
+      {
+        label: 'Option 2 — Emergency Protocol',
+        description: 'If you have instability in your Technology pile, place this card in your Governance Stack (+1).',
+        effect: 'stack_on_category',
+        targetCategory: 'governance',
+        condition: { instabilityExists: 'technology' },
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'technology_instability', label: 'Technology Instability' },
+    ],
+    requires: null,
+  },
+
+  // Exchange cards — overdevelopment punishment (must-play hazards)
+  {
+    id: 'diminishing_returns',
+    name: 'Diminishing Returns',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'economy',
+    value: 1,
+    mustPlayWhenDrawn: true,
+    tags: ['economy', 'exchange'],
+    flavorText: 'Growth without limit becomes its own undoing.',
+    options: [
+      {
+        label: 'Option 1 — Overextended',
+        description: 'If Economy stack has 6 or more resources, place this card in Economy Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'economy',
+        condition: { stack_size_gte: { category: 'economy', value: 6 } },
+      },
+      {
+        label: 'Option 2 — Sustainable Growth',
+        description: 'If Economy stack has fewer than 6 resources, draw 1 card and shuffle this card into the deck.',
+        effect: 'draw_and_shuffle_self',
+        condition: { stack_size_lt: { category: 'economy', value: 6 } },
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'imperial_overreach',
+    name: 'Imperial Overreach',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'military',
+    value: 1,
+    mustPlayWhenDrawn: true,
+    tags: ['military', 'exchange'],
+    flavorText: 'Armies too vast to supply are the first to fracture.',
+    options: [
+      {
+        label: 'Option 1 — Overextended',
+        description: 'If Military stack has 5 or more resources, place this card in Military Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'military',
+        condition: { stack_size_gte: { category: 'military', value: 5 } },
+      },
+      {
+        label: 'Option 2 — Manageable Force',
+        description: 'If Military stack has fewer than 5 resources, draw 1 card and shuffle this card into the deck.',
+        effect: 'draw_and_shuffle_self',
+        condition: { stack_size_lt: { category: 'military', value: 5 } },
+      },
+    ],
+    discardTo: [
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'cultural_homogenization',
+    name: 'Cultural Homogenization',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'culture',
+    value: 1,
+    mustPlayWhenDrawn: true,
+    tags: ['culture', 'exchange'],
+    flavorText: 'Monocultures are fragile. Diversity endures.',
+    options: [
+      {
+        label: 'Option 1 — Cultural Collapse',
+        description: 'If Culture stack has 5 or more resources, place this card in Culture Instability.',
+        effect: 'place_self_to_instability',
+        targetInstability: 'culture',
+        condition: { stack_size_gte: { category: 'culture', value: 5 } },
+      },
+      {
+        label: 'Option 2 — Living Tradition',
+        description: 'If Culture stack has fewer than 5 resources, draw 1 card and shuffle this card into the deck.',
+        effect: 'draw_and_shuffle_self',
+        condition: { stack_size_lt: { category: 'culture', value: 5 } },
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+    requires: null,
+  },
+
   {
     id: 'unions',
     name: 'Unions',
@@ -9795,6 +9986,10 @@ const LEAN_DECK = [
   'abundant_harvest', 'abundant_harvest', 'abundant_harvest', 'abundant_harvest', 'abundant_harvest',
   'inspiring_speech',
   'activists', 'activists', 'activists', 'activists', 'unions', 'unions', 'unions', 'loyalists', 'loyalists', 'loyalists', 'loyalists', 'loyalists', 'loyalists',
+  // Exchange cards — instability-gated stacking (×2 each)
+  'diaspora', 'diaspora', 'war_profiteers', 'war_profiteers', 'crisis_mandate', 'crisis_mandate',
+  // Exchange cards — overdevelopment punishment hazards (×1 each)
+  'diminishing_returns', 'imperial_overreach', 'cultural_homogenization',
   'public_works', 'public_works', 'public_works', 'civic_charter', 'civic_charter', 'civic_charter', 'civic_charter',
   'trade_routes', 'market_expansion',
   'artistic_movement', 'artistic_movement', 'artistic_movement', 'artistic_movement', 'folk_songs', 'folk_songs', 'folk_songs', 'folk_songs', 'folk_songs', 'folk_songs',

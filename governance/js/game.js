@@ -2514,6 +2514,10 @@ function checkCondition(cond) {
     const { category, value } = cond.stack_size_gte;
     return G.categories[category].stack.length >= value;
   }
+  if (cond.stack_size_lt) {
+    const { category, value } = cond.stack_size_lt;
+    return G.categories[category].stack.length < value;
+  }
   if (cond.score_gte) {
     const { category, value } = cond.score_gte;
     return categoryScore(category) >= value;

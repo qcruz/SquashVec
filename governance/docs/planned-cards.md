@@ -137,6 +137,59 @@ Status tags: `[idea]` `[draft]` `[ready]` `✅ Approved` `✅ Implemented`
 
 ---
 
+## Exchange Cards
+
+Instability-gated stacking and overdevelopment punishment cards. Designed as a matched design session to establish a new conditional-stacking card family. Tagged `exchange` in code.
+
+### Instability-Gated Stacking (holdable)
+
+| Name | Status | Concept |
+|------|--------|---------|
+| Diaspora | `✅ Implemented` | If governance instability exists → stack on culture. If military instability exists → stack on economy. Hold until a condition is met. |
+| War Profiteers | `✅ Implemented` | If military instability exists → stack on economy. If economy instability exists → stack on military. |
+| Crisis Mandate | `✅ Implemented` | If governance instability exists → stack on technology. If technology instability exists → stack on governance. |
+
+### Overdevelopment Punishment (must-play hazards)
+
+| Name | Status | Concept |
+|------|--------|---------|
+| Diminishing Returns | `✅ Implemented` | Must-play. Economy stack ≥ 6 → goes to economy instability. Economy stack < 6 → draw 1 + shuffle self. |
+| Imperial Overreach | `✅ Implemented` | Must-play. Military stack ≥ 5 → goes to military instability. Military stack < 5 → draw 1 + shuffle self. |
+| Cultural Homogenization | `✅ Implemented` | Must-play. Culture stack ≥ 5 → goes to culture instability. Culture stack < 5 → draw 1 + shuffle self. |
+
+---
+
+## Monuments / Hero Cards
+
+Flavor cards that further define the identity and character of a civilization. Unlike identity cards (which set the category's governing system), monument and hero cards represent specific legendary achievements, figures, or institutions that arose from that civilization's development.
+
+**Design notes (to be confirmed):**
+- High value (×2 or ×3), high cost — intended as late-game scoring anchors
+- Stacks on a primary category but counts toward an adjacent category via cross-tagging
+- Should reinforce the civilization's chosen identity path (synergy with active identity card)
+
+| Name | Status | Concept |
+|------|--------|---------|
+| Glorious Monument | `[idea]` | Stacks on environment (+3). Can count as a culture resource. Costs 4 economy resources. |
+| Noble Warriors | `[idea]` | Military hero. High military value, requires military stack depth. |
+| Learned Scholars | `[idea]` | Technology/culture figure. Bonus when both tech and culture are developed. |
+| Rousing Leader | `[idea]` | Governance/culture figure. Boosts morale — bonus to governance identity while in stack. |
+| Activist Youth | `[idea]` | Culture/governance figure. Cross-tags as culture and governance resource. |
+| Pacifists | `[idea]` | Culture figure. Reduces military instability while in culture stack. |
+| Explorers | `[idea]` | Environment/technology figure. Cross-tags environment and technology. |
+| Revolutionaries | `[idea]` | Governance disruptor. High value but creates instability in adjacent category. |
+| Grand Library | `[idea]` | Technology/culture monument. Stacks on technology, counts as culture resource. |
+| Maritime Fleet | `[idea]` | Military/economy monument. Stacks on military, counts as economy resource. |
+| Air Support | `[idea]` | Military monument. High military value, high cost. |
+| High Court | `[idea]` | Governance monument. Reduces governance instability while in stack (passive). |
+| Debate Chambers | `[idea]` | Governance/culture monument. Cross-tags governance and culture. |
+| Street Performers | `[idea]` | Culture figure. Low cost, low value, but enables other culture cards. |
+| Merchant Class | `[idea]` | Economy/governance figure. Cross-tags economy and governance. |
+| Artists Collective | `[idea]` | Culture monument. Bonus value if culture identity is active. |
+| Secret Society | `[idea]` | Governance/military dark card. Value + instability tradeoff — beneficial but risky. |
+
+---
+
 ## Cross-Category / General
 
 | Name | Status | Concept |
@@ -175,6 +228,14 @@ Cards representing civilization-level problem-solving doctrines. All are Governa
 | 8 | Grand Strategy | `✅ Implemented` | Opt 1: Draw 2. Opt 2: Pay 1 Military resource, take oldest 2 instability from any category. Both shuffle self. |
 | 9 | Redundancy Systems | `✅ Implemented` | **Updated S5.** Opt 1: Move newest resource from any stack to any stack with exactly 1 resource. Opt 2: Pay 1 Technology resource, remove 2 instability. Both shuffle self. |
 | 10 | Adaptive Management | `✅ Implemented` | Opt 1: Take oldest instability from any category. Opt 2: Pay 1 Governance resource, stack +2 on any category. Both shuffle self. |
+
+---
+
+## Design Tracking Notes
+
+| Note | Added | Description |
+|------|-------|-------------|
+| Alternate card tracking | 2026-07-21 | As the card pool grows, some cards will end up with effectively the same moveset (same effect types, similar costs, same destinations). When this starts occurring, track those cards as **alternates** rather than redesigning them — a pair of alternates that serve the same role is valid as long as they're not both in the same deck build. Flag them in card-list.md with an `alt:` marker when identified. |
 
 ---
 
@@ -242,3 +303,9 @@ Cards that have been approved and added to cards.js. Kept here for reference.
 | Alliance | Governance | Stacking event +2 (S7). Opt 1: pay oldest Culture → stack on Governance. Opt 2: remove 1 Military instability → shuffle self. Anchors coalition synergy network. |
 | Free Trade Agreement | Economy | Stacking event +1 (S7). Free if Alliance in any stack; else pay oldest Governance → stack on Economy. Uses `card_in_stack` condition. |
 | Martial Law | Governance | Utility +3 (S7). Opt 1 (Dictatorship): 1 Military cost. Opt 2 (any): 1 Military + 2 Governance. Both remove all Crime instability from all categories → Governance instability. |
+| Diaspora | Culture/Economy | Exchange stacking (S15). If governance instability → culture stack. If military instability → economy stack. |
+| War Profiteers | Economy/Military | Exchange stacking (S15). If military instability → economy stack. If economy instability → military stack. |
+| Crisis Mandate | Governance/Technology | Exchange stacking (S15). If governance instability → technology stack. If technology instability → governance stack. |
+| Diminishing Returns | Economy | Exchange hazard (S15). Must-play. Economy ≥ 6 → economy instability. Economy < 6 → draw + shuffle self. |
+| Imperial Overreach | Military | Exchange hazard (S15). Must-play. Military ≥ 5 → military instability. Military < 5 → draw + shuffle self. |
+| Cultural Homogenization | Culture | Exchange hazard (S15). Must-play. Culture ≥ 5 → culture instability. Culture < 5 → draw + shuffle self. |

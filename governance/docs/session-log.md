@@ -4,6 +4,48 @@
 
 ---
 
+## Session 15 — 2026-07-25
+
+**Focus:** Exchange card family design and implementation; monuments/hero card brainstorm saved to planned-cards.md
+
+### Design Session — Standard Flow Example
+
+This session demonstrates the intended design development workflow:
+
+1. **Brainstorm under constraints** — Six card concepts developed, then revised twice to enforce design rules: (a) no net gains, (b) two options must go to different stacks/effects, (c) tradeoffs always required, (d) Activists is the reference model (offsets instability = net zero on its own).
+2. **Pattern identification** — Two valid card patterns emerged:
+   - *Instability-gated stacking*: conditional `instabilityExists` gates cross-category stacking; player holds card until board state enables preferred option
+   - *Overdevelopment punishment*: must-play hazard with mutually exclusive `stack_size_gte`/`stack_size_lt` conditions; punishes over-built stacks, recirculates card for lean stacks
+3. **Engine work scoped** — Only one new condition type needed (`stack_size_lt`); all effects reused from existing implementations
+4. **Implemented and tagged** — All 6 cards tagged `exchange` for deck testing identification
+
+### Exchange Cards Implemented
+
+**Pattern 1 — Instability-Gated Stacking (×2 each in LEAN_DECK):**
+- `diaspora` — governance instability → culture stack; military instability → economy stack
+- `war_profiteers` — military instability → economy stack; economy instability → military stack
+- `crisis_mandate` — governance instability → technology stack; technology instability → governance stack
+
+**Pattern 2 — Overdevelopment Punishment (×1 each, must-play hazards):**
+- `diminishing_returns` — economy stack ≥ 6 → economy instability; else draw + shuffle self
+- `imperial_overreach` — military stack ≥ 5 → military instability; else draw + shuffle self
+- `cultural_homogenization` — culture stack ≥ 5 → culture instability; else draw + shuffle self
+
+### Engine Change
+
+- Added `stack_size_lt` condition type to `checkCondition` in game.js
+- Documented alongside `stack_size_gte`, `instabilityExists` in effects-reference.md
+
+### Monuments / Hero Cards
+
+Brainstormed 17 monument/hero card concepts — saved to `docs/planned-cards.md` under new section. These represent high-value, high-cost late-game scoring anchors tied to civilization identity. Design confirmation required before implementation.
+
+### Deck State
+
+LEAN_DECK: ~349 slots (was ~340; +9 exchange cards).
+
+---
+
 ## Session 14 — 2026-07-23
 
 **Focus:** LEAN_DECK non-economy resource tuning (governance + military); identity card Opt2 fix

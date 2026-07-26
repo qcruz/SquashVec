@@ -410,6 +410,18 @@ condition: {
   // returns true if any category's event stack contains a card with that id
   // optional: add category: 'governance' to restrict to one stack
 }
+// or
+condition: {
+  instabilityExists: 'military',  // instability pile for named category has ≥ 1 card
+}
+// or
+condition: {
+  stack_size_gte: { category: 'economy', value: 6 },  // named stack has ≥ value cards
+}
+// or
+condition: {
+  stack_size_lt: { category: 'economy', value: 6 },  // named stack has < value cards
+}
 ```
 
 ---
