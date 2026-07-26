@@ -396,4 +396,74 @@ Alliance (Governance stacking event, +2) anchors a family of cards whose effects
 
 ---
 
-*Last updated: 2026-07-18 — Session 8: exchange balance rule, difficulty curve, culture/environment design note*
+---
+
+## Game Inspirations
+
+The design of Governance draws from six major reference points. When a design decision feels unclear, returning to these touchstones often resolves it.
+
+---
+
+### 1. The Culture Series — *The Player of Games* (Iain M. Banks)
+
+The central premise of *The Player of Games* is that a game complex enough to master reveals the complete values of the civilization that created it. Governance is built on the same premise in reverse: by playing a civilization as a game, the player comes to understand what that civilization values and what it costs to maintain it.
+
+The six-category structure reflects the Culture's own implicit pillars: governance, economy, military capability, cultural expression, technological advancement, and relationship with the physical world. The game's instability mechanics reflect the Culture's internal contradictions — even the most advanced civilization is one crisis away from structural collapse if it stops paying attention.
+
+The most direct influence: the idea that winning is not the point. Mastering the system is the point. A player who understands why they lost has made more progress than one who won by accident.
+
+---
+
+### 2. Magic: The Gathering
+
+The dual-option card design (play for effect A or effect B depending on context) is directly borrowed from MTG's modal cards and modal spells. The concept of resources that cycle rather than deplete is borrowed from MTG's deck-cycling model — no card is ever truly gone, only deferred.
+
+MTG's card families and synergy chains are the direct model for arc hazards (Crime → Criminal Conspiracy → Organized Crime) and the identity companion system (each identity has a matching companion card that only fires when that identity is active).
+
+The "stack" metaphor itself is MTG-adjacent: events accumulate on a category the way enchantments and artifacts accumulate on the battlefield, building complexity and interdependency until a single disruptive card reshapes everything.
+
+The deeper MTG influence: the feeling of building a deck that expresses a philosophy. The player's card choices are a statement about what kind of civilization they're building.
+
+---
+
+### 3. Dungeons & Dragons
+
+D&D contributes the narrative layer: flavor text as the primary vehicle for thematic identity. Every card should feel like an entry in a chronicler's journal — specific, evocative, and functional. The card's mechanical effect and its flavor text should tell the same story from two angles.
+
+The broader D&D influence is the concept of civilization as character. Just as a D&D character accumulates history through play — scars, allies, reputation, artifacts — a civilization in Governance accumulates its history through its event stack. What's in the stack tells you what the civilization has been through. What's in the instability pile tells you what it failed to handle.
+
+Identity cards are the closest analog to character class: they define the civilization's core competency and shape which other cards become valuable.
+
+---
+
+### 4. Civilization Series (Civ Builders)
+
+The six-category system maps directly onto Civilization's core development pillars: Technology → Science, Economy → Gold/Production, Culture → Culture/Faith, Military → Military, Governance → Government/Policy, Environment → Terrain/Infrastructure. The win condition (any category reaching 20) echoes Civ's multiple victory types — science, cultural, diplomatic, domination victories are all available paths, just compressed into a single numeric threshold.
+
+The instability system reflects Civ's internal disorder mechanics: amenities, unhappiness, war-weariness. A civilization that overextends its military without governance support, or overbuilds economy without environmental balance, faces the same cascading penalties it would in Civilization VI.
+
+The deeper Civ influence: the idea that each civilization has a natural identity that makes some paths easier and others harder. A militaristic civilization isn't better — it's just better at military things. The game rewards specialization without requiring it.
+
+---
+
+### 5. Star Trek
+
+Star Trek contributes the philosophy that different civilization archetypes are not ranked — they are valid and coherent responses to different challenges. The Klingon civilization (military + governance) is not inferior to the Federation (balanced development) or the Vulcan path (technology + culture). Each is internally consistent and effective in the right context.
+
+This directly shapes identity card design. No governance form is the "correct" one. Dictatorship is brutally effective at removing Crime instability. Democracy is expensive but creates long-term cultural legitimacy. The Republic offers flexibility. Each is right for a specific board state and player philosophy.
+
+The Star Trek influence also shapes the multiplayer design intent: in a multi-player game, different civilizations pursuing entirely different identity combinations should be able to coexist and conflict meaningfully — not because one strategy counters another mechanically, but because different civilizational philosophies create different strengths and blind spots.
+
+---
+
+### 6. Yu-Gi-Oh
+
+Yu-Gi-Oh contributes the card arc design philosophy and the drama of must-play threat cards. The escalating family mechanic (Crime → Criminal Conspiracy → Organized Crime) is directly inspired by Yu-Gi-Oh's tribute and requirement chains — cards that become more powerful and more dangerous when prior conditions have been established.
+
+The must-play hazard design (cards that force immediate resolution when drawn) reflects Yu-Gi-Oh's trap and counter-trap structure: not everything is a choice. Sometimes the game forces your hand, and the question is how much it costs you.
+
+The broader Yu-Gi-Oh influence: the collector and builder mindset. The satisfaction of a strategy coming together — an Alliance on the board making Free Trade Agreement free, a Dictatorship making Martial Law cost one resource instead of three — is the same satisfaction as a combo deck resolving its sequence. Governance is designed so that these moments feel earned, not lucky.
+
+---
+
+*Last updated: 2026-07-25 — Session 16: card-types.md created; game inspirations added*
