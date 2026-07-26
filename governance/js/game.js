@@ -898,6 +898,41 @@ function resolveEventCard(card, opt) {
       break;
     }
 
+    case 'wipe_category_stack_then_shuffle_self': {
+      const costCat = opt.costCategory;
+      const tgtCat = opt.targetCategory;
+      const costCard = G.categories[costCat].stack.shift();
+      if (costCard) { G.deck.push(costCard); addLog(`${costCard.name} removed from ${cap(costCat)} stack → deck (cost).`); }
+      const wipeStack = G.categories[tgtCat].stack;
+      const wipeCount = wipeStack.length;
+      if (wipeCount > 0) {
+        wipeStack.forEach(c => G.deck.push(c));
+        G.categories[tgtCat].stack = [];
+        addLog(`${card.name}: All ${wipeCount} ${cap(tgtCat)} resource(s) wiped → deck.`);
+      } else {
+        addLog(`${card.name}: ${cap(tgtCat)} stack already empty.`);
+      }
+      G.deck.push(card); shuffle(G.deck);
+      addLog(`${card.name} shuffled back into deck.`);
+      afterCardResolved(); break;
+    }
+
+    case 'wipe_all_stacks_then_shuffle_self': {
+      const costCat2 = opt.costCategory;
+      const costCard2 = G.categories[costCat2].stack.shift();
+      if (costCard2) { G.deck.push(costCard2); addLog(`${costCard2.name} removed from ${cap(costCat2)} stack → deck (cost).`); }
+      let totalWiped = 0;
+      CATEGORIES.forEach(cat => {
+        const s = G.categories[cat].stack;
+        if (s.length > 0) { s.forEach(c => G.deck.push(c)); totalWiped += s.length; G.categories[cat].stack = []; }
+      });
+      shuffle(G.deck);
+      addLog(`${card.name}: All resources wiped from all stacks (${totalWiped} cards → deck).`);
+      G.deck.push(card); shuffle(G.deck);
+      addLog(`${card.name} shuffled back into deck.`);
+      afterCardResolved(); break;
+    }
+
     case 'remove_one_from_each_stack': {
       let removed = 0;
       CATEGORIES.forEach(cat => {
@@ -2407,6 +2442,9 @@ function canPlayOption(card, opt) {
       return (opt.escapeCost || []).every(cat => G.categories[cat].stack.length > 0);
     case 'global_event_penalty':
       return true;
+    case 'wipe_category_stack_then_shuffle_self':
+    case 'wipe_all_stacks_then_shuffle_self':
+      return G.categories[opt.costCategory].stack.length >= 1;
     case 'remove_multi_stack_then_remove_crime_instability': {
       const _reqCrime = {};
       (opt.stacks || []).forEach(c => _reqCrime[c] = (_reqCrime[c] || 0) + 1);
@@ -3287,6 +3325,14 @@ function estimateOptionDelta(card, opt) {
   if (eff === 'remove_one_from_each_stack') return -CATEGORIES.filter(c => G.categories[c].stack.length > 0).length;
   if (eff === 'remove_three_stack_cards_then_bottom' || eff === 'remove_four_stack_cards_then_bottom') return -3;
   if (eff === 'shuffle_self_to_deck') return 0;
+  if (eff === 'wipe_category_stack_then_shuffle_self') {
+    const tgtStack = G.categories[opt.targetCategory].stack;
+    return -(tgtStack.length * 1.5) - 1;
+  }
+  if (eff === 'wipe_all_stacks_then_shuffle_self') {
+    const totalWipeCards = CATEGORIES.reduce((n, c) => n + G.categories[c].stack.length, 0);
+    return -(totalWipeCards * 1.5) - 1;
+  }
   if (eff === 'remove_three_from_one_stack_then_stack') {
     const srcStack = G.categories[opt.sourceCategory].stack;
     const costVal = srcStack.slice(0, 3).reduce((sum, c) => sum + (c.value || 1), 0);

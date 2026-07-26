@@ -8510,6 +8510,198 @@ const CARDS = [
     discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
   },
 
+  // ─── Collapse Event Cards ────────────────────────────────────────────────────
+  // Persistent threats — both options shuffle back into deck.
+  // Suppression requires discarding from hand via an external effect.
+
+  {
+    id: 'economic_collapse',
+    name: 'Economic Collapse',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'economy',
+    value: 1,
+    tags: ['instability', 'event', 'collapse', 'economy'],
+    flavorText: 'When the last market closes, civilization counts the cost.',
+    options: [
+      {
+        label: 'Option 1 — Trigger Collapse',
+        description: 'Pay 1 Economy resource. Wipe all resources from the Economy stack. Shuffle this card back into the deck.',
+        effect: 'wipe_category_stack_then_shuffle_self',
+        costCategory: 'economy',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Defer',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [{ target: 'economy_instability', label: 'Economy Instability' }],
+    requires: null,
+  },
+
+  {
+    id: 'state_collapse',
+    name: 'State Collapse',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'governance',
+    value: 1,
+    tags: ['instability', 'event', 'collapse', 'governance'],
+    flavorText: 'Without law, nothing holds.',
+    options: [
+      {
+        label: 'Option 1 — Trigger Collapse',
+        description: 'Pay 1 Governance resource. Wipe all resources from the Governance stack. Shuffle this card back into the deck.',
+        effect: 'wipe_category_stack_then_shuffle_self',
+        costCategory: 'governance',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Defer',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [{ target: 'governance_instability', label: 'Governance Instability' }],
+    requires: null,
+  },
+
+  {
+    id: 'cultural_collapse',
+    name: 'Cultural Collapse',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'culture',
+    value: 1,
+    tags: ['instability', 'event', 'collapse', 'culture'],
+    flavorText: 'A people without memory has nothing to defend.',
+    options: [
+      {
+        label: 'Option 1 — Trigger Collapse',
+        description: 'Pay 1 Culture resource. Wipe all resources from the Culture stack. Shuffle this card back into the deck.',
+        effect: 'wipe_category_stack_then_shuffle_self',
+        costCategory: 'culture',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Defer',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [{ target: 'culture_instability', label: 'Culture Instability' }],
+    requires: null,
+  },
+
+  {
+    id: 'military_collapse',
+    name: 'Military Collapse',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'military',
+    value: 1,
+    tags: ['instability', 'event', 'collapse', 'military'],
+    flavorText: 'Every army has a last retreat.',
+    options: [
+      {
+        label: 'Option 1 — Trigger Collapse',
+        description: 'Pay 1 Military resource. Wipe all resources from the Military stack. Shuffle this card back into the deck.',
+        effect: 'wipe_category_stack_then_shuffle_self',
+        costCategory: 'military',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Defer',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+    requires: null,
+  },
+
+  {
+    id: 'technological_regression',
+    name: 'Technological Regression',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'technology',
+    value: 1,
+    tags: ['instability', 'event', 'collapse', 'technology'],
+    flavorText: 'What is built in generations can be forgotten in one.',
+    options: [
+      {
+        label: 'Option 1 — Trigger Collapse',
+        description: 'Pay 1 Technology resource. Wipe all resources from the Technology stack. Shuffle this card back into the deck.',
+        effect: 'wipe_category_stack_then_shuffle_self',
+        costCategory: 'technology',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Defer',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [{ target: 'technology_instability', label: 'Technology Instability' }],
+    requires: null,
+  },
+
+  {
+    id: 'ecological_catastrophe',
+    name: 'Ecological Catastrophe',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'environment',
+    value: 1,
+    tags: ['instability', 'event', 'collapse', 'environment'],
+    flavorText: 'The land does not negotiate.',
+    options: [
+      {
+        label: 'Option 1 — Trigger Collapse',
+        description: 'Pay 1 Environment resource. Wipe all resources from the Environment stack. Shuffle this card back into the deck.',
+        effect: 'wipe_category_stack_then_shuffle_self',
+        costCategory: 'environment',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Defer',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [{ target: 'environment_instability', label: 'Environment Instability' }],
+    requires: null,
+  },
+
+  {
+    id: 'wmd_launch',
+    name: 'WMD Launch',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'military',
+    value: 1,
+    tags: ['instability', 'event', 'collapse', 'military', 'technology'],
+    flavorText: 'Nothing survived. Nothing was meant to.',
+    options: [
+      {
+        label: 'Option 1 — Launch',
+        description: 'Pay 1 Military resource. Wipe all resources from every stack. Shuffle this card back into the deck.',
+        effect: 'wipe_all_stacks_then_shuffle_self',
+        costCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Stand Down',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [{ target: 'military_instability', label: 'Military Instability' }],
+    requires: null,
+  },
+
   {
     id: 'census',
     name: 'Census',
@@ -10445,6 +10637,10 @@ const LEAN_DECK = [
   // Global event cards (1 copy each)
   'global_recession', 'constitutional_crisis', 'mass_uprising',
   'arms_escalation', 'tech_collapse', 'climate_crisis',
+  // Collapse event cards (1 copy each — persistent threats, shuffle back on play)
+  'economic_collapse', 'state_collapse', 'cultural_collapse',
+  'military_collapse', 'technological_regression', 'ecological_catastrophe',
+  'wmd_launch',
   'restitution',
   // Economy policy cards
   'market_correction',
