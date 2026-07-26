@@ -163,29 +163,36 @@ Instability-gated stacking and overdevelopment punishment cards. Designed as a m
 
 Flavor cards that further define the identity and character of a civilization. Unlike identity cards (which set the category's governing system), monument and hero cards represent specific legendary achievements, figures, or institutions that arose from that civilization's development.
 
-**Design notes (to be confirmed):**
-- High value (×2 or ×3), high cost — intended as late-game scoring anchors
-- Stacks on a primary category but counts toward an adjacent category via cross-tagging
-- Should reinforce the civilization's chosen identity path (synergy with active identity card)
+**Design rules (confirmed):**
+- All tagged `monument`. Value 2. Cost: 3 oldest resources from one specified stack.
+- Triple cross-tagged: primary (stack category) + 2 others. Both extra tags count toward identityBonus calculations for any identity active in that stack.
+- Opt1: Pay 3 → stack (+2). Opt2: Shuffle into deck (hold/recirculate). No Opt2 cost.
+- discardTo: primary category instability only (single option = auto-routes on forced hand discard — the risk of holding too long).
+- New effects: `remove_three_from_one_stack_then_stack`, `shuffle_self_to_deck`
 
+| Name | Status | Tags | Cost Stack | Stacks On |
+|------|--------|------|------------|-----------|
+| Glorious Monument | `✅ Implemented` | environment + culture + economy | Economy ×3 | Environment |
+| Grand Library | `✅ Implemented` | technology + culture + economy | Culture ×3 | Technology |
+| Maritime Fleet | `✅ Implemented` | military + economy + technology | Economy ×3 | Military |
+| Debate Chambers | `✅ Implemented` | governance + culture + economy | Governance ×3 | Governance |
+| Merchant Guilds | `✅ Implemented` | economy + governance + culture | Governance ×3 | Economy |
+| Noble Warriors | `✅ Implemented` | military + culture + governance | Military ×3 | Military |
+| Learned Scholars | `✅ Implemented` | technology + governance + military | Technology ×3 | Technology |
+| Rousing Leader | `✅ Implemented` | culture + governance + military | Culture ×3 | Culture |
+| Pacifists | `✅ Implemented` | culture + military + environment | Culture ×3 | Culture |
+| Explorers | `✅ Implemented` | environment + technology + military | Environment ×3 | Environment |
+
+**Deferred (needs distinct design beyond monument template):**
 | Name | Status | Concept |
 |------|--------|---------|
-| Glorious Monument | `[idea]` | Stacks on environment (+3). Can count as a culture resource. Costs 4 economy resources. |
-| Noble Warriors | `[idea]` | Military hero. High military value, requires military stack depth. |
-| Learned Scholars | `[idea]` | Technology/culture figure. Bonus when both tech and culture are developed. |
-| Rousing Leader | `[idea]` | Governance/culture figure. Boosts morale — bonus to governance identity while in stack. |
 | Activist Youth | `[idea]` | Culture/governance figure. Cross-tags as culture and governance resource. |
-| Pacifists | `[idea]` | Culture figure. Reduces military instability while in culture stack. |
-| Explorers | `[idea]` | Environment/technology figure. Cross-tags environment and technology. |
 | Revolutionaries | `[idea]` | Governance disruptor. High value but creates instability in adjacent category. |
-| Grand Library | `[idea]` | Technology/culture monument. Stacks on technology, counts as culture resource. |
-| Maritime Fleet | `[idea]` | Military/economy monument. Stacks on military, counts as economy resource. |
 | Air Support | `[idea]` | Military monument. High military value, high cost. |
-| High Court | `[idea]` | Governance monument. Reduces governance instability while in stack (passive). |
-| Debate Chambers | `[idea]` | Governance/culture monument. Cross-tags governance and culture. |
+| High Court | `[idea]` | Governance monument. Immediate instability removal at play time. |
+| Debate Chambers (alt) | `[idea]` | Governance/culture monument. Cross-tags governance and culture. |
 | Street Performers | `[idea]` | Culture figure. Low cost, low value, but enables other culture cards. |
-| Merchant Class | `[idea]` | Economy/governance figure. Cross-tags economy and governance. |
-| Artists Collective | `[idea]` | Culture monument. Bonus value if culture identity is active. |
+| Artists Collective | `[idea]` | Culture monument. Conditional play — free if culture identity is active. |
 | Secret Society | `[idea]` | Governance/military dark card. Value + instability tradeoff — beneficial but risky. |
 
 ---

@@ -597,6 +597,11 @@ function resolveEventCard(card, opt) {
       addLog(`${card.name}: Drew a card. ${card.name} shuffled back into the deck.`);
       break;
 
+    case 'shuffle_self_to_deck':
+      G.deck.push(card); shuffle(G.deck);
+      addLog(`${card.name} shuffled back into the deck.`);
+      break;
+
     case 'discard_from_hand_modal': {
       const condMet = opt.condition ? checkCondition(opt.condition) : true;
       if (!condMet) {
@@ -919,6 +924,19 @@ function resolveEventCard(card, opt) {
       G.deck.push(card);
       addLog(`${card.name} placed at bottom of deck.`);
       afterCardResolved();
+      break;
+    }
+
+    case 'remove_three_from_one_stack_then_stack': {
+      const src = opt.sourceCategory;
+      const tgt = opt.targetCategory;
+      for (let i = 0; i < 3; i++) {
+        const r = G.categories[src].stack.splice(0, 1)[0];
+        if (r) { G.deck.push(r); addLog(`${r.name} removed from ${cap(src)} stack → deck.`); }
+      }
+      shuffle(G.deck);
+      G.categories[tgt].stack.push(card);
+      addLog(`${card.name} → ${cap(tgt)} stack (+${card.value}).`);
       break;
     }
 
@@ -2355,6 +2373,10 @@ function canPlayOption(card, opt) {
       return G.categories[opt.sourceCategory1].stack.length >= 1 &&
              G.categories[opt.sourceCategory2].stack.length >= 1 &&
              G.categories[opt.sourceCategory3].stack.length >= 1;
+    case 'remove_three_from_one_stack_then_stack':
+      return G.categories[opt.sourceCategory].stack.length >= 3;
+    case 'shuffle_self_to_deck':
+      return true;
     case 'remove_two_stack_cards_then_bottom': {
       const _cats2 = [opt.sourceCategory1, opt.sourceCategory2];
       const _req2 = {};
@@ -3264,6 +3286,12 @@ function estimateOptionDelta(card, opt) {
   }
   if (eff === 'remove_one_from_each_stack') return -CATEGORIES.filter(c => G.categories[c].stack.length > 0).length;
   if (eff === 'remove_three_stack_cards_then_bottom' || eff === 'remove_four_stack_cards_then_bottom') return -3;
+  if (eff === 'shuffle_self_to_deck') return 0;
+  if (eff === 'remove_three_from_one_stack_then_stack') {
+    const srcStack = G.categories[opt.sourceCategory].stack;
+    const costVal = srcStack.slice(0, 3).reduce((sum, c) => sum + (c.value || 1), 0);
+    return val - costVal;
+  }
   if (eff === 'remove_two_stack_cards_then_bottom') return -2;
   if (eff === 'remove_two_newest_resources_remove_instability') return -1;
   if (eff === 'remove_all_oldest_then_remove_two_instability') return -2;

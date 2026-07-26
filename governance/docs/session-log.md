@@ -44,6 +44,23 @@ Brainstormed 17 monument/hero card concepts — saved to `docs/planned-cards.md`
 
 LEAN_DECK: ~349 slots (was ~340; +9 exchange cards).
 
+### Monument Cards + Hand-Discard Must-Plays (Session 15 continued)
+
+**10 monument cards implemented** — all `subtype: 'stacking'`, `value: 2`, tagged `monument` + 3 category cross-tags. Opt1 costs 3 resources from one stack. Opt2 shuffles self to deck (pure recirculate). discardTo: primary category instability only — forced hand discard auto-routes to instability (the "held too long" risk).
+
+Cards: Glorious Monument, Grand Library, Maritime Fleet, Debate Chambers, Merchant Guilds, Noble Warriors, Learned Scholars, Rousing Leader, Pacifists, Explorers.
+
+**3 hand-discard must-play hazards added:**
+- `scandal` (×2): discard 1 / pay 1 governance
+- `civil_unrest` (×1): discard 2 / pay governance + culture
+- `power_vacuum` (×1): discard 3 / pay governance + military + economy
+
+**New engine effects:**
+- `remove_three_from_one_stack_then_stack` — pay 3 oldest from sourceCategory, stack on targetCategory
+- `shuffle_self_to_deck` — pure shuffle self, no draw
+
+LEAN_DECK: ~363 slots (was ~349; +14 cards).
+
 ---
 
 ## Session 14 — 2026-07-23

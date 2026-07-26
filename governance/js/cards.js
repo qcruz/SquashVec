@@ -2671,6 +2671,393 @@ const CARDS = [
     requires: null,
   },
 
+  // Monument cards — value 2, cost 3 from one stack, triple cross-tagged
+  {
+    id: 'glorious_monument',
+    name: 'Glorious Monument',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 2,
+    tags: ['resource', 'monument', 'environment', 'culture', 'economy'],
+    flavorText: 'Where nature and civilization meet, lasting works are born.',
+    options: [
+      {
+        label: 'Option 1 — Construct',
+        description: 'Remove 3 oldest Economy resources. Place this card in your Environment Stack (+2). Counts as an Economy and Culture resource.',
+        effect: 'remove_three_from_one_stack_then_stack',
+        sourceCategory: 'economy',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Hold',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [
+      { target: 'environment_instability', label: 'Environment Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'grand_library',
+    name: 'Grand Library',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'technology',
+    value: 2,
+    tags: ['resource', 'monument', 'technology', 'culture', 'economy'],
+    flavorText: 'Knowledge preserved is civilization doubled.',
+    options: [
+      {
+        label: 'Option 1 — Establish',
+        description: 'Remove 3 oldest Culture resources. Place this card in your Technology Stack (+2). Counts as a Culture and Economy resource.',
+        effect: 'remove_three_from_one_stack_then_stack',
+        sourceCategory: 'culture',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Hold',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'maritime_fleet',
+    name: 'Maritime Fleet',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 2,
+    tags: ['resource', 'monument', 'military', 'economy', 'technology'],
+    flavorText: 'The sea is both highway and frontier.',
+    options: [
+      {
+        label: 'Option 1 — Commission',
+        description: 'Remove 3 oldest Economy resources. Place this card in your Military Stack (+2). Counts as an Economy and Technology resource.',
+        effect: 'remove_three_from_one_stack_then_stack',
+        sourceCategory: 'economy',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Hold',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'debate_chambers',
+    name: 'Debate Chambers',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'governance',
+    value: 2,
+    tags: ['resource', 'monument', 'governance', 'culture', 'economy'],
+    flavorText: 'Laws argued openly are laws that endure.',
+    options: [
+      {
+        label: 'Option 1 — Construct',
+        description: 'Remove 3 oldest Governance resources. Place this card in your Governance Stack (+2). Counts as a Culture and Economy resource.',
+        effect: 'remove_three_from_one_stack_then_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'governance',
+      },
+      {
+        label: 'Option 2 — Hold',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'merchant_guilds',
+    name: 'Merchant Guilds',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'economy',
+    value: 2,
+    tags: ['resource', 'monument', 'economy', 'governance', 'culture'],
+    flavorText: 'Commerce writes its own constitution.',
+    options: [
+      {
+        label: 'Option 1 — Charter',
+        description: 'Remove 3 oldest Governance resources. Place this card in your Economy Stack (+2). Counts as a Governance and Culture resource.',
+        effect: 'remove_three_from_one_stack_then_stack',
+        sourceCategory: 'governance',
+        targetCategory: 'economy',
+      },
+      {
+        label: 'Option 2 — Hold',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [
+      { target: 'economy_instability', label: 'Economy Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'noble_warriors',
+    name: 'Noble Warriors',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'military',
+    value: 2,
+    tags: ['resource', 'monument', 'military', 'culture', 'governance'],
+    flavorText: 'The sword raised in honor is remembered in song.',
+    options: [
+      {
+        label: 'Option 1 — Honor',
+        description: 'Remove 3 oldest Military resources. Place this card in your Military Stack (+2). Counts as a Culture and Governance resource.',
+        effect: 'remove_three_from_one_stack_then_stack',
+        sourceCategory: 'military',
+        targetCategory: 'military',
+      },
+      {
+        label: 'Option 2 — Hold',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'learned_scholars',
+    name: 'Learned Scholars',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'technology',
+    value: 2,
+    tags: ['resource', 'monument', 'technology', 'governance', 'military'],
+    flavorText: 'The mind that maps the world shapes its direction.',
+    options: [
+      {
+        label: 'Option 1 — Appoint',
+        description: 'Remove 3 oldest Technology resources. Place this card in your Technology Stack (+2). Counts as a Governance and Military resource.',
+        effect: 'remove_three_from_one_stack_then_stack',
+        sourceCategory: 'technology',
+        targetCategory: 'technology',
+      },
+      {
+        label: 'Option 2 — Hold',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [
+      { target: 'technology_instability', label: 'Technology Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'rousing_leader',
+    name: 'Rousing Leader',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'culture',
+    value: 2,
+    tags: ['resource', 'monument', 'culture', 'governance', 'military'],
+    flavorText: 'One voice at the right moment changes the course of nations.',
+    options: [
+      {
+        label: 'Option 1 — Rise',
+        description: 'Remove 3 oldest Culture resources. Place this card in your Culture Stack (+2). Counts as a Governance and Military resource.',
+        effect: 'remove_three_from_one_stack_then_stack',
+        sourceCategory: 'culture',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Hold',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'pacifists',
+    name: 'Pacifists',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'culture',
+    value: 2,
+    tags: ['resource', 'monument', 'culture', 'military', 'environment'],
+    flavorText: 'The refusal to fight is itself a kind of power.',
+    options: [
+      {
+        label: 'Option 1 — Stand',
+        description: 'Remove 3 oldest Culture resources. Place this card in your Culture Stack (+2). Counts as a Military and Environment resource.',
+        effect: 'remove_three_from_one_stack_then_stack',
+        sourceCategory: 'culture',
+        targetCategory: 'culture',
+      },
+      {
+        label: 'Option 2 — Hold',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'explorers',
+    name: 'Explorers',
+    type: 'event',
+    subtype: 'stacking',
+    category: 'environment',
+    value: 2,
+    tags: ['resource', 'monument', 'environment', 'technology', 'military'],
+    flavorText: 'Every horizon crossed becomes part of the civilization's story.',
+    options: [
+      {
+        label: 'Option 1 — Venture',
+        description: 'Remove 3 oldest Environment resources. Place this card in your Environment Stack (+2). Counts as a Technology and Military resource.',
+        effect: 'remove_three_from_one_stack_then_stack',
+        sourceCategory: 'environment',
+        targetCategory: 'environment',
+      },
+      {
+        label: 'Option 2 — Hold',
+        description: 'Shuffle this card into the deck.',
+        effect: 'shuffle_self_to_deck',
+      },
+    ],
+    discardTo: [
+      { target: 'environment_instability', label: 'Environment Instability' },
+    ],
+    requires: null,
+  },
+
+  // Hand-discard must-play cards — 1, 2, and 3 card variants
+  {
+    id: 'scandal',
+    name: 'Scandal',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'governance',
+    value: 1,
+    mustPlayWhenDrawn: true,
+    tags: ['governance', 'instability'],
+    flavorText: 'Secrets surfaced cannot be buried again.',
+    options: [
+      {
+        label: 'Option 1 — Exposed',
+        description: 'Discard 1 card from your hand. Shuffle this card into the deck.',
+        effect: 'discard_from_hand_then_shuffle_self',
+        count: 1,
+      },
+      {
+        label: 'Option 2 — Contain It',
+        description: 'Remove 1 Governance resource. Shuffle this card into the deck.',
+        effect: 'remove_stack_card_then_shuffle_self',
+        sourceCategory: 'governance',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'civil_unrest',
+    name: 'Civil Unrest',
+    type: 'event',
+    subtype: 'hazard',
+    category: null,
+    value: 2,
+    mustPlayWhenDrawn: true,
+    tags: ['governance', 'culture', 'instability'],
+    flavorText: 'When the people speak together, power must listen.',
+    options: [
+      {
+        label: 'Option 1 — Give Ground',
+        description: 'Discard 2 cards from your hand. Shuffle this card into the deck.',
+        effect: 'discard_from_hand_then_shuffle_self',
+        count: 2,
+      },
+      {
+        label: 'Option 2 — Suppress',
+        description: 'Remove 1 Governance and 1 Culture resource. This card goes to the bottom of the deck.',
+        effect: 'remove_two_stack_cards_then_bottom',
+        sourceCategory1: 'governance',
+        sourceCategory2: 'culture',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'culture_instability', label: 'Culture Instability' },
+    ],
+    requires: null,
+  },
+
+  {
+    id: 'power_vacuum',
+    name: 'Power Vacuum',
+    type: 'event',
+    subtype: 'hazard',
+    category: 'governance',
+    value: 3,
+    mustPlayWhenDrawn: true,
+    tags: ['governance', 'military', 'instability'],
+    flavorText: 'When authority collapses, every faction rushes to fill the void.',
+    options: [
+      {
+        label: 'Option 1 — Disorder',
+        description: 'Discard 3 cards from your hand. Shuffle this card into the deck.',
+        effect: 'discard_from_hand_then_shuffle_self',
+        count: 3,
+      },
+      {
+        label: 'Option 2 — Stabilize',
+        description: 'Remove 1 Governance, 1 Military, and 1 Economy resource. This card goes to the bottom of the deck.',
+        effect: 'remove_three_stack_cards_then_bottom',
+        sourceCategory1: 'governance',
+        sourceCategory2: 'military',
+        sourceCategory3: 'economy',
+      },
+    ],
+    discardTo: [
+      { target: 'governance_instability', label: 'Governance Instability' },
+      { target: 'military_instability', label: 'Military Instability' },
+    ],
+    requires: null,
+  },
+
   {
     id: 'unions',
     name: 'Unions',
@@ -9990,6 +10377,11 @@ const LEAN_DECK = [
   'diaspora', 'diaspora', 'war_profiteers', 'war_profiteers', 'crisis_mandate', 'crisis_mandate',
   // Exchange cards — overdevelopment punishment hazards (×1 each)
   'diminishing_returns', 'imperial_overreach', 'cultural_homogenization',
+  // Monument cards (×1 each — high cost, late game)
+  'glorious_monument', 'grand_library', 'maritime_fleet', 'debate_chambers', 'merchant_guilds',
+  'noble_warriors', 'learned_scholars', 'rousing_leader', 'pacifists', 'explorers',
+  // Hand-discard must-play cards
+  'scandal', 'scandal', 'civil_unrest', 'power_vacuum',
   'public_works', 'public_works', 'public_works', 'civic_charter', 'civic_charter', 'civic_charter', 'civic_charter',
   'trade_routes', 'market_expansion',
   'artistic_movement', 'artistic_movement', 'artistic_movement', 'artistic_movement', 'folk_songs', 'folk_songs', 'folk_songs', 'folk_songs', 'folk_songs', 'folk_songs',

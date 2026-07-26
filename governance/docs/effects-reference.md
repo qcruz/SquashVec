@@ -426,6 +426,22 @@ condition: {
 
 ---
 
+## Monument Effects
+
+**`remove_three_from_one_stack_then_stack`**
+Remove the 3 oldest resources from `sourceCategory` stack → deck (shuffled). Place this card on `targetCategory` stack.
+- `sourceCategory: string` — stack to drain 3 resources from
+- `targetCategory: string` — stack to place this card on
+- *Requires: `G.categories[sourceCategory].stack.length >= 3`*
+- *Used by: all monument and hero cards (Opt 1)*
+
+**`shuffle_self_to_deck`**
+Shuffle this card into the draw deck. No draw. No effect.
+- *Always eligible*
+- *Used by: all monument and hero cards (Opt 2)*
+
+---
+
 ## `canPlayOption` Requirements Summary
 
 These effects are **disabled** (grayed out) when requirements aren't met:
