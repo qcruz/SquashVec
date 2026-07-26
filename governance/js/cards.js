@@ -2679,7 +2679,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 2,
-    tags: ['resource', 'monument', 'environment', 'culture', 'economy'],
+    tags: ['resource', 'Monu', 'Exp', 'environment', 'culture', 'economy'],
     flavorText: 'Where nature and civilization meet, lasting works are born.',
     options: [
       {
@@ -2708,7 +2708,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 2,
-    tags: ['resource', 'monument', 'technology', 'culture', 'economy'],
+    tags: ['resource', 'Monu', 'Exp', 'technology', 'culture', 'economy'],
     flavorText: 'Knowledge preserved is civilization doubled.',
     options: [
       {
@@ -2737,7 +2737,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 2,
-    tags: ['resource', 'monument', 'military', 'economy', 'technology'],
+    tags: ['resource', 'Monu', 'Exp', 'military', 'economy', 'technology'],
     flavorText: 'The sea is both highway and frontier.',
     options: [
       {
@@ -2766,7 +2766,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'governance',
     value: 2,
-    tags: ['resource', 'monument', 'governance', 'culture', 'economy'],
+    tags: ['resource', 'Monu', 'Exp', 'governance', 'culture', 'economy'],
     flavorText: 'Laws argued openly are laws that endure.',
     options: [
       {
@@ -2795,7 +2795,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'economy',
     value: 2,
-    tags: ['resource', 'monument', 'economy', 'governance', 'culture'],
+    tags: ['resource', 'Monu', 'Exp', 'economy', 'governance', 'culture'],
     flavorText: 'Commerce writes its own constitution.',
     options: [
       {
@@ -2824,7 +2824,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'military',
     value: 2,
-    tags: ['resource', 'monument', 'military', 'culture', 'governance'],
+    tags: ['resource', 'Monu', 'Exp', 'military', 'culture', 'governance'],
     flavorText: 'The sword raised in honor is remembered in song.',
     options: [
       {
@@ -2853,7 +2853,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'technology',
     value: 2,
-    tags: ['resource', 'monument', 'technology', 'governance', 'military'],
+    tags: ['resource', 'Monu', 'Exp', 'technology', 'governance', 'military'],
     flavorText: 'The mind that maps the world shapes its direction.',
     options: [
       {
@@ -2882,7 +2882,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 2,
-    tags: ['resource', 'monument', 'culture', 'governance', 'military'],
+    tags: ['resource', 'Monu', 'Exp', 'culture', 'governance', 'military'],
     flavorText: 'One voice at the right moment changes the course of nations.',
     options: [
       {
@@ -2911,7 +2911,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'culture',
     value: 2,
-    tags: ['resource', 'monument', 'culture', 'military', 'environment'],
+    tags: ['resource', 'Monu', 'Exp', 'culture', 'military', 'environment'],
     flavorText: 'The refusal to fight is itself a kind of power.',
     options: [
       {
@@ -2940,7 +2940,7 @@ const CARDS = [
     subtype: 'stacking',
     category: 'environment',
     value: 2,
-    tags: ['resource', 'monument', 'environment', 'technology', 'military'],
+    tags: ['resource', 'Monu', 'Exp', 'environment', 'technology', 'military'],
     flavorText: 'Every horizon crossed becomes part of the civilization\'s story.',
     options: [
       {
