@@ -914,9 +914,11 @@ function resolveEventCard(card, opt) {
       }
       const instabPile = G.categories[tgtCat].instability;
       if (instabPile.length > 0) {
-        const removed = instabPile.splice(0, 1)[0];
-        G.deck.push(removed); shuffle(G.deck);
-        addLog(`${card.name}: 1 ${cap(tgtCat)} instability removed → deck.`);
+        const instabCount = instabPile.length;
+        instabPile.forEach(c => G.deck.push(c));
+        G.categories[tgtCat].instability = [];
+        shuffle(G.deck);
+        addLog(`${card.name}: All ${instabCount} ${cap(tgtCat)} instability cleared → deck.`);
       }
       G.deck.push(card); shuffle(G.deck);
       addLog(`${card.name} shuffled back into deck.`);
