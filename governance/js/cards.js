@@ -2941,7 +2941,7 @@ const CARDS = [
     category: 'environment',
     value: 2,
     tags: ['resource', 'monument', 'environment', 'technology', 'military'],
-    flavorText: 'Every horizon crossed becomes part of the civilization's story.',
+    flavorText: 'Every horizon crossed becomes part of the civilization\'s story.',
     options: [
       {
         label: 'Option 1 — Venture',
