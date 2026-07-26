@@ -3290,7 +3290,13 @@ function estimateOptionDelta(card, opt) {
   if (eff === 'remove_three_from_one_stack_then_stack') {
     const srcStack = G.categories[opt.sourceCategory].stack;
     const costVal = srcStack.slice(0, 3).reduce((sum, c) => sum + (c.value || 1), 0);
-    return val - costVal;
+    // Bonus: monument's cross-tags may trigger the target stack's identity bonus (persistent)
+    const tgtIdentity = G.categories[opt.targetCategory]?.active;
+    let bonusBoost = 0;
+    if (tgtIdentity?.identityBonus?.type === 'stack_tag') {
+      if (card.tags && card.tags.includes(tgtIdentity.identityBonus.tag)) bonusBoost = 2;
+    }
+    return val + bonusBoost - costVal;
   }
   if (eff === 'remove_two_stack_cards_then_bottom') return -2;
   if (eff === 'remove_two_newest_resources_remove_instability') return -1;
