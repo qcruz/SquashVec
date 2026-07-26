@@ -912,13 +912,13 @@ function resolveEventCard(card, opt) {
       } else {
         addLog(`${card.name}: ${cap(tgtCat)} stack already empty.`);
       }
-      const instabPile = G.categories[tgtCat].instability;
+      const instabPile = G.categories[costCat].instability;
       if (instabPile.length > 0) {
         const instabCount = instabPile.length;
         instabPile.forEach(c => G.deck.push(c));
-        G.categories[tgtCat].instability = [];
+        G.categories[costCat].instability = [];
         shuffle(G.deck);
-        addLog(`${card.name}: All ${instabCount} ${cap(tgtCat)} instability cleared → deck.`);
+        addLog(`${card.name}: All ${instabCount} ${cap(costCat)} instability cleared → deck.`);
       }
       G.deck.push(card); shuffle(G.deck);
       addLog(`${card.name} shuffled back into deck.`);

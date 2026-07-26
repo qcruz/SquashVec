@@ -8526,9 +8526,9 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Trigger Collapse',
-        description: 'Pay 1 Economy resource. Wipe all resources from the Economy stack. Clear all Economy instability. Shuffle this card back into the deck.',
+        description: 'Pay 1 Governance resource. Wipe all resources from the Economy stack. Clear all Governance instability. Shuffle this card back into the deck.',
         effect: 'wipe_category_stack_then_shuffle_self',
-        costCategory: 'economy',
+        costCategory: 'governance',
         targetCategory: 'economy',
       },
       {
@@ -8553,9 +8553,9 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Trigger Collapse',
-        description: 'Pay 1 Governance resource. Wipe all resources from the Governance stack. Clear all Governance instability. Shuffle this card back into the deck.',
+        description: 'Pay 1 Economy resource. Wipe all resources from the Governance stack. Clear all Economy instability. Shuffle this card back into the deck.',
         effect: 'wipe_category_stack_then_shuffle_self',
-        costCategory: 'governance',
+        costCategory: 'economy',
         targetCategory: 'governance',
       },
       {
@@ -8580,9 +8580,9 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Trigger Collapse',
-        description: 'Pay 1 Culture resource. Wipe all resources from the Culture stack. Clear all Culture instability. Shuffle this card back into the deck.',
+        description: 'Pay 1 Military resource. Wipe all resources from the Culture stack. Clear all Military instability. Shuffle this card back into the deck.',
         effect: 'wipe_category_stack_then_shuffle_self',
-        costCategory: 'culture',
+        costCategory: 'military',
         targetCategory: 'culture',
       },
       {
@@ -8607,9 +8607,9 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Trigger Collapse',
-        description: 'Pay 1 Military resource. Wipe all resources from the Military stack. Clear all Military instability. Shuffle this card back into the deck.',
+        description: 'Pay 1 Culture resource. Wipe all resources from the Military stack. Clear all Culture instability. Shuffle this card back into the deck.',
         effect: 'wipe_category_stack_then_shuffle_self',
-        costCategory: 'military',
+        costCategory: 'culture',
         targetCategory: 'military',
       },
       {
@@ -8634,9 +8634,9 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Trigger Collapse',
-        description: 'Pay 1 Technology resource. Wipe all resources from the Technology stack. Clear all Technology instability. Shuffle this card back into the deck.',
+        description: 'Pay 1 Environment resource. Wipe all resources from the Technology stack. Clear all Environment instability. Shuffle this card back into the deck.',
         effect: 'wipe_category_stack_then_shuffle_self',
-        costCategory: 'technology',
+        costCategory: 'environment',
         targetCategory: 'technology',
       },
       {
@@ -8661,9 +8661,9 @@ const CARDS = [
     options: [
       {
         label: 'Option 1 — Trigger Collapse',
-        description: 'Pay 1 Environment resource. Wipe all resources from the Environment stack. Clear all Environment instability. Shuffle this card back into the deck.',
+        description: 'Pay 1 Technology resource. Wipe all resources from the Environment stack. Clear all Technology instability. Shuffle this card back into the deck.',
         effect: 'wipe_category_stack_then_shuffle_self',
-        costCategory: 'environment',
+        costCategory: 'technology',
         targetCategory: 'environment',
       },
       {
